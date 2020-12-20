@@ -9,3 +9,7 @@ The official JavaScript client has built-in retry logic.
 If you anticipate a higher read volume, we recommend using a caching proxy. This rate limit is the same for all plans
 and increased limits are not currently available.
 */
+
+const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY
+
+

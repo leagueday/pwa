@@ -11,11 +11,15 @@ Pre-requisites
 Setup
 
 1. `$ npm install`
-2. `$ npm build-dev`
-3. `$ npm start-dev`
+2.  1. (posix) `$ AIRTABLE_API_KEY=a1b2c3 npm build-dev`
+    2. (windows) `$ env AIRTABLE_API_KEY=a1b2c3 npm build-dev`
+3. 1. (posix) `$ AIRTABLE_API_KEY=a1b2c3 npm start-dev`
+   2. (windows) `$ env AIRTABLE_API_KEY=a1b2c3 npm start-dev`
 4. open [http://localhost:3000](http://localhost:3000)
 
 ## release workflow
+
+1. merge to `master`
 
 ## launcher icon
 

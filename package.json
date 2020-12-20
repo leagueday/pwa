@@ -6,7 +6,7 @@
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
     "start": "http-server dist",
-    "start-dev": "webpack serve",
+    "start-dev": "webpack serve --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

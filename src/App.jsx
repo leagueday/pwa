@@ -5,6 +5,8 @@ import { Provider } from './store'
 
 import * as typography from './styling/typography'
 
+console.log(process.env.NODE_ENV, process.env.AIRTABLE_API_KEY)
+
 const useStyles = createUseStyles({
   container: {
     padding: '2em',
