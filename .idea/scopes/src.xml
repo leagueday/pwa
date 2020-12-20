@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="src" pattern="file[leagueday_pwa]:src//*||file[leagueday_pwa]:*.md" />
+</component>

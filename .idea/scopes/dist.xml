@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="dist" pattern="file[leagueday_pwa]:dist//*" />
+</component>

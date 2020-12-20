@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="prj" pattern="file[leagueday_pwa]:src//*||file[leagueday_pwa]:dist//*||file[leagueday_pwa]:*.json||file[leagueday_pwa]:*.js||file[leagueday_pwa]:*.md" />
+</component>
