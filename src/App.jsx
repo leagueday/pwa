@@ -6,14 +6,21 @@ import { Provider } from './store'
 import * as typography from './styling/typography'
 
 const useStyles = createUseStyles({
+  container: {
+    padding: '2em',
+  },
   dataDump: {
-
+    fontFamily: typography.mono,
+    padding: '1em',
   },
-  sans: {
-    fontFamily: typography.sans
+  heading: {
+    display: 'flex',
+    flexDirection: 'row',
   },
-  serif: {
-    fontFamily: typography.serif
+  headingContent: {
+    fontFamily: typography.sans,
+    borderBottom: '1px solid black',
+    padding: '1em',
   },
 })
 
@@ -32,13 +39,11 @@ const App = () => {
 
   return (
     <Provider>
-      <div>
-        🚧
-        <div className={classes.sans}>
-          Almost before we knew it, we had left the ground.
-        </div>
-        <div className={classes.serif}>
-          Almost before we knew it, we had left the ground.
+      <div className={classes.container}>
+        <div className={classes.heading}>
+          <div className={classes.headingContent}>
+            🚧 LeagueDay Podcasts 🚧
+          </div>
         </div>
         <div className={classes.dataDump}>
           { renderData(data) }
