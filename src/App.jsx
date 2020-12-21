@@ -1,14 +1,18 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
 
+import { hot } from 'react-hot-loader/root'
+
 import { Provider } from './store'
 
+import * as colors from './styling/colors'
 import * as typography from './styling/typography'
 
 import usePodcasts from './api/usePodcasts'
 
 const useStyles = createUseStyles({
   container: {
+    backgroundColor: colors.lightCharcoal,
     padding: '2em',
   },
   dataDump: {
@@ -58,4 +62,4 @@ const App = () => {
   )
 }
 
-export default App
+export default hot(App)

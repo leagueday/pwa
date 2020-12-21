@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "description": "LeagueDay v.2 webapp",
   "scripts": {
-    "build": "webpack --mode production",
-    "build-dev": "webpack --mode development",
+    "build": "webpack --config webpack-prod.config.js",
+    "build-dev": "cross-env NODE_ENV=development webpack --config webpack-dev.config.js",
     "start": "http-server dist",
-    "start-dev": "webpack serve --mode development",
+    "start-dev": "cross-env NODE_ENV=development webpack serve --config webpack-dev.config.js --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,29 +21,33 @@
     "url": "https://github.com/leagueday/pwa/issues"
   },
   "homepage": "https://github.com/leagueday/pwa#readme",
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
     "airtable": "^0.10.1",
     "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^7.0.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^5.0.1",
     "html-webpack-plugin": "^4.5.0",
     "http-server": "^0.12.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-hot-loader": "^4.13.0",
     "react-jss": "^10.5.0",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "style-loader": "^2.0.0",
     "swr": "^0.3.11",
     "webpack": "^5.11.0",
+    "webpack-bundle-analyzer": "^4.3.0",
     "webpack-cli": "^4.2.0",
     "webpack-dev-server": "^3.11.0",
     "workbox-webpack-plugin": "^6.0.2"
   },
-  "dependencies": {},
   "browserslist": {
     "production": [
       ">0.2%",

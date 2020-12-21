@@ -5,14 +5,15 @@ import App from './App'
 
 import './styling/static.css'
 
-ReactDOM.render(
-  React.createElement(App, {}, null),
-  document.getElementById('root'))
+const renderApp = () => {
+  ReactDOM.render(
+    React.createElement(App, {}, null),
+    document.getElementById('root'))
+}
 
-if (process.env.NODE_ENV === 'development')
-  module.hot.accept()
+renderApp()
 
-if ('serviceWorker' in navigator) {
+if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js').then(registration => {
       console.log('SW registered: ', registration);
@@ -20,4 +21,9 @@ if ('serviceWorker' in navigator) {
       console.log('SW registration failed: ', registrationError);
     });
   });
+}
+
+if (process.NODE_ENV === 'development' && module.hot) {
+  console.log('setting hmr')
+  module.hot.accept('./App', renderApp)
 }

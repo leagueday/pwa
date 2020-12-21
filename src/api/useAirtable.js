@@ -14,8 +14,6 @@ and increased limits are not currently available.
 
 const apiKey = process.env.AIRTABLE_API_KEY
 
-// console.log(apiKey)
-
 const swrOptions = { } // (see https://swr.vercel.app/docs/options)
 
 const fetcher = (base, table, view='Grid view') => () => new Promise(
