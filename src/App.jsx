@@ -5,7 +5,7 @@ import { Provider } from './store'
 
 import * as typography from './styling/typography'
 
-console.log(process.env.NODE_ENV, process.env.AIRTABLE_API_KEY)
+import usePodcasts from './api/usePodcasts'
 
 const useStyles = createUseStyles({
   container: {
@@ -13,6 +13,7 @@ const useStyles = createUseStyles({
   },
   dataDump: {
     fontFamily: typography.mono,
+    fontSize: '50%',
     padding: '1em',
   },
   heading: {
@@ -31,13 +32,13 @@ const renderData = data => {
     return 'NO DATA'
   }
 
-  return 'data rendering'
+  return JSON.stringify(data, null, 2)
 }
 
 const App = () => {
   const classes = useStyles()
 
-  const data = null
+  const {data, error} = usePodcasts()
 
   return (
     <Provider>
@@ -48,7 +49,9 @@ const App = () => {
           </div>
         </div>
         <div className={classes.dataDump}>
-          { renderData(data) }
+          <pre>
+            { renderData(data) }
+          </pre>
         </div>
       </div>
     </Provider>

@@ -9,6 +9,11 @@ const makePluginsList = mode => {
     throw new Error('specify webpack mode development|production')
   }
 
+  const env = {
+    NODE_ENV: mode,
+    AIRTABLE_API_KEY: process.env.AIRTABLE_API_KEY
+  }
+
   const plugins = [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src', 'public', 'index.html')
@@ -19,10 +24,9 @@ const makePluginsList = mode => {
         'src/public/manifest.json'
       ],
     }),
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: mode,
-      AIRTABLE_API_KEY: process.env.AIRTABLE_API_KEY
-    }),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(env)
+    })
   ]
 
   if (process.env.NODE_ENV === 'development') {
