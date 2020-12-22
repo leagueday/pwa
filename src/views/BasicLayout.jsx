@@ -6,13 +6,12 @@ import PodcastCategoriesList from './PodcastCategoriesList'
 import PodcastFeedsGrid from './PodcastFeedsGrid'
 
 const BasicLayout = () => {
-
   return (
-    <Grid container>
-      <Grid item sm={12} md={3} lg={2}>
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={3} lg={2}>
         <PodcastCategoriesList />
       </Grid>
-      <Grid item sm={12} md={9} lg={10}>
+      <Grid item xs={12} sm={9} lg={10}>
         <PodcastFeedsGrid />
       </Grid>
     </Grid>

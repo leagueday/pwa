@@ -1,9 +1,10 @@
 import React from 'react'
+import { hot } from 'react-hot-loader/root'
+
+import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Paper from '@material-ui/core/Paper'
-import { makeStyles } from '@material-ui/core/styles'
-import { hot } from 'react-hot-loader/root'
 
 import { Provider as StoreProvider } from './store'
 

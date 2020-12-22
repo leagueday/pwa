@@ -4,7 +4,7 @@ const base = 'appXoertP1WJjd4TQ'
 const table = 'Table 1'
 
 const reformat = data => {
-  if (!data) return data
+  if (!data) return {data: null, categories: null, subCategories: null}
 
   const categories = new Set()
   const subCategories = new Map()

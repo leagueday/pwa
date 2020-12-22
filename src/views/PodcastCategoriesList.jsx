@@ -1,23 +1,24 @@
 import React from 'react'
 
-import Card from '@material-ui/core/Card'
 import { makeStyles } from '@material-ui/core/styles'
+import Box from '@material-ui/core/Box'
+import Card from '@material-ui/core/Card'
 
 import usePodcasts from '../api/usePodcasts'
 
 const useStyles = makeStyles(theme => ({
   card: {
-    marginRight: '1em',
+    backgroundColor: theme.palette.grey['400'],
   },
   catCard: {
-    backgroundColor: theme.palette.grey['400'],
-    color: theme.palette.grey['800'],
+    backgroundColor: theme.palette.grey['700'],
     fontSize: '80%',
-    paddingLeft: '1em',
+    margin: '0.5em',
+    padding: '0.25em',
     userSelect: 'none',
   },
   catCardCat: {
-
+    whiteSpace: 'nowrap',
   },
   catCardSubcat: {
     fontSize: '90%',
@@ -28,8 +29,10 @@ const useStyles = makeStyles(theme => ({
   },
   catCardSubcats: {
     listStyleType: 'none',
+    marginBlockEnd: '0.25em',
     marginBlockStart: '0.25em',
     paddingInlineStart: '1em',
+    whiteSpace: 'nowrap',
   }
 }))
 
@@ -48,10 +51,10 @@ const PodcastCategoriesList = () => {
 
           return (
             <Card key={cat} className={classes.catCard}>
-              <div className={classes.catCardCat}>
+              <Box className={classes.catCardCat} textOverflow="clip" overflow="hidden">
                 {cat}
-              </div>
-              <div className={classes.catCardSubcatsDiv}>
+              </Box>
+              <Box className={classes.catCardSubcatsDiv} textOverflow="clip" overflow="hidden">
                 <ul className={classes.catCardSubcats}>
                   {
                     subcats && subcats.map(
@@ -63,7 +66,7 @@ const PodcastCategoriesList = () => {
                     )
                   }
                 </ul>
-              </div>
+              </Box>
             </Card>
           )
         }

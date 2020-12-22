@@ -3,30 +3,7 @@ import { ThemeProvider as MaterialThemeProvider, createMuiTheme } from '@materia
 
 import * as typography from './typography'
 
-const isObject = x => {
-  const type = typeof x;
-  return type === 'object' && !!x
-}
-
-const setFontFamily = (defaultFont, theme) => {
-  const updatedTypography = Object.fromEntries(
-    Object.entries(theme.typography).map(
-      ([name, val]) => {
-        if (isObject(val) && val.fontFamily) {
-          return [name, {...val, ...{fontFamily: defaultFont}}]
-        } else if (name === 'fontFamily') {
-          return [name, defaultFont]
-        } else {
-          return [name, val]
-        }
-      }
-    )
-  )
-
-  return {...theme, ...{typography: updatedTypography}}
-}
-
-const theme = //setFontFamily(typography.sans, createMuiTheme({
+const theme =
   createMuiTheme({
     palette: {
       type: 'dark',
@@ -37,7 +14,6 @@ const theme = //setFontFamily(typography.sans, createMuiTheme({
   })
 
 const ThemeProvider = props => {
-
   return (
     <MaterialThemeProvider theme={theme}>
       {props.children}
