@@ -23,9 +23,6 @@ const useStyles = makeStyles(theme => ({
   catCardSubcat: {
     fontSize: '90%',
     paddingLeft: '0',
-    '&:before': {
-      content: '∙'
-    },
   },
   catCardSubcats: {
     listStyleType: 'none',
@@ -40,8 +37,6 @@ const PodcastCategoriesList = () => {
   const classes = useStyles()
 
   const {categories, subCategories, error} = usePodcasts()
-
-  console.log('cats', JSON.stringify(categories))
 
   return (<Card className={classes.card}>
     {

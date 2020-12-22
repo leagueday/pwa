@@ -8,10 +8,10 @@ import PodcastFeedsGrid from './PodcastFeedsGrid'
 const BasicLayout = () => {
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={3} lg={2}>
+      <Grid item xs={12} sm={3}>
         <PodcastCategoriesList />
       </Grid>
-      <Grid item xs={12} sm={9} lg={10}>
+      <Grid item xs={12} sm={9}>
         <PodcastFeedsGrid />
       </Grid>
     </Grid>
