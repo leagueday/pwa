@@ -1,35 +1,31 @@
 import React from 'react'
-import { createUseStyles } from 'react-jss'
-
+import Container from '@material-ui/core/Container'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Paper from '@material-ui/core/Paper'
+import { makeStyles } from '@material-ui/core/styles'
 import { hot } from 'react-hot-loader/root'
 
-import { Provider } from './store'
+import { Provider as StoreProvider } from './store'
 
-import * as colors from './styling/colors'
+import ThemeProvider from './styling/ThemeProvider'
 import * as typography from './styling/typography'
 
 import usePodcasts from './api/usePodcasts'
 
-const useStyles = createUseStyles({
+import BasicLayout from './views/BasicLayout'
+import Loading from './views/Loading'
+
+const useStyles = makeStyles(theme => ({
   container: {
-    backgroundColor: colors.lightCharcoal,
-    padding: '2em',
   },
-  dataDump: {
-    fontFamily: typography.mono,
-    fontSize: '50%',
+  paper: {
+    margin: '1em',
     padding: '1em',
   },
-  heading: {
-    display: 'flex',
-    flexDirection: 'row',
+  root: {
+    flexGrow: 1,
   },
-  headingContent: {
-    fontFamily: typography.sans,
-    borderBottom: '1px solid black',
-    padding: '1em',
-  },
-})
+}))
 
 const renderData = data => {
   if (!data) {
@@ -42,23 +38,23 @@ const renderData = data => {
 const App = () => {
   const classes = useStyles()
 
-  const {data, error} = usePodcasts()
+  const {data, categories, subCategories, error} = usePodcasts()
 
   return (
-    <Provider>
-      <div className={classes.container}>
-        <div className={classes.heading}>
-          <div className={classes.headingContent}>
-            🚧 LeagueDay Podcasts 🚧
-          </div>
+    <StoreProvider>
+      <ThemeProvider>
+        <CssBaseline />
+        <div className={classes.root}>
+          <Container className={classes.container} maxWidth="md">
+            <Paper className={classes.paper}>
+              {
+                data ? (<BasicLayout />) : (<Loading />)
+              }
+            </Paper>
+          </Container>
         </div>
-        <div className={classes.dataDump}>
-          <pre>
-            { renderData(data) }
-          </pre>
-        </div>
-      </div>
-    </Provider>
+      </ThemeProvider>
+    </StoreProvider>
   )
 }
 

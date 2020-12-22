@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 
 import App from './App'
 
-import './styling/static.css'
+// import './styling/static.css'
 
 const renderApp = () => {
   ReactDOM.render(
