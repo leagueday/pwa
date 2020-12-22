@@ -3,6 +3,8 @@ import useAirtable from './useAirtable'
 const base = 'appXoertP1WJjd4TQ'
 const table = 'Table 1'
 
+const sortList = set => ([...set.values()]).sort((a, b) => a.localeCompare(b))
+
 const reformat = data => {
   if (!data) return {data: null, categories: null, subCategories: null}
 
@@ -19,7 +21,7 @@ const reformat = data => {
       "Notes: Podcast Sheet Genre": "Live playthroughs of Poke games"
      */
 
-    const category = fields['Category']
+    const category = fields['Category'] ?? 'Uncategorized'
     const subCategory = fields['Sub-Category']
 
     categories.add(category)
@@ -46,9 +48,9 @@ const reformat = data => {
 
   return {
     data: picked,
-    categories: [...categories],
+    categories: sortList(categories),
     subCategories: ([...subCategories.entries()]).reduce(
-      (res, [cat, subcats]) => ({...res, ...{[cat]: [...subcats]}}), {}
+      (res, [cat, subcats]) => ({...res, ...{[cat]: sortList(subcats)}}), {}
     ),
   }
 }
