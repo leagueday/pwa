@@ -28,14 +28,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const renderData = data => {
-  if (!data) {
-    return 'NO DATA'
-  }
-
-  return JSON.stringify(data, null, 2)
-}
-
 const App = () => {
   const classes = useStyles()
 

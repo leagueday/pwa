@@ -32,8 +32,6 @@ const useStyles = makeStyles(theme => ({
     '&:visited': {
     },
   },
-  name: {
-  }
 }))
 
 const PodcastFeedCard = ({podcastFeed}) => {
