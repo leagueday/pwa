@@ -1,3 +1,3 @@
-export const getLayoutState = store => store.layout
+export const getAppState = store => store.app
 
-export const getSidebarVis = store => getLayoutState(store)?.sidebarVis
+export const getSelectedPodcast = store => getAppState(store)?.selectedPodcast

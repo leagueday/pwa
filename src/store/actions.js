@@ -1,7 +1,8 @@
-import { TOGGLE_SIDEBAR_VIS } from "./actionTypes";
+import { SELECT_PODCAST } from "./actionTypes";
 
-export const toggleSidebarVis = () => ({
-  type: TOGGLE_SIDEBAR_VIS,
+export const selectPodcast = podcast => ({
+  type: SELECT_PODCAST,
   payload: {
+    podcast
   }
 })

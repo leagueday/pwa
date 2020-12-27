@@ -5,16 +5,18 @@ import Card from '@material-ui/core/Card'
 import Grid from '@material-ui/core/Grid'
 
 import usePodcasts from '../api/usePodcasts'
-import PodcastFeedCard from './PodcastFeedCard'
+import PodcastCard from './PodcastCard'
 
 const useStyles = makeStyles(theme => ({
   grid: {
     backgroundColor: theme.palette.grey['400'],
     padding: '0.25em',
+  },
+  gridItem: {
   }
 }))
 
-const PodcastFeedsGrid = () => {
+const PodcastsGrid = () => {
   const classes = useStyles()
 
   const {data, error} = usePodcasts()
@@ -24,9 +26,9 @@ const PodcastFeedsGrid = () => {
       <Grid className={classes.grid} container>
         {
           data && data.map(
-            podcastFeed => (
-              <Grid key={podcastFeed.id} item sm={2} xs={1}>
-                <PodcastFeedCard podcastFeed={podcastFeed} />
+            podcast => (
+              <Grid key={podcast.id} className={classes.gridItem} item sm={2} xs={1}>
+                <PodcastCard podcast={podcast} />
               </Grid>
             )
           )
@@ -35,4 +37,4 @@ const PodcastFeedsGrid = () => {
     </Card>)
 }
 
-export default PodcastFeedsGrid
+export default PodcastsGrid

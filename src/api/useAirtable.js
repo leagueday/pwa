@@ -12,7 +12,7 @@ If you anticipate a higher read volume, we recommend using a caching proxy. This
 and increased limits are not currently available.
 */
 
-const apiKey = process.env.AIRTABLE_API_KEY
+const apiKey = AIRTABLE_API_KEY
 
 const swrOptions = { } // (see https://swr.vercel.app/docs/options)
 

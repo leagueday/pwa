@@ -13,7 +13,7 @@ const renderApp = () => {
 
 renderApp()
 
-if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+if (NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js').then(registration => {
       console.log('SW registered: ', registration);
@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   });
 }
 
-if (process.NODE_ENV === 'development' && module.hot) {
+if (NODE_ENV === 'development' && module.hot) {
   console.log('setting hmr')
   module.hot.accept('./App', renderApp)
 }

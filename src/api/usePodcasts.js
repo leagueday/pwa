@@ -42,7 +42,7 @@ const reformat = data => {
       category,
       subCategory,
       name: fields['Podcast Name'],
-      feed: fields['RSS Feed']
+      url: fields['RSS Feed']
     }
   })
 

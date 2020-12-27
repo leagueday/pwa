@@ -1,15 +1,15 @@
-import { TOGGLE_SIDEBAR_VIS } from "../actionTypes";
+import { SELECT_PODCAST } from '../actionTypes';
 
 const initialState = {
-  sidebarVis: true
+  selectedPodcast: null
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case TOGGLE_SIDEBAR_VIS: {
+    case SELECT_PODCAST: {
       return {
         ...state,
-        sidebarVis: !state.sidebarVis
+        selectedPodcast: action.payload?.podcast
       }
     }
     default:

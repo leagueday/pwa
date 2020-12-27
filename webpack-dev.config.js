@@ -54,12 +54,9 @@ module.exports = {
       ],
     }),
     new webpack.DefinePlugin({
-      'process': JSON.stringify({
-        env: {
-          NODE_ENV: 'development',
-          AIRTABLE_API_KEY: process.env.AIRTABLE_API_KEY
-        }
-      })
+      AIRTABLE_API_KEY: JSON.stringify(process.env.AIRTABLE_API_KEY),
+      NODE_ENV: JSON.stringify('development'),
+      'process.env': JSON.stringify({}),
     }),
     new webpack.HotModuleReplacementPlugin(),
     // new BundleAnalyzerPlugin() // uncomment for bundle size view

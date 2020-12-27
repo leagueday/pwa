@@ -39,12 +39,9 @@ module.exports = {
       ],
     }),
     new webpack.DefinePlugin({
-      'process': JSON.stringify({
-        env: {
-          NODE_ENV: 'production',
-          AIRTABLE_API_KEY: process.env.AIRTABLE_API_KEY
-        }
-      })
+      AIRTABLE_API_KEY: JSON.stringify(process.env.AIRTABLE_API_KEY),
+      NODE_ENV: JSON.stringify('production'),
+      'process.env': JSON.stringify({}),
     }),
     new WorkboxPlugin.GenerateSW({
       // these options encourage the ServiceWorkers to get in there fast
@@ -55,6 +52,6 @@ module.exports = {
   ],
   resolve: {
     extensions: ['*', '.js', '.jsx'],
-    modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules'), 'node_modules']
+    modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules'), 'node_modules'],
   },
 }

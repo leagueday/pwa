@@ -1,2 +1,2 @@
-// layout
-export const TOGGLE_SIDEBAR_VIS = 'TOGGLE_SIDEBAR_VIS'
+// app
+export const SELECT_PODCAST = 'SELECT_PODCAST'
