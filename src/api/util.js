@@ -31,7 +31,18 @@ export const laminate = rawXmlParseResult => {
 
     for (let child of children) {
       if (child.name) {
-        newNode[child.name] = recSub(child)
+        const maybeExistingNamedChild = newNode[child.name]
+        const nextNamedChild = recSub(child)
+
+        if (maybeExistingNamedChild) {
+          if (Array.isArray(maybeExistingNamedChild)) {
+            newNode[child.name] = [...maybeExistingNamedChild, nextNamedChild]
+          } else {
+            newNode[child.name] = [maybeExistingNamedChild, nextNamedChild]
+          }
+        } else {
+          newNode[child.name] = nextNamedChild
+        }
       }
       else {
         const childKeys = getKeysString(child)
