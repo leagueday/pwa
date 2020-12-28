@@ -38,6 +38,7 @@ const useStyles = makeStyles(theme => ({
     fontFamily: typography.mono,
     fontSize: '80%',
     maxHeight: '90vh',
+    overflowX: 'hidden',
     overflowY: 'scroll',
   },
   paper: {
