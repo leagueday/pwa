@@ -5,13 +5,14 @@ import { makeStyles } from '@material-ui/core/styles'
 import Modal from '@material-ui/core/Modal'
 
 import { getSelectedPodcast } from '../store/selectors'
-import { selectPodcast } from '../store/actions'
+import * as actions from '../store/actions'
 
 import * as typography from '../styling/typography'
 import usePodcast from '../api/usePodcast'
 
 import Error from './Error'
 import Loading from './Loading'
+import PodcastDetails from './PodcastDetails'
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -30,21 +31,42 @@ const useStyles = makeStyles(theme => ({
     transform: 'translate(-50%, -50%)'
   },
   dump: {
+    color: theme.palette.grey[500],
     fontFamily: typography.mono,
-    fontSize: '80%',
+    fontSize: '70%',
+    marginTop: '1em',
   },
 }))
 
 const SelectedPodcast = () => {
   const dispatch = useDispatch()
 
-  const deselectPodcast = () => dispatch(selectPodcast())
+  const deselectPodcast = () => dispatch(actions.selectPodcast())
 
   const classes = useStyles()
 
   const selectedPodcast = useSelector(getSelectedPodcast)
 
   const {data, error} = usePodcast(selectedPodcast)
+
+  // rss-2 heuristic path - all edge cases or other data formats ignored for now
+  const maybeItems = data?.rss?.channel?.item
+
+  // this continues the rss-2 heuristic path
+  // could also scan the items for latest (lowest index, maybe >0) audio
+  const maybeLatestAudio = maybeItems?.[0]?.enclosure?.attributes
+
+  console.log(maybeLatestAudio, data, error)
+
+  React.useEffect(
+    () => {
+      if (!maybeLatestAudio) return
+
+      const {url, type} = maybeLatestAudio
+      dispatch(actions.setAudio(url, type))
+    },
+    [maybeLatestAudio]
+  )
 
   return (
     <Modal
@@ -59,10 +81,16 @@ const SelectedPodcast = () => {
           error ? (<Error e={error} />)
             : !data ? (<Loading />)
             : (
-              <div className={classes.dump}>
-                <pre>
-                  {JSON.stringify(data, null, 2)}
-                </pre>
+              <div>
+                <div className={classes.details}>
+                  <PodcastDetails />
+                </div>
+                <div className={classes.dump}>
+                  <pre>{`${JSON.stringify(maybeLatestAudio, null, 2)}`}</pre>
+                </div>
+                <div className={classes.dump}>
+                  <pre>{JSON.stringify(data, null, 2)}</pre>
+                </div>
               </div>
             )
         }

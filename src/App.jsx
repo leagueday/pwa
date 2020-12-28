@@ -13,6 +13,7 @@ import * as typography from './styling/typography'
 
 import usePodcasts from './api/usePodcasts'
 
+import AudioPlayer from './views/AudioPlayer'
 import BasicLayout from './views/BasicLayout'
 import Loading from './views/Loading'
 
@@ -37,6 +38,7 @@ const App = () => {
     <StoreProvider>
       <ThemeProvider>
         <CssBaseline />
+        <AudioPlayer />
         <div className={classes.root}>
           <Container className={classes.container} maxWidth="md">
             <Paper className={classes.paper}>

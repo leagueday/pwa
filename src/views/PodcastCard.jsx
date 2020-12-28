@@ -8,7 +8,6 @@ import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
 
 import * as typography from '../styling/typography'
-
 import { selectPodcast } from '../store/actions'
 
 const useStyles = makeStyles(theme => ({

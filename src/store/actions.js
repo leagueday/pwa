@@ -6,10 +6,30 @@ export const hideCategories = () => ({
   }
 })
 
+export const pauseAudio = () => ({
+  type: ActionType.PAUSE_AUDIO,
+  payload: {
+  }
+})
+
+export const playAudio = () => ({
+  type: ActionType.PLAY_AUDIO,
+  payload: {
+  }
+})
+
 export const selectPodcast = podcast => ({
   type: ActionType.SELECT_PODCAST,
   payload: {
     podcast
+  }
+})
+
+export const setAudio = (url, type) => ({
+  type: ActionType.SET_AUDIO,
+  payload: {
+    type,
+    url,
   }
 })
 
