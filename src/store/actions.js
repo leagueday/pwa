@@ -1,8 +1,20 @@
-import { SELECT_PODCAST } from "./actionTypes";
+import * as ActionType from "./actionTypes";
+
+export const hideCategories = () => ({
+  type: ActionType.HIDE_CATEGORIES,
+  payload: {
+  }
+})
 
 export const selectPodcast = podcast => ({
-  type: SELECT_PODCAST,
+  type: ActionType.SELECT_PODCAST,
   payload: {
     podcast
+  }
+})
+
+export const showCategories = () => ({
+  type: ActionType.SHOW_CATEGORIES,
+  payload: {
   }
 })

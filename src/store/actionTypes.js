@@ -1,2 +1,4 @@
 // app
+export const HIDE_CATEGORIES = 'HIDE_CATEGORIES'
 export const SELECT_PODCAST = 'SELECT_PODCAST'
+export const SHOW_CATEGORIES = 'SHOW_CATEGORIES'

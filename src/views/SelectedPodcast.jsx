@@ -14,39 +14,24 @@ import Error from './Error'
 import Loading from './Loading'
 
 const useStyles = makeStyles(theme => ({
-  centerCol: {
-    alignItems: 'stretch',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  centerRow: {
-    alignItems: 'stretch',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
   content: {
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
-    height: '90%',
-    padding: theme.spacing(2),
-    width: '90%',
+    maxHeight: '80vh',
+    maxWidth: '85vw',
+    overflowX: 'hidden',
+    overflowY: 'scroll',
+    padding: theme.spacing(1),
+    position: 'absolute',
+    top: '50%',
+    width: '85vw',
+    left: '50%',
+    transform: 'translate(-50%, -50%)'
   },
   dump: {
     fontFamily: typography.mono,
     fontSize: '80%',
-    maxHeight: '90vh',
-    overflowX: 'hidden',
-    overflowY: 'scroll',
-  },
-  paper: {
-    height: '100%',
-    left: 0,
-    position: 'absolute',
-    top: 0,
-    width: '100%',
   },
 }))
 
@@ -69,24 +54,18 @@ const SelectedPodcast = () => {
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
     >
-      <div className={classes.paper}>
-        <div className={classes.centerCol}>
-          <div className={classes.centerRow}>
-            <div className={classes.content}>
-              {
-                error ? (<Error e={error} />)
-                  : !data ? (<Loading />)
-                  : (
-                    <div className={classes.dump}>
-                      <pre>
-                        {JSON.stringify(data, null, 2)}
-                      </pre>
-                    </div>
-                  )
-              }
-            </div>
-          </div>
-        </div>
+      <div className={classes.content}>
+        {
+          error ? (<Error e={error} />)
+            : !data ? (<Loading />)
+            : (
+              <div className={classes.dump}>
+                <pre>
+                  {JSON.stringify(data, null, 2)}
+                </pre>
+              </div>
+            )
+        }
       </div>
     </Modal>
   )
