@@ -1,9 +1,17 @@
 import React from 'react'
 
+/**
+ * views/AudioPlayer
+ *
+ * this emits some dom, `<audio ... />`
+ * it's a view in the sense of data projection/transformation
+ * this isn't actually visible on screen
+ */
 import { useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 
+import * as constants from '../store/constants'
 import * as selectors from '../store/selectors'
 
 const useStyles = makeStyles({
@@ -22,9 +30,9 @@ const AudioPlayer = () => {
   React.useEffect(() => {
     if (!audioRef.current) return
 
-    if (selectedAudioMode === 'pause') {
+    if (selectedAudioMode === constants.AUDIO_MODE_PAUSE) {
       audioRef.current.pause()
-    } else if (selectedAudioMode === 'play') {
+    } else if (selectedAudioMode === constants.AUDIO_MODE_PLAY) {
       audioRef.current.play()
     }
   }, [audioRef, selectedAudioMode])

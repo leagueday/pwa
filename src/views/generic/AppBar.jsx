@@ -7,25 +7,50 @@ import Card from '@material-ui/core/Card'
 import ToggleButton from '@material-ui/lab/ToggleButton'
 import Tooltip from '@material-ui/core/Tooltip'
 
-import CategoryIcon from '@material-ui/icons/CategoryRounded'
+import Hidden from '@material-ui/core/Hidden'
+import MenuIcon from '@material-ui/icons/Menu'
 import PauseIcon from '@material-ui/icons/PauseRounded'
 import PlayIcon from '@material-ui/icons/PlayArrowRounded'
 import SearchIcon from '@material-ui/icons/SearchRounded'
 
-import * as selectors from '../store/selectors'
-import * as actions from '../store/actions'
+import * as actions from '../../store/actions'
+import * as selectors from '../../store/selectors'
 
 const useStyles = makeStyles(theme => ({
   card: {
+    backgroundColor: theme.palette.background.control,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  discordLogo: {
+    marginLeft: '0.5em',
+    maxHeight: '1.5em',
+    paddingTop: '0.1em',
+  },
+  feedbackCluster: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    fontWeight: 700,
+    marginLeft: 'auto',
+    marginRight: '2em',
+  },
+  logo: {
+    marginLeft: '1em',
+    maxHeight: '1.5em',
   },
   toggleButton: {
   },
+  tooltipButton: {
+    height: '100%',
+    marginLeft: '0.25em',
+  },
   transportButton: {
     marginLeft: '0.25em',
-  }
+  },
 }))
 
-const Controller = () => {
+const AppBar = () => {
   const dispatch = useDispatch()
 
   const classes = useStyles()
@@ -64,14 +89,14 @@ const Controller = () => {
             size="small"
             value="showCategories"
           >
-            <CategoryIcon />
+            <MenuIcon />
           </ToggleButton>
         </span>
       </Tooltip>
       <Tooltip title="Search/Filter tbd">
         <span>
           <IconButton
-            className={classes.transportButton}
+            className={classes.tooltipButton}
             disabled
             size="small"
           >
@@ -95,8 +120,14 @@ const Controller = () => {
       >
         <PauseIcon />
       </IconButton>
+      <Hidden xsDown>
+        <div className={classes.feedbackCluster}>
+          Give us Feedback ☺️
+          <img className={classes.discordLogo} src="/img/Discord-Logo-Color.png" alt="Discord" />
+        </div>
+      </Hidden>
     </Card>
   )
 }
 
-export default Controller
+export default AppBar

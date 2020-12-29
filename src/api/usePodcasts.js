@@ -1,7 +1,7 @@
 import useAirtable from './useAirtable'
 
 const base = 'appXoertP1WJjd4TQ'
-const table = 'Table 1'
+const table = 'Podcasts'
 
 const sortList = set => ([...set.values()]).sort((a, b) => a.localeCompare(b))
 

@@ -27,7 +27,7 @@ const PodcastsGrid = () => {
         {
           data && data.map(
             podcast => (
-              <Grid key={podcast.id} className={classes.gridItem} item lg={2} md={3} sm={6} xs={12}>
+              <Grid key={podcast.id} className={classes.gridItem} item md={3} sm={6} xs={12}>
                 <PodcastCard podcast={podcast} />
               </Grid>
             )

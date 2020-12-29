@@ -1,4 +1,6 @@
 
-export const sienna = '#645434'
-export const charcoal = '#444444'
+export const bluishBlack = '#191c21' // pdf - card background, sidebar background
+export const charcoal = '#25282d' // pdf - grid background
+export const darkCharcoal = '#101417' // pdf - header background
 export const lightCharcoal = '#bbbbbb'
+export const sienna = '#645434'

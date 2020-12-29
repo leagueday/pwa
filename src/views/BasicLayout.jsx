@@ -4,17 +4,19 @@ import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 
-import { getShowCategories } from '../store/selectors'
+import * as selectors from '../store/selectors'
 
-import Controller from './Controller'
+import themedViews from './themedViews'
+
 import PodcastCategoriesList from './PodcastCategoriesList'
 import PodcastsGrid from './PodcastsGrid'
 import SelectedPodcast from './SelectedPodcast'
+import ThemeTuner from './ThemeTuner'
 
 const useStyles = makeStyles(theme => ({
-  categoryList: {
+  appBar: {
   },
-  container: {
+  categoryList: {
   },
   podcastsGrid: {
   },
@@ -23,7 +25,11 @@ const useStyles = makeStyles(theme => ({
 const BasicLayout = () => {
   const classes = useStyles()
 
-  const isCategoriesVisible = useSelector(getShowCategories)
+  const theme = useSelector(selectors.getTheme)
+
+  const { AppBar } = themedViews[theme]
+
+  const isCategoriesVisible = useSelector(selectors.getShowCategories)
 
   const {
     categoryListCols, podcastsGridCols
@@ -50,8 +56,8 @@ const BasicLayout = () => {
     <>
       <SelectedPodcast />
       <Grid className={classes.container} container spacing={2}>
-        <Grid className={classes.controller} item xs={12}>
-          <Controller />
+        <Grid className={classes.appBar} item xs={12}>
+          <AppBar />
         </Grid>
         { isCategoriesVisible && (
             <Grid className={classes.categoryList} item xs={categoryListCols.xs} sm={categoryListCols.sm}>
@@ -63,6 +69,7 @@ const BasicLayout = () => {
           <PodcastsGrid />
         </Grid>
       </Grid>
+      <ThemeTuner />
     </>
   )
 }

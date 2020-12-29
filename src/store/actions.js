@@ -33,6 +33,13 @@ export const setAudio = (url, type) => ({
   }
 })
 
+export const setTheme = theme => ({
+  type: ActionType.SET_THEME,
+  payload: {
+    theme
+  }
+})
+
 export const showCategories = () => ({
   type: ActionType.SHOW_CATEGORIES,
   payload: {

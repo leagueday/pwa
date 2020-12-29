@@ -1,9 +1,11 @@
+import * as constants from '../constants'
 import * as ActionType from '../actionTypes';
 
 const initialState = {
   selectedAudio: null,
   selectedPodcast: null,
   showCategories: false,
+  theme: constants.UI_THEME_SPECIFIC,
 }
 
 const reducer = (state = initialState, action) => {
@@ -19,7 +21,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         selectedAudio: {
           ...state.selectedAudio,
-          mode: 'pause',
+          mode: constants.AUDIO_MODE_PAUSE,
         }
       }
     }
@@ -28,7 +30,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         selectedAudio: {
           ...state.selectedAudio,
-          mode: 'play'
+          mode: constants.AUDIO_MODE_PLAY
         }
       }
     }
@@ -43,8 +45,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         selectedAudio: {
           ...action.payload,
-          mode: 'play'
+          mode: constants.AUDIO_MODE_PLAY
         }
+      }
+    }
+    case ActionType.SET_THEME: {
+      return {
+        ...state,
+        theme: action.payload.theme
       }
     }
     case ActionType.SHOW_CATEGORIES: {

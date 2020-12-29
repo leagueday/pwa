@@ -5,3 +5,4 @@ export const getSelectedAudioMode = store => getAppState(store)?.selectedAudio?.
 export const getSelectedAudioUrl = store => getAppState(store)?.selectedAudio?.url
 export const getSelectedPodcast = store => getAppState(store)?.selectedPodcast
 export const getShowCategories = store => getAppState(store)?.showCategories
+export const getTheme = store => getAppState(store)?.theme

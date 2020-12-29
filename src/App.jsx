@@ -1,5 +1,6 @@
 import React from 'react'
 import { hot } from 'react-hot-loader/root'
+import { useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
@@ -9,48 +10,60 @@ import Paper from '@material-ui/core/Paper'
 import { Provider as StoreProvider } from './store'
 
 import ThemeProvider from './styling/ThemeProvider'
-import * as typography from './styling/typography'
 
 import usePodcasts from './api/usePodcasts'
+import * as selectors from './store/selectors'
 
 import AudioPlayer from './views/AudioPlayer'
 import BasicLayout from './views/BasicLayout'
+import Error from './views/Error'
 import Loading from './views/Loading'
 
 const useStyles = makeStyles(theme => ({
   container: {
   },
   paper: {
-    margin: '1em',
-    padding: '1em',
+    margin: theme.spacing(2),
+    padding: theme.spacing(2),
   },
   root: {
+    backgroundColor: theme.palette.background.default,
     flexGrow: 1,
   },
 }))
 
-const App = () => {
+const ThemedAppContent = () => {
   const classes = useStyles()
 
-  const {data, categories, subCategories, error} = usePodcasts()
+  const theme = useSelector(selectors.getTheme)
+
+  const {data, error} = usePodcasts()
 
   return (
-    <StoreProvider>
-      <ThemeProvider>
-        <CssBaseline />
-        <AudioPlayer />
-        <div className={classes.root}>
-          <Container className={classes.container} maxWidth="md">
-            <Paper className={classes.paper}>
-              {
-                data ? (<BasicLayout />) : (<Loading />)
-              }
-            </Paper>
-          </Container>
-        </div>
-      </ThemeProvider>
-    </StoreProvider>
+    <div className={classes.root}>
+      <Container className={classes.container} maxWidth="md">
+        <Paper className={classes.paper}>
+          {
+            data
+              ? (<BasicLayout />)
+              : error
+              ? (<Error e={error} />)
+              : (<Loading />)
+          }
+        </Paper>
+      </Container>
+    </div>
   )
 }
+
+const App = () => (
+  <StoreProvider>
+    <ThemeProvider>
+      <CssBaseline />
+      <AudioPlayer />
+      <ThemedAppContent />
+    </ThemeProvider>
+  </StoreProvider>
+)
 
 export default hot(App)

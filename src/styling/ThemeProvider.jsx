@@ -1,19 +1,18 @@
 import React from 'react'
+
+import { useSelector } from 'react-redux'
+
 import { ThemeProvider as MaterialThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
-import * as typography from './typography'
+import * as selectors from '../store/selectors'
 
-const theme =
-  createMuiTheme({
-    palette: {
-      type: 'dark',
-    },
-    typography: {
-      fontFamily: typography.sans,
-    },
-  })
+import * as themes from './themes'
 
 const ThemeProvider = props => {
+  const themeName = useSelector(selectors.getTheme)
+
+  const theme = themes[themeName]
+
   return (
     <MaterialThemeProvider theme={theme}>
       {props.children}
