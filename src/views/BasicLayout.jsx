@@ -8,15 +8,15 @@ import * as selectors from '../store/selectors'
 
 import themedViews from './themedViews'
 
-import PodcastCategoriesList from './PodcastCategoriesList'
 import PodcastsGrid from './PodcastsGrid'
 import SelectedPodcast from './SelectedPodcast'
+import Sidenav from './Sidenav'
 import ThemeTuner from './ThemeTuner'
 
 const useStyles = makeStyles(theme => ({
   appBar: {
   },
-  categoryList: {
+  sidenav: {
   },
   podcastsGrid: {
   },
@@ -60,8 +60,8 @@ const BasicLayout = () => {
           <AppBar />
         </Grid>
         { isCategoriesVisible && (
-            <Grid className={classes.categoryList} item xs={categoryListCols.xs} sm={categoryListCols.sm}>
-              <PodcastCategoriesList />
+            <Grid className={classes.sidenav} item xs={categoryListCols.xs} sm={categoryListCols.sm}>
+              <Sidenav />
             </Grid>
           )
         }
