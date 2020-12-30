@@ -17,6 +17,7 @@ const useStyles = makeStyles(theme => ({
   appBar: {
   },
   sidenav: {
+    padding: '0.5em',
   },
   podcastsGrid: {
   },

@@ -1,9 +1,8 @@
 import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Card from '@material-ui/core/Card'
 
-import PodcastCategoriesList from './PodcastCategoriesList'
+import SidenavCategories from './SidenavCategories'
 import SidenavGameboard from './SidenavGameboard'
 
 const useStyles = makeStyles(theme => ({
@@ -18,10 +17,10 @@ const Sidenav = () => {
   const classes = useStyles()
 
   return (
-    <Card className={classes.container}>
+    <div className={classes.container}>
       <SidenavGameboard />
-      <PodcastCategoriesList />
-    </Card>
+      <SidenavCategories />
+    </div>
   )
 }
 
