@@ -20,15 +20,17 @@ import Error from './views/Error'
 import Loading from './views/Loading'
 
 const useStyles = makeStyles(theme => ({
-  container: {
-  },
-  paper: {
-    margin: theme.spacing(2),
-    padding: theme.spacing(2),
-  },
-  root: {
+  app: {
     backgroundColor: theme.palette.background.default,
-    flexGrow: 1,
+    maxHeight: '100vh',
+  },
+  appBackground: {
+    maxHeight: '100vh',
+  },
+  appCanvas: {
+    margin: theme.spacing(2),
+    maxHeight: '100vh',
+    padding: theme.spacing(2),
   },
 }))
 
@@ -40,9 +42,9 @@ const ThemedAppContent = () => {
   const {data, error} = usePodcasts()
 
   return (
-    <div className={classes.root}>
-      <Container className={classes.container} maxWidth="md">
-        <Paper className={classes.paper}>
+    <div className={classes.app}>
+      <Container className={classes.appBackground} maxWidth="md">
+        <Paper className={classes.appCanvas}>
           {
             data
               ? (<BasicLayout />)

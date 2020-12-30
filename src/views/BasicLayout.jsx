@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
+import Hidden from '@material-ui/core/Hidden'
 
 import * as selectors from '../store/selectors'
 
@@ -13,12 +14,34 @@ import SelectedPodcast from './SelectedPodcast'
 import Sidenav from './Sidenav'
 
 const useStyles = makeStyles(theme => ({
-  appBar: {
+  appbarContainer: {
+    minHeight: '2.5em',
   },
-  sidenav: {
+  basicLayout: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+    justifyContent: 'flex-start',
+    maxHeight: '100vh',
+    minHeight: '100vh',
+  },
+  content: {
+    alignItems: 'stretch',
+    display: 'flex',
+    flexDirection: 'row',
+    maxHeight: 'calc(100vh - 2.5em)',
+    minHeight: 'calc(100vh - 2.5em)',
+  },
+  sidenavContainer: {
+    flex: 30,
+    maxHeight: '100%',
+    overflowY: 'auto',
     padding: '0.5em',
   },
-  podcastsGrid: {
+  podcastsGridContainer: {
+    flex: 70,
+    maxHeight: '100%',
+    overflowY: 'auto',
   },
 }))
 
@@ -31,44 +54,27 @@ const BasicLayout = () => {
 
   const isCategoriesVisible = useSelector(selectors.getShowCategories)
 
-  const {
-    categoryListCols, podcastsGridCols
-  } = isCategoriesVisible
-    ? {
-      categoryListCols: {
-        xs: 12,
-        sm: 4,
-      },
-      podcastsGridCols : {
-        xs: 12,
-        sm: 8,
-      },
-    } : {
-      categoryListCols: {
-      },
-      podcastsGridCols : {
-        xs: 12,
-        sm: 12,
-      },
-    }
-
   return (
     <>
       <SelectedPodcast />
-      <Grid className={classes.container} container spacing={2}>
-        <Grid className={classes.appBar} item xs={12}>
+      <div className={classes.basicLayout}>
+        <div className={classes.appbarContainer}>
           <AppBar />
-        </Grid>
-        { isCategoriesVisible && (
-            <Grid className={classes.sidenav} item xs={categoryListCols.xs} sm={categoryListCols.sm}>
-              <Sidenav />
-            </Grid>
-          )
-        }
-        <Grid className={classes.podcastsGrid} item xs={podcastsGridCols.xs} sm={podcastsGridCols.sm}>
-          <PodcastsGrid />
-        </Grid>
-      </Grid>
+        </div>
+        <div className={classes.content}>
+          { isCategoriesVisible && (
+              <Hidden xsDown>
+                <div className={classes.sidenavContainer}>
+                  <Sidenav />
+                </div>
+              </Hidden>
+            )
+          }
+          <div className={classes.podcastsGridContainer}>
+              <PodcastsGrid />
+          </div>
+        </div>
+      </div>
     </>
   )
 }

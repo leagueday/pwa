@@ -11,7 +11,7 @@ import usePodcasts from '../api/usePodcasts'
 import PodcastCard from './PodcastCard'
 
 const useStyles = makeStyles(theme => ({
-  grid: {
+  podcastsGrid: {
     backgroundColor: theme.palette.grey['400'],
     padding: '0.25em',
   },
@@ -43,19 +43,17 @@ const PodcastsGrid = () => {
   })()
 
   return (
-    <Card>
-      <Grid className={classes.grid} container>
-        {
-          filteredData && filteredData.map(
-              podcast => (
-                <Grid key={podcast.id} className={classes.gridItem} item md={3} sm={6} xs={12}>
-                  <PodcastCard podcast={podcast} />
-                </Grid>
-              )
+    <Grid className={classes.podcastsGrid} container>
+      {
+        filteredData && filteredData.map(
+            podcast => (
+              <Grid key={podcast.id} className={classes.gridItem} item md={3} sm={6} xs={12}>
+                <PodcastCard podcast={podcast} />
+              </Grid>
             )
-        }
-      </Grid>
-    </Card>)
+          )
+      }
+    </Grid>)
 }
 
 export default PodcastsGrid

@@ -9,6 +9,7 @@ const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
+    minHeight: '100%',
     padding: '0.5em',
   },
   spacer: {

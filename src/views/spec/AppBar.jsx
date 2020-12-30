@@ -2,8 +2,6 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Box from '@material-ui/core/Box'
-import Card from '@material-ui/core/Card'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -16,18 +14,19 @@ import * as actions from '../../store/actions'
 import * as selectors from '../../store/selectors'
 
 const useStyles = makeStyles(theme => ({
+  appBarContainer: {
+    alignItems: 'center',
+    backgroundColor: theme.palette.background.control,
+    display: 'flex',
+    flexDirection: 'row',
+    minHeight: '2.5em',
+  },
   burgerButton: {
   },
   burgerButtonContainer: {
     border: `1px solid ${theme.palette.grey[900]}`,
     borderRadius: theme.shape.borderRadius,
     margin: '0.1em',
-  },
-  container: {
-    alignItems: 'center',
-    backgroundColor: theme.palette.background.control,
-    display: 'flex',
-    flexDirection: 'row',
   },
   discordLogo: {
     marginLeft: '0.5em',
@@ -67,7 +66,7 @@ const AppBar = () => {
   }
 
   return (
-    <Card className={classes.container}>
+    <div className={classes.appBarContainer}>
       <Tooltip title={toggleShowCategoriesLabel}>
         <div className={classes.burgerButtonContainer}>
           <IconButton
@@ -88,7 +87,7 @@ const AppBar = () => {
           <img className={classes.discordLogo} src="/img/Discord-Logo-Color.png" alt="Discord" />
         </div>
       </Hidden>
-    </Card>
+    </div>
   )
 }
 
