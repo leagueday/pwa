@@ -1,8 +1,11 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import Grid from '@material-ui/core/Grid'
+
+import * as selectors from '../store/selectors'
 
 import usePodcasts from '../api/usePodcasts'
 import PodcastCard from './PodcastCard'
@@ -21,17 +24,35 @@ const PodcastsGrid = () => {
 
   const {data, error} = usePodcasts()
 
+  const categoryFilter = useSelector(selectors.getCategoryFilter)
+
+  const filteredData = (() => {
+    if (!data || !categoryFilter) return data
+
+    const {cat: cfCat, subcat: cfSubcat} = categoryFilter
+
+    if (!cfCat && !cfSubcat) return data
+
+    return data.filter(
+      podcast => {
+        if (cfCat && cfCat !== podcast.category) return false
+        if (cfSubcat && cfSubcat !== podcast.subCategory) return false
+        return true
+      }
+    )
+  })()
+
   return (
     <Card>
       <Grid className={classes.grid} container>
         {
-          data && data.map(
-            podcast => (
-              <Grid key={podcast.id} className={classes.gridItem} item md={3} sm={6} xs={12}>
-                <PodcastCard podcast={podcast} />
-              </Grid>
+          filteredData && filteredData.map(
+              podcast => (
+                <Grid key={podcast.id} className={classes.gridItem} item md={3} sm={6} xs={12}>
+                  <PodcastCard podcast={podcast} />
+                </Grid>
+              )
             )
-          )
         }
       </Grid>
     </Card>)

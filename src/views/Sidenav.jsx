@@ -11,6 +11,9 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     padding: '0.5em',
   },
+  spacer: {
+    minHeight: '1em',
+  }
 }))
 
 const Sidenav = () => {
@@ -19,6 +22,7 @@ const Sidenav = () => {
   return (
     <div className={classes.container}>
       <SidenavGameboard />
+      <div className={classes.spacer} />
       <SidenavCategories />
     </div>
   )

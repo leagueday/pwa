@@ -6,7 +6,6 @@ import Box from '@material-ui/core/Box'
 import Card from '@material-ui/core/Card'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
-import ToggleButton from '@material-ui/lab/ToggleButton'
 import Tooltip from '@material-ui/core/Tooltip'
 
 import MenuIcon from '@material-ui/icons/Menu'
@@ -17,6 +16,13 @@ import * as actions from '../../store/actions'
 import * as selectors from '../../store/selectors'
 
 const useStyles = makeStyles(theme => ({
+  burgerButton: {
+  },
+  burgerButtonContainer: {
+    border: `1px solid ${theme.palette.grey[900]}`,
+    borderRadius: theme.shape.borderRadius,
+    margin: '0.1em',
+  },
   container: {
     alignItems: 'center',
     backgroundColor: theme.palette.background.control,
@@ -32,15 +38,13 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
-    fontWeight: 700,
+    fontWeight: theme.typography.fontWeightBold,
     marginLeft: 'auto',
     marginRight: '2em',
   },
   logo: {
     marginLeft: '1em',
     maxHeight: '1.5em',
-  },
-  toggleButton: {
   },
 }))
 
@@ -61,22 +65,21 @@ const AppBar = () => {
     toggleShowCategories = () => dispatch(actions.showCategories())
     toggleShowCategoriesLabel = 'Show Categories'
   }
-  // <div className={classes.logoContainer}>
 
   return (
     <Card className={classes.container}>
       <Tooltip title={toggleShowCategoriesLabel}>
-        <span>
-          <ToggleButton
-            className={classes.toggleButton}
+        <div className={classes.burgerButtonContainer}>
+          <IconButton
+            className={classes.burgerButton}
+            disableRipple
             onClick={toggleShowCategories}
-            selected={isCategoriesVisible}
             size="small"
             value="showCategories"
           >
             <MenuIcon />
-          </ToggleButton>
-        </span>
+          </IconButton >
+        </div>
       </Tooltip>
       <img className={classes.logo} src="/img/logo.png" alt="LeagueDay" />
       <Hidden xsDown>

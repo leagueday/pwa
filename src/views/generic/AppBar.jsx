@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
-    fontWeight: 700,
+    fontWeight: theme.typography.fontWeightBold,
     marginLeft: 'auto',
     marginRight: '2em',
   },

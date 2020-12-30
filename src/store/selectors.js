@@ -1,5 +1,6 @@
 export const getAppState = store => store.app
 
+export const getCategoryFilter = store => getAppState(store)?.categoryFilter
 export const getSelectedAudio = store => getAppState(store)?.selectedAudio
 export const getSelectedAudioMode = store => getAppState(store)?.selectedAudio?.mode
 export const getSelectedAudioUrl = store => getAppState(store)?.selectedAudio?.url

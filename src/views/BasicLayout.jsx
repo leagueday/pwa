@@ -11,7 +11,6 @@ import themedViews from './themedViews'
 import PodcastsGrid from './PodcastsGrid'
 import SelectedPodcast from './SelectedPodcast'
 import Sidenav from './Sidenav'
-import ThemeTuner from './ThemeTuner'
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -70,7 +69,6 @@ const BasicLayout = () => {
           <PodcastsGrid />
         </Grid>
       </Grid>
-      <ThemeTuner />
     </>
   )
 }

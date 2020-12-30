@@ -33,6 +33,14 @@ export const setAudio = (url, type) => ({
   }
 })
 
+export const setCategoryFilter = (cat, subcat) => ({
+  type: ActionType.SET_CATEGORY_FILTER,
+  payload: {
+    cat,
+    subcat
+  }
+})
+
 export const setTheme = theme => ({
   type: ActionType.SET_THEME,
   payload: {

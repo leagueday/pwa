@@ -2,9 +2,10 @@ import * as constants from '../constants'
 import * as ActionType from '../actionTypes';
 
 const initialState = {
+  categoryFilter: null,
   selectedAudio: null,
   selectedPodcast: null,
-  showCategories: false,
+  showCategories: true,
   theme: constants.UI_THEME_SPECIFIC,
 }
 
@@ -47,6 +48,12 @@ const reducer = (state = initialState, action) => {
           ...action.payload,
           mode: constants.AUDIO_MODE_PLAY
         }
+      }
+    }
+    case ActionType.SET_CATEGORY_FILTER: {
+      return {
+        ...state,
+        categoryFilter: action.payload
       }
     }
     case ActionType.SET_THEME: {
