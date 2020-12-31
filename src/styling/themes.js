@@ -3,21 +3,6 @@ import { createMuiTheme } from '@material-ui/core/styles'
 import * as colors from './colors'
 import * as typography from './typography'
 
-export const generic = createMuiTheme({
-  palette: {
-    background: {
-      paper: colors.bluishBlack,
-      control: colors.darkCharcoal,
-      default: colors.charcoal,
-    },
-    type: 'dark',
-  },
-  spacing: 4,
-  typography: {
-    fontFamily: typography.sans,
-  },
-})
-
 export const spec = createMuiTheme({
   palette: {
     background: {
