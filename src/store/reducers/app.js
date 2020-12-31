@@ -5,7 +5,7 @@ const initialState = {
   categoryFilter: null,
   selectedAudio: null,
   selectedPodcast: null,
-  showCategories: true,
+  showCategories: null,
   theme: constants.UI_THEME_SPECIFIC,
 }
 

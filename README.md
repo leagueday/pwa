@@ -26,7 +26,7 @@ some tbd, c.f. [Adding favicons in a multi-browser multi-platform world](https:/
 
 ### jsx and js
 
-Keep `jsx` syntax in `jsx` files, and those files should be rendering code (React components).
+Keep `jsx` syntax in `jsx` files. A `jsx` file should default-export a React component.
 
 Many other files don't need `jsx` and should be named with `js` suffix.
 
