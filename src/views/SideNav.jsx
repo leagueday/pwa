@@ -2,8 +2,8 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import SidenavCategories from './SidenavCategories'
-import SidenavGameboard from './SidenavGameboard'
+import SideNavCategories from './SideNavCategories'
+import SideNavGameboard from './SideNavGameboard'
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -17,16 +17,16 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const Sidenav = () => {
+const SideNav = () => {
   const classes = useStyles()
 
   return (
     <div className={classes.container}>
-      <SidenavGameboard />
+      <SideNavGameboard />
       <div className={classes.spacer} />
-      <SidenavCategories />
+      <SideNavCategories />
     </div>
   )
 }
 
-export default Sidenav
+export default SideNav

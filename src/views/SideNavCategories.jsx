@@ -54,7 +54,7 @@ const Item = ({cat}) => {
   )
 }
 
-const SidenavCategories = () => {
+const SideNavCategories = () => {
   const classes = useStyles()
 
   const {categories} = usePodcasts()
@@ -72,4 +72,4 @@ const SidenavCategories = () => {
   )
 }
 
-export default SidenavCategories
+export default SideNavCategories

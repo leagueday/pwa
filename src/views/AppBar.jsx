@@ -10,8 +10,8 @@ import MenuIcon from '@material-ui/icons/Menu'
 import PauseIcon from '@material-ui/icons/PauseRounded'
 import PlayIcon from '@material-ui/icons/PlayArrowRounded'
 
-import * as actions from '../../store/actions'
-import * as selectors from '../../store/selectors'
+import * as actions from '../store/actions'
+import * as selectors from '../store/selectors'
 
 const useStyles = makeStyles(theme => ({
   appBarContainer: {

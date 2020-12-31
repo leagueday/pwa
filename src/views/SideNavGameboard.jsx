@@ -75,7 +75,7 @@ const Item = ({data}) => {
   )
 }
 
-const SidenavGameboard = () => {
+const SideNavGameboard = () => {
   const classes = useStyles()
 
   const {data, error} = useGameboard()
@@ -97,4 +97,4 @@ const SidenavGameboard = () => {
     )
 }
 
-export default SidenavGameboard
+export default SideNavGameboard
