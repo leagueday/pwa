@@ -11,40 +11,44 @@ const reformat = data => {
   const categories = new Set()
   const subCategories = new Map()
 
-  const picked = data.map(({fields, id}) => {
-    /*
-      "Category": "Anime",
-      "Notes: Podcast Sheet Subcategory": "Game",
-      "Sub-Category": "Pokemon",
-      "Podcast Name": "EXP Share: Pokemon Playthrough",
-      "RSS Feed": "https://anchor.fm/s/1018a71c/podcast/rss",
-      "Notes: Podcast Sheet Genre": "Live playthroughs of Poke games"
-     */
+  const picked = data.filter(feed => feed && feed.url).map(
+    ({fields, id}) => {
+      /*
+        "Category": "Anime",
+        "Notes: Podcast Sheet Subcategory": "Game",
+        "Sub-Category": "Pokemon",
+        "Podcast Name": "EXP Share: Pokemon Playthrough",
+        "RSS Feed": "https://anchor.fm/s/1018a71c/podcast/rss",
+        "Notes: Podcast Sheet Genre": "Live playthroughs of Poke games"
+        "Suggested": true,
+       */
 
-    const category = fields['Category'] ?? 'Uncategorized'
-    const subCategory = fields['Sub-Category']
+      const category = fields['Category'] ?? 'Uncategorized'
+      const subCategory = fields['Sub-Category']
 
-    categories.add(category)
+      categories.add(category)
 
-    if (subCategory && subCategory !== '-') {
-      const maybeSubcats = subCategories.get(category)
+      if (subCategory && subCategory !== '-') {
+        const maybeSubcats = subCategories.get(category)
 
-      if (maybeSubcats) {
-        maybeSubcats.add(subCategory)
-      } else {
-        const subcats = new Set([subCategory])
-        subCategories.set(category, subcats)
+        if (maybeSubcats) {
+          maybeSubcats.add(subCategory)
+        } else {
+          const subcats = new Set([subCategory])
+          subCategories.set(category, subcats)
+        }
+      }
+
+      return {
+        id,
+        category,
+        subCategory,
+        name: fields['Podcast Name'],
+        url: fields['RSS Feed'],
+        suggested: fields.Suggested,
       }
     }
-
-    return {
-      id,
-      category,
-      subCategory,
-      name: fields['Podcast Name'],
-      url: fields['RSS Feed']
-    }
-  })
+  )
 
   return {
     data: picked,
