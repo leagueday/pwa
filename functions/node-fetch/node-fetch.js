@@ -27,8 +27,8 @@ const handler = async function () {
 */
 
 const handler = async (event, context) => {
-  const queryStringParameters = event?.queryStringParameters
-  const foreignUrl = queryStringParameters?.url
+  const queryStringParameters = event.queryStringParameters
+  const foreignUrl = queryStringParameters.url
 
   if (queryStringParameters?.kind === 'imgBlob') {
     const response = await fetch(foreignUrl)
