@@ -30,7 +30,7 @@ const handler = async (event, context) => {
   const queryStringParameters = event.queryStringParameters
   const foreignUrl = queryStringParameters.url
 
-  if (queryStringParameters?.kind === 'imgBlob') {
+  if (queryStringParameters.kind === 'imgBlob') {
     const response = await fetch(foreignUrl)
 
     if (!response.ok) {
