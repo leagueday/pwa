@@ -1,6 +1,5 @@
 import React from 'react'
 import axios from 'axios'
-import base64 from 'base64-js'
 
 import { setupIdbKv } from './idb'
 import usePodcast from './usePodcast'
