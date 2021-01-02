@@ -3,7 +3,7 @@
   publish = "dist"
 
 [context.production]
-  command = "npm run build"
+  command = "npm run build && cd functions/node-fetch && npm install"
 
 [context.development]
   command = "npm run build-dev"

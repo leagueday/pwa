@@ -56,8 +56,8 @@ const usePodcastImage = podcast => {
     if (!channelImageUrl) return
 
     const handleError = tag => e => {
-      console.error('error', tag, podcastId, channelImageUrl, e.msg)
-      setError(e.msg)
+      console.error('error', tag, podcastId, channelImageUrl, e.message)
+      setError(e.message)
     }
 
     idbStore.get(podcastId)
@@ -99,7 +99,7 @@ const usePodcastImage = podcast => {
           )
         }
       ).catch(
-        handleError('fetch+set')
+        handleError('get')
       )
   }, [channelImageUrl])
 

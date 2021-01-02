@@ -96,14 +96,8 @@ const useStyles = makeStyles(theme => ({
     minHeight: '14em',
     position: 'relative',
   },
-  stupidHeader: {
-    fontFamily: typography.serif,
-    fontSize: '80%',
-    fontWeight: theme.typography.fontWeightBold,
-  },
   stupidJoke: {
     fontSize: '80%',
-    fontStyle: 'oblique',
     fontWeight: theme.typography.fontWeightLight,
     marginTop: '0.5em',
   },
@@ -133,7 +127,7 @@ const PodcastCard = ({podcast}) => {
 
   const classes = useStyles()
 
-  const [stupid, setStupid] = React.useState()
+  const [stupid, setStupid] = React.useState('waiting for response from netlify function...')
 
   React.useEffect(
     () => {
@@ -150,9 +144,6 @@ const PodcastCard = ({podcast}) => {
   return (
     <Card>
       <CardContent>
-        <div className={classes.stupidHeader}>
-          A stupid joke verifies the netlify function is working
-        </div>
         <div className={classes.stupidJoke}>
           {stupid}
         </div>
