@@ -26,11 +26,36 @@ const handler = async function () {
 }
 */
 
-const handler = async function () {
-  return Promise.resolve({
-    statusCode: 200,
-    body: JSON.stringify({ msg: 'hi from netlify function' }),
-  })
+const handler = async (event, context) => {
+  const queryStringParameters = event?.queryStringParameters
+  const foreignUrl = queryStringParameters?.url
+
+  if (queryStringParameters?.kind === 'imgBlob') {
+    const response = await fetch(foreignUrl)
+
+    if (!response.ok) {
+      return {
+        statusCode: 502,
+        body: 'Bad Gateway'
+      }
+    }
+    else {
+      // netlify restricts lambda responses to strings...
+      // so here we have to encode a base-64 string
+      const buffer = await response.buffer()
+      return {
+        body: buffer.toString('base64'),
+        isBase64Encoded: true,
+        statusCode: 200,
+      }
+    }
+  }
+  else {
+    return Promise.resolve({
+      statusCode: 400,
+      body: 'Bad Request'
+    })
+  }
 }
 
 module.exports = { handler }

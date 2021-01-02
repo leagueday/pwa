@@ -96,10 +96,11 @@ const useStyles = makeStyles(theme => ({
     minHeight: '14em',
     position: 'relative',
   },
-  stupidJoke: {
-    fontSize: '80%',
+  stupid: {
     fontWeight: theme.typography.fontWeightLight,
+    height: '8em',
     marginTop: '0.5em',
+    width: '8em',
   },
 }))
 
@@ -127,26 +128,24 @@ const PodcastCard = ({podcast}) => {
 
   const classes = useStyles()
 
-  const [stupid, setStupid] = React.useState('waiting for response from netlify function...')
-
-  React.useEffect(
-    () => {
-        fetch("/.netlify/functions/node-fetch", { headers: { accept: "Accept: application/json" } })
-        .then((x) => x.json())
-        .then(({ msg }) => setStupid(msg))
-        .catch(e => {
-          console.error('help i am stuck in a promise chain', e)
-        })
-    },
-    []
-  )
+  // const [stupid, setStupid] = React.useState('waiting for response from netlify function...')
+  //
+  // React.useEffect(
+  //   () => {
+  //       fetch("/.netlify/functions/node-fetch", { headers: { accept: "Accept: application/json" } })
+  //       .then((x) => x.json())
+  //       .then(({ msg }) => setStupid(msg))
+  //       .catch(e => {
+  //         console.error('help i am stuck in a promise chain', e)
+  //       })
+  //   },
+  //   []
+  // )
 
   return (
     <Card>
       <CardContent>
-        <div className={classes.stupidJoke}>
-          {stupid}
-        </div>
+        <LazyPodcastTitleImage className={classes.stupid} podcast={podcast} />
       </CardContent>
     </Card>
   )
