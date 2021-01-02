@@ -11,8 +11,15 @@ Pre-requisites
 Setup
 
 1. `$ npm install`
-2. `$ npx cross-env AIRTABLE_API_KEY=A1B2C3 npm run start-dev`
+2. `$ npx cross-env NODE_ENV=development AIRTABLE_API_KEY=A1B2C3 npm run start-dev`
 3. open [http://localhost:3000](http://localhost:3000)
+
+Netlify Dev
+
+1. `$ cd functions/node-fetch && npm install`
+2. `$ cd ../..`
+3. `$ npx cross-env NODE_ENV=development AIRTABLE_API_KEY=A1B2C3 npm run build-dev`
+4. `$ npx netlify dev`
 
 ## release workflow
 

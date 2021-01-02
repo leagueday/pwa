@@ -4,8 +4,12 @@ import parseXml from '@rgrove/parse-xml'
 
 import { laminate } from './util'
 
-const clientOptions = { }
-const swrOptions = { } // (see https://swr.vercel.app/docs/options)
+const clientOptions = {
+}
+const swrOptions = {
+  revalidateOnFocus: false,
+  shouldRetryOnError: false,
+} // (see https://swr.vercel.app/docs/options)
 
 const client = axios.create(clientOptions)
 const defaultParseXmlString = parseXml

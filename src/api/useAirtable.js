@@ -14,7 +14,10 @@ and increased limits are not currently available.
 
 const apiKey = AIRTABLE_API_KEY
 
-const swrOptions = { } // (see https://swr.vercel.app/docs/options)
+const swrOptions = {
+  revalidateOnFocus: false,
+  shouldRetryOnError: false,
+} // (see https://swr.vercel.app/docs/options)
 
 const fetcher = (base, table, view='Grid view') => () => new Promise(
   (res, rej) => {

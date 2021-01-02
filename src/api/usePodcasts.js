@@ -11,7 +11,7 @@ const reformat = data => {
   const categories = new Set()
   const subCategories = new Map()
 
-  const picked = data.filter(feed => feed && feed.url).map(
+  const picked = data.map(
     ({fields, id}) => {
       /*
         "Category": "Anime",
@@ -40,15 +40,18 @@ const reformat = data => {
       }
 
       return {
-        id,
         category,
-        subCategory,
+        disabled: fields.Disabled,
+        id,
         name: fields['Podcast Name'],
-        url: fields['RSS Feed'],
+        subCategory,
         suggested: fields.Suggested,
+        url: fields['RSS Feed'],
       }
     }
-  )
+  ).filter(feed => {
+    return !feed.disabled && !!feed.url
+  })
 
   return {
     data: picked,
