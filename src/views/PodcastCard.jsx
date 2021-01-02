@@ -140,6 +140,9 @@ const PodcastCard = ({podcast}) => {
         fetch("/.netlify/functions/node-fetch", { headers: { accept: "Accept: application/json" } })
         .then((x) => x.json())
         .then(({ msg }) => setStupid(msg))
+        .catch(e => {
+          console.error('help i am stuck in a promise chain', e)
+        })
     },
     []
   )
