@@ -57,9 +57,11 @@ const usePodcastImage = podcast => {
         }
       ).then(
         params => {
-          const {cacheStatus} = params
+          const [cacheStatus] = params
 
-          if (cacheStatus === IdbKvTimedExpiryCache.FRESH) return Promise.resolve()
+          if (cacheStatus === IdbKvTimedExpiryCache.FRESH) {
+            return Promise.resolve()
+          }
 
           else return fetchImageBlobViaProxy(channelImageUrl).then(
             freshBlob => {

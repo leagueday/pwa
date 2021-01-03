@@ -33,9 +33,9 @@ export class IdbKvSet {
 }
 
 export class IdbKvTimedExpiryCache {
-  static MISS = 1
-  static FRESH = 2
-  static STALE = 3
+  static MISS = 'miss'
+  static FRESH = 'fresh'
+  static STALE = 'stale'
 
   #freshness
   #store

@@ -87,7 +87,7 @@ const useStyles = makeStyles(theme => ({
     width: '4em',
   },
   foregroundImageVertGloss: {
-    background: 'linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(16,16,16,0.7) 3%, rgba(255,255,255,0.1) 8%, rgba(255,255,255,0.1) 92%, rgba(255,255,255,0.4) 98%, rgba(96,96,96,0.5) 100%)',
+    background: 'linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 5%, rgba(255,255,255,0.1) 9%, rgba(255,255,255,0.1) 93%, rgba(255,255,255,0.4) 98%, rgba(96,96,96,0.5) 100%)',
     bottom: 0,
     height: '4em',
     left: 0,
@@ -97,7 +97,7 @@ const useStyles = makeStyles(theme => ({
     width: '4em',
   },
   foregroundImageHorizGloss: {
-    background: 'linear-gradient(270deg, rgba(0,0,0,0.7) 0%, rgba(16,16,16,0.7) 3%, rgba(255,255,255,0.1) 8%, rgba(255,255,255,0.1) 92%, rgba(255,255,255,0.4) 98%, rgba(96,96,96,0.5) 100%)',
+    background: 'linear-gradient(270deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 5%, rgba(255,255,255,0.1) 9%, rgba(255,255,255,0.1) 93%, rgba(255,255,255,0.4) 98%, rgba(96,96,96,0.5) 100%)',
     bottom: 0,
     height: '4em',
     left: 0,
@@ -196,7 +196,6 @@ const PodcastCard = ({podcast}) => {
 
   const title = channelSelectors.v2.title(rss)
   const language = channelSelectors.v2.language(rss)
-  console.log(JSON.stringify(rss, null, 2), title, language)
 
   return (
     <div className={classes.card}>
