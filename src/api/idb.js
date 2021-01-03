@@ -1,21 +1,39 @@
 import * as idb_keyval from 'idb-keyval'
 
+const now = () => Date.now() / 1000
+
 export class IdbKv {
-  constructor(tag) {
-    this._dbName = `LeagueDay_${tag}`
-    this._storeName = tag
-    this._store = new idb_keyval.Store(this._dbName, this._storeName)
+  static MISS = 1
+  static FRESH = 2
+  static STALE = 3
+
+  #freshness
+  #store
+
+  constructor(storeName, freshness) {
+    this.#store = new idb_keyval.Store(`LeagueDay_${storeName}`, storeName)
+    this.#freshness = freshness
   }
 
-  get(key) {
-    if (!key) return Promise.resolve(null)
+  _getRecordCacheStatus(cacheRecord) {
+    if (!cacheRecord) return IdbKv.MISS
 
-    return idb_keyval.get(key, this._store)
+    const t = cacheRecord.t
+    if (!t) return IdbKv.MISS
+
+    const isFresh = now() - t < this.#freshness
+    return isFresh ? IdbKv.FRESH : IdbKv.STALE
   }
 
-  set(key, value) {
-    if (!key) return Promise.resolve(null)
+  async get(key) {
+    const maybeCacheRecord = await idb_keyval.get(key, this.#store)
 
-    return idb_keyval.set(key, value, this._store)
+    return [this._getRecordCacheStatus(maybeCacheRecord), maybeCacheRecord?.data]
+  }
+
+  async set(key, value) {
+    const cacheRecord = { t: now(), data: value }
+
+    return idb_keyval.set(key, cacheRecord, this.#store)
   }
 }

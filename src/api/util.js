@@ -57,28 +57,3 @@ export const laminate = rawXmlParseResult => {
 
   return recSub(rawXmlParseResult)
 }
-
-export const makeCachePolicy = freshnessSeconds => {
-  const MISS = 1
-  const FRESH = 2
-  const STALE = 3
-
-  const now = () => Date.now() / 1000
-
-  return {
-    MISS,
-    FRESH,
-    STALE,
-    getStatus: cacheRecord => {
-      if (!cacheRecord) return MISS
-
-      const t = cacheRecord.t
-      if (!t) return MISS
-
-      const isFresh = now() - t < freshnessSeconds
-
-      return isFresh ? FRESH : STALE
-    },
-    now,
-  }
-}
