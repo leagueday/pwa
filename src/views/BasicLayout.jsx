@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => ({
   podcastsGridContainer: {
     flex: 70,
     maxHeight: '100%',
+    overflowX: 'hidden',
     overflowY: 'auto',
     paddingTop: theme.spacing(1),
   },

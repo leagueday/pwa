@@ -39,11 +39,13 @@ const useStyles = makeStyles(theme => ({
   },
   feedbackCluster: {
     alignItems: 'center',
+    cursor: 'pointer',
     display: 'flex',
     flexDirection: 'row',
     fontWeight: theme.typography.fontWeightBold,
     marginLeft: 'auto',
     marginRight: '2em',
+    userSelect: 'none',
   },
   logo: {
     marginLeft: '1em',
@@ -100,8 +102,12 @@ const AppBar = () => {
       <img className={classes.logo} src="/img/logo.png" alt="LeagueDay" />
       <Hidden xsDown>
         <div className={classes.feedbackCluster}>
-          Give us Feedback ☺️
-          <img className={classes.discordLogo} src="/img/Discord-Logo-Color.png" alt="Discord" />
+          <Tooltip title="lmk what feedback link">
+            <span>Give us Feedback ☺️</span>
+          </Tooltip>
+          <Tooltip title="lmk what discord link">
+            <img className={classes.discordLogo} src="/img/Discord-Logo-Color.png" alt="Discord" />
+          </Tooltip>
         </div>
       </Hidden>
       <Hidden smUp>

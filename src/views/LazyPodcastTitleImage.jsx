@@ -12,7 +12,7 @@ const LazyPodcastTitleImage = ({className, podcast}) => {
   return blob ? (
     <img className={className} src={URL.createObjectURL(blob)} />
   ) : (
-    <img className={className} src="/img/icon-192.png" />
+    <img className={className} src="/img/1024.png" />
   )
 };
 

@@ -15,10 +15,16 @@ const clientOptions = {
 }
 const client = axios.create(clientOptions)
 
-// tbd put this on the cors proxy to enable more podcasts
-const fetchDirect = url => {
-  console.log('fetching rss', url)
-  return client.get(url).then(response => response?.data)
+const fetchRssDocViaProxy = url => {
+  const params = new URLSearchParams({
+    kind: 'doc',
+    url
+  })
+
+  const proxyUrl = `/.netlify/functions/node-fetch?${params}`
+  console.log('fetching doc', url, 'via', proxyUrl)
+
+  return client.get(proxyUrl).then(response => response.data)
 }
 
 const usePodcast = (podcast, parseXmlString=defaultParseXmlString) => {
@@ -52,7 +58,7 @@ const usePodcast = (podcast, parseXmlString=defaultParseXmlString) => {
       ([cacheStatus]) => {
         if (cacheStatus === IdbKvTimedExpiryCache.FRESH) return Promise.resolve()
 
-        return fetchDirect(podcastUrl).then(parseRss).then(
+        return fetchRssDocViaProxy(podcastUrl).then(parseRss).then(
           rss => {
             setRss(rss)
 

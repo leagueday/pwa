@@ -9,39 +9,17 @@ import CardContent from '@material-ui/core/CardContent'
 
 import * as colors from '../styling/colors'
 import * as typography from '../styling/typography'
-import { selectPodcast } from '../store/actions'
+import * as actions from '../store/actions'
 import { channelSelectors } from '../model/rss'
 import usePodcast from '../api/usePodcast'
 
 import LazyPodcastTitleImage from './LazyPodcastTitleImage'
 
 const useStyles = makeStyles(theme => ({
-  // muiCard: {
-  //   backgroundColor: theme.palette.common.white,
-  //   cursor: 'pointer',
-  //   fontFamily: typography.serif,
-  //   fontSize: '85%',
-  //   margin: '0.25em',
-  //   // padding: '0.25em',
-  //   paddingTop: '100%',
-  //   userSelect: 'none',
-  //   '&:before': {
-  //     content: '""',
-  //     backgroundImage: ({podcastImageBlob}) =>
-  //       podcastImageBlob ? `url(${URL.createObjectURL(podcastImageBlob)})` : null,
-  //     backgroundSize: 'contain',
-  //     bottom: '0px',
-  //     left: '0px',
-  //     margin: '0.25em',
-  //     opacity: '0.65',
-  //     position: 'absolute',
-  //     right: '0px',
-  //     top: '0px',
-  //   },
-  // },
   card: {
     border: `1px solid ${colors.darkGreen}`,
     borderRadius: '4px',
+    cursor: 'pointer',
     margin: '0.1em',
     minHeight: '4em',
     userSelect: 'none',
@@ -61,10 +39,6 @@ const useStyles = makeStyles(theme => ({
     padding: '0.5em',
     width: '100%',
   },
-  // cats: {
-  //   color: theme.palette.grey[400],
-  //   fontSize: '85%',
-  // },
   foregroundImage: {
     bottom: '-4px',
     height: '3.9em',
@@ -121,73 +95,11 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     width: '100%',
   },
-  // podcast: {
-  //   marginBottom: '0.25em',
-  // },
-  // podcastLink: {
-  //   color: theme.palette.text.primary,
-  //   textDecoration: 'none',
-  //   '&:active': {
-  //     color: theme.palette.action.active,
-  //   },
-  //   '&:hover': {
-  //     cursor: 'pointer',
-  //   },
-  //   '&:visited': {},
-  // },
-  // square: {
-  //   display: 'flex',
-  //   paddingTop: '100%',
-  // },
-  // squareContent: {
-  //   bottom: '0px',
-  //   left: '0px',
-  //   paddingTop: '100%',
-  //   position: 'absolute',
-  //   right: '0px',
-  //   top: '0px',
-  // },
-  // squareImage: {
-  //   content: '""',
-  //   backgroundImage: ({podcastImageBlob}) =>
-  //     podcastImageBlob ? `url(${URL.createObjectURL(podcastImageBlob)})` : null,
-  //   backgroundSize: 'contain',
-  //   bottom: '0px',
-  //   left: '0px',
-  //   opacity: '0.65',
-  //   paddingTop: '100%',
-  //   position: 'absolute',
-  //   right: '0px',
-  //   top: '0px',
-  // },
-  // squareWrap: {
-  //   minHeight: '14em',
-  //   position: 'relative',
-  // },
-  // stupid: {
-  //   fontWeight: theme.typography.fontWeightLight,
-  //   height: '8em',
-  //   marginTop: '0.5em',
-  //   width: '8em',
-  // },
 }))
 
 // const makeSelectPodcast = (dispatch, podcast) => () => {
 //   dispatch(selectPodcast(podcast))
 // }
-
-// <PodcastImageCard podcast={podcast} podcastImageBlob={podcastImageBlob} />
-// <div className={classes.squareWrap}>
-//   <div className={classes.squareImage}></div>
-//   <div className={classes.squareContent}>
-//     <div className={classes.podcast}>
-//       {podcast.name}
-//     </div>
-//     <div className={classes.cats}>
-//       {`${podcast.category} / ${podcast.subCategory}`}
-//     </div>
-//   </div>
-// </div>
 
 const PodcastCard = ({podcast}) => {
   const {rss, error: podcastError} = usePodcast(podcast)
@@ -197,8 +109,11 @@ const PodcastCard = ({podcast}) => {
   const title = channelSelectors.v2.title(rss)
   const language = channelSelectors.v2.language(rss)
 
+  const dispatch = useDispatch()
+  const selectThis = () => dispatch(actions.selectPodcast(podcast))
+
   return (
-    <div className={classes.card}>
+    <div className={classes.card} onClick={selectThis}>
       <div className={classes.cardContent}>
         <div className={classes.foregroundImageContainer}>
           <LazyPodcastTitleImage className={classes.foregroundImage} podcast={podcast} />

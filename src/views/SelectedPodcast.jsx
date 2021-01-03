@@ -84,12 +84,6 @@ const SelectedPodcast = () => {
                 <div className={classes.details}>
                   <PodcastDetails />
                 </div>
-                <div className={classes.dump}>
-                  <pre>{`${JSON.stringify(maybeLatestAudio, null, 2)}`}</pre>
-                </div>
-                <div className={classes.dump}>
-                  <pre>{JSON.stringify(rss, null, 2)}</pre>
-                </div>
               </div>
             )
         }
