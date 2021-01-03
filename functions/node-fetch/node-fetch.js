@@ -1,30 +1,5 @@
 const fetch = require('node-fetch')
-
-/*
-const handler = async function () {
-  try {
-    const response = await fetch('https://icanhazdadjoke.com', {
-      headers: { Accept: 'application/json' },
-    })
-    if (!response.ok) {
-      return { statusCode: response.status, body: response.statusText }
-    }
-    const data = await response.json()
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ msg: data.joke }),
-    }
-  } catch (error) {
-    // output to netlify function log (where is the netlify function log?)
-    console.log(error)
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ msg: error.message }),
-    }
-  }
-}
-*/
+// const FileType = require('file-type')
 
 const handler = async (event, context) => {
   const queryStringParameters = event.queryStringParameters
@@ -40,11 +15,20 @@ const handler = async (event, context) => {
       }
     }
     else {
-      // netlify restricts lambda responses to strings...
-      // so here we have to encode a base-64 string
+      const contentType = response.headers.get('content-type')
+
+      // Netlify restricts lambda responses to strings.
+      // So here we encode a base-64 string.
       const buffer = await response.buffer()
+      // const bufferFileType = JSON.stringify(await FileType.fromBuffer(buffer))
+      const base64String = buffer.toString('base64')
+
       return {
-        body: buffer.toString('base64'),
+        body: base64String,
+        headers: {
+          'content-type': contentType,
+          // 'x-file-type': bufferFileType,
+        },
         isBase64Encoded: true,
         statusCode: 200,
       }
