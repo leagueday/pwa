@@ -1,12 +1,13 @@
 import React from 'react'
 import axios from 'axios'
 
-import { IdbKv } from './idb'
+import { IdbKvTimedExpiryCache } from './idb'
 
 import usePodcast from './usePodcast'
+import { channelSelectors } from '../model/rss'
 
 const FRESHNESS = 86400
-const idbStore = new IdbKv('titleImages', FRESHNESS)
+const idbStore = new IdbKvTimedExpiryCache('titleImages', FRESHNESS)
 
 const clientOptions = {
   responseType: 'blob',
@@ -22,7 +23,7 @@ const fetchImageBlobViaProxy = url => {
   })
 
   const proxyUrl = `/.netlify/functions/node-fetch?${params}`
-  console.log('fetching', url, 'via', proxyUrl)
+  console.log('fetching img', url, 'via', proxyUrl)
 
   return client.get(proxyUrl).then(response => response.data)
 }
@@ -33,10 +34,9 @@ const usePodcastImage = podcast => {
 
   const podcastId = podcast?.id
 
-  const {rss: podcastDoc} = usePodcast(podcast)
+  const {rss} = usePodcast(podcast)
 
-  // this follows the RSS-2 heuristic approach
-  const channelImageUrl = podcastDoc?.rss?.channel?.image?.url
+  const channelImageUrl = channelSelectors.v2.imageUrl(rss)
 
   const handleError = e => {
     console.error('error in titleImage fetch', podcastId, channelImageUrl, e.message)
@@ -51,7 +51,7 @@ const usePodcastImage = podcast => {
         params => {
           const [cacheStatus, maybeData] = params
 
-          if (cacheStatus !== IdbKv.MISS) setBlob(maybeData)
+          if (cacheStatus !== IdbKvTimedExpiryCache.MISS) setBlob(maybeData)
 
           return params
         }
@@ -59,7 +59,7 @@ const usePodcastImage = podcast => {
         params => {
           const {cacheStatus} = params
 
-          if (cacheStatus === IdbKv.FRESH) return Promise.resolve()
+          if (cacheStatus === IdbKvTimedExpiryCache.FRESH) return Promise.resolve()
 
           else return fetchImageBlobViaProxy(channelImageUrl).then(
             freshBlob => {

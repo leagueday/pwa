@@ -1,10 +1,12 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Card from '@material-ui/core/Card'
 import Grid from '@material-ui/core/Grid'
 
+import * as colors from '../styling/colors'
 import * as selectors from '../store/selectors'
 
 import usePodcasts from '../api/usePodcasts'
@@ -12,19 +14,30 @@ import PodcastCard from './PodcastCard'
 
 const useStyles = makeStyles(theme => ({
   podcastsGrid: {
-    backgroundColor: theme.palette.grey['400'],
-    padding: '0.25em',
+    backgroundColor: colors.bluishBlack,
   },
   gridItem: {
   }
 }))
 
 const PodcastsGrid = () => {
+  const theme = useTheme()
+  const isXs = useMediaQuery(theme.breakpoints.only('xs'))
+
   const classes = useStyles()
 
   const {data, error} = usePodcasts()
 
   const categoryFilter = useSelector(selectors.getCategoryFilter)
+
+  const showCategories = useSelector(selectors.getShowCategories)
+  const isSidenavVisible = showCategories !== false
+
+  const [mdItemCols, smItemCols, xsItemCols] = isXs
+    ? [12, 12, 12]
+    : isSidenavVisible
+    ? [6, 12, 12]
+    : [4, 6, 12]
 
   const filteredData = (() => {
     if (!data || !categoryFilter) return data
@@ -36,24 +49,31 @@ const PodcastsGrid = () => {
     return data.filter(
       podcast => {
         if (cfCat && cfCat !== podcast.category) return false
-        if (cfSubcat && cfSubcat !== podcast.subCategory) return false
-        return true
+        return !cfSubcat || cfSubcat === podcast.subCategory
       }
     )
   })()
 
   return (
-    <Grid className={classes.podcastsGrid} container>
+    <Grid className={classes.podcastsGrid} container spacing={1}>
       {
         filteredData && filteredData.map(
             podcast => (
-              <Grid key={podcast.id} className={classes.gridItem} item md={3} sm={6} xs={12}>
+              <Grid
+                key={podcast.id}
+                className={classes.gridItem}
+                item
+                md={mdItemCols}
+                sm={smItemCols}
+                xs={xsItemCols}
+              >
                 <PodcastCard podcast={podcast} />
               </Grid>
             )
           )
       }
-    </Grid>)
+    </Grid>
+  )
 }
 
 export default PodcastsGrid

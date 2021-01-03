@@ -50,16 +50,17 @@ const useStyles = makeStyles(theme => ({
   //     minHeight: `calc(100vh - ${APPBAR_HEIGHT} - ${SMALLNAV_HEIGHT})`,
   //   },
   // },
-  sideNavContainer: {
-    flex: 30,
-    maxHeight: '100%',
-    overflowY: 'auto',
-    padding: '0.5em',
-  },
   podcastsGridContainer: {
     flex: 70,
     maxHeight: '100%',
     overflowY: 'auto',
+    paddingTop: theme.spacing(1),
+  },
+  sideNavContainer: {
+    flex: 30,
+    maxHeight: '100%',
+    overflowY: 'auto',
+    paddingTop: '0.5em',
   },
 }))
 
@@ -71,7 +72,7 @@ const BasicLayout = () => {
   // by default the sidenav is visible
   // although currently same category-filter feature is provided by menu and sidenav
   // the menu is by default closed
-  const isCategoriesVisible = showCategories !== false
+  const isSidenavVisible = showCategories !== false
 
   return (
     <>
@@ -81,14 +82,14 @@ const BasicLayout = () => {
           <AppBar />
         </div>
         <div className={classes.content}>
-          { isCategoriesVisible && (
-              <Hidden xsDown>
+          <Hidden xsDown>
+            { isSidenavVisible && (
                 <div className={classes.sideNavContainer}>
                   <SideNav />
                 </div>
-              </Hidden>
-            )
-          }
+              )
+            }
+          </Hidden>
           <div className={classes.podcastsGridContainer}>
               <PodcastsGrid />
           </div>

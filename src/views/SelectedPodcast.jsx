@@ -6,6 +6,7 @@ import Modal from '@material-ui/core/Modal'
 
 import { getSelectedPodcast } from '../store/selectors'
 import * as actions from '../store/actions'
+import { channelSelectors, itemSelectors } from '../model/rss'
 
 import * as typography from '../styling/typography'
 import usePodcast from '../api/usePodcast'
@@ -49,23 +50,21 @@ const SelectedPodcast = () => {
 
   const {error, rss} = usePodcast(selectedPodcast)
 
-  // rss-2 heuristic path - all edge cases or other data formats ignored for now
-  const maybeItems = rss?.rss?.channel?.item
+  const maybeItems = channelSelectors.v2.items(rss)
 
-  // this continues the rss-2 heuristic path
-  // could also scan the items for latest (lowest index, maybe >0) audio
-  const maybeLatestAudio = maybeItems?.[0]?.enclosure?.attributes
+  const maybeLatestItem = maybeItems?.[0]
+  console.log(JSON.stringify(maybeLatestItem, null, 2))
 
-  console.log(maybeLatestAudio, rss, error)
+  const audioType = itemSelectors.v2.audioType(maybeLatestItem)
+  const audioUrl = itemSelectors.v2.audioUrl(maybeLatestItem)
 
   React.useEffect(
     () => {
-      if (!maybeLatestAudio) return
+      if (!audioType || !audioUrl) return
 
-      const {url, type} = maybeLatestAudio
-      dispatch(actions.setAudio(url, type))
+      dispatch(actions.setAudio(audioUrl, audioType))
     },
-    [maybeLatestAudio]
+    [audioType, audioUrl]
   )
 
   return (

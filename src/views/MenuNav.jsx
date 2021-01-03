@@ -95,14 +95,14 @@ const MenuNav = ({anchor}) => {
   // by default the menu is not visible
   // although currently same category-filter feature is provided by menu and sidenav
   // the sidenav is by default open
-  const isCategoriesVisible = showCategories === true
+  const isMenuVisible = showCategories === true
 
   const isFiltered = categoryFilter && (categoryFilter.cat || categoryFilter.subcat)
 
   return (
     <Menu
       anchorEl={anchor}
-      open={isCategoriesVisible}
+      open={isMenuVisible}
       onClose={closeMenu}
     >
       { isFiltered && (

@@ -12,7 +12,6 @@ export const spec = createMuiTheme({
     },
     type: 'dark',
   },
-  spacing: () => 0,
   typography: {
     fontFamily: typography.sans,
   },

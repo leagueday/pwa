@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
   itemName: {
     color: theme.palette.text.secondary,
-    fontSize: '80%',
+    fontSize: '75%',
   },
 }))
 

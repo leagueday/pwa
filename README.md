@@ -1,4 +1,3 @@
-
 # LeagueDay v.2 WebApp
 
 ## dev setup and workflow
@@ -11,15 +10,31 @@ Pre-requisites
 Setup
 
 1. `$ npm install`
-2. `$ npx cross-env NODE_ENV=development AIRTABLE_API_KEY=A1B2C3 npm run start-dev`
-3. open [http://localhost:3000](http://localhost:3000)
+2. `$ cd functions/node-fetch/ && npm install`
+3. (repeat step 2 for any other `functions/*/` added in the future)
 
-Netlify Dev
+### "Full Stack" Netlify Dev With HMR
 
-1. `$ cd functions/node-fetch && npm install`
-2. `$ cd ../..`
-3. `$ npx cross-env NODE_ENV=development AIRTABLE_API_KEY=A1B2C3 npm run build-dev`
-4. `$ npx netlify dev`
+1. `$ npx cross-env NODE_ENV=development AIRTABLE_API_KEY=A1B2C3 npx netlify dev`
+2. `$ npx netlify dev`
+3. View [http://localhost:8888](http://localhost:8888); it should open automatically.
+
+## Operational note on the Index DB Cache
+
+In my version Chrome, with the devtools open, a long press of the refresh button
+in the toolbar reveals a small menu, with options
+
+* Normal Reload
+* Hard Reload
+* Empty Cache and Hard Reload
+
+I'm not sure what cache is emptied by the 3rd menu action, but it *isn't* the
+IndexDB. The `LeagueDay_*` tables can be found in the devtools under
+`Application / Storage / IndexedDB`, and these tables can be deleted or cleared
+to reset this cache.
+
+Since this cache is so durable, some care should be taken to avoid introducing
+backward incompatibility, or else code defensively wrt uninterpretable values.
 
 ## release workflow
 

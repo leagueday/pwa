@@ -4,7 +4,10 @@ import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { getSelectedPodcast } from '../store/selectors'
+import { channelSelectors } from '../model/rss'
 import usePodcast from '../api/usePodcast'
+
+import LazyPodcastTitleImage from './LazyPodcastTitleImage'
 
 const useStyles = makeStyles({
   container: {
@@ -37,27 +40,15 @@ const PodcastDetails = () => {
 
   const {error, rss} = usePodcast(selectedPodcast)
 
-  // all of this follows the same RSS-2 heuristic approach as set up in SelectedPodcast
-
-  const channelData = rss?.rss?.channel
-
-  const {
-    description,
-    image,
-    item,
-    language,
-    lastBuildDate,
-    link,
-    title,
-  } = channelData ?? { }
-
-  const imageUrl = image?.url
+  const description = channelSelectors.v2.description(rss)
+  const language = channelSelectors.v2.language(rss)
+  const title = channelSelectors.v2.title(rss)
 
   return (
     <div className={classes.container}>
       <div className={classes.titleLine}>
         <div className={classes.imageContainer}>
-          { imageUrl && (<img className={classes.image} src={imageUrl} alt={image.title}/>) }
+          <LazyPodcastTitleImage className={classes.image} podcast={selectedPodcast} />
         </div>
         <div className={classes.title}>
           {title}

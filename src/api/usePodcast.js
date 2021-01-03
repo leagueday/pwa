@@ -6,17 +6,20 @@ import { laminate } from './util'
 
 const defaultParseXmlString = parseXml
 
-import { IdbKv } from './idb'
+import { IdbKvTimedExpiryCache } from './idb'
 
 const FRESHNESS = 300
-const idbStore = new IdbKv('rss', FRESHNESS)
+const idbStore = new IdbKvTimedExpiryCache('rss', FRESHNESS)
 
 const clientOptions = {
 }
 const client = axios.create(clientOptions)
 
 // tbd put this on the cors proxy to enable more podcasts
-const fetchDirect = url => client.get(url).then(response => response?.data)
+const fetchDirect = url => {
+  console.log('fetching rss', url)
+  return client.get(url).then(response => response?.data)
+}
 
 const usePodcast = (podcast, parseXmlString=defaultParseXmlString) => {
   const [rss, setRss] = React.useState()
@@ -39,13 +42,15 @@ const usePodcast = (podcast, parseXmlString=defaultParseXmlString) => {
       params => {
         const [cacheStatus, maybeData] = params
 
-        if (cacheStatus !== IdbKv.MISS) setRss(maybeData)
+        if (cacheStatus !== IdbKvTimedExpiryCache.MISS) {
+          setRss(maybeData)
+        }
 
         return params
       }
     ).then(
       ([cacheStatus]) => {
-        if (cacheStatus === IdbKv.FRESH) return Promise.resolve()
+        if (cacheStatus === IdbKvTimedExpiryCache.FRESH) return Promise.resolve()
 
         return fetchDirect(podcastUrl).then(parseRss).then(
           rss => {

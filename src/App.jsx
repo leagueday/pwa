@@ -22,15 +22,14 @@ import Loading from './views/Loading'
 const useStyles = makeStyles(theme => ({
   app: {
     backgroundColor: theme.palette.background.default,
+    flexGrow: 1,
     maxHeight: '100vh',
   },
   appBackground: {
     maxHeight: '100vh',
   },
   appCanvas: {
-    margin: theme.spacing(2),
     maxHeight: '100vh',
-    padding: theme.spacing(2),
   },
 }))
 

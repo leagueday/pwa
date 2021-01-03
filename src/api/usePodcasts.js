@@ -51,6 +51,10 @@ const reformat = data => {
     }
   ).filter(feed => {
     return !feed.disabled && !!feed.url
+  }).sort((feed1, feed2) => {
+    if (feed1.suggested && !feed2.suggested) return -1
+    else if (feed2.suggested) return 1
+    else return feed1.name.localeCompare(feed2.name)
   })
 
   return {

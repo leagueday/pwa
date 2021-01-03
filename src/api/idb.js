@@ -2,7 +2,37 @@ import * as idb_keyval from 'idb-keyval'
 
 const now = () => Date.now() / 1000
 
-export class IdbKv {
+export class IdbKvSet {
+  #store
+
+  constructor(storeName) {
+    this.#store = new idb_keyval.Store(`LeagueDay_${storeName}`, storeName)
+  }
+
+  async add(key) {
+    return idb_keyval.set(key, 1, this.#store)
+  }
+
+  async clear() {
+    return idb_keyval.clear(this.#store)
+  }
+
+  async has(key) {
+    return idb_keyval.get(key, this.#store).then(
+      maybeVal => !!maybeVal
+    )
+  }
+
+  async list() {
+    return idb_keyval.keys(this.#store)
+  }
+
+  async remove(key) {
+    return idb_keyval.del(key, this.#store)
+  }
+}
+
+export class IdbKvTimedExpiryCache {
   static MISS = 1
   static FRESH = 2
   static STALE = 3
@@ -16,13 +46,13 @@ export class IdbKv {
   }
 
   _getRecordCacheStatus(cacheRecord) {
-    if (!cacheRecord) return IdbKv.MISS
+    if (!cacheRecord) return IdbKvTimedExpiryCache.MISS
 
     const t = cacheRecord.t
-    if (!t) return IdbKv.MISS
+    if (!t) return IdbKvTimedExpiryCache.MISS
 
     const isFresh = now() - t < this.#freshness
-    return isFresh ? IdbKv.FRESH : IdbKv.STALE
+    return isFresh ? IdbKvTimedExpiryCache.FRESH : IdbKvTimedExpiryCache.STALE
   }
 
   async get(key) {
@@ -34,6 +64,8 @@ export class IdbKv {
   async set(key, value) {
     const cacheRecord = { t: now(), data: value }
 
-    return idb_keyval.set(key, cacheRecord, this.#store)
+    return idb_keyval.del(key, this.#store).then(
+      () => idb_keyval.set(key, cacheRecord, this.#store)
+    )
   }
 }

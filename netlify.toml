@@ -7,3 +7,10 @@
 
 [context.development]
   command = "npm run build-dev"
+
+[dev] # config specific to `netlify dev`
+  framework = "#custom"
+  command = "npm run start-dev"
+  targetPort = 3000
+  port = 8888
+  publish = "dist"
