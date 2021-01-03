@@ -2,7 +2,8 @@ import React from 'react'
 import { hot } from 'react-hot-loader/root'
 import { useSelector } from 'react-redux'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Container from '@material-ui/core/Container'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Paper from '@material-ui/core/Paper'
@@ -36,13 +37,14 @@ const useStyles = makeStyles(theme => ({
 const ThemedAppContent = () => {
   const classes = useStyles()
 
-  const theme = useSelector(selectors.getTheme)
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
   const {data, error} = usePodcasts()
 
   return (
     <div className={classes.app}>
-      <Container className={classes.appBackground} maxWidth="md">
+      <Container className={classes.appBackground} maxWidth="md" disableGutters={smDown}>
         <Paper className={classes.appCanvas}>
           {
             data
