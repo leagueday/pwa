@@ -47,16 +47,16 @@ const SelectedPodcast = () => {
 
   const selectedPodcast = useSelector(getSelectedPodcast)
 
-  const {data, error} = usePodcast(selectedPodcast)
+  const {error, rss} = usePodcast(selectedPodcast)
 
   // rss-2 heuristic path - all edge cases or other data formats ignored for now
-  const maybeItems = data?.rss?.channel?.item
+  const maybeItems = rss?.rss?.channel?.item
 
   // this continues the rss-2 heuristic path
   // could also scan the items for latest (lowest index, maybe >0) audio
   const maybeLatestAudio = maybeItems?.[0]?.enclosure?.attributes
 
-  console.log(maybeLatestAudio, data, error)
+  console.log(maybeLatestAudio, rss, error)
 
   React.useEffect(
     () => {
@@ -79,7 +79,7 @@ const SelectedPodcast = () => {
       <div className={classes.content}>
         {
           error ? (<Error e={error} />)
-            : !data ? (<Loading />)
+            : !rss ? (<Loading />)
             : (
               <div>
                 <div className={classes.details}>
@@ -89,7 +89,7 @@ const SelectedPodcast = () => {
                   <pre>{`${JSON.stringify(maybeLatestAudio, null, 2)}`}</pre>
                 </div>
                 <div className={classes.dump}>
-                  <pre>{JSON.stringify(data, null, 2)}</pre>
+                  <pre>{JSON.stringify(rss, null, 2)}</pre>
                 </div>
               </div>
             )

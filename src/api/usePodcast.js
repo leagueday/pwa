@@ -1,20 +1,24 @@
+import React from 'react'
 import axios from 'axios'
-import useSWR from 'swr'
 import parseXml from '@rgrove/parse-xml'
 
-import { laminate } from './util'
+import { laminate, makeCachePolicy } from './util'
+
+import { IdbKv } from './idb'
+
+const FRESHNESS = 300
+const cachePolicy = makeCachePolicy(FRESHNESS)
 
 const clientOptions = {
 }
-const swrOptions = {
-  revalidateOnFocus: false,
-  shouldRetryOnError: false,
-} // (see https://swr.vercel.app/docs/options)
+
+const idbStore = new IdbKv('LeagueDayRss', 'rss')
 
 const client = axios.create(clientOptions)
 const defaultParseXmlString = parseXml
 
-const fetchThenParse = (url, parseXmlString) => async () => {
+// tbd put this on the cors proxy to enable more podcasts
+const fetchAndParseRssDirect = (url, parseXmlString) => async () => {
   try {
     const rssResponse = await client.get(url)
     return laminate(parseXmlString(rssResponse?.data))
@@ -24,18 +28,60 @@ const fetchThenParse = (url, parseXmlString) => async () => {
   }
 }
 
-const fetcher =
-  (podcast, parseXmlString) =>
-    (url =>
-      url ? fetchThenParse(url, parseXmlString) : () => Promise.resolve(null)
-    )(
-      podcast?.url
-    )
-
 const usePodcast = (podcast, parseXmlString=defaultParseXmlString) => {
-  const cacheKey = podcast?.url ?? 'nil'
+  const [rss, setRss] = React.useState()
+  const [error, setError] = React.useState()
 
-  return useSWR(cacheKey, fetcher(podcast, parseXmlString), swrOptions)
+  const podcastId = podcast?.id
+  const podcastUrl = podcast?.url
+
+  React.useEffect(() => {
+    if (!podcastId || !podcastUrl) return
+
+    const handleError = tag => e => {
+      console.error('error', tag, podcastId, podcastUrl, e.message)
+      setError(e.message)
+    }
+
+    idbStore.get(podcastId)
+    .then(
+      maybeCacheRecord => {
+        const cacheStatus = cachePolicy.getStatus(maybeCacheRecord)
+
+        return {
+          cacheStatus,
+          maybeData: cacheStatus === cachePolicy.MISS ? null : maybeCacheRecord.data,
+        }
+      }
+    ).then(
+      params => {
+        const {cacheStatus, maybeData} = params
+
+        if (cacheStatus !== cachePolicy.MISS) setRss(maybeData)
+
+        return params
+      }
+    ).then(
+      params => {
+        const {cacheStatus} = params
+
+        if (cacheStatus === cachePolicy.FRESH) return params
+        else return fetchAndParseRssDirect(podcastUrl, parseXmlString)().then(
+          rss => {
+            setRss(rss)
+
+            idbStore.set(podcastId, {t: cachePolicy.now(), data: rss})
+          }
+        ).catch(
+          handleError('fetch+set')
+        )
+      }
+    ).catch(
+      handleError('get')
+    )
+  }, [podcastId, podcastUrl])
+
+  return {error, rss}
 }
 
 export default usePodcast

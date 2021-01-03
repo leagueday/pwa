@@ -1,19 +1,23 @@
 import React from 'react'
 import axios from 'axios'
 
-import { setupIdbKv } from './idb'
+// import * as IdbKv from 'idb-keyval'
+// import { getStore, setupIdbKv } from './idb'
+import { IdbKv } from './idb'
+
+import { makeCachePolicy } from './util'
 import usePodcast from './usePodcast'
 
-const CACHE_MISS = 1
-const CACHE_FRESH = 2
-const CACHE_STALE = 3
 const FRESHNESS = 86400
+const cachePolicy = makeCachePolicy(FRESHNESS)
 
-const idbStore = setupIdbKv('podcastTitleImages')
-
-const now = () => Date.now() / 1000
-
-const isFresh = t => now() - t < FRESHNESS
+//const idbStore = setupIdbKv('podcastTitleImages')
+// const _idbStore = new IdbKv.Store('LeagueDayTitleImages', 'titleImages')
+// const idbStore = {
+//   get: key => IdbKv.get(key, _idbStore),
+//   set: (key, value) => IdbKv.set(key, value, _idbStore)
+// }
+const idbStore = new IdbKv('LeagueDayTitleImages', 'titleImages')
 
 const clientOptions = {
   responseType: 'blob',
@@ -40,7 +44,7 @@ const usePodcastImage = podcast => {
 
   const podcastId = podcast?.id
 
-  const {data: podcastDoc} = usePodcast(podcast)
+  const {rss: podcastDoc} = usePodcast(podcast)
 
   // this follows the RSS-2 heuristic approach
   const channelImageUrl = podcastDoc?.rss?.channel?.image?.url
@@ -56,23 +60,18 @@ const usePodcastImage = podcast => {
     idbStore.get(podcastId)
       .then(
         maybeCacheRecord => {
-          const cacheStatus =
-            !maybeCacheRecord
-              ? CACHE_MISS
-              : isFresh(maybeCacheRecord.t)
-              ? CACHE_FRESH
-              : CACHE_STALE
+          const cacheStatus = cachePolicy.getStatus(maybeCacheRecord)
 
           return {
             cacheStatus,
-            maybeBlob: cacheStatus === CACHE_MISS ? null : maybeCacheRecord.blob,
+            maybeBlob: cacheStatus === cachePolicy.MISS ? null : maybeCacheRecord.blob,
           }
         }
       ).then(
         params => {
           const {cacheStatus, maybeBlob} = params
 
-          if (cacheStatus !== CACHE_MISS) setBlob(maybeBlob)
+          if (cacheStatus !== cachePolicy.MISS) setBlob(maybeBlob)
 
           return params
         }
@@ -80,12 +79,12 @@ const usePodcastImage = podcast => {
         params => {
           const {cacheStatus} = params
 
-          if (cacheStatus === CACHE_FRESH) return params
+          if (cacheStatus === cachePolicy.FRESH) return params
           else return fetchImageBlobViaProxy(channelImageUrl).then(
             freshBlob => {
               setBlob(freshBlob)
 
-              idbStore.set(podcastId, {t: now(), blob: freshBlob})
+              idbStore.set(podcastId, {t: cachePolicy.now(), blob: freshBlob})
             }
           ).catch(
             handleError('fetch+set')

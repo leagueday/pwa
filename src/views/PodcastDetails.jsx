@@ -35,11 +35,11 @@ const PodcastDetails = () => {
 
   const selectedPodcast = useSelector(getSelectedPodcast)
 
-  const {data, error} = usePodcast(selectedPodcast)
+  const {error, rss} = usePodcast(selectedPodcast)
 
   // all of this follows the same RSS-2 heuristic approach as set up in SelectedPodcast
 
-  const channelData = data?.rss?.channel
+  const channelData = rss?.rss?.channel
 
   const {
     description,

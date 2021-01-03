@@ -1,26 +1,21 @@
-import * as IdbKv from 'idb-keyval'
+import * as idb_keyval from 'idb-keyval'
 
-const dbName = 'LeagueDay'
+export class IdbKv {
+  constructor(tag) {
+    this._dbName = `LeagueDay_${tag}`
+    this._storeName = tag
+    this._store = new idb_keyval.Store(this._dbName, this._storeName)
+  }
 
-const stores = { }
+  get(key) {
+    if (!key) return Promise.resolve(null)
 
-const getStore =
-  storeName =>
-    stores[storeName] ?? (
-      () => {
-        const store = new IdbKv.Store(dbName, storeName)
-        stores[storeName] = store
-        return store
-      }
-    )()
+    return idb_keyval.get(key, this._store)
+  }
 
-export const setupIdbKv =
-  storeName =>
-    (
-      store => ({
-        get: key => key ? IdbKv.get(key, store) : null,
-        set: (key, value) => IdbKv.set(key, value, store),
-      })
-    )(
-      getStore(storeName)
-    )
+  set(key, value) {
+    if (!key) return Promise.resolve(null)
+
+    return idb_keyval.set(key, value, this._store)
+  }
+}
