@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import Card from '@material-ui/core/Card'
 import Grid from '@material-ui/core/Grid'
 
 import * as colors from '../styling/colors'
@@ -22,18 +21,20 @@ const useStyles = makeStyles(theme => ({
 
 const PodcastsGrid = () => {
   const theme = useTheme()
-  const isXs = useMediaQuery(theme.breakpoints.only('xs'))
+  const screenIsXs = useMediaQuery(theme.breakpoints.only('xs'))
 
   const classes = useStyles()
 
-  const {data, error} = usePodcasts()
+  const starred = useSelector(selectors.getStarred)
+
+  const {data, error} = usePodcasts(starred)
 
   const categoryFilter = useSelector(selectors.getCategoryFilter)
 
   const showCategories = useSelector(selectors.getShowCategories)
   const isSidenavVisible = showCategories !== false
 
-  const [mdItemCols, smItemCols, xsItemCols] = isXs
+  const [mdItemCols, smItemCols, xsItemCols] = screenIsXs
     ? [12, 12, 12]
     : isSidenavVisible
     ? [6, 12, 12]

@@ -6,7 +6,8 @@ const initialState = {
   selectedAudio: null,
   selectedPodcast: null,
   showCategories: null,
-  theme: constants.UI_THEME_SPECIFIC,
+  starred: null,
+  theme: constants.UI_THEME_SPEC,
 }
 
 const reducer = (state = initialState, action) => {
@@ -35,13 +36,7 @@ const reducer = (state = initialState, action) => {
         }
       }
     }
-    case ActionType.SELECT_PODCAST: {
-      return {
-        ...state,
-        selectedPodcast: action.payload?.podcast
-      }
-    }
-    case ActionType.SET_AUDIO: {
+    case ActionType.SELECT_AUDIO: {
       return {
         ...state,
         selectedAudio: {
@@ -50,10 +45,22 @@ const reducer = (state = initialState, action) => {
         }
       }
     }
+    case ActionType.SELECT_PODCAST: {
+      return {
+        ...state,
+        selectedPodcast: action.payload?.podcast
+      }
+    }
     case ActionType.SET_CATEGORY_FILTER: {
       return {
         ...state,
         categoryFilter: action.payload
+      }
+    }
+    case ActionType.SET_STARRED: {
+      return {
+        ...state,
+        starred: action.payload.starred
       }
     }
     case ActionType.SET_THEME: {
@@ -66,6 +73,22 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         showCategories: true
+      }
+    }
+    case ActionType.STAR_PODCAST: {
+      return {
+        ...state,
+        starred: state.starred
+          ? {...state.starred, ...{[action.payload.podcastId]: true}}
+          : {[action.payload.podcastId]: true}
+      }
+    }
+    case ActionType.UNSTAR_PODCAST: {
+      return {
+        ...state,
+        starred: state.starred
+          ? {...state.starred, ...{[action.payload.podcastId]: false}}
+          : {[action.payload.podcastId]: false}
       }
     }
     default:

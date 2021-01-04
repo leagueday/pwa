@@ -1,30 +1,21 @@
 import React from 'react'
-
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Card from '@material-ui/core/Card'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import CardContent from '@material-ui/core/CardContent'
 
 import * as colors from '../styling/colors'
 import * as typography from '../styling/typography'
+import * as storeConstants from '../store/constants'
 import * as actions from '../store/actions'
+import * as selectors from '../store/selectors'
 import { channelSelectors } from '../model/rss'
 import usePodcast from '../api/usePodcast'
 
 import LazyPodcastTitleImage from './LazyPodcastTitleImage'
 
 const useStyles = makeStyles(theme => ({
-  card: {
-    border: `1px solid ${colors.darkGreen}`,
-    borderRadius: '4px',
-    cursor: 'pointer',
-    margin: '0.1em',
-    minHeight: '4em',
-    userSelect: 'none',
-  },
   cardContent: {
+    alignItems: 'stretch',
     backgroundColor: colors.darkCharcoal,
     display: 'flex',
     flexDirection: 'row',
@@ -34,10 +25,16 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 0,
     flexShrink: 1,
     flexDirection: 'column',
+    justifyContent: 'space-between',
     maxWidth: '100%',
     overflowX: 'hidden',
     padding: '0.5em',
     width: '100%',
+  },
+  cardTextRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyItems: 'space-between',
   },
   foregroundImage: {
     bottom: '-4px',
@@ -85,9 +82,37 @@ const useStyles = makeStyles(theme => ({
     fontFamily: typography.mono,
     fontSize: '75%',
   },
-  title: {
+  nowPlaying: {
+    color: theme.palette.primary.light,
+    fontFamily: typography.sans,
+    fontSize: '75%',
+    fontStyle: 'oblique',
+    fontWeight: theme.typography.fontWeightLight,
+  },
+  podcastCard: {
+    border: `1px solid ${colors.vintageTubeDark}`,
+    borderRadius: '4px',
+    cursor: 'pointer',
+    margin: '0.1em',
+    minHeight: '4em',
+    userSelect: 'none',
+  },
+  promoted: {
     color: theme.palette.text.secondary,
-    fontFamily: typography.serif,
+    fontFamily: typography.sans,
+    fontSize: '70%',
+    fontStyle: 'oblique',
+    fontWeight: theme.typography.fontWeightLight,
+    marginLeft: 'auto',
+  },
+  starred: {
+    color: theme.palette.text.secondary,
+    fontSize: '75%',
+    marginLeft: 'auto',
+  },
+  title: {
+    color: theme.palette.text.primary,
+    fontFamily: theme.typography.serif,
     fontSize: '75%',
     fontWeight: theme.typography.fontWeightBold,
     overflowX: 'hidden',
@@ -97,14 +122,18 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-// const makeSelectPodcast = (dispatch, podcast) => () => {
-//   dispatch(selectPodcast(podcast))
-// }
-
 const PodcastCard = ({podcast}) => {
   const {rss, error: podcastError} = usePodcast(podcast)
 
   const classes = useStyles()
+
+  const selectedAudio = useSelector(selectors.getSelectedAudio)
+  const isPlaying =
+    selectedAudio?.podcastId === podcast?.id
+      && selectedAudio?.mode === storeConstants.AUDIO_MODE_PLAY
+
+  const starred = useSelector(selectors.getStarred)
+  const isStarred = podcast?.id && starred ? !!starred[podcast.id] : false
 
   const title = channelSelectors.v2.title(rss)
   const language = channelSelectors.v2.language(rss)
@@ -113,7 +142,7 @@ const PodcastCard = ({podcast}) => {
   const selectThis = () => dispatch(actions.selectPodcast(podcast))
 
   return (
-    <div className={classes.card} onClick={selectThis}>
+    <div className={classes.podcastCard} onClick={selectThis}>
       <div className={classes.cardContent}>
         <div className={classes.foregroundImageContainer}>
           <LazyPodcastTitleImage className={classes.foregroundImage} podcast={podcast} />
@@ -121,11 +150,22 @@ const PodcastCard = ({podcast}) => {
           <div className={classes.foregroundImageHorizGloss} />
         </div>
         <div className={classes.cardText}>
-          <div className={classes.title}>
-            {title}
+          <div className={classes.cardTextRow}>
+            <div className={classes.title}>
+              {title}
+            </div>
+            { isStarred && (<div className={classes.starred}>⭐</div>) }
           </div>
-          <div className={classes.language}>
-            {language}
+          <div className={classes.cardTextRow}>
+            <div className={classes.nowPlaying}>
+              { isPlaying ? 'now playing' : ' ' }
+            </div>
+          </div>
+          <div className={classes.cardTextRow}>
+            <div className={classes.language}>
+              {language}
+            </div>
+            { podcast?.suggested && (<div className={classes.promoted}>(promoted)</div>) }
           </div>
         </div>
       </div>

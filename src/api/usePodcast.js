@@ -8,7 +8,7 @@ const defaultParseXmlString = parseXml
 
 import { IdbKvTimedExpiryCache } from './idb'
 
-const FRESHNESS = 300
+const FRESHNESS = 86400
 const idbStore = new IdbKvTimedExpiryCache('rss', FRESHNESS)
 
 const clientOptions = {
@@ -27,7 +27,9 @@ const fetchRssDocViaProxy = url => {
   return client.get(proxyUrl).then(response => response.data)
 }
 
-const usePodcast = (podcast, parseXmlString=defaultParseXmlString) => {
+const usePodcast = (podcast, options={}, parseXmlString=defaultParseXmlString) => {
+  const forceRevalidate = options.forceRevalidate ?? false
+
   const [rss, setRss] = React.useState()
   const [error, setError] = React.useState()
 
@@ -44,11 +46,13 @@ const usePodcast = (podcast, parseXmlString=defaultParseXmlString) => {
   React.useEffect(() => {
     if (!podcastId || !podcastUrl) return
 
+    let componentDidUnmount = false
+
     idbStore.get(podcastId).then(
       params => {
         const [cacheStatus, maybeData] = params
 
-        if (cacheStatus !== IdbKvTimedExpiryCache.MISS) {
+        if (cacheStatus !== IdbKvTimedExpiryCache.MISS && !componentDidUnmount) {
           setRss(maybeData)
         }
 
@@ -56,17 +60,19 @@ const usePodcast = (podcast, parseXmlString=defaultParseXmlString) => {
       }
     ).then(
       ([cacheStatus]) => {
-        if (cacheStatus === IdbKvTimedExpiryCache.FRESH) return Promise.resolve()
+        if (cacheStatus === IdbKvTimedExpiryCache.FRESH && !forceRevalidate) return Promise.resolve()
 
         return fetchRssDocViaProxy(podcastUrl).then(parseRss).then(
           rss => {
-            setRss(rss)
+            if (!componentDidUnmount) setRss(rss)
 
             return idbStore.set(podcastId, rss)
           }
         )
       }
     ).catch(handleError)
+
+    return () => { componentDidUnmount = true }
   }, [podcastId, podcastUrl])
 
   return {error, rss}

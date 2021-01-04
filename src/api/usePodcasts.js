@@ -1,3 +1,6 @@
+
+import { useSelector } from 'react-redux'
+import * as selectors from '../store/selectors'
 import useAirtable from './useAirtable'
 
 const base = 'appXoertP1WJjd4TQ'
@@ -5,7 +8,7 @@ const table = 'Podcasts'
 
 const sortList = set => ([...set.values()]).sort((a, b) => a.localeCompare(b))
 
-const reformat = data => {
+const reformat = (data, isStar) => {
   if (!data) return {data: null, categories: null, subCategories: null}
 
   const categories = new Set()
@@ -52,8 +55,19 @@ const reformat = data => {
   ).filter(feed => {
     return !feed.disabled && !!feed.url
   }).sort((feed1, feed2) => {
-    if (feed1.suggested && !feed2.suggested) return -1
-    else if (feed2.suggested && !feed1.suggested) return 1
+    if (isStar(feed1.id)) {
+      if (!isStar(feed2.id)) return -1
+      else return feed1.name.localeCompare(feed2.name)
+    }
+    else if (isStar(feed2.id)) {
+      return 1
+    }
+    else if (feed1.suggested) {
+      if (!feed2.suggested) return -1
+      else if (feed1.suggested !== feed2.suggested) return feed1.suggested - feed2.suggested
+      else return feed1.name.localeCompare(feed2.name)
+    }
+    else if (feed2.suggested) return 1
     else return feed1.name.localeCompare(feed2.name)
   })
 
@@ -69,7 +83,10 @@ const reformat = data => {
 const usePodcasts = () => {
   const {data, error} = useAirtable(base, table)
 
-  const reformattedData = reformat(data)
+  const starred = useSelector(selectors.getStarred)
+  const isStar = starred ? podcastId => !!starred[podcastId] : () => false
+
+  const reformattedData = reformat(data, isStar)
 
   return {...reformattedData, error}
 }

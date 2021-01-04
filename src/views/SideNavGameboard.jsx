@@ -21,14 +21,15 @@ const useStyles = makeStyles(theme => ({
   item: {
     alignItems: 'center',
     border: `1px solid transparent`,
+    color: theme.palette.text.secondary,
     cursor: 'pointer',
     display: 'flex',
     flexDirection: 'row',
     marginBottom: '0.5em',
   },
   itemSelected: {
-    backgroundColor: Color(theme.palette.primary.dark).fade(0.7).string(),
-    border: `1px solid ${theme.palette.primary.dark}`,
+    backgroundColor: Color(theme.palette.primary.dark).fade(0.8).string(),
+    border: `1px solid ${Color(theme.palette.primary.dark).fade(0.6).string()}`,
     borderRadius: theme.shape.borderRadius,
     color: theme.palette.text.primary,
     fontWeight: theme.typography.fontWeightBold,
@@ -38,7 +39,6 @@ const useStyles = makeStyles(theme => ({
     marginRight: '0.5em',
   },
   itemName: {
-    color: theme.palette.text.secondary,
     fontSize: '75%',
   },
 }))

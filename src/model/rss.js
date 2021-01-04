@@ -23,5 +23,10 @@ export const itemSelectors = {
   v2: {
     audioType: item => item?.enclosure?.attributes?.type,
     audioUrl: item => item?.enclosure?.attributes?.url,
+    description: item => item?.description,
+    duration: item=> item?.['itunes:duration'],
+    pubDate: item => item?.pubDate,
+    title: item => item?.title,
+    url: item => item?.link,
   },
 }

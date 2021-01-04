@@ -17,8 +17,8 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
   },
   categorySelected: {
-    backgroundColor: Color(theme.palette.primary.dark).fade(0.7).string(),
-    border: `1px solid ${theme.palette.primary.dark}`,
+    backgroundColor: Color(theme.palette.primary.dark).fade(0.8).string(),
+    border: `1px solid ${Color(theme.palette.primary.dark).fade(0.6).string()}`,
     borderRadius: theme.shape.borderRadius,
     color: theme.palette.text.primary,
     fontWeight: theme.typography.fontWeightBold,

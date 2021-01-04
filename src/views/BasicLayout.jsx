@@ -1,12 +1,12 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Hidden from '@material-ui/core/Hidden'
 
 import * as selectors from '../store/selectors'
 
+import * as consts from './consts'
 import AppBar from './AppBar'
 import PodcastsGrid from './PodcastsGrid'
 import SelectedPodcast from './SelectedPodcast'
@@ -17,11 +17,9 @@ import SideNav from './SideNav'
 // * Donut scroll away the app bar
 // * Lets just scroll what makes sense to scroll
 
-const APPBAR_HEIGHT = '2.5em'
-
 const useStyles = makeStyles(theme => ({
   appBarContainer: {
-    minHeight: APPBAR_HEIGHT,
+    minHeight: consts.APPBAR_HEIGHT,
   },
   basicLayout: {
     display: 'flex',
@@ -35,8 +33,8 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'row',
-    maxHeight: `calc(100vh - ${APPBAR_HEIGHT})`,
-    minHeight: `calc(100vh - ${APPBAR_HEIGHT})`,
+    maxHeight: `calc(100vh - ${consts.APPBAR_HEIGHT})`,
+    minHeight: `calc(100vh - ${consts.APPBAR_HEIGHT})`,
   },
   // 🤘🤘🤘🤘🤘🤘🤘🤘🤘🤘🤘🤘
   //
@@ -51,14 +49,14 @@ const useStyles = makeStyles(theme => ({
   //   },
   // },
   podcastsGridContainer: {
-    flex: 70,
+    flex: 73,
     maxHeight: '100%',
     overflowX: 'hidden',
     overflowY: 'auto',
     paddingTop: theme.spacing(1),
   },
   sideNavContainer: {
-    flex: 30,
+    flex: 27,
     maxHeight: '100%',
     overflowY: 'auto',
     paddingTop: '0.5em',

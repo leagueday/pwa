@@ -12,9 +12,11 @@ import MenuIcon from '@material-ui/icons/Menu'
 import PauseIcon from '@material-ui/icons/PauseRounded'
 import PlayIcon from '@material-ui/icons/PlayArrowRounded'
 
+import * as colors from '../styling/colors'
 import * as actions from '../store/actions'
 import * as selectors from '../store/selectors'
 
+import * as consts from './consts'
 import MenuNav from './MenuNav'
 
 const useStyles = makeStyles(theme => ({
@@ -23,7 +25,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.control,
     display: 'flex',
     flexDirection: 'row',
-    minHeight: '2.5em',
+    maxHeight: consts.APPBAR_HEIGHT,
+    minHeight: consts.APPBAR_HEIGHT,
   },
   burgerButton: {
   },
@@ -50,6 +53,9 @@ const useStyles = makeStyles(theme => ({
   logo: {
     marginLeft: '1em',
     maxHeight: '1.5em',
+  },
+  vintageTube: {
+    color: colors.vintageTubeBright,
   },
 }))
 
@@ -95,11 +101,11 @@ const AppBar = () => {
             size="small"
             value="showCategories"
           >
-            <MenuIcon />
+            <MenuIcon className={classes.vintageTube} />
           </IconButton >
         </div>
       </Tooltip>
-      <img className={classes.logo} src="/img/logo.png" alt="LeagueDay" />
+      <img className={classes.logo} src="/img/logo_vt.png" alt="LeagueDay" />
       <Hidden xsDown>
         <div className={classes.feedbackCluster}>
           <Tooltip title="lmk what feedback link">
