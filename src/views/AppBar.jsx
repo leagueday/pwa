@@ -37,8 +37,9 @@ const useStyles = makeStyles(theme => ({
   },
   discordLogo: {
     marginLeft: '0.5em',
-    maxHeight: '1.5em',
-    paddingTop: '0.1em',
+    marginBottom: '-0.1em',
+    maxHeight: '1.75em',
+    paddingTop: '0.35em',
   },
   feedbackCluster: {
     alignItems: 'center',
@@ -50,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: '2em',
     userSelect: 'none',
   },
-  feedbackLink: {
+  link: {
     color: theme.palette.secondary.light,
     textDecoration: 'none',
   },
@@ -112,12 +113,13 @@ const AppBar = () => {
       <img className={classes.logo} src="/img/logo_vt.png" alt="LeagueDay" />
       <Hidden xsDown>
         <div className={classes.feedbackCluster}>
-          <a className={classes.feedbackLink}
+          <a className={classes.link}
             href="https://docs.google.com/forms/d/e/1FAIpQLSf_pA_9J5Tcp6wgiyDA5VzjZHvscKtsT2810dDy9MmRjVsBWA/viewform"
-            target="_none">Give us Feedback ☺️</a>
-          <Tooltip title="lmk what discord link">
+            target="_none">Give us Feedback ☺️
+          </a>
+          <a className={classes.link} href="https://discord.gg/uXDQydmnVu" target="_none">
             <img className={classes.discordLogo} src="/img/Discord-Logo-Color.png" alt="Discord" />
-          </Tooltip>
+          </a>
         </div>
       </Hidden>
       <Hidden smUp>
