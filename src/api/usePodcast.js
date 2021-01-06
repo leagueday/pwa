@@ -2,7 +2,8 @@ import React from 'react'
 import axios from 'axios'
 import parseXml from '@rgrove/parse-xml'
 
-import { laminate } from './util'
+import * as apiConsts from './consts'
+import { laminate, proxifyUrl } from './util'
 
 const defaultParseXmlString = parseXml
 
@@ -16,12 +17,7 @@ const clientOptions = {
 const client = axios.create(clientOptions)
 
 const fetchRssDocViaProxy = url => {
-  const params = new URLSearchParams({
-    kind: 'doc',
-    url
-  })
-
-  const proxyUrl = `/.netlify/functions/node-fetch?${params}`
+  const proxyUrl = proxifyUrl(url, apiConsts.PROXY_RESPONSE_KIND_DOC)
   console.log('fetching doc', url, 'via', proxyUrl)
 
   return client.get(proxyUrl).then(response => response.data)

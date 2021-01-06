@@ -3,6 +3,8 @@ import axios from 'axios'
 
 import { IdbKvTimedExpiryCache } from './idb'
 
+import * as apiConsts from './consts'
+import { proxifyUrl } from './util'
 import usePodcast from './usePodcast'
 import { channelSelectors } from '../model/rss'
 
@@ -17,12 +19,7 @@ const client = axios.create(clientOptions)
 // const fetchImageBlobDirectly = url => client.get(url).then(response => response.data)
 
 const fetchImageBlobViaProxy = url => {
-  const params = new URLSearchParams({
-    kind: 'imgBlob',
-    url
-  })
-
-  const proxyUrl = `/.netlify/functions/node-fetch?${params}`
+  const proxyUrl = proxifyUrl(url, apiConsts.PROXY_RESPONSE_KIND_IMG)
   console.log('fetching img', url, 'via', proxyUrl)
 
   return client.get(proxyUrl).then(response => response.data)

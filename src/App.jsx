@@ -12,7 +12,7 @@ import ThemeProvider from './styling/ThemeProvider'
 
 import usePodcasts from './api/usePodcasts'
 
-import AudioPlayer from './views/AudioPlayer'
+import Audio from './views/Audio'
 import BasicLayout from './views/BasicLayout'
 import Error from './views/Error'
 import Loading from './views/Loading'
@@ -57,7 +57,7 @@ const App = () => (
   <StoreProvider>
     <ThemeProvider>
       <CssBaseline />
-      <AudioPlayer />
+      <Audio />
       <ThemedAppContent />
     </ThemeProvider>
   </StoreProvider>

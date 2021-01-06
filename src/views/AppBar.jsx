@@ -64,16 +64,11 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const BURGER_MODE_MENU = 'menu burger'
-const BURGER_MODE_SIDENAV_TOGGLE = 'toggle burger'
-
 const AppBar = () => {
   const dispatch = useDispatch()
 
   const theme = useTheme()
   const screenIsXs = useMediaQuery(theme.breakpoints.only('xs'))
-
-  const burgerMode = screenIsXs ? BURGER_MODE_MENU : BURGER_MODE_SIDENAV_TOGGLE
 
   const classes = useStyles()
 

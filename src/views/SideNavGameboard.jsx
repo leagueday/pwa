@@ -5,6 +5,8 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
+import * as apiConsts from '../api/consts'
+import { proxifyHttpUrl } from '../api/util'
 import useGameboard from '../api/useGameboard'
 import * as actions from '../store/actions'
 import * as selectors from '../store/selectors'
@@ -65,9 +67,11 @@ const Item = ({data}) => {
       filterKind === 'cat' ? filterParam : null,
       filterKind === 'subcat' ? filterParam : null))
 
+  const maybeProxiedImageUrl = proxifyHttpUrl(imageUrl, apiConsts.PROXY_RESPONSE_KIND_IMG)
+
   return (
     <div className={cx(classes.item, {[classes.itemSelected]: isSelected})} onClick={toggleIsSelected}>
-      <img className={classes.itemImage} src={imageUrl} alt={name} />
+      <img className={classes.itemImage} src={maybeProxiedImageUrl} alt={name} />
       <div className={classes.itemName}>
         {name}
       </div>

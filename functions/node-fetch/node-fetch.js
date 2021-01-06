@@ -1,6 +1,9 @@
 const fetch = require('node-fetch')
 // const FileType = require('file-type')
 
+const PROXY_RESPONSE_KIND_IMG = 'imgBlob'
+const PROXY_RESPONSE_KIND_DOC = 'doc'
+
 const handler = async (event, context) => {
   const queryStringParameters = event.queryStringParameters
   const foreignUrl = queryStringParameters.url
@@ -16,7 +19,7 @@ const handler = async (event, context) => {
 
   const contentType = response.headers.get('content-type')
 
-  if (queryStringParameters.kind === 'imgBlob') {
+  if (queryStringParameters.kind === PROXY_RESPONSE_KIND_IMG) {
     // Netlify restricts lambda responses to strings.
     // So here we encode a base-64 string.
     const buffer = await response.buffer()
@@ -32,7 +35,7 @@ const handler = async (event, context) => {
       isBase64Encoded: true,
       statusCode: 200,
     }
-  } else if (queryStringParameters.kind === 'doc') {
+  } else if (queryStringParameters.kind === PROXY_RESPONSE_KIND_DOC) {
     return {
       body: await response.text(),
       headers: {

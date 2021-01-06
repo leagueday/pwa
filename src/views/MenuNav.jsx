@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 
+import * as apiConsts from '../api/consts'
+import { isHttpUrl, proxifyHttpUrl } from '../api/util'
 import useGameboard from '../api/useGameboard'
 import * as actions from '../store/actions'
 import * as selectors from '../store/selectors'
@@ -69,9 +71,11 @@ const MenuContent = ({data}) => {
 
   const classes = useStyles()
 
+  const maybeProxiedImageUrl = proxifyHttpUrl(imageUrl, apiConsts.PROXY_RESPONSE_KIND_IMG)
+
   return (
     <div className={classes.menuItemContent}>
-      {imageUrl && (<img className={classes.menuItemImage} src={imageUrl} />)}
+      {imageUrl && (<img className={classes.menuItemImage} src={maybeProxiedImageUrl} />)}
       <div className={classes.menuItemText}>
         {name}
       </div>

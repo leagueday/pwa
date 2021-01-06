@@ -1,27 +1,19 @@
 import React from 'react'
 
 /**
- * views/AudioPlayer
+ * views/Audio
  *
- * this emits some dom, `<audio ... />`
- * it's a view in the sense of data projection/transformation
- * this isn't actually visible on screen
+ * react wrapper of `<audio />`
+ *
+ * renders from redux into dom, so it's decoupled from the
+ * controller but the way they both use redux is hardwired
  */
 import { useSelector } from 'react-redux'
-
-import { makeStyles } from '@material-ui/core/styles'
 
 import * as constants from '../store/constants'
 import * as selectors from '../store/selectors'
 
-const useStyles = makeStyles({
-  audioContainer: {
-  },
-})
-
-const AudioPlayer = () => {
-  const classes = useStyles()
-
+const Audio = () => {
   const audioRef = React.useRef()
 
   const selectedAudioMode = useSelector(selectors.getSelectedAudioMode)
@@ -54,10 +46,10 @@ const AudioPlayer = () => {
   }, [audioRef])
 
   return (
-    <div className={classes.audioContainer}>
+    <span>
       <audio ref={audioRef} src={selectedAudioUrl} autoPlay />
-    </div>
+    </span>
   )
 }
 
-export default AudioPlayer
+export default Audio
