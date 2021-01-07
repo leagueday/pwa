@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     display: 'flex',
     flexDirection: 'row',
-    marginBottom: '0.5em',
+    marginBottom: '0.25em',
   },
   itemSelected: {
     backgroundColor: Color(theme.palette.primary.dark).fade(0.8).string(),
@@ -36,11 +36,15 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.fontWeightBold,
   },
   itemImage: {
-    height: '1.25em',
-    marginRight: '0.5em',
+    height: '1em',
+    marginRight: '0.35em',
   },
   itemName: {
-    fontSize: '75%',
+    fontSize: '85%',
+    overflowX: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    width: '100%',
   },
 }))
 

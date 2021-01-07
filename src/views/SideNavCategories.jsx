@@ -14,6 +14,11 @@ const useStyles = makeStyles(theme => ({
     border: `1px solid transparent`,
     color: theme.palette.text.secondary,
     cursor: 'pointer',
+    fontSize: '85%',
+    overflowX: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    width: '100%',
   },
   categorySelected: {
     backgroundColor: Color(theme.palette.primary.dark).fade(0.8).string(),

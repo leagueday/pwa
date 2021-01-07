@@ -21,6 +21,8 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
+    overflowX: 'hidden',
+    width: '100%',
   },
   menuItemImage: {
     height: '0.9em',
@@ -28,6 +30,10 @@ const useStyles = makeStyles(theme => ({
   },
   menuItemText: {
     fontSize: '75%',
+    overflowX: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    width: '100%',
   },
 }))
 

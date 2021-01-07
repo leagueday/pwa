@@ -19,6 +19,7 @@ import SideNav from './SideNav'
 
 const useStyles = makeStyles(theme => ({
   appBarContainer: {
+    maxHeight: consts.APPBAR_HEIGHT,
     minHeight: consts.APPBAR_HEIGHT,
   },
   basicLayout: {
@@ -36,8 +37,6 @@ const useStyles = makeStyles(theme => ({
     maxHeight: `calc(100vh - ${consts.APPBAR_HEIGHT})`,
     minHeight: `calc(100vh - ${consts.APPBAR_HEIGHT})`,
   },
-  // 🤘🤘🤘🤘🤘🤘🤘🤘🤘🤘🤘🤘
-  //
   // contentWithNav: {  - tbd menu
   //   [theme.breakpoints.up('sm')]: {
   //     maxHeight: `calc(100vh - ${APPBAR_HEIGHT})`,
@@ -49,17 +48,17 @@ const useStyles = makeStyles(theme => ({
   //   },
   // },
   podcastsGridContainer: {
-    flex: 73,
+    flex: 1,
     maxHeight: '100%',
     overflowX: 'hidden',
     overflowY: 'auto',
     paddingTop: theme.spacing(1),
   },
   sideNavContainer: {
-    flex: 27,
     maxHeight: '100%',
     overflowY: 'auto',
     paddingTop: '0.5em',
+    width: consts.SIDENAV_WIDTH,
   },
 }))
 
