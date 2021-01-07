@@ -5,11 +5,10 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
+import { actions, selectors } from '../store'
 import * as apiConsts from '../api/consts'
 import { proxifyHttpUrl } from '../api/util'
 import useGameboard from '../api/useGameboard'
-import * as actions from '../store/actions'
-import * as selectors from '../store/selectors'
 
 import Error from './Error'
 import Loading from './Loading'

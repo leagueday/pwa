@@ -9,12 +9,9 @@ import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 
 import MenuIcon from '@material-ui/icons/Menu'
-import PauseIcon from '@material-ui/icons/PauseRounded'
-import PlayIcon from '@material-ui/icons/PlayArrowRounded'
 
 import * as colors from '../styling/colors'
-import * as actions from '../store/actions'
-import * as selectors from '../store/selectors'
+import { actions, selectors } from '../store'
 
 import * as consts from './consts'
 import MenuNav from './MenuNav'

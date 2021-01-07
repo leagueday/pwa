@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Hidden from '@material-ui/core/Hidden'
 
-import * as selectors from '../store/selectors'
+import { selectors } from '../store'
 
 import * as consts from './consts'
 import AppBar from './AppBar'

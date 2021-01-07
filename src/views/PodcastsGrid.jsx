@@ -6,7 +6,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Grid from '@material-ui/core/Grid'
 
 import * as colors from '../styling/colors'
-import * as selectors from '../store/selectors'
+import { selectors } from '../store'
 
 import usePodcasts from '../api/usePodcasts'
 import PodcastCard from './PodcastCard'

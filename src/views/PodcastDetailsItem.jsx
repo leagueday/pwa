@@ -11,10 +11,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
 
+import { constants as storeConstants, actions, selectors } from '../store'
 import {itemSelectors} from '../model/rss'
-import * as storeConstants from '../store/constants'
-import * as actions from '../store/actions'
-import * as selectors from '../store/selectors'
 
 import { stripHtml } from './util'
 

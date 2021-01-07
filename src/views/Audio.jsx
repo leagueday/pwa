@@ -10,8 +10,7 @@ import React from 'react'
  */
 import { useSelector } from 'react-redux'
 
-import * as constants from '../store/constants'
-import * as selectors from '../store/selectors'
+import { constants as storeConstants, selectors } from '../store'
 
 const Audio = () => {
   const audioRef = React.useRef()
@@ -22,9 +21,9 @@ const Audio = () => {
   React.useEffect(() => {
     if (!audioRef.current) return
 
-    if (selectedAudioMode === constants.AUDIO_MODE_PAUSE) {
+    if (selectedAudioMode === storeConstants.AUDIO_MODE_PAUSE) {
       audioRef.current.pause()
-    } else if (selectedAudioMode === constants.AUDIO_MODE_PLAY) {
+    } else if (selectedAudioMode === storeConstants.AUDIO_MODE_PLAY) {
       audioRef.current.play()
     }
   }, [audioRef, selectedAudioMode])

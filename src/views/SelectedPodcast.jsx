@@ -1,14 +1,12 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import cx from 'classnames'
 
 import {makeStyles, useTheme} from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Container from '@material-ui/core/Container'
 import Modal from '@material-ui/core/Modal'
 
-import { getSelectedPodcast } from '../store/selectors'
-import * as actions from '../store/actions'
+import { actions, selectors } from '../store'
 import * as colors from '../styling/colors'
 
 import * as consts from './consts'
@@ -61,7 +59,7 @@ const SelectedPodcast = () => {
   const mdDown = useMediaQuery(theme.breakpoints.down('md'))
   const classes = useStyles()
 
-  const selectedPodcast = useSelector(getSelectedPodcast)
+  const selectedPodcast = useSelector(selectors.getSelectedPodcast)
 
   return (
     <Modal

@@ -2,9 +2,9 @@ import React from 'react'
 
 import { useSelector } from 'react-redux'
 
-import { ThemeProvider as MaterialThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { ThemeProvider as MaterialThemeProvider } from '@material-ui/core/styles'
 
-import * as selectors from '../store/selectors'
+import { selectors } from '../store'
 
 import * as themes from './themes'
 

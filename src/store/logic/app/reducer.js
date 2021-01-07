@@ -1,5 +1,5 @@
-import * as constants from '../constants'
-import * as ActionType from '../actionTypes';
+import * as constants from '../../constants'
+import * as ActionType from '../../actionTypes';
 
 const initialState = {
   categoryFilter: null,

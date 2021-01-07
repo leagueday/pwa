@@ -8,8 +8,7 @@ import Hidden from '@material-ui/core/Hidden'
 import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded'
 import StarRoundedIcon from '@material-ui/icons/StarRounded';
 
-import * as actions from '../store/actions'
-import * as selectors from '../store/selectors'
+import { constants as storeConstants, actions, selectors } from '../store'
 import * as rssSelectors from '../model/rss'
 import usePodcast from '../api/usePodcast'
 import useStarred from '../api/useStarred'
@@ -18,7 +17,6 @@ import { stripHtml } from './util'
 import LazyPodcastTitleImage from './LazyPodcastTitleImage'
 import PodcastAudioControls from './PodcastAudioControls'
 import PodcastDetailsItem from './PodcastDetailsItem'
-import * as storeConstants from '../store/constants'
 
 const useStyles = makeStyles(theme => ({
   colorTextPrimary: {
@@ -132,7 +130,7 @@ const PodcastDetails = props => {
   const isSelectedAudio = selectedAudio?.podcastId === selectedPodcast?.id
   const isPlaying = isSelectedAudio && selectedAudio?.mode === storeConstants.AUDIO_MODE_PLAY
 
-  const [addStar, removeStar] = useStarred()
+  const [, addStar, removeStar] = useStarred()
   const isStarred = starred && selectedPodcast?.id && starred[selectedPodcast.id]
 
   const dispatch = useDispatch()

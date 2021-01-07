@@ -1,10 +1,11 @@
 # redux setup
 
-This setup follows [the example](
+This setup starts with [the example](
 https://codesandbox.io/s/9on71rvnyo) provided by `react-redux` official docs.
 
-The only difference is the addition of the app's `Provider` component, that helps
-keep the `App` component a bit cleaner.
+Logic is factored into 3 parts, the app (main), audio, and router.
+
+Redux-dev-middleware and redux-thunk are added.
 
 Actions should follow the [Flux Standard Actions](
 https://github.com/redux-utilities/flux-standard-action#flux-standard-action) convention.

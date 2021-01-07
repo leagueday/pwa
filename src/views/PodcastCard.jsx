@@ -4,10 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../styling/colors'
+import { constants as storeConstants, actions, selectors } from '../store'
 import * as typography from '../styling/typography'
-import * as storeConstants from '../store/constants'
-import * as actions from '../store/actions'
-import * as selectors from '../store/selectors'
 import { channelSelectors } from '../model/rss'
 import usePodcast from '../api/usePodcast'
 

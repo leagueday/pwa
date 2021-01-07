@@ -6,10 +6,9 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 
 import * as apiConsts from '../api/consts'
+import { actions, selectors } from '../store'
 import { isHttpUrl, proxifyHttpUrl } from '../api/util'
 import useGameboard from '../api/useGameboard'
-import * as actions from '../store/actions'
-import * as selectors from '../store/selectors'
 import usePodcasts from '../api/usePodcasts'
 
 const useStyles = makeStyles(theme => ({

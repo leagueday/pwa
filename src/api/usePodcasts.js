@@ -1,7 +1,7 @@
+import React from 'react'
 
-import { useSelector } from 'react-redux'
-import * as selectors from '../store/selectors'
 import useAirtable from './useAirtable'
+import useStarred from './useStarred'
 
 const base = 'appXoertP1WJjd4TQ'
 const table = 'Podcasts'
@@ -83,10 +83,12 @@ const reformat = (data, isStar) => {
 const usePodcasts = () => {
   const {data, error} = useAirtable(base, table)
 
-  const starred = useSelector(selectors.getStarred)
-  const isStar = starred ? podcastId => !!starred[podcastId] : () => false
+  const [isStar] = useStarred()
 
-  const reformattedData = reformat(data, isStar)
+  const reformattedData = React.useMemo(
+    () => reformat(data, isStar),
+    [data, isStar]
+  )
 
   return {...reformattedData, error}
 }

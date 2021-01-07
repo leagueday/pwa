@@ -6,9 +6,8 @@ import cx from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 
+import { actions, selectors } from '../store'
 import usePodcasts from '../api/usePodcasts'
-import * as selectors from '../store/selectors'
-import * as actions from '../store/actions'
 
 const useStyles = makeStyles(theme => ({
   category: {
