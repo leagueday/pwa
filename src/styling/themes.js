@@ -17,7 +17,7 @@ export const spec = createMuiTheme({
       main: colors.vintageTubeFaint,
     },
     text: {
-      disabled: colors.vintageTubeDull,
+      disabled: colors.vintageTubeDull, // tbd this triggers a warning at runtime, type doesn't really have `disabled`
       hint: colors.vintageTube,
       primary: colors.vintageTubeBright,
       secondary: colors.vintageTubeFaint,

@@ -1,6 +1,10 @@
 
 function getPluginsForEnv(isProduction) {
-  const result = isProduction ? ['@babel/transform-runtime'] : ['react-hot-loader/babel']
+  const result = ['@babel/transform-runtime']
+
+  if (!isProduction) {
+    result.push('react-hot-loader/babel')
+  }
 
   result.push('@babel/plugin-proposal-class-properties')
 

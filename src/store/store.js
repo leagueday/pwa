@@ -2,13 +2,20 @@ import { applyMiddleware, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
 
-import { rootReducer } from './logic'
+import { createRootReducer } from './logic'
+import { createHistory, prepareHistory } from './logic/router'
+
+const [routerReducer, routerMiddleware] = createHistory()
 
 const store = createStore(
-  rootReducer,
+  createRootReducer({
+    router: routerReducer,
+  }),
   composeWithDevTools(
-    applyMiddleware(thunkMiddleware)
+    applyMiddleware(routerMiddleware, thunkMiddleware)
   )
 )
+
+prepareHistory(store)
 
 export default store

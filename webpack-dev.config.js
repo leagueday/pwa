@@ -10,6 +10,7 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
   devServer: {
     contentBase: '/dist',
+    historyApiFallback: true,
     hot: true,
     port: 3000,
     publicPath: '/',

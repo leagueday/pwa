@@ -13,9 +13,11 @@ import ThemeProvider from './styling/ThemeProvider'
 import usePodcasts from './api/usePodcasts'
 
 import Audio from './views/Audio'
-import BasicLayout from './views/BasicLayout'
 import Error from './views/Error'
 import Loading from './views/Loading'
+import Mushipan from './views/MushipanRouter'
+
+import { routesConfig } from './routes'
 
 const useStyles = makeStyles(theme => ({
   app: {
@@ -42,7 +44,7 @@ const ThemedAppContent = () => {
         <Paper className={classes.appCanvas}>
           {
             data
-              ? (<BasicLayout />)
+              ? (<Mushipan routes={routesConfig} />)
               : error
               ? (<Error e={error} />)
               : (<Loading />)

@@ -137,10 +137,10 @@ const PodcastCard = ({podcast}) => {
   const language = channelSelectors.v2.language(rss)
 
   const dispatch = useDispatch()
-  const selectThis = () => dispatch(actions.selectPodcast(podcast))
+  const gotoThisPodcast = () => dispatch(actions.pushHistory(`/podcast/${podcast.id}`))
 
   return (
-    <div className={classes.podcastCard} onClick={selectThis}>
+    <div className={classes.podcastCard} onClick={gotoThisPodcast}>
       <div className={classes.cardContent}>
         <div className={classes.foregroundImageContainer}>
           <LazyPodcastTitleImage className={classes.foregroundImage} podcast={podcast} />

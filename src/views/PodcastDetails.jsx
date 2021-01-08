@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
     fontSize: '85%',
     fontWeight: 100,
+    marginBottom: '0.5em',
     padding: '0.5em',
   },
   image: {
@@ -46,7 +47,6 @@ const useStyles = makeStyles(theme => ({
   items: {
     maxHeight: '100%',
     overflowY: 'auto',
-    paddingTop: '0.5em',
   },
   language: {
     color: theme.palette.text.secondary,
@@ -112,11 +112,12 @@ const useStyles = makeStyles(theme => ({
 const PodcastDetails = props => {
   const classes = useStyles()
 
-  const selectedPodcast = useSelector(selectors.getSelectedPodcast)
+  const podcast = props.podcast
+
   const starred = useSelector(selectors.getStarred)
   const selectedAudio = useSelector(selectors.getSelectedAudio)
 
-  const {rss} = usePodcast(selectedPodcast, {forceRevalidate: true})
+  const {rss} = usePodcast(podcast, {forceRevalidate: true})
 
   const description = rssSelectors.channelSelectors.v2.description(rss)
   const language = rssSelectors.channelSelectors.v2.language(rss)
@@ -127,11 +128,11 @@ const PodcastDetails = props => {
   const firstItemAudioUrl = rssSelectors.itemSelectors.v2.audioUrl(firstItem)
   const firstItemAudioType = rssSelectors.itemSelectors.v2.audioType(firstItem)
 
-  const isSelectedAudio = selectedAudio?.podcastId === selectedPodcast?.id
+  const isSelectedAudio = selectedAudio?.podcastId === podcast?.id
   const isPlaying = isSelectedAudio && selectedAudio?.mode === storeConstants.AUDIO_MODE_PLAY
 
   const [, addStar, removeStar] = useStarred()
-  const isStarred = starred && selectedPodcast?.id && starred[selectedPodcast.id]
+  const isStarred = starred && podcast?.id && starred[podcast.id]
 
   const dispatch = useDispatch()
   const onPause = () => {
@@ -140,13 +141,13 @@ const PodcastDetails = props => {
 
   const onPlay = isSelectedAudio
     ? () => { dispatch(actions.playAudio()) }
-    : () => { dispatch(actions.selectAudio(selectedPodcast?.id, firstItemAudioUrl, firstItemAudioType))}
+    : () => { dispatch(actions.selectAudio(podcast?.id, firstItemAudioUrl, firstItemAudioType))}
 
   return (
     <div className={cx(classes.podcastDetails, props.className)}>
       <div className={classes.titleLine}>
         <div className={classes.imageContainer}>
-          <LazyPodcastTitleImage className={classes.image} podcast={selectedPodcast} />
+          <LazyPodcastTitleImage className={classes.image} podcast={podcast} />
         </div>
         <div className={classes.simpleColumn}>
           <div className={classes.simpleRow}>
@@ -157,10 +158,10 @@ const PodcastDetails = props => {
               { isStarred
                 ? (<StarRoundedIcon
                   className={classes.star}
-                  onClick={() => removeStar(selectedPodcast?.id)}
+                  onClick={() => removeStar(podcast?.id)}
                 />) : (<StarBorderRoundedIcon
                   className={classes.star}
-                  onClick={() => addStar(selectedPodcast?.id)}
+                  onClick={() => addStar(podcast?.id)}
                 />)
               }
             </div>
@@ -190,7 +191,7 @@ const PodcastDetails = props => {
             return items?.map(
               item => (
                 <div key={tmpKey++} className={classes.item}>
-                  <PodcastDetailsItem podcastId={selectedPodcast?.id} item={item} />
+                  <PodcastDetailsItem podcastId={podcast?.id} item={item} />
                 </div>
               )
             )

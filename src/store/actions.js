@@ -1,4 +1,6 @@
-import * as ActionType from "./actionTypes";
+export { go as goHistory, push as pushHistory } from 'redux-first-history'
+
+import * as ActionType from './actionTypes'
 
 export const hideCategories = () => ({
   type: ActionType.HIDE_CATEGORIES,

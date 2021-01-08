@@ -1,13 +1,14 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import cx from 'classnames'
 
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTheme } from '@material-ui/core/styles'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
 
+import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded'
 import MenuIcon from '@material-ui/icons/Menu'
 
 import * as colors from '../styling/colors'
@@ -25,18 +26,14 @@ const useStyles = makeStyles(theme => ({
     maxHeight: consts.APPBAR_HEIGHT,
     minHeight: consts.APPBAR_HEIGHT,
   },
-  burgerButton: {
-  },
-  burgerButtonContainer: {
-    border: `1px solid ${theme.palette.grey[900]}`,
-    borderRadius: theme.shape.borderRadius,
-    margin: '0.1em',
-  },
   discordLogo: {
     marginLeft: '0.5em',
     marginBottom: '-0.1em',
     maxHeight: '1.75em',
     paddingTop: '0.35em',
+  },
+  clickable: {
+    cursor: 'pointer',
   },
   feedbackCluster: {
     alignItems: 'center',
@@ -56,12 +53,19 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '1em',
     maxHeight: '1.5em',
   },
+  mainButton: {
+  },
+  mainButtonContainer: {
+    border: `1px solid ${theme.palette.grey[900]}`,
+    borderRadius: theme.shape.borderRadius,
+    margin: '0.1em',
+  },
   vintageTube: {
     color: colors.vintageTubeBright,
   },
 }))
 
-const AppBar = () => {
+const AppBar = props => {
   const dispatch = useDispatch()
 
   const theme = useTheme()
@@ -71,38 +75,62 @@ const AppBar = () => {
 
   const showCategories = useSelector(selectors.getShowCategories)
 
-  const isCategoriesVisible = screenIsXs ? showCategories === true : showCategories !== false
+  const previousLocations = useSelector(selectors.getRouterPreviousLocations)
+  const backIsElsewhere = (previousLocations?.length ?? 1) === 1
 
-  let toggleShowCategories = null
-  let toggleShowCategoriesLabel = null
+  const goMain = () => { dispatch(actions.pushHistory('/')) }
+  const goBack = backIsElsewhere ? goMain : () => { dispatch(actions.goHistory(-1)) }
 
-  if (isCategoriesVisible) {
-    toggleShowCategories = () => dispatch(actions.hideCategories())
-    toggleShowCategoriesLabel = 'Hide Categories'
-  } else {
-    toggleShowCategories = () => dispatch(actions.showCategories())
-    toggleShowCategoriesLabel = 'Show Categories'
+  let mainButtonOnclick = null
+  let MainButtonMuiIcon = null
+  let extraLogoClass = null
+  let logoOnclick = null
+
+  // when not at main, tapping on the logo should go to main
+  if (props.mode !== 'main') {
+    extraLogoClass = classes.clickable
+    logoOnclick = goMain
   }
 
-  const burgerButtonRef = React.useRef()
+  // main button setup, given props.mode
+  if (props.mode === 'back') {
+    MainButtonMuiIcon = ArrowBackRoundedIcon
+    mainButtonOnclick = goBack
+  }
+  else { // main/default - burger button game/cat filters
+    MainButtonMuiIcon = MenuIcon
+
+    const isCategoriesVisible = screenIsXs ? showCategories === true : showCategories !== false
+
+    if (isCategoriesVisible) {
+      mainButtonOnclick = () => dispatch(actions.hideCategories())
+    } else {
+      mainButtonOnclick = () => dispatch(actions.showCategories())
+    }
+  }
+
+  const mainButtonRef = React.useRef()
 
   return (
     <div className={classes.appBarContainer}>
-      <Tooltip title={toggleShowCategoriesLabel}>
-        <div className={classes.burgerButtonContainer}>
-          <IconButton
-            ref={burgerButtonRef}
-            className={classes.burgerButton}
-            disableRipple
-            onClick={toggleShowCategories}
-            size="small"
-            value="showCategories"
-          >
-            <MenuIcon className={classes.vintageTube} />
-          </IconButton >
-        </div>
-      </Tooltip>
-      <img className={classes.logo} src="/img/logo_vt.png" alt="LeagueDay" />
+      <div className={classes.mainButtonContainer}>
+        <IconButton
+          ref={mainButtonRef}
+          className={classes.mainButton}
+          disableRipple
+          onClick={mainButtonOnclick}
+          size="small"
+          value="showCategories"
+        >
+          <MainButtonMuiIcon className={classes.vintageTube} />
+        </IconButton >
+      </div>
+      <img
+        className={cx(classes.logo, extraLogoClass)}
+        src="/img/logo_vt.png"
+        alt="LeagueDay"
+        onClick={logoOnclick}
+      />
       <Hidden xsDown>
         <div className={classes.feedbackCluster}>
           <a className={classes.link}
@@ -115,7 +143,7 @@ const AppBar = () => {
         </div>
       </Hidden>
       <Hidden smUp>
-        <MenuNav anchor={burgerButtonRef.current} />
+        <MenuNav anchor={mainButtonRef.current} />
       </Hidden>
     </div>
   )
