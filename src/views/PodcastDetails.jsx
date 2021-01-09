@@ -115,7 +115,9 @@ const PodcastDetails = props => {
   const podcast = props.podcast
 
   const starred = useSelector(selectors.getStarred)
-  const selectedAudio = useSelector(selectors.getSelectedAudio)
+
+  const audioPodcastId = useSelector(selectors.getAudioPodcastId)
+  const audioMode = useSelector(selectors.getAudioMode)
 
   const {rss} = usePodcast(podcast, {forceRevalidate: true})
 
@@ -126,13 +128,15 @@ const PodcastDetails = props => {
   const items = rssSelectors.channelSelectors.v2.items(rss)
   const firstItem = items?.[0]
   const firstItemAudioUrl = rssSelectors.itemSelectors.v2.audioUrl(firstItem)
-  const firstItemAudioType = rssSelectors.itemSelectors.v2.audioType(firstItem)
+  // const firstItemAudioType = rssSelectors.itemSelectors.v2.audioType(firstItem)
+  const firstItemAudioDuration = rssSelectors.itemSelectors.v2.duration((firstItem))
 
-  const isSelectedAudio = selectedAudio?.podcastId === podcast?.id
-  const isPlaying = isSelectedAudio && selectedAudio?.mode === storeConstants.AUDIO_MODE_PLAY
+  const isSelectedAudio = audioPodcastId === podcast?.id
+  const isPlaying = isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
+  console.log('isSelectedAudio', isSelectedAudio, 'isPlaying', isPlaying)
 
-  const [, addStar, removeStar] = useStarred()
-  const isStarred = starred && podcast?.id && starred[podcast.id]
+  const [isStar, addStar, removeStar] = useStarred()
+  const isStarred = isStar(podcast?.id)
 
   const dispatch = useDispatch()
   const onPause = () => {
@@ -141,7 +145,7 @@ const PodcastDetails = props => {
 
   const onPlay = isSelectedAudio
     ? () => { dispatch(actions.playAudio()) }
-    : () => { dispatch(actions.selectAudio(podcast?.id, firstItemAudioUrl, firstItemAudioType))}
+    : () => { dispatch(actions.selectAudio(podcast?.id, firstItemAudioUrl, firstItemAudioDuration))}
 
   return (
     <div className={cx(classes.podcastDetails, props.className)}>

@@ -125,10 +125,9 @@ const PodcastCard = ({podcast}) => {
 
   const classes = useStyles()
 
-  const selectedAudio = useSelector(selectors.getSelectedAudio)
-  const isPlaying =
-    selectedAudio?.podcastId === podcast?.id
-      && selectedAudio?.mode === storeConstants.AUDIO_MODE_PLAY
+  const audioPodcastId = useSelector(selectors.getAudioPodcastId)
+  const audioMode = useSelector(selectors.getAudioMode)
+  const isPlaying = audioPodcastId === podcast?.id && audioMode === storeConstants.AUDIO_MODE_PLAY
 
   const starred = useSelector(selectors.getStarred)
   const isStarred = podcast?.id && starred ? !!starred[podcast.id] : false

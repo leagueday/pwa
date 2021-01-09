@@ -94,16 +94,17 @@ const PodcastDetailsItem = ({podcastId, item}) => {
   const [expanded, setExpanded] = React.useState(false)
 
   const audioType = itemSelectors.v2.audioType(item)
-  const audioUrl = itemSelectors.v2.audioUrl(item)
+  const itemAudioUrl = itemSelectors.v2.audioUrl(item)
   const description = itemSelectors.v2.description(item)
   const duration = itemSelectors.v2.duration(item)
   const pubDate = itemSelectors.v2.pubDate(item)
   const title = itemSelectors.v2.title(item)
   const url = itemSelectors.v2.url(item)
 
-  const selectedAudio = useSelector(selectors.getSelectedAudio)
-  const isSelectedAudio = selectedAudio?.url && selectedAudio.url === audioUrl
-  const isPlaying = isSelectedAudio && selectedAudio.mode === storeConstants.AUDIO_MODE_PLAY
+  const audioUrl = useSelector(selectors.getAudioUrl)
+  const audioMode = useSelector(selectors.getAudioMode)
+  const isSelectedAudio = audioUrl && audioUrl === itemAudioUrl
+  const isPlaying = isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
 
   const onClick = () => setExpanded(!expanded)
   const onPauseClick = ev => {

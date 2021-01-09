@@ -2,30 +2,11 @@ export { go as goHistory, push as pushHistory } from 'redux-first-history'
 
 import * as ActionType from './actionTypes'
 
+// App
+
 export const hideCategories = () => ({
   type: ActionType.HIDE_CATEGORIES,
   payload: {
-  }
-})
-
-export const pauseAudio = () => ({
-  type: ActionType.PAUSE_AUDIO,
-  payload: {
-  }
-})
-
-export const playAudio = () => ({
-  type: ActionType.PLAY_AUDIO,
-  payload: {
-  }
-})
-
-export const selectAudio = (podcastId, url, type) => ({
-  type: ActionType.SELECT_AUDIO,
-  payload: {
-    podcastId,
-    type,
-    url,
   }
 })
 
@@ -75,5 +56,42 @@ export const unstarPodcast = podcastId => ({
   type: ActionType.UNSTAR_PODCAST,
   payload: {
     podcastId
+  }
+})
+
+// Audio
+
+export const pauseAudio = () => ({
+  type: ActionType.PAUSE_AUDIO,
+  payload: {
+  }
+})
+
+export const playAudio = () => ({
+  type: ActionType.PLAY_AUDIO,
+  payload: {
+  }
+})
+
+export const selectAudio = (podcastId, url, advertisedDuration) => ({
+  type: ActionType.SELECT_AUDIO,
+  payload: {
+    advertisedDuration,
+    podcastId,
+    url,
+  }
+})
+
+export const setAudioDuration = duration => ({
+  type: ActionType.SET_AUDIO_DURATION,
+  payload: {
+    duration,
+  }
+})
+
+export const setAudioPosition = position => ({
+  type: ActionType.SET_AUDIO_POSITION,
+  payload: {
+    position,
   }
 })

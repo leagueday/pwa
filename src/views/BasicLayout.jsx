@@ -1,16 +1,13 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Hidden from '@material-ui/core/Hidden'
 
-import { selectors } from '../store'
-
+import * as colors from '../styling/colors'
 import * as consts from './consts'
 import AppBar from './AppBar'
-import PodcastsGrid from './PodcastsGrid'
+import AudioControls from './AudioControls'
 import SelectedPodcast from './SelectedPodcast'
-import SideNav from './SideNav'
 
 // BasicLayout
 //
@@ -18,10 +15,6 @@ import SideNav from './SideNav'
 // * Lets just scroll what makes sense to scroll
 
 const useStyles = makeStyles(theme => ({
-  appBarContainer: {
-    maxHeight: consts.APPBAR_HEIGHT,
-    minHeight: consts.APPBAR_HEIGHT,
-  },
   basicLayout: {
     display: 'flex',
     flexDirection: 'column',
@@ -30,38 +23,56 @@ const useStyles = makeStyles(theme => ({
     maxHeight: '100vh',
     minHeight: '100vh',
   },
-  content: {
+  basicLayoutAppBar: {
+    maxHeight: consts.APPBAR_HEIGHT,
+    minHeight: consts.APPBAR_HEIGHT,
+  },
+  basicLayoutAudioControls: {
+    maxHeight: consts.AUDIO_CONTROLS_HEIGHT,
+    minHeight: consts.AUDIO_CONTROLS_HEIGHT,
+  },
+  basicLayoutContent: {
     alignItems: 'stretch',
+    borderBottom: `1px solid ${colors.darkGreen}`,
+    borderTop: `1px solid ${colors.darkGreen}`,
     display: 'flex',
     flexDirection: 'row',
+  },
+  contentWhenAudioDisplayed: {
+    maxHeight: `calc(100vh - ${consts.APPBAR_HEIGHT} - ${consts.AUDIO_CONTROLS_HEIGHT})`,
+    minHeight: `calc(100vh - ${consts.APPBAR_HEIGHT} - ${consts.AUDIO_CONTROLS_HEIGHT})`,
+  },
+  contentWhenAudioHidden: {
     maxHeight: `calc(100vh - ${consts.APPBAR_HEIGHT})`,
     minHeight: `calc(100vh - ${consts.APPBAR_HEIGHT})`,
   },
-  // contentWithNav: {  - tbd menu
-  //   [theme.breakpoints.up('sm')]: {
-  //     maxHeight: `calc(100vh - ${APPBAR_HEIGHT})`,
-  //     minHeight: `calc(100vh - ${APPBAR_HEIGHT})`,
-  //   },
-  //   [theme.breakpoints.only('xs')]: {
-  //     maxHeight: `calc(100vh - ${APPBAR_HEIGHT} - ${SMALLNAV_HEIGHT})`,
-  //     minHeight: `calc(100vh - ${APPBAR_HEIGHT} - ${SMALLNAV_HEIGHT})`,
-  //   },
-  // },
 }))
 
 const BasicLayout = props => {
   const classes = useStyles()
 
+  const isAudioDisplayed = false // tbd
+
   return (
     <>
       <SelectedPodcast />
       <div className={classes.basicLayout}>
-        <div className={classes.appBarContainer}>
+        <div className={classes.basicLayoutAppBar}>
           <AppBar mode={props.mode}/>
         </div>
-        <div className={classes.content}>
+        <div
+          className={cx(
+            classes.basicLayoutContent,
+            isAudioDisplayed ? classes.contentWhenAudioDisplayed : classes.contentWhenAudioHidden
+          )}
+        >
           {props.children}
         </div>
+        { isAudioDisplayed && (
+          <div className={classes.basicLayoutAudioControls}>
+            <AudioControls />
+          </div>
+        ) }
       </div>
     </>
   )

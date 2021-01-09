@@ -18,33 +18,6 @@ const reducer = (state = initialState, action) => {
         showCategories: false
       }
     }
-    case ActionType.PAUSE_AUDIO: {
-      return {
-        ...state,
-        selectedAudio: {
-          ...state.selectedAudio,
-          mode: constants.AUDIO_MODE_PAUSE,
-        }
-      }
-    }
-    case ActionType.PLAY_AUDIO: {
-      return {
-        ...state,
-        selectedAudio: {
-          ...state.selectedAudio,
-          mode: constants.AUDIO_MODE_PLAY
-        }
-      }
-    }
-    case ActionType.SELECT_AUDIO: {
-      return {
-        ...state,
-        selectedAudio: {
-          ...action.payload,
-          mode: constants.AUDIO_MODE_PLAY
-        }
-      }
-    }
     case ActionType.SELECT_PODCAST: {
       return {
         ...state,
@@ -92,7 +65,7 @@ const reducer = (state = initialState, action) => {
       }
     }
     default:
-      return state;
+      return state
   }
 }
 

@@ -1,8 +1,5 @@
 // app
 export const HIDE_CATEGORIES = 'HIDE_CATEGORIES'
-export const PAUSE_AUDIO = 'PAUSE_AUDIO'
-export const PLAY_AUDIO = 'PLAY_AUDIO'
-export const SELECT_AUDIO = 'SELECT_AUDIO'
 export const SELECT_PODCAST = 'SELECT_PODCAST'
 export const SET_CATEGORY_FILTER = 'SET_CATEGORY_FILTER'
 export const SET_STARRED = 'SET_STARRED'
@@ -10,3 +7,10 @@ export const SET_THEME = 'SET_THEME'
 export const SHOW_CATEGORIES = 'SHOW_CATEGORIES'
 export const STAR_PODCAST = 'STAR_PODCAST'
 export const UNSTAR_PODCAST = 'UNSTAR_PODCAST'
+
+// audio
+export const PAUSE_AUDIO = 'PAUSE_AUDIO'
+export const PLAY_AUDIO = 'PLAY_AUDIO'
+export const SELECT_AUDIO = 'SELECT_AUDIO'
+export const SET_AUDIO_DURATION = 'SET_AUDIO_DURATION'
+export const SET_AUDIO_POSITION = 'SET_AUDIO_POSITION'

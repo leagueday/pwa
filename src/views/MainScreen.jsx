@@ -17,7 +17,6 @@ const useStyles = makeStyles(theme => ({
     maxHeight: '100%',
     overflowX: 'hidden',
     overflowY: 'auto',
-    paddingTop: theme.spacing(1),
   },
   mainSidenav: {
     maxHeight: '100%',
