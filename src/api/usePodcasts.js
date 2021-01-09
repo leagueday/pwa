@@ -47,6 +47,7 @@ const reformat = (data, isStar) => {
         disabled: fields.Disabled,
         id,
         name: fields['Podcast Name'],
+        softDisabled: fields.SoftDisable,
         subCategory,
         suggested: fields.Suggested,
         url: fields['RSS Feed'],

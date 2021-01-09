@@ -19,6 +19,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+const filterSoftDisabled = podcastsList => podcastsList.filter(podcast => !podcast.softDisabled)
+
 const PodcastsGrid = () => {
   const theme = useTheme()
   const screenIsXs = useMediaQuery(theme.breakpoints.only('xs'))
@@ -40,20 +42,30 @@ const PodcastsGrid = () => {
     ? [6, 12, 12]
     : [4, 6, 12]
 
-  const filteredData = (() => {
-    if (!data || !categoryFilter) return data
-
-    const {cat: cfCat, subcat: cfSubcat} = categoryFilter
-
-    if (!cfCat && !cfSubcat) return data
-
-    return data.filter(
-      podcast => {
-        if (cfCat && cfCat !== podcast.category) return false
-        return !cfSubcat || cfSubcat === podcast.subCategory
+  const filteredData = React.useMemo(
+    () => {
+      if (!data) {
+        return []
       }
-    )
-  })()
+
+      if (!categoryFilter) {
+        return filterSoftDisabled(data)
+      }
+
+      const {cat: cfCat, subcat: cfSubcat} = categoryFilter
+
+      if (!cfCat && !cfSubcat) {
+        return filterSoftDisabled(data)
+      }
+
+      return data.filter(
+        podcast => {
+          if (cfCat && cfCat !== podcast.category) return false
+          return !cfSubcat || cfSubcat === podcast.subCategory
+        }
+      )
+    },
+    [categoryFilter, data])
 
   return (
     <Grid className={classes.podcastsGrid} container spacing={1}>
