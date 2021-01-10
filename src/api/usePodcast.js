@@ -23,6 +23,11 @@ const fetchRssDocViaProxy = url => {
   return client.get(proxyUrl).then(response => response.data)
 }
 
+export const loadOrFetchPodcastRssDoc = (podcastId, podcastUrl) =>
+  idbStore.get(podcastId).then(
+    ([, maybeData]) => maybeData ?? fetchRssDocViaProxy(podcastUrl)
+  )
+
 const usePodcast = (podcast, options={}, parseXmlString=defaultParseXmlString) => {
   const forceRevalidate = options.forceRevalidate ?? false
 

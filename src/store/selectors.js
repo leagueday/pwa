@@ -18,7 +18,11 @@ export const getRouterPreviousLocations = store => getRouterState(store)?.previo
 
 export const getAudioState = store => store.audio
 export const getAudioDuration = store => getAudioState(store)?.duration
+export const getAudioItemIndex = store => getAudioState(store)?.itemIndex
 export const getAudioMode = store => getAudioState(store)?.mode
-export const getAudioPosition = store => getAudioState(store)?.position
-export const getAudioUrl = store => getAudioState(store)?.url
 export const getAudioPodcastId = store => getAudioState(store)?.podcastId
+export const getAudioPodcastUrl = store => getAudioState(store)?.podcastUrl
+export const getAudioPosition = store => getAudioState(store)?.position
+export const getAudioTapsForward = store => getAudioState(store)?.controllerTaps.forward
+export const getAudioTapsReplay = store => getAudioState(store)?.controllerTaps.replay
+export const getAudioUrl = store => getAudioState(store)?.audioUrl

@@ -29,7 +29,7 @@ const PodcastsGrid = () => {
 
   const starred = useSelector(selectors.getStarred)
 
-  const {data, error} = usePodcasts(starred)
+  const {data} = usePodcasts(starred)
 
   const categoryFilter = useSelector(selectors.getCategoryFilter)
 
@@ -65,7 +65,8 @@ const PodcastsGrid = () => {
         }
       )
     },
-    [categoryFilter, data])
+    [categoryFilter, data]
+  )
 
   return (
     <Grid className={classes.podcastsGrid} container spacing={1}>

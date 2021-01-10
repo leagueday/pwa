@@ -2,15 +2,25 @@ import * as constants from '../../constants'
 import * as ActionType from '../../actionTypes';
 
 const initialState = {
+  controllerTaps: {
+    forward: 0,
+    replay: 0,
+  },
   duration: null,
+  itemIndex: null,
   mode: constants.AUDIO_MODE_PAUSE,
   podcastId: null,
+  podcastUrl: null,
   position: null,
-  url: null,
+  audioUrl: null,
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case ActionType.FORWARD_AUDIO: {
+      state.controllerTaps.forward++
+      return state
+    }
     case ActionType.PAUSE_AUDIO: {
       return {
         ...state,
@@ -23,14 +33,20 @@ const reducer = (state = initialState, action) => {
         mode: constants.AUDIO_MODE_PLAY
       }
     }
+    case ActionType.REPLAY_AUDIO: {
+      state.controllerTaps.replay++
+      return state
+    }
     case ActionType.SELECT_AUDIO: {
       return {
         ...state,
         duration: action.payload.advertisedDuration,
+        itemIndex: action.payload.itemIndex,
         mode: constants.AUDIO_MODE_PLAY,
         podcastId: action.payload.podcastId,
+        podcastUrl: action.payload.podcastUrl,
         position: 0,
-        url: action.payload.url,
+        audioUrl: action.payload.audioUrl,
       }
     }
     case ActionType.SET_AUDIO_DURATION: {

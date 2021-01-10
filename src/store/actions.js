@@ -61,6 +61,12 @@ export const unstarPodcast = podcastId => ({
 
 // Audio
 
+export const forwardAudio = () => ({
+  type: ActionType.FORWARD_AUDIO,
+  payload: {
+  }
+})
+
 export const pauseAudio = () => ({
   type: ActionType.PAUSE_AUDIO,
   payload: {
@@ -73,14 +79,23 @@ export const playAudio = () => ({
   }
 })
 
-export const selectAudio = (podcastId, url, advertisedDuration) => ({
-  type: ActionType.SELECT_AUDIO,
+export const replayAudio = () => ({
+  type: ActionType.REPLAY_AUDIO,
   payload: {
-    advertisedDuration,
-    podcastId,
-    url,
   }
 })
+
+export const selectAudio =
+  (podcastId, podcastUrl, audioUrl, itemIndex, advertisedDuration) => ({
+    type: ActionType.SELECT_AUDIO,
+    payload: {
+      advertisedDuration,
+      itemIndex,
+      podcastId,
+      podcastUrl,
+      audioUrl,
+    }
+  })
 
 export const setAudioDuration = duration => ({
   type: ActionType.SET_AUDIO_DURATION,

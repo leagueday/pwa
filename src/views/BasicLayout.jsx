@@ -1,10 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../styling/colors'
 import * as consts from './consts'
+import { selectors } from '../store'
 import AppBar from './AppBar'
 import AudioControls from './AudioControls'
 import SelectedPodcast from './SelectedPodcast'
@@ -51,7 +53,8 @@ const useStyles = makeStyles(theme => ({
 const BasicLayout = props => {
   const classes = useStyles()
 
-  const isAudioDisplayed = false // tbd
+  const audioItemUrl = useSelector(selectors.getAudioUrl)
+  const isAudioDisplayed = !!audioItemUrl
 
   return (
     <>

@@ -10,7 +10,9 @@ import { useDispatch, useSelector } from 'react-redux'
  * controller but the way they both use redux is hardwired
  */
 
-import { actions, constants as storeConstants, selectors } from '../store'
+import { actions, constants as storeConstants, selectors, thunks } from '../store'
+
+const TAP_INTERVAL = 15
 
 const debounce = (f, minIntervalMs) => {
   let wait = false
@@ -28,13 +30,6 @@ const debounce = (f, minIntervalMs) => {
   }
 }
 
-let y = 1
-const handleTimeupdate = ev => {
-  console.log(y++, ev.target.currentTime, ev, JSON.stringify(ev, null, 2))
-
-  return ev
-}
-
 const Audio = () => {
   const audioRef = React.useRef()
 
@@ -42,6 +37,9 @@ const Audio = () => {
 
   const audioMode = useSelector(selectors.getAudioMode)
   const audioUrl = useSelector(selectors.getAudioUrl)
+
+  const forwardTaps = useSelector(selectors.getAudioTapsForward)
+  const replayTaps = useSelector(selectors.getAudioTapsReplay)
 
   React.useEffect(() => {
     if (!audioRef.current) return
@@ -51,7 +49,34 @@ const Audio = () => {
     } else if (audioMode === storeConstants.AUDIO_MODE_PLAY) {
       audioRef.current.play()
     }
-  }, [audioRef, audioMode])
+  }, [audioRef.current, audioMode, audioUrl])
+
+  React.useEffect(() => {
+    if (!audioRef.current || !forwardTaps) return
+
+    const currentTime = audioRef.current.currentTime
+    const duration = audioRef.current.duration
+
+    const nextTime = currentTime + TAP_INTERVAL
+    const tooLate = duration - TAP_INTERVAL
+
+    if (nextTime < tooLate) {
+      audioRef.current.currentTime = nextTime
+    }
+  }, [forwardTaps])
+
+  React.useEffect(() => {
+    if (!audioRef.current || !replayTaps) return
+
+    const currentTime = audioRef.current.currentTime
+
+    const nextTime = currentTime - TAP_INTERVAL
+    const tooEarly = TAP_INTERVAL
+
+    if (nextTime > tooEarly) {
+      audioRef.current.currentTime = nextTime
+    }
+  }, [replayTaps])
 
   React.useEffect(() => {
     if (!audioRef.current) return
@@ -73,13 +98,35 @@ const Audio = () => {
       console.log('timeupdate', eventData.target.currentTime)
       dispatch(actions.setAudioPosition(eventData.target.currentTime))
     })
-  }, [audioRef])
+    audioRef.current.addEventListener('ended', eventData => {
+      console.log('audio ended')
+      dispatch(thunks.audio.playNextTrack())
+    })
+  }, [audioRef.current, audioUrl])
 
-  return (
+  React.useEffect(() => {
+    if (!audioRef.current) return
+
+    audioRef.current.addEventListener('seeked', eventData => {
+      // if the audio is playing, after a seek operation, it has to be set to play again
+      //   - at least on this version Chrome, it will autopause on seek
+      // but, the user could also seek while paused.
+      // even if that were supposed to set it playing, whether or not it's playing
+      //   should be a function of redux state, i.e. if it's supposed to do that then
+      //   it should dispatch(play)
+      console.log('seeked', eventData.target.currentTime, audioMode)
+
+      if (audioMode === storeConstants.AUDIO_MODE_PLAY) {
+        eventData.target.play()
+      }
+    })
+  }, [audioRef.current, audioMode, audioUrl])
+
+  return audioUrl ? (
     <span>
       <audio ref={audioRef} src={audioUrl} autoPlay />
     </span>
-  )
+  ) : null
 }
 
 export default Audio

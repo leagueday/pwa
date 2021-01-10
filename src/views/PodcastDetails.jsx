@@ -145,7 +145,13 @@ const PodcastDetails = props => {
 
   const onPlay = isSelectedAudio
     ? () => { dispatch(actions.playAudio()) }
-    : () => { dispatch(actions.selectAudio(podcast?.id, firstItemAudioUrl, firstItemAudioDuration))}
+    : () => { dispatch(actions.selectAudio(
+      podcast?.id,
+      podcast?.url,
+      firstItemAudioUrl,
+      0,
+      firstItemAudioDuration
+    ))}
 
   return (
     <div className={cx(classes.podcastDetails, props.className)}>
@@ -191,11 +197,31 @@ const PodcastDetails = props => {
       <div className={classes.items}>
         {
           (() => {
-            let tmpKey = 1
+            // there's a kind of fragility to the Next-Track operation,
+            // it supposes the durability of a particular listing, and
+            // the current track's position in that list. An item's
+            // position in a list is not an intrinsic identifier of
+            // the item. But Next-Track depends on it.
+            //
+            // On the other hand the item data is yet-to-be-parsed,
+            // we'll apply the RSS-2 optimistic selectors to it
+            // within that component, one piece of data being the
+            // URL, that would be a better identifier if nothing
+            // else, but is not yet available here.
+            //
+            // Here the React key is inadvisably the track offset
+            // in the list, it's not great and is strictly as good
+            // as the Next-Track feature...
+            let itemIndex = 0
             return items?.map(
               item => (
-                <div key={tmpKey++} className={classes.item}>
-                  <PodcastDetailsItem podcastId={podcast?.id} item={item} />
+                <div key={itemIndex++} className={classes.item}>
+                  <PodcastDetailsItem
+                    podcastId={podcast?.id}
+                    podcastUrl={podcast?.url}
+                    item={item}
+                    itemIndex={itemIndex}
+                  />
                 </div>
               )
             )

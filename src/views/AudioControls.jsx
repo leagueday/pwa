@@ -1,18 +1,23 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
+import dayjs from 'dayjs'
+import dayjsDurationPlugin from 'dayjs/plugin/duration'
 
 import { makeStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import LinearProgress from '@material-ui/core/LinearProgress'
 
 import PauseRoundedIcon from '@material-ui/icons/PauseRounded'
+import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded'
 import ReplayRoundedIcon from '@material-ui/icons/ReplayRounded'
 import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded'
 
 import * as colors from '../styling/colors'
-import { selectors } from '../store'
+import { actions, constants as storeConstants, selectors, thunks } from '../store'
 import * as consts from './consts'
+
+dayjs.extend(dayjsDurationPlugin)
 
 const useStyles = makeStyles(theme => ({
   audioControls: {
@@ -43,14 +48,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  disclaimer: {
-    fontSize: '80%',
-    fontWeight: theme.typography.fontWeightBold,
-    textAlign: 'center',
-    width: '100%',
-  },
   forwardButton: {
-    color: colors.vintageTubeBright,
     transform: 'scaleX(-1)',
   },
   nextButton: {
@@ -61,7 +59,6 @@ const useStyles = makeStyles(theme => ({
     padding: '0.33em',
   },
   replayButton: {
-    color: colors.vintageTubeBright,
     transform: 'scaleX(1.01)',
   },
   underbarButton: {
@@ -76,13 +73,36 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  vintageTubeDisabled: {
+    color: colors.vintageTubeDull,
+  },
   vintageTube: {
     color: colors.vintageTubeBright,
   },
 }))
 
+const hmsRegex = RegExp('^\\d{1,2}:')
+const maybeHmsToSecondsOnly = maybeDurationString => {
+  if (!hmsRegex.test(maybeDurationString)) {
+    return maybeDurationString
+  }
+
+  const p = maybeDurationString.split(':')
+  let s = 0
+  let m = 1
+
+  while (p.length > 0) {
+    s += m * parseInt(p.pop(), 10)
+    m *= 60
+  }
+
+  return s
+}
+
 const ProgressBox = () => {
-  const duration = useSelector(selectors.getAudioDuration)
+  const duration = maybeHmsToSecondsOnly(
+    useSelector(selectors.getAudioDuration)
+  )
   const position = useSelector(selectors.getAudioPosition)
 
   const progress = Math.floor(position / duration * 100)
@@ -94,21 +114,41 @@ const ProgressBox = () => {
 const AudioControls = () => {
   const classes = useStyles()
 
+  const itemUrl = useSelector(selectors.getAudioUrl)
+
+  const isDisabled = !itemUrl
+  const buttonColorClass = isDisabled ? classes.vintageTubeDisabled : classes.vintageTube
+
+  const dispatch = useDispatch()
+
   const forwardButtonOnclick = () => {
     console.log('forward')
+    dispatch(actions.forwardAudio())
   }
 
   const nextButtonOnclick = () => {
     console.log('next')
-  }
-
-  const pauseButtonOnclick = () => {
-    console.log('pause')
+    dispatch(thunks.audio.playNextTrack())
   }
 
   const replayButtonOnclick = () => {
     console.log('replay')
+    dispatch(actions.replayAudio())
   }
+
+  const audioMode = useSelector(selectors.getAudioMode)
+
+  const pauseOrPlayButtonOnclick = audioMode === storeConstants.AUDIO_MODE_PAUSE
+    ? () => {
+      console.log('play')
+      dispatch(actions.playAudio())
+    } : () => {
+      console.log('pause')
+      dispatch(actions.pauseAudio())
+    }
+
+  const PauseOrPlayIcon = audioMode === storeConstants.AUDIO_MODE_PAUSE
+    ? PlayArrowRoundedIcon : PauseRoundedIcon
 
   return (
     <div className={classes.audioControls}>
@@ -117,26 +157,23 @@ const AudioControls = () => {
           <ProgressBox />
         </div>
         <div className={classes.underbarControls}>
-          <IconButton className={classes.underbarButton} onClick={replayButtonOnclick} size="small">
-            <ReplayRoundedIcon className={classes.replayButton} />
+          <IconButton className={classes.underbarButton} onClick={replayButtonOnclick} size="small" disabled={isDisabled}>
+            <ReplayRoundedIcon className={cx(classes.replayButton, buttonColorClass)} />
           </IconButton >
           <div className={classes.underbarSpacer} />
-          <IconButton className={classes.underbarButton} onClick={pauseButtonOnclick} size="small">
-            <PauseRoundedIcon className={classes.vintageTube} />
+          <IconButton className={classes.underbarButton} onClick={pauseOrPlayButtonOnclick} size="small" disabled={isDisabled}>
+            <PauseOrPlayIcon className={buttonColorClass} />
           </IconButton >
           <div className={classes.underbarSpacer} />
-          <IconButton className={classes.underbarButton} onClick={forwardButtonOnclick} size="small">
-            <ReplayRoundedIcon className={classes.forwardButton} />
+          <IconButton className={classes.underbarButton} onClick={forwardButtonOnclick} size="small" disabled={isDisabled}>
+            <ReplayRoundedIcon className={cx(classes.forwardButton, buttonColorClass)} />
           </IconButton >
-        </div>
-        <div className={classes.disclaimer}>
-          🚧 these buttons are not live yet 🚧
         </div>
       </div>
       <div className={classes.audioControlsRight}>
         <div className={classes.audioControlsRightCenter}>
-          <IconButton className={classes.nextButton} onClick={nextButtonOnclick}>
-            <SkipNextRoundedIcon className={classes.vintageTube} />
+          <IconButton className={classes.nextButton} onClick={nextButtonOnclick} disabled={isDisabled}>
+            <SkipNextRoundedIcon className={buttonColorClass} />
           </IconButton >
         </div>
       </div>

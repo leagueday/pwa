@@ -12,7 +12,7 @@ import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
 
 import { constants as storeConstants, actions, selectors } from '../store'
-import {itemSelectors} from '../model/rss'
+import { itemSelectors } from '../model/rss'
 
 import { stripHtml } from './util'
 
@@ -86,7 +86,7 @@ const formatDate = dt => {
   }
 }
 
-const PodcastDetailsItem = ({podcastId, item}) => {
+const PodcastDetailsItem = ({podcastId, podcastUrl, item, itemIndex}) => {
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -112,7 +112,7 @@ const PodcastDetailsItem = ({podcastId, item}) => {
     ev.stopPropagation()
   }
   const onPlayClick = ev => {
-    dispatch(actions.selectAudio(podcastId, audioUrl, audioType))
+    dispatch(actions.selectAudio(podcastId, podcastUrl, itemAudioUrl, itemIndex, duration))
     ev.stopPropagation()
   }
 

@@ -9,8 +9,10 @@ export const STAR_PODCAST = 'STAR_PODCAST'
 export const UNSTAR_PODCAST = 'UNSTAR_PODCAST'
 
 // audio
+export const FORWARD_AUDIO = 'FORWARD_AUDIO'
 export const PAUSE_AUDIO = 'PAUSE_AUDIO'
 export const PLAY_AUDIO = 'PLAY_AUDIO'
+export const REPLAY_AUDIO = 'REPLAY_AUDIO'
 export const SELECT_AUDIO = 'SELECT_AUDIO'
 export const SET_AUDIO_DURATION = 'SET_AUDIO_DURATION'
 export const SET_AUDIO_POSITION = 'SET_AUDIO_POSITION'
