@@ -117,7 +117,9 @@ const Audio = () => {
       console.log('seeked', eventData.target.currentTime, audioMode)
 
       if (audioMode === storeConstants.AUDIO_MODE_PLAY) {
-        eventData.target.play()
+        audioRef.current.play()
+      } else {
+        audioRef.current.pause()
       }
     })
   }, [audioRef.current, audioMode, audioUrl])
