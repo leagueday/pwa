@@ -2,6 +2,7 @@ import * as constants from '../../constants'
 import * as ActionType from '../../actionTypes';
 
 const initialState = {
+  audioUrl: null,
   controllerTaps: {
     forward: 0,
     replay: 0,
@@ -12,7 +13,9 @@ const initialState = {
   podcastId: null,
   podcastUrl: null,
   position: null,
-  audioUrl: null,
+  seek: {
+    position: null,
+  }
 }
 
 const reducer = (state = initialState, action) => {
@@ -36,6 +39,14 @@ const reducer = (state = initialState, action) => {
     case ActionType.REPLAY_AUDIO: {
       state.controllerTaps.replay++
       return state
+    }
+    case ActionType.SEEK_AUDIO: {
+      return {
+        ...state,
+        seek: {
+          position: action.payload.position,
+        }
+      }
     }
     case ActionType.SELECT_AUDIO: {
       return {

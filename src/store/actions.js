@@ -85,6 +85,13 @@ export const replayAudio = () => ({
   }
 })
 
+export const seekAudio = position => ({
+  type: ActionType.SEEK_AUDIO,
+  payload: {
+    position
+  }
+})
+
 export const selectAudio =
   (podcastId, podcastUrl, audioUrl, itemIndex, advertisedDuration) => ({
     type: ActionType.SELECT_AUDIO,

@@ -6,7 +6,8 @@ import dayjsDurationPlugin from 'dayjs/plugin/duration'
 
 import { makeStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
-import LinearProgress from '@material-ui/core/LinearProgress'
+import Slider from '@material-ui/core/Slider'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import PauseRoundedIcon from '@material-ui/icons/PauseRounded'
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded'
@@ -99,16 +100,57 @@ const maybeHmsToSecondsOnly = maybeDurationString => {
   return s
 }
 
+const percentageToPosition = duration => percentage  => percentage / 100 * duration
+
+const secondsToHms = s => dayjs.duration(s * 1000).format(
+    s >= 3600
+      ? 'H:mm:ss'
+      : 'mm:ss'
+  )
+
+const TooltipThumb = ({children, open, value}) => {
+  const duration = maybeHmsToSecondsOnly(
+    useSelector(selectors.getAudioDuration)
+  )
+
+  const cbPosToSeconds = React.useCallback(
+    percentageToPosition(duration),
+    [duration]
+  )
+
+  const sss = cbPosToSeconds(value)
+  const hms = secondsToHms(sss)
+
+  return (
+    <Tooltip open={open} enterTouchDelay={0} placement="top" title={hms}>
+      {children}
+    </Tooltip>
+  )
+}
+
 const ProgressBox = () => {
+  const dispatch = useDispatch()
+
   const duration = maybeHmsToSecondsOnly(
     useSelector(selectors.getAudioDuration)
   )
   const position = useSelector(selectors.getAudioPosition)
 
   const progress = Math.floor(position / duration * 100)
-  console.log('duration', duration, 'position', position, 'progress', progress)
+  // console.log('duration', duration, 'position', position, 'progress', progress)
 
-  return (<LinearProgress variant="determinate" value={progress} />)
+  return (
+    <Slider
+      ValueLabelComponent={TooltipThumb}
+      value={progress}
+
+      onChangeCommitted={(event, percentage) => {
+        const position = percentageToPosition(duration)(percentage)
+
+        dispatch(actions.seekAudio(position))
+      }}
+    />
+  )
 }
 
 const AudioControls = () => {

@@ -40,6 +40,7 @@ const Audio = () => {
 
   const forwardTaps = useSelector(selectors.getAudioTapsForward)
   const replayTaps = useSelector(selectors.getAudioTapsReplay)
+  const seek = useSelector(selectors.getAudioSeek)
 
   React.useEffect(() => {
     if (!audioRef.current) return
@@ -123,6 +124,15 @@ const Audio = () => {
       }
     })
   }, [audioRef.current, audioMode, audioUrl])
+
+  React.useEffect(() => {
+    if (!audioRef.current) return
+
+    const seekPosition = seek?.position
+    if (!seekPosition && seekPosition !== 0) return
+
+    audioRef.current.currentTime = seekPosition
+  })
 
   return audioUrl ? (
     <span>
