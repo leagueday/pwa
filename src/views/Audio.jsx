@@ -42,6 +42,53 @@ const Audio = () => {
   const replayTaps = useSelector(selectors.getAudioTapsReplay)
   const seek = useSelector(selectors.getAudioSeek)
 
+  //////////////////////////////////////////////////////////////////////////////
+  // event subscriptions on <audio/> dom element - consequence of new element
+  React.useEffect(() => {
+    if (!audioRef.current) return
+
+    audioRef.current.addEventListener('error', errorEvent => {
+      console.error(`Error loading: ${JSON.stringify(errorEvent, null, 2)}`)
+    })
+    audioRef.current.addEventListener('loadedmetadata', eventData => {
+      // console.log(`duration ${audioRef.current.duration}`)
+      // dispatch(actions.setAudioDuration(audioRef.current.duration))
+      dispatch(actions.setAudioDuration(eventData.target.duration))
+    })
+    // loadstart
+    // progress
+    // canplaythrough
+    // debounce(handleTimeupdate, 5000))
+    audioRef.current.addEventListener('timeupdate', eventData => {
+      // console.log('timeupdate', eventData.target.currentTime)
+      dispatch(actions.setAudioPosition(eventData.target.currentTime))
+    })
+    audioRef.current.addEventListener('ended', eventData => {
+      // console.log('audio ended')
+      dispatch(thunks.audio.playNextTrack())
+    })
+
+    ////////////////////////////////////////////////////////////////////////////
+    // restore mode following seek/replay/forward
+    //
+    // Testing on Chrome browser showed that the audio element's mode (i.e.
+    // play or pause) would be disrupted by a seek operation. The `seeked`
+    // event is fired when these operations have completed, and this effect
+    // handles it by reinstating the mode indicted by the related state in
+    // Redux.
+    audioRef.current.addEventListener('seeked', eventData => {
+      // console.log('seeked', eventData.target.currentTime, audioMode)
+
+      if (audioMode === storeConstants.AUDIO_MODE_PLAY) {
+        audioRef.current.play()
+      } else {
+        audioRef.current.pause()
+      }
+    })
+  }, [audioRef.current])
+
+  //////////////////////////////////////////////////////////////////////////////
+  // pause/play - consequence of button tap
   React.useEffect(() => {
     if (!audioRef.current) return
 
@@ -52,6 +99,8 @@ const Audio = () => {
     }
   }, [audioRef.current, audioMode, audioUrl])
 
+  //////////////////////////////////////////////////////////////////////////////
+  // forward - consequence of button tap
   React.useEffect(() => {
     if (!audioRef.current || !forwardTaps) return
 
@@ -66,6 +115,8 @@ const Audio = () => {
     }
   }, [forwardTaps])
 
+  //////////////////////////////////////////////////////////////////////////////
+  // replay - consequence of button tap
   React.useEffect(() => {
     if (!audioRef.current || !replayTaps) return
 
@@ -79,52 +130,8 @@ const Audio = () => {
     }
   }, [replayTaps])
 
-  React.useEffect(() => {
-    if (!audioRef.current) return
-
-    audioRef.current.addEventListener('error', errorEvent => {
-      console.error(`Error loading: ${JSON.stringify(errorEvent, null, 2)}`);
-    })
-    audioRef.current.addEventListener('loadedmetadata', eventData => {
-      console.log(`duration ${audioRef.current.duration}`)
-      // dispatch(actions.setAudioDuration(audioRef.current.duration))
-      dispatch(actions.setAudioDuration(eventData.target.duration))
-    })
-    // loadstart
-    // progress
-    // canplaythrough
-    // ended
-    // debounce(handleTimeupdate, 5000))
-    audioRef.current.addEventListener('timeupdate', eventData => {
-      console.log('timeupdate', eventData.target.currentTime)
-      dispatch(actions.setAudioPosition(eventData.target.currentTime))
-    })
-    audioRef.current.addEventListener('ended', eventData => {
-      console.log('audio ended')
-      dispatch(thunks.audio.playNextTrack())
-    })
-  }, [audioRef.current, audioUrl])
-
-  React.useEffect(() => {
-    if (!audioRef.current) return
-
-    audioRef.current.addEventListener('seeked', eventData => {
-      // if the audio is playing, after a seek operation, it has to be set to play again
-      //   - at least on this version Chrome, it will autopause on seek
-      // but, the user could also seek while paused.
-      // even if that were supposed to set it playing, whether or not it's playing
-      //   should be a function of redux state, i.e. if it's supposed to do that then
-      //   it should dispatch(play)
-      console.log('seeked', eventData.target.currentTime, audioMode)
-
-      if (audioMode === storeConstants.AUDIO_MODE_PLAY) {
-        audioRef.current.play()
-      } else {
-        audioRef.current.pause()
-      }
-    })
-  }, [audioRef.current, audioMode, audioUrl])
-
+  //////////////////////////////////////////////////////////////////////////////
+  // seek - consequence of slider interaction
   React.useEffect(() => {
     if (!audioRef.current) return
 
@@ -132,7 +139,7 @@ const Audio = () => {
     if (!seekPosition && seekPosition !== 0) return
 
     audioRef.current.currentTime = seekPosition
-  })
+  }, [seek?.position])
 
   return audioUrl ? (
     <span>
