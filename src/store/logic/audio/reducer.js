@@ -16,7 +16,8 @@ const initialState = {
   position: null,
   seek: {
     position: null,
-  }
+  },
+  title: null,
 }
 
 const reducer = (state = initialState, action) => {
@@ -63,6 +64,7 @@ const reducer = (state = initialState, action) => {
         podcastUrl: action.payload.podcastUrl,
         position: 0,
         audioUrl: action.payload.audioUrl,
+        title: action.payload.title,
       }
     }
     case ActionType.SET_AUDIO_DURATION: {

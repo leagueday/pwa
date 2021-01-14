@@ -112,7 +112,7 @@ const PodcastDetailsItem = ({podcastId, podcastUrl, item, itemIndex}) => {
     ev.stopPropagation()
   }
   const onPlayClick = ev => {
-    dispatch(actions.selectAudio(podcastId, podcastUrl, itemAudioUrl, itemIndex, duration))
+    dispatch(actions.selectAudio(podcastId, podcastUrl, itemAudioUrl, itemIndex, duration, title))
     ev.stopPropagation()
   }
 

@@ -29,8 +29,9 @@ export const playNextTrack =
 
           const nextItemUrl = itemSelectors.v2.audioUrl(nextItem)
           const nextItemDuration = itemSelectors.v2.duration(nextItem)
+          const nextItemTitle = itemSelectors.v2.title(nextItem)
 
-          dispatch(actions.selectAudio(podcastId, podcastUrl, nextItemUrl, nextItemIndex, nextItemDuration))
+          dispatch(actions.selectAudio(podcastId, podcastUrl, nextItemUrl, nextItemIndex, nextItemDuration, nextItemTitle))
         }
       )
     }

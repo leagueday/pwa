@@ -27,4 +27,5 @@ export const getAudioSeek = store => getAudioState(store)?.seek
 export const getAudioSeeked = store => getAudioState(store)?.audioSeeked
 export const getAudioTapsForward = store => getAudioState(store)?.controllerTaps.forward
 export const getAudioTapsReplay = store => getAudioState(store)?.controllerTaps.replay
+export const getAudioTitle = store => getAudioState(store)?.title
 export const getAudioUrl = store => getAudioState(store)?.audioUrl

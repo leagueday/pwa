@@ -129,7 +129,8 @@ const PodcastDetails = props => {
   const firstItem = items?.[0]
   const firstItemAudioUrl = rssSelectors.itemSelectors.v2.audioUrl(firstItem)
   // const firstItemAudioType = rssSelectors.itemSelectors.v2.audioType(firstItem)
-  const firstItemAudioDuration = rssSelectors.itemSelectors.v2.duration((firstItem))
+  const firstItemAudioDuration = rssSelectors.itemSelectors.v2.duration(firstItem)
+  const firstItemTitle = rssSelectors.itemSelectors.v2.title(firstItem)
 
   const isSelectedAudio = audioPodcastId === podcast?.id
   const isPlaying = isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
@@ -150,7 +151,8 @@ const PodcastDetails = props => {
       podcast?.url,
       firstItemAudioUrl,
       0,
-      firstItemAudioDuration
+      firstItemAudioDuration,
+      firstItemTitle,
     ))}
 
   return (

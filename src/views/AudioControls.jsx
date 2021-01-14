@@ -20,6 +20,11 @@ import * as consts from './consts'
 
 dayjs.extend(dayjsDurationPlugin)
 
+const TITLE_HEIGHT = '2em'
+const PROGRESS_HEIGHT = '1.5em'
+const UNDERBAR_CONTROLS_HEIGHT = '2em'
+// assert(TITLE_HEIGHT + PROGRESS_HEIGHT + UNDERBAR_CONTROLS_HEIGHT == consts.AUDIO_CONTROLS_HEIGHT)
+
 const useStyles = makeStyles(theme => ({
   audioControls: {
     alignItems: 'stretch',
@@ -27,16 +32,17 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     height: consts.AUDIO_CONTROLS_HEIGHT,
+    userSelect: 'none',
     width: '100%',
   },
   audioControlsLeft: {
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
+    maxWidth: '100%',
+    overflowX: 'hidden',
     // padding: '1em',
     paddingLeft: '1em',
-    paddingRight: '1em',
   },
   audioControlsRight: {
     display: 'flex',
@@ -59,11 +65,28 @@ const useStyles = makeStyles(theme => ({
   progressBox: {
     // backgroundColor: colors.darkerCharcoal,
     // borderRadius: theme.spacing(1),
+    height: PROGRESS_HEIGHT,
     paddingLeft: '0.33em',
     paddingRight: '0.33em',
   },
   replayButton: {
     transform: 'scaleX(1.01)',
+  },
+  title: {
+    color: theme.palette.text.secondary,
+    cursor: 'pointer',
+    fontFamily: theme.typography.serif,
+    fontSize: '85%',
+    height: TITLE_HEIGHT,
+    maxWidth: '100%',
+    overflowX: 'hidden',
+    paddingLeft: '0.5em',
+    paddingTop: '0.5em',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    '&:hover': {
+      color: theme.palette.text.primary,
+    },
   },
   underbarButton: {
   },
@@ -75,6 +98,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'row',
+    height: UNDERBAR_CONTROLS_HEIGHT,
     justifyContent: 'center',
   },
   vintageTubeDisabled: {
@@ -214,12 +238,18 @@ const ProgressBox = () => {
 const AudioControls = () => {
   const classes = useStyles()
 
+  const podcastId = useSelector(selectors.getAudioPodcastId)
   const itemUrl = useSelector(selectors.getAudioUrl)
+  const itemTitle = useSelector(selectors.getAudioTitle)
 
   const isDisabled = !itemUrl
   const buttonColorClass = isDisabled ? classes.vintageTubeDisabled : classes.vintageTube
 
   const dispatch = useDispatch()
+
+  const titleOnclick = () => {
+    dispatch(actions.pushHistory(`/podcast/${podcastId}`))
+  }
 
   const forwardButtonOnclick = () => {
     console.log('forward')
@@ -253,6 +283,9 @@ const AudioControls = () => {
   return (
     <div className={classes.audioControls}>
       <div className={classes.audioControlsLeft}>
+        <div className={classes.title} onClick={titleOnclick}>
+          {itemTitle}
+        </div>
         <div className={classes.progressBox}>
           <ProgressBox />
         </div>

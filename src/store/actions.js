@@ -99,14 +99,15 @@ export const seekAudio = position => ({
 })
 
 export const selectAudio =
-  (podcastId, podcastUrl, audioUrl, itemIndex, advertisedDuration) => ({
+  (podcastId, podcastUrl, audioUrl, itemIndex, advertisedDuration, title) => ({
     type: ActionType.SELECT_AUDIO,
     payload: {
+      audioUrl,
       advertisedDuration,
       itemIndex,
       podcastId,
       podcastUrl,
-      audioUrl,
+      title,
     }
   })
 
