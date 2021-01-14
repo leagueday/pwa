@@ -30,8 +30,69 @@ const debounce = (f, minIntervalMs) => {
   }
 }
 
+// Set a bunch of event listeners on the <audio /> element.
+//
+// Fun fact, React components that `useRef` do not get a render
+// pass automatically when the referred dom element updates or
+// changes.
+//
+// With naive `useRef`, the first render pass shows the <audio /> ref is
+// undefined. Then, the audio dom node is created and the ref is bound, but,
+// we don't necessarily get a render pass at that point to set up these
+// event subscriptions...
+//
+// Therefore `useAudioRef` -
+// See https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
+// The article explains this pattern of "ref callback" allows setup logic to run
+// when the ref is bound to the dom node
+const useAudioRef = () => {
+  const ref = React.useRef()
+  const dispatch = useDispatch()
+
+  const getRef = React.useCallback(() => ref.current, [])
+
+  const setRef = React.useCallback(node => {
+    if (ref.current) {
+      // clean up events / references to previous dom `node` instance
+    }
+
+    if (node) {
+      node.addEventListener('error', errorEvent => {
+        console.error(`Error loading: ${JSON.stringify(errorEvent, null, 2)}`)
+      })
+
+      node.addEventListener('loadedmetadata', eventData => {
+        // console.log(`duration ${audioRef.current.duration}`)
+        // dispatch(actions.setAudioDuration(audioRef.current.duration))
+        dispatch(actions.setAudioDuration(eventData.target.duration))
+      })
+
+      // loadstart
+      // progress
+      // canplaythrough
+
+      // debounce(handleTimeupdate, 5000))
+      console.log('setting timeupdate listener')
+      node.addEventListener('timeupdate', eventData => {
+        console.log('timeupdate', eventData.target.currentTime)
+        dispatch(actions.setAudioPosition(eventData.target.currentTime))
+      })
+
+      node.addEventListener('ended', eventData => {
+        // console.log('audio ended')
+        dispatch(thunks.audio.playNextTrack())
+      })
+    }
+
+    // Save a reference to the node
+    ref.current = node
+  }, [])
+
+  return [getRef, setRef]
+}
+
 const Audio = () => {
-  const audioRef = React.useRef()
+  const [getAudioRef, setAudioRef] = useAudioRef()
 
   const dispatch = useDispatch()
 
@@ -43,107 +104,70 @@ const Audio = () => {
   const seek = useSelector(selectors.getAudioSeek)
 
   //////////////////////////////////////////////////////////////////////////////
-  // event subscriptions on <audio/> dom element - consequence of new element
-  React.useEffect(() => {
-    if (!audioRef.current) return
-
-    audioRef.current.addEventListener('error', errorEvent => {
-      console.error(`Error loading: ${JSON.stringify(errorEvent, null, 2)}`)
-    })
-    audioRef.current.addEventListener('loadedmetadata', eventData => {
-      // console.log(`duration ${audioRef.current.duration}`)
-      // dispatch(actions.setAudioDuration(audioRef.current.duration))
-      dispatch(actions.setAudioDuration(eventData.target.duration))
-    })
-    // loadstart
-    // progress
-    // canplaythrough
-    // debounce(handleTimeupdate, 5000))
-    audioRef.current.addEventListener('timeupdate', eventData => {
-      // console.log('timeupdate', eventData.target.currentTime)
-      dispatch(actions.setAudioPosition(eventData.target.currentTime))
-    })
-    audioRef.current.addEventListener('ended', eventData => {
-      // console.log('audio ended')
-      dispatch(thunks.audio.playNextTrack())
-    })
-
-    ////////////////////////////////////////////////////////////////////////////
-    // restore mode following seek/replay/forward
-    //
-    // Testing on Chrome browser showed that the audio element's mode (i.e.
-    // play or pause) would be disrupted by a seek operation. The `seeked`
-    // event is fired when these operations have completed, and this effect
-    // handles it by reinstating the mode indicted by the related state in
-    // Redux.
-    audioRef.current.addEventListener('seeked', eventData => {
-      // console.log('seeked', eventData.target.currentTime, audioMode)
-
-      if (audioMode === storeConstants.AUDIO_MODE_PLAY) {
-        audioRef.current.play()
-      } else {
-        audioRef.current.pause()
-      }
-    })
-  }, [audioRef.current])
-
-  //////////////////////////////////////////////////////////////////////////////
   // pause/play - consequence of button tap
   React.useEffect(() => {
-    if (!audioRef.current) return
+    const audio = getAudioRef()
+    if (!audio) return
 
     if (audioMode === storeConstants.AUDIO_MODE_PAUSE) {
-      audioRef.current.pause()
+      audio.pause()
     } else if (audioMode === storeConstants.AUDIO_MODE_PLAY) {
-      audioRef.current.play()
+      audio.play()
     }
-  }, [audioRef.current, audioMode, audioUrl])
+  }, [audioMode, audioUrl])
 
   //////////////////////////////////////////////////////////////////////////////
   // forward - consequence of button tap
   React.useEffect(() => {
-    if (!audioRef.current || !forwardTaps) return
+    if (!forwardTaps) return
 
-    const currentTime = audioRef.current.currentTime
-    const duration = audioRef.current.duration
+    const audio = getAudioRef()
+    if (!audio) return
+
+    const currentTime = audio.currentTime
+    const duration = audio.duration
 
     const nextTime = currentTime + TAP_INTERVAL
     const tooLate = duration - TAP_INTERVAL
 
     if (nextTime < tooLate) {
-      audioRef.current.currentTime = nextTime
+      audio.currentTime = nextTime
     }
   }, [forwardTaps])
 
   //////////////////////////////////////////////////////////////////////////////
   // replay - consequence of button tap
   React.useEffect(() => {
-    if (!audioRef.current || !replayTaps) return
+    if (!replayTaps) return
 
-    const currentTime = audioRef.current.currentTime
+    const audio = getAudioRef()
+    if (!audio) return
+
+    const currentTime = audio.currentTime
 
     const nextTime = currentTime - TAP_INTERVAL
     const tooEarly = TAP_INTERVAL
 
     if (nextTime > tooEarly) {
-      audioRef.current.currentTime = nextTime
+      audio.currentTime = nextTime
     }
   }, [replayTaps])
 
   //////////////////////////////////////////////////////////////////////////////
   // seek - consequence of slider interaction
   React.useEffect(() => {
-    if (!audioRef.current) return
-
     const seekPosition = seek?.position
     if (!seekPosition && seekPosition !== 0) return
 
-    audioRef.current.currentTime = seekPosition
+    const audio = getAudioRef()
+    if (!audio) return
+
+    audio.currentTime = seekPosition
   }, [seek?.position])
 
   return audioUrl ? (
     <span>
-      <audio ref={audioRef} src={audioUrl} autoPlay />
+      <audio ref={setAudioRef} src={audioUrl} autoPlay />
     </span>
   ) : null
 }

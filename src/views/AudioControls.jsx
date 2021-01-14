@@ -118,11 +118,12 @@ const TooltipThumb = ({children, open, value}) => {
     [duration]
   )
 
-  const sss = cbPosToSeconds(value)
-  const hms = secondsToHms(sss)
+  const position = useSelector(selectors.getAudioPosition)
+
+  const hms = secondsToHms(position)
 
   return (
-    <Tooltip open={open} enterTouchDelay={0} placement="top" title={hms}>
+    <Tooltip open={open} enterTouchDelay={0} placement="right" title={hms}>
       {children}
     </Tooltip>
   )
@@ -136,12 +137,24 @@ const ProgressBox = () => {
   )
   const position = useSelector(selectors.getAudioPosition)
 
+  // this makes it only update the thumb each 1% of progress - efficient but seems wrong
+  // instead of redux-subscribed thumb
+  //
+  // const valueLabelFormat = React.useCallback(
+  //   percentage => secondsToHms(percentageToPosition(duration)(percentage)),
+  //   [duration]
+  // )
+  //
+  // supply this to the `Slider`
+  // valueLabelFormat={valueLabelFormat}
+
   const progress = Math.floor(position / duration * 100)
   // console.log('duration', duration, 'position', position, 'progress', progress)
 
   return (
     <Slider
       ValueLabelComponent={TooltipThumb}
+      valueLabelDisplay="on"
       value={progress}
 
       onChangeCommitted={(event, percentage) => {
