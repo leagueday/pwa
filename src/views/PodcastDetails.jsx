@@ -214,7 +214,7 @@ const PodcastDetails = props => {
             // Here the React key is inadvisably the track offset
             // in the list, it's not great and is strictly as good
             // as the Next-Track feature...
-            let itemIndex = 0
+            let itemIndex = -1
             return items?.map(
               item => (
                 <div key={itemIndex++} className={classes.item}>
