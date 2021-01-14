@@ -2,6 +2,7 @@ import * as constants from '../../constants'
 import * as ActionType from '../../actionTypes';
 
 const initialState = {
+  audioSeeked: 0,
   audioUrl: null,
   controllerTaps: {
     forward: 0,
@@ -20,6 +21,10 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case ActionType.AUDIO_SEEKED: {
+      state.audioSeeked++
+      return state
+    }
     case ActionType.FORWARD_AUDIO: {
       state.controllerTaps.forward++
       return state

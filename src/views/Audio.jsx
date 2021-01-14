@@ -72,15 +72,18 @@ const useAudioRef = () => {
       // canplaythrough
 
       // debounce(handleTimeupdate, 5000))
-      console.log('setting timeupdate listener')
       node.addEventListener('timeupdate', eventData => {
-        console.log('timeupdate', eventData.target.currentTime)
+        // console.log('timeupdate', eventData.target.currentTime)
         dispatch(actions.setAudioPosition(eventData.target.currentTime))
       })
 
       node.addEventListener('ended', eventData => {
         // console.log('audio ended')
         dispatch(thunks.audio.playNextTrack())
+      })
+
+      node.addEventListener('seeked', () => {
+        dispatch(actions.audioSeeked())
       })
     }
 
@@ -93,8 +96,6 @@ const useAudioRef = () => {
 
 const Audio = () => {
   const [getAudioRef, setAudioRef] = useAudioRef()
-
-  const dispatch = useDispatch()
 
   const audioMode = useSelector(selectors.getAudioMode)
   const audioUrl = useSelector(selectors.getAudioUrl)

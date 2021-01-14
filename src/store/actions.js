@@ -61,6 +61,12 @@ export const unstarPodcast = podcastId => ({
 
 // Audio
 
+export const audioSeeked = () => ({
+  type: ActionType.AUDIO_SEEKED,
+  payload: {
+  }
+})
+
 export const forwardAudio = () => ({
   type: ActionType.FORWARD_AUDIO,
   payload: {

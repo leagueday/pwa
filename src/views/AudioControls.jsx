@@ -34,7 +34,9 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    padding: '1em',
+    // padding: '1em',
+    paddingLeft: '1em',
+    paddingRight: '1em',
   },
   audioControlsRight: {
     display: 'flex',
@@ -57,7 +59,8 @@ const useStyles = makeStyles(theme => ({
   progressBox: {
     // backgroundColor: colors.darkerCharcoal,
     // borderRadius: theme.spacing(1),
-    padding: '0.33em',
+    paddingLeft: '0.33em',
+    paddingRight: '0.33em',
   },
   replayButton: {
     transform: 'scaleX(1.01)',
@@ -120,7 +123,11 @@ const TooltipThumb = ({children, open, value}) => {
 
   const position = useSelector(selectors.getAudioPosition)
 
-  const hms = secondsToHms(position)
+  // Kind of quick-and-dirty test the type of `value` to
+  // know if it's preformatted (ephemeral value during
+  // drag), it would be a string, else it's a number 1-100
+  // representing the Slider position
+  const hms = typeof(value) === 'string' ? value : secondsToHms(position)
 
   return (
     <Tooltip open={open} enterTouchDelay={0} placement="right" title={hms}>
@@ -136,32 +143,70 @@ const ProgressBox = () => {
     useSelector(selectors.getAudioDuration)
   )
   const position = useSelector(selectors.getAudioPosition)
+  const seeked = useSelector(selectors.getAudioSeeked)
 
-  // this makes it only update the thumb each 1% of progress - efficient but seems wrong
-  // instead of redux-subscribed thumb
-  //
-  // const valueLabelFormat = React.useCallback(
-  //   percentage => secondsToHms(percentageToPosition(duration)(percentage)),
-  //   [duration]
-  // )
-  //
-  // supply this to the `Slider`
-  // valueLabelFormat={valueLabelFormat}
+  // when dragging or while waiting for the consequent seek operation to complete
+  const [ephemeralValue, setEphemeralValue] = React.useState()
 
-  const progress = Math.floor(position / duration * 100)
-  // console.log('duration', duration, 'position', position, 'progress', progress)
+  const hasEphemeralValue = ephemeralValue != null
+
+  // There are 2 ways in play here to determine the Slider thumb label. (current pos mm:ss)
+  //
+  // * `valueLabelFormat` supplied by prop to Slider,
+  // * Redux subscriptions in `TooltipThumb`
+  //
+  // Redux subscriptions give a precise time that begins updating as soon as the audio
+  // is played - because it's a number of seconds.
+  //
+  // The `valueLabelFormat` prop function is called with the Slider value which is a
+  // percentage 1-100.
+  //
+  // The `valueLabelFormat` prop function is used for updating the thumb text while
+  // dragging - in which case the Redux audio position isn't updating - that updates
+  // when the <audio/> element emits timeupdate events...
+  //
+  // The thumb text update on drag `onChange` is more localized and temporary... the
+  // `onChangeCommitted` allows deferring the update to wider app state and <audio/>...
+
+  const valueLabelFormat = React.useCallback(
+    percentage => secondsToHms(percentageToPosition(duration)(percentage)),
+    [duration]
+  )
+
+  const valueFromAudioEvent = Math.floor(position / duration * 100)
+
+  const onChange = (event, value) => {
+    // called while dragging
+    setEphemeralValue(value)
+  }
+
+  const onChangeCommitted = (event, value) => {
+    // called once dragged
+    const position = percentageToPosition(duration)(value)
+    dispatch(actions.seekAudio(position))
+  }
+
+  // on seek-completed
+  React.useEffect(
+    () => {
+      if (seeked) {
+        setEphemeralValue(null)
+      }
+    },
+    [seeked]
+  )
+
+  // console.log('duration', duration, 'position', position, 'value', value, 'ephValue', ephemeralValue)
 
   return (
     <Slider
       ValueLabelComponent={TooltipThumb}
       valueLabelDisplay="on"
-      value={progress}
+      valueLabelFormat={hasEphemeralValue ? valueLabelFormat : null}
+      value={hasEphemeralValue ? ephemeralValue : valueFromAudioEvent}
 
-      onChangeCommitted={(event, percentage) => {
-        const position = percentageToPosition(duration)(percentage)
-
-        dispatch(actions.seekAudio(position))
-      }}
+      onChange={onChange}
+      onChangeCommitted={onChangeCommitted}
     />
   )
 }

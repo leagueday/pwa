@@ -9,6 +9,7 @@ export const STAR_PODCAST = 'STAR_PODCAST'
 export const UNSTAR_PODCAST = 'UNSTAR_PODCAST'
 
 // audio
+export const AUDIO_SEEKED = 'AUDIO_SEEKED'
 export const FORWARD_AUDIO = 'FORWARD_AUDIO'
 export const PAUSE_AUDIO = 'PAUSE_AUDIO'
 export const PLAY_AUDIO = 'PLAY_AUDIO'
