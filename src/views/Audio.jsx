@@ -14,22 +14,6 @@ import { actions, constants as storeConstants, selectors, thunks } from '../stor
 
 const TAP_INTERVAL = 15
 
-const debounce = (f, minIntervalMs) => {
-  let wait = false
-
-  return (...args) => {
-    if (wait) return
-
-    wait = true
-    setTimeout(
-      () => { wait = false },
-      minIntervalMs
-    )
-
-    f(...args)
-  }
-}
-
 // Set a bunch of event listeners on the <audio /> element.
 //
 // Fun fact, React components that `useRef` do not get a render

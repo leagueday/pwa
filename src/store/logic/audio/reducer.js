@@ -59,10 +59,9 @@ const reducer = (state = initialState, action) => {
         ...state,
         duration: action.payload.advertisedDuration,
         itemIndex: action.payload.itemIndex,
-        mode: constants.AUDIO_MODE_PLAY,
         podcastId: action.payload.podcastId,
         podcastUrl: action.payload.podcastUrl,
-        position: 0,
+        position: action.payload.position ?? 0,
         audioUrl: action.payload.audioUrl,
         title: action.payload.title,
       }

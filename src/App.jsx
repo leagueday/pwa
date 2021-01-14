@@ -11,6 +11,8 @@ import { Provider as StoreProvider } from './store'
 import ThemeProvider from './styling/ThemeProvider'
 
 import usePodcasts from './api/usePodcasts'
+import useChronicle from './api/useChronicle'
+import useChronicler from './api/useChronicler'
 
 import Audio from './views/Audio'
 import Error from './views/Error'
@@ -55,11 +57,25 @@ const ThemedAppContent = () => {
   )
 }
 
+const Chronicle = () => {
+  useChronicle()
+
+  return null
+}
+
+const Chronicler = () => {
+  useChronicler()
+
+  return null
+}
+
 const App = () => (
   <StoreProvider>
     <ThemeProvider>
       <CssBaseline />
       <Audio />
+      <Chronicle />
+      <Chronicler />
       <ThemedAppContent />
     </ThemeProvider>
   </StoreProvider>

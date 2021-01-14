@@ -4,6 +4,40 @@ import * as selectors from '../../selectors'
 import { channelSelectors, itemSelectors } from '../../../model/rss'
 import { loadOrFetchPodcastRssDoc } from '../../../api/usePodcast'
 
+export const maybeUseLatestListen =
+  getLatestListen =>
+    (dispatch, getState) => {
+      getLatestListen().then(
+        maybeLatestListen => {
+          const podcastId = maybeLatestListen?.podcastId
+          const audioUrl = maybeLatestListen?.audioUrl
+          const audioPosition = maybeLatestListen?.audioPosition
+
+          const podcastUrl = maybeLatestListen?.podcastUrl
+          const itemIndex = maybeLatestListen?.itemIndex
+          const duration = maybeLatestListen?.duration
+          const title = maybeLatestListen?.title
+
+          if (!podcastId || !audioUrl || !audioPosition) return
+
+          const currentPodcastId = selectors.getAudioPodcastId(getState())
+          const currentPodcastUrl = selectors.getAudioPodcastUrl(getState())
+
+          if (currentPodcastId && currentPodcastUrl) return
+
+          dispatch(actions.selectAudio(
+            podcastId,
+            podcastUrl,
+            audioUrl,
+            itemIndex,
+            duration,
+            title,
+            audioPosition
+          ))
+        }
+      )
+    }
+
 export const playNextTrack =
   () =>
     (dispatch, getState) => {

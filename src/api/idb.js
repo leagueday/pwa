@@ -2,25 +2,23 @@ import * as idb_keyval from 'idb-keyval'
 
 const now = () => Date.now() / 1000
 
-export class IdbKvSet {
+export class IdbKvMap {
   #store
 
   constructor(storeName) {
     this.#store = new idb_keyval.Store(`LeagueDay_${storeName}`, storeName)
   }
 
-  async add(key) {
-    return idb_keyval.set(key, 1, this.#store)
+  async set(key, val) {
+    return idb_keyval.set(key, val, this.#store)
   }
 
   async clear() {
     return idb_keyval.clear(this.#store)
   }
 
-  async has(key) {
-    return idb_keyval.get(key, this.#store).then(
-      maybeVal => !!maybeVal
-    )
+  async get(key) {
+    return idb_keyval.get(key, this.#store)
   }
 
   async list() {
@@ -29,6 +27,22 @@ export class IdbKvSet {
 
   async remove(key) {
     return idb_keyval.del(key, this.#store)
+  }
+}
+
+export class IdbKvSet extends IdbKvMap {
+  constructor(storeName) {
+    super(storeName)
+  }
+
+  async add(key) {
+    return super.set(key, 1)
+  }
+
+  async has(key) {
+    return super.get(key).then(
+      maybeVal => !!maybeVal
+    )
   }
 }
 

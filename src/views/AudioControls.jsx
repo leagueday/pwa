@@ -75,10 +75,12 @@ const useStyles = makeStyles(theme => ({
   title: {
     color: theme.palette.text.secondary,
     cursor: 'pointer',
+    display: 'flex',
     fontFamily: theme.typography.serif,
     fontSize: '85%',
     height: TITLE_HEIGHT,
     maxWidth: '100%',
+    minWidth: 0,
     overflowX: 'hidden',
     paddingLeft: '0.5em',
     paddingTop: '0.5em',
@@ -87,6 +89,11 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       color: theme.palette.text.primary,
     },
+  },
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   underbarButton: {
   },
@@ -283,8 +290,10 @@ const AudioControls = () => {
   return (
     <div className={classes.audioControls}>
       <div className={classes.audioControlsLeft}>
-        <div className={classes.title} onClick={titleOnclick}>
-          {itemTitle}
+        <div className={classes.titleContainer}>
+          <div className={classes.title} onClick={titleOnclick}>
+            {itemTitle}
+          </div>
         </div>
         <div className={classes.progressBox}>
           <ProgressBox />
