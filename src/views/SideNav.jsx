@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: '85%',
     justifyContent: 'flex-start',
     marginBottom: '0.5em',
+    marginTop: '0.5em',
     width: '100%',
   },
   myExpanderHeadingText: {
