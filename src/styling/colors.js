@@ -5,7 +5,9 @@ export const darkCharcoal = '#101417' // pdf - header background
 export const darkerCharcoal = '#07090a'
 export const darkGreen = '#123700'
 export const lightCharcoal = '#bbbbbb'
+export const lightSienna = '#867146'
 export const sienna = '#645434'
+export const darkSienna = '#372e1c'
 
 export const vintageTube = 'rgb(244, 212, 0)'
 export const vintageTubeBright = 'rgb(255, 251, 224)' // 'rgba(255, 251, 224, 0.7)'

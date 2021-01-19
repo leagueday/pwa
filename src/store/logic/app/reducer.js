@@ -1,8 +1,8 @@
 import * as constants from '../../constants'
-import * as ActionType from '../../actionTypes';
+import * as ActionType from '../../actionTypes'
 
 const initialState = {
-  categoryFilter: null,
+  filter: {kind: constants.FILTER_KIND_FEATURED},
   selectedAudio: null,
   selectedPodcast: null,
   showCategories: null,
@@ -24,10 +24,10 @@ const reducer = (state = initialState, action) => {
         selectedPodcast: action.payload?.podcast
       }
     }
-    case ActionType.SET_CATEGORY_FILTER: {
+    case ActionType.SET_FILTER: {
       return {
         ...state,
-        categoryFilter: action.payload
+        filter: action.payload
       }
     }
     case ActionType.SET_STARRED: {

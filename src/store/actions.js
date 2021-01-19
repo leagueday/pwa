@@ -17,11 +17,12 @@ export const selectPodcast = podcast => ({
   }
 })
 
-export const setCategoryFilter = (cat, subcat) => ({
-  type: ActionType.SET_CATEGORY_FILTER,
+export const setFilter = (kind, cat, subcat) => ({
+  type: ActionType.SET_FILTER,
   payload: {
     cat,
-    subcat
+    kind,
+    subcat,
   }
 })
 

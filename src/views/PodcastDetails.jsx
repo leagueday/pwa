@@ -114,8 +114,6 @@ const PodcastDetails = props => {
 
   const podcast = props.podcast
 
-  const starred = useSelector(selectors.getStarred)
-
   const audioPodcastId = useSelector(selectors.getAudioPodcastId)
   const audioMode = useSelector(selectors.getAudioMode)
 

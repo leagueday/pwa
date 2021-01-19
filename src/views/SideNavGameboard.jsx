@@ -5,7 +5,7 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import { actions, selectors } from '../store'
+import { actions, constants as storeConsts, selectors, useFilter } from '../store'
 import * as apiConsts from '../api/consts'
 import { proxifyHttpUrl } from '../api/util'
 import useGameboard from '../api/useGameboard'
@@ -28,13 +28,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     marginBottom: '0.25em',
   },
-  itemSelected: {
-    backgroundColor: Color(theme.palette.primary.dark).fade(0.8).string(),
-    border: `1px solid ${Color(theme.palette.primary.dark).fade(0.6).string()}`,
-    borderRadius: theme.shape.borderRadius,
-    color: theme.palette.text.primary,
-    fontWeight: theme.typography.fontWeightBold,
-  },
   itemImage: {
     height: '1em',
     marginRight: '0.35em',
@@ -46,6 +39,13 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     width: '100%',
   },
+  itemSelected: {
+    backgroundColor: Color(theme.palette.primary.dark).fade(0.8).string(),
+    border: `1px solid ${Color(theme.palette.primary.dark).fade(0.6).string()}`,
+    borderRadius: theme.shape.borderRadius,
+    color: theme.palette.text.primary,
+    fontWeight: theme.typography.fontWeightBold,
+  },
 }))
 
 const Item = ({data}) => {
@@ -55,20 +55,25 @@ const Item = ({data}) => {
 
   const dispatch = useDispatch()
 
-  const categoryFilter = useSelector(selectors.getCategoryFilter)
+  const filter = useFilter()
 
   const isSelected = (() => {
-    if (!categoryFilter) return false
+    if (filter.kind !== filterKind) return false
 
-    return (filterKind === 'cat' && filterParam === categoryFilter.cat) ||
-      (filterKind === 'subcat' && filterParam === categoryFilter.subcat)
+    if (filter.kind === storeConsts.FILTER_KIND_CAT) return filter.cat === filterParam
+
+    if (filter.kind === storeConsts.FILTER_KIND_SUBCAT) return filter.subcat === filterParam
+
+    // considering filter.kind === filterKind, tested above... and doesn't go to isSelected when null
+    return filter.kind === storeConsts.FILTER_KIND_FEATURED || filter.kind === storeConsts.FILTER_KIND_MY_LIST
   })()
 
   const toggleIsSelected = isSelected
-    ? () => dispatch(actions.setCategoryFilter())
-    : () => dispatch(actions.setCategoryFilter(
-      filterKind === 'cat' ? filterParam : null,
-      filterKind === 'subcat' ? filterParam : null))
+    ? () => dispatch(actions.setFilter(storeConsts.FILTER_KIND_FEATURED))
+    : () => dispatch(actions.setFilter(
+      filterKind,
+      filterKind === storeConsts.FILTER_KIND_CAT ? filterParam : null,
+      filterKind === storeConsts.FILTER_KIND_SUBCAT ? filterParam : null))
 
   const maybeProxiedImageUrl = proxifyHttpUrl(imageUrl, apiConsts.PROXY_RESPONSE_KIND_IMG)
 

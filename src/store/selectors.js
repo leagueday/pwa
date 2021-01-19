@@ -2,7 +2,7 @@
 // App
 
 export const getAppState = store => store.app
-export const getCategoryFilter = store => getAppState(store)?.categoryFilter
+export const getFilter = store => getAppState(store)?.filter
 export const getSelectedPodcast = store => getAppState(store)?.selectedPodcast
 export const getShowCategories = store => getAppState(store)?.showCategories
 export const getStarred = store => getAppState(store)?.starred

@@ -9,7 +9,7 @@ import {selectors} from '../store'
 import * as consts from './consts'
 import BasicLayout from './BasicLayout'
 import PodcastsGrid from './PodcastsGrid'
-import SideNav from './SideNav'
+import NewSideNav from './SideNav2'
 
 const useStyles = makeStyles(theme => ({
   mainPodcastsGrid: {
@@ -41,7 +41,7 @@ const MainScreen = () => {
       <Hidden xsDown>
         { isSidenavVisible && (
             <div className={classes.mainSidenav}>
-              <SideNav />
+              <NewSideNav />
             </div>
           )
         }

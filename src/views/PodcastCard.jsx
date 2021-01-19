@@ -8,6 +8,7 @@ import { constants as storeConstants, actions, selectors } from '../store'
 import * as typography from '../styling/typography'
 import { channelSelectors } from '../model/rss'
 import usePodcast from '../api/usePodcast'
+import useStarred from '../api/useStarred'
 
 import LazyPodcastTitleImage from './LazyPodcastTitleImage'
 
@@ -129,8 +130,8 @@ const PodcastCard = ({podcast}) => {
   const audioMode = useSelector(selectors.getAudioMode)
   const isPlaying = audioPodcastId === podcast?.id && audioMode === storeConstants.AUDIO_MODE_PLAY
 
-  const starred = useSelector(selectors.getStarred)
-  const isStarred = podcast?.id && starred ? !!starred[podcast.id] : false
+  const [isStar] = useStarred()
+  const isStarred = isStar(podcast?.id)
 
   const title = channelSelectors.v2.title(rss)
   const language = channelSelectors.v2.language(rss)

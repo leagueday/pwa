@@ -6,9 +6,10 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Grid from '@material-ui/core/Grid'
 
 import * as colors from '../styling/colors'
-import { selectors } from '../store'
+import { constants as storeConsts, selectors, useFilter } from '../store'
 
 import usePodcasts from '../api/usePodcasts'
+import useStarred from '../api/useStarred'
 import PodcastCard from './PodcastCard'
 
 const useStyles = makeStyles(theme => ({
@@ -27,11 +28,11 @@ const PodcastsGrid = () => {
 
   const classes = useStyles()
 
-  const starred = useSelector(selectors.getStarred)
+  const [isStar] = useStarred()
 
-  const {data} = usePodcasts(starred)
+  const {data} = usePodcasts()
 
-  const categoryFilter = useSelector(selectors.getCategoryFilter)
+  const filter = useFilter()
 
   const showCategories = useSelector(selectors.getShowCategories)
   const isSidenavVisible = showCategories !== false
@@ -48,24 +49,27 @@ const PodcastsGrid = () => {
         return []
       }
 
-      if (!categoryFilter) {
-        return filterSoftDisabled(data)
-      }
+      const {kind: filterKind, cat: filterCat, subcat: filterSubcat} = filter
 
-      const {cat: cfCat, subcat: cfSubcat} = categoryFilter
-
-      if (!cfCat && !cfSubcat) {
+      if (!filterKind) {
         return filterSoftDisabled(data)
       }
 
       return data.filter(
         podcast => {
-          if (cfCat && cfCat !== podcast.category) return false
-          return !cfSubcat || cfSubcat === podcast.subCategory
+          if (filterKind === storeConsts.FILTER_KIND_CAT) return filter.cat === podcast.category
+
+          if (filterKind === storeConsts.FILTER_KIND_SUBCAT) return filter.subcat === podcast.subCategory
+
+          if (filterKind === storeConsts.FILTER_KIND_FEATURED) return podcast.suggested != null
+
+          if (filterKind === storeConsts.FILTER_KIND_MY_LIST) return isStar(podcast.id)
+
+          throw new Error(`Unknown filter: ${filterKind}`)
         }
       )
     },
-    [categoryFilter, data]
+    [data, filter]
   )
 
   return (

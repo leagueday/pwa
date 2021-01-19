@@ -6,7 +6,7 @@ import cx from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 
-import { actions, selectors } from '../store'
+import { actions, constants as storeConsts, selectors, useFilter } from '../store'
 import usePodcasts from '../api/usePodcasts'
 
 const useStyles = makeStyles(theme => ({
@@ -39,17 +39,13 @@ const Item = ({cat}) => {
 
   const dispatch = useDispatch()
 
-  const categoryFilter = useSelector(selectors.getCategoryFilter)
+  const filter = useFilter()
 
-  const isSelected = (() => {
-    if (!categoryFilter) return false
-
-    return !categoryFilter.subcat && cat === categoryFilter.cat
-  })()
+  const isSelected = filter.kind === storeConsts.FILTER_KIND_CAT && cat === filter.cat
 
   const toggleIsSelected = isSelected
-    ? () => dispatch(actions.setCategoryFilter())
-    : () => dispatch(actions.setCategoryFilter(cat, null))
+    ? () => dispatch(actions.setFilter(storeConsts.FILTER_KIND_FEATURED))
+    : () => dispatch(actions.setFilter(storeConsts.FILTER_KIND_CAT, cat, null))
 
   return (
     <div className={cx(classes.category, {[classes.categorySelected]: isSelected})} onClick={toggleIsSelected}>

@@ -1,7 +1,7 @@
 // app
 export const HIDE_CATEGORIES = 'HIDE_CATEGORIES'
 export const SELECT_PODCAST = 'SELECT_PODCAST'
-export const SET_CATEGORY_FILTER = 'SET_CATEGORY_FILTER'
+export const SET_FILTER = 'SET_FILTER'
 export const SET_STARRED = 'SET_STARRED'
 export const SET_THEME = 'SET_THEME'
 export const SHOW_CATEGORIES = 'SHOW_CATEGORIES'

@@ -6,7 +6,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 
 import * as apiConsts from '../api/consts'
-import { actions, selectors } from '../store'
+import { actions, constants as storeConsts, selectors, useFilter } from '../store'
 import { isHttpUrl, proxifyHttpUrl } from '../api/util'
 import useGameboard from '../api/useGameboard'
 import usePodcasts from '../api/usePodcasts'
@@ -39,25 +39,48 @@ const useStyles = makeStyles(theme => ({
 
 const makeCategoryMenuOnClick = (dispatch, closeMenu, cat) =>
   () => {
-    dispatch(actions.setCategoryFilter(cat, null))
+    dispatch(actions.setFilter(storeConsts.FILTER_KIND_CAT, cat, null))
     closeMenu()
   }
 
 const makeGameboardMenuOnClick = (dispatch, closeMenu, {filterKind, filterParam}) => {
-  if (filterKind === 'cat') {
-    return () => {
-      dispatch(actions.setCategoryFilter(filterParam, null))
-      closeMenu()
-    }
-  } else if (filterKind === 'subcat') {
-    return () => {
-      dispatch(actions.setCategoryFilter(null, filterParam))
-      closeMenu()
-    }
-  } else { // no op
-    return () => {
-      closeMenu()
-    }
+  switch (filterKind) {
+    case storeConsts.FILTER_KIND_FEATURED:
+    case storeConsts.FILTER_KIND_MY_LIST:
+      return () => {
+        dispatch(filterKind)
+        closeMenu()
+      }
+    case storeConsts.FILTER_KIND_CAT:
+      return () => {
+        dispatch(actions.setFilter(filterKind, filterParam, null))
+        closeMenu()
+      }
+    case storeConsts.FILTER_KIND_SUBCAT:
+      return () => {
+        dispatch(actions.setFilter(filterKind, null, filterParam))
+        closeMenu()
+      }
+    default:
+      return () => {
+        // no op
+        closeMenu()
+      }
+  }
+}
+
+const makeFilterDescription = ({kind, cat, subcat}) => {
+  switch (kind) {
+    case storeConsts.FILTER_KIND_FEATURED:
+      return 'Featured'
+    case storeConsts.FILTER_KIND_MY_LIST:
+      return 'My List'
+    case storeConsts.FILTER_KIND_CAT:
+      return cat
+    case storeConsts.FILTER_KIND_SUBCAT:
+      return subcat
+    default:
+      return ''
   }
 }
 
@@ -89,8 +112,6 @@ const MenuContent = ({data}) => {
 }
 
 const MenuNav = ({anchor}) => {
-  const classes = useStyles()
-
   const dispatch = useDispatch()
 
   const closeMenu = () => dispatch(actions.hideCategories())
@@ -99,14 +120,19 @@ const MenuNav = ({anchor}) => {
   const {data: gameboardData} = useGameboard()
 
   const showCategories = useSelector(selectors.getShowCategories)
-  const categoryFilter = useSelector(selectors.getCategoryFilter)
+  const filter = useFilter()
+  const {kind: filterKind, cat: filterCat, subcat: filterSubcat} = filter
 
   // by default the menu is not visible
   // although currently same category-filter feature is provided by menu and sidenav
   // the sidenav is by default open
   const isMenuVisible = showCategories === true
 
-  const isFiltered = categoryFilter && (categoryFilter.cat || categoryFilter.subcat)
+  const isFiltered =
+    filterKind === storeConsts.FILTER_KIND_FEATURED ||
+    filterKind === storeConsts.FILTER_KIND_MY_LIST ||
+    (filterKind === storeConsts.FILTER_KIND_CAT && filterCat) ||
+    (filterKind === storeConsts.FILTER_KIND_SUBCAT && filterSubcat)
 
   return (
     <Menu
@@ -116,10 +142,10 @@ const MenuNav = ({anchor}) => {
     >
       { isFiltered && (
         <MenuItem onClick={() => {
-          dispatch(actions.setCategoryFilter())
+          dispatch(actions.setFilter(storeConsts.FILTER_KIND_FEATURED))
           closeMenu()
         }}>
-          <ClearFilterMenuContent filterDescription={`${categoryFilter.cat ?? categoryFilter.subcat}`} />
+          <ClearFilterMenuContent filterDescription={makeFilterDescription(filter)} />
         </MenuItem>
         )
       }
