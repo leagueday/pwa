@@ -3,19 +3,24 @@ import * as ActionType from '../../actionTypes'
 
 const initialState = {
   filter: {kind: constants.FILTER_KIND_FEATURED},
+  navExpanders: {
+    [constants.NAV_EXPANDER_CLASSIC_GAMES]: true,
+    [constants.NAV_EXPANDER_IGAMING]: true,
+    [constants.NAV_EXPANDER_VIDEO_GAMES]: true,
+  },
+  navVisibility: null,
   selectedAudio: null,
   selectedPodcast: null,
-  showCategories: null,
   starred: null,
   theme: constants.UI_THEME_SPEC,
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionType.HIDE_CATEGORIES: {
+    case ActionType.HIDE_NAV: {
       return {
         ...state,
-        showCategories: false
+        navVisibility: false
       }
     }
     case ActionType.SELECT_PODCAST: {
@@ -30,6 +35,19 @@ const reducer = (state = initialState, action) => {
         filter: action.payload
       }
     }
+    case ActionType.SET_NAV_EXPANDER: {
+      const {open, tag} = action.payload
+
+      const navExpanders = {
+        ...state.navExpanders,
+        [tag]: open,
+      }
+
+      return {
+        ...state,
+        navExpanders,
+      }
+    }
     case ActionType.SET_STARRED: {
       return {
         ...state,
@@ -42,10 +60,10 @@ const reducer = (state = initialState, action) => {
         theme: action.payload.theme
       }
     }
-    case ActionType.SHOW_CATEGORIES: {
+    case ActionType.SHOW_NAV: {
       return {
         ...state,
-        showCategories: true
+        navVisibility: true
       }
     }
     case ActionType.STAR_PODCAST: {

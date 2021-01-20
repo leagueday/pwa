@@ -29,12 +29,12 @@ const useStyles = makeStyles(theme => ({
 const MainScreen = () => {
   const classes = useStyles()
 
-  const showCategories = useSelector(selectors.getShowCategories)
+  const navVisibility = useSelector(selectors.getNavVisibility)
 
   // by default the sidenav is visible
   // although currently same category-filter feature is provided by menu and sidenav
   // the menu is by default closed
-  const isSidenavVisible = showCategories !== false
+  const isSidenavVisible = navVisibility !== false
 
   return (
     <BasicLayout mode="main">

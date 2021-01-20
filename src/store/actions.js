@@ -4,8 +4,8 @@ import * as ActionType from './actionTypes'
 
 // App
 
-export const hideCategories = () => ({
-  type: ActionType.HIDE_CATEGORIES,
+export const hideNav = () => ({
+  type: ActionType.HIDE_NAV,
   payload: {
   }
 })
@@ -26,6 +26,14 @@ export const setFilter = (kind, cat, subcat) => ({
   }
 })
 
+export const setNavExpander = (open, tag) => ({
+  type: ActionType.SET_NAV_EXPANDER,
+  payload: {
+    open,
+    tag,
+  }
+})
+
 export const setStarred = starred => ({
   type: ActionType.SET_STARRED,
   payload: {
@@ -40,8 +48,8 @@ export const setTheme = theme => ({
   }
 })
 
-export const showCategories = () => ({
-  type: ActionType.SHOW_CATEGORIES,
+export const showNav = () => ({
+  type: ActionType.SHOW_NAV,
   payload: {
   }
 })

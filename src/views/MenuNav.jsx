@@ -114,19 +114,19 @@ const MenuContent = ({data}) => {
 const MenuNav = ({anchor}) => {
   const dispatch = useDispatch()
 
-  const closeMenu = () => dispatch(actions.hideCategories())
+  const closeMenu = () => dispatch(actions.hideNav())
 
   const {categories} = usePodcasts()
   const {data: gameboardData} = useGameboard()
 
-  const showCategories = useSelector(selectors.getShowCategories)
+  const navVisibility = useSelector(selectors.getNavVisibility)
   const filter = useFilter()
   const {kind: filterKind, cat: filterCat, subcat: filterSubcat} = filter
 
   // by default the menu is not visible
   // although currently same category-filter feature is provided by menu and sidenav
   // the sidenav is by default open
-  const isMenuVisible = showCategories === true
+  const isMenuVisible = navVisibility === true
 
   const isFiltered =
     filterKind === storeConsts.FILTER_KIND_FEATURED ||

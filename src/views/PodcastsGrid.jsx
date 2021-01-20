@@ -34,8 +34,8 @@ const PodcastsGrid = () => {
 
   const filter = useFilter()
 
-  const showCategories = useSelector(selectors.getShowCategories)
-  const isSidenavVisible = showCategories !== false
+  const navVisibility = useSelector(selectors.getNavVisibility)
+  const isSidenavVisible = navVisibility !== false
 
   const [mdItemCols, smItemCols, xsItemCols] = screenIsXs
     ? [12, 12, 12]

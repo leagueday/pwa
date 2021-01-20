@@ -14,6 +14,7 @@ import {actions, constants as storeConsts, selectors, useFilter} from '../store'
 import * as apiConsts from '../api/consts'
 import {proxifyHttpUrl} from '../api/util'
 import useGameboard from '../api/useGameboard'
+import useStarred from '../api/useStarred'
 
 // Note that Material-UI Accordion was tried and had too much spacing,
 // which seemed really difficult to tune. So this component rolls its
@@ -78,7 +79,7 @@ const useStyles = makeStyles(theme => ({
     fontFamily: theme.typography.mono,
     fontSize: '70%',
     justifyContent: 'flex-start',
-    marginRight: '0.2em',
+    marginRight: '0.3em',
     textShadow: `1px 1px ${colors.darkSienna}`,
   },
   myExpanderContent: {
@@ -167,7 +168,7 @@ const VerticalSpacer = () => {
   return (<div className={classes.spacer} />)
 }
 
-const Expander = ({children, text, filterKind, filterParam}) => {
+const Expander = ({children, text, tag, filterKind, filterParam}) => {
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -176,9 +177,11 @@ const Expander = ({children, text, filterKind, filterParam}) => {
 
   const isSelectedFilter = isMatchingFilter(filter, filterKind, filterParam)
 
-  const [open, setOpen] = React.useState(true)
+  const open = useSelector(selectors.getNavExpander(tag))
 
-  const toggleOpen = open ? () => setOpen(false) : () => setOpen(true)
+  const toggleOpen = () => {
+    dispatch(actions.setNavExpander(!open, tag))
+  }
 
   const Icon = open ? RemoveRoundedIcon : AddRoundedIcon
 
@@ -265,17 +268,23 @@ const NonExpander = ({children, text, filterKind, filterParam}) => {
 const SideNav = () => {
   const classes = useStyles()
 
+  const [, , , isStarsEmpty] = useStarred()
   const {data: gameboardData} = useGameboard()
 
   return (
     <div className={classes.sideNav}>
       <Item text="Featured" filterKind={storeConsts.FILTER_KIND_FEATURED} />
       <VerticalSpacer />
-      <Item text="My List" filterKind={storeConsts.FILTER_KIND_MY_LIST} />
-      <VerticalSpacer />
+      {!isStarsEmpty && (
+        <>
+          <Item text="My List" filterKind={storeConsts.FILTER_KIND_MY_LIST} />
+          <VerticalSpacer />
+        </>
+      )}
       <NonExpander text="By Category">
         <Expander
           text="Video Games"
+          tag={storeConsts.NAV_EXPANDER_VIDEO_GAMES}
           filterKind={storeConsts.FILTER_KIND_CAT}
           filterParam={apiConsts.CAT_GENERAL_GAMING}
         >
@@ -293,7 +302,12 @@ const SideNav = () => {
             )
           }
         </Expander>
-        <Expander text="iGaming" filterKind={storeConsts.FILTER_KIND_CAT} filterParam={apiConsts.CAT_IGAMING}>
+        <Expander
+          text="iGaming"
+          tag={storeConsts.NAV_EXPANDER_IGAMING}
+          filterKind={storeConsts.FILTER_KIND_CAT}
+          filterParam={apiConsts.CAT_IGAMING}
+        >
           <Item
             text="Sports Betting"
             filterKind={storeConsts.FILTER_KIND_SUBCAT}
@@ -307,6 +321,7 @@ const SideNav = () => {
         </Expander>
         <Expander
           text="Classic Games"
+          tag={storeConsts.NAV_EXPANDER_CLASSIC_GAMES}
           filterKind={storeConsts.FILTER_KIND_CAT}
           filterParam={apiConsts.CAT_CLASSIC}
         >

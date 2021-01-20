@@ -3,8 +3,9 @@
 
 export const getAppState = store => store.app
 export const getFilter = store => getAppState(store)?.filter
+export const getNavExpander = tag => store => getAppState(store)?.navExpanders?.[tag]
+export const getNavVisibility = store => getAppState(store)?.navVisibility
 export const getSelectedPodcast = store => getAppState(store)?.selectedPodcast
-export const getShowCategories = store => getAppState(store)?.showCategories
 export const getStarred = store => getAppState(store)?.starred
 export const getTheme = store => getAppState(store)?.theme
 

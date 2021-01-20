@@ -73,7 +73,7 @@ const AppBar = props => {
 
   const classes = useStyles()
 
-  const showCategories = useSelector(selectors.getShowCategories)
+  const navVisibility = useSelector(selectors.getNavVisibility)
 
   const previousLocations = useSelector(selectors.getRouterPreviousLocations)
   const backIsElsewhere = (previousLocations?.length ?? 1) === 1
@@ -100,12 +100,12 @@ const AppBar = props => {
   else { // main/default - burger button game/cat filters
     MainButtonMuiIcon = MenuIcon
 
-    const isCategoriesVisible = screenIsXs ? showCategories === true : showCategories !== false
+    const isNavVisible = screenIsXs ? navVisibility === true : navVisibility !== false
 
-    if (isCategoriesVisible) {
-      mainButtonOnclick = () => dispatch(actions.hideCategories())
+    if (isNavVisible) {
+      mainButtonOnclick = () => dispatch(actions.hideNav())
     } else {
-      mainButtonOnclick = () => dispatch(actions.showCategories())
+      mainButtonOnclick = () => dispatch(actions.showNav())
     }
   }
 
@@ -120,7 +120,7 @@ const AppBar = props => {
           disableRipple
           onClick={mainButtonOnclick}
           size="small"
-          value="showCategories"
+          value="showNav"
         >
           <MainButtonMuiIcon className={classes.vintageTube} />
         </IconButton >

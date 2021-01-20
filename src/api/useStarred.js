@@ -46,7 +46,9 @@ const useStarred = () => {
     [starred]
   )
 
-  return [isStar, add, remove]
+  const isStarsEmpty = !(starred && Object.keys(starred).length > 0)
+
+  return [isStar, add, remove, isStarsEmpty]
 }
 
 export default useStarred
