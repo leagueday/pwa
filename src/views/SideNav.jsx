@@ -312,11 +312,13 @@ const SideNav = () => {
             text="Sports Betting"
             filterKind={storeConsts.FILTER_KIND_SUBCAT}
             filterParam={apiConsts.SUBCAT_SPORTS_BETTING}
+            imageUrl="/img/betting.png"
           />
           <Item
             text="Fantasy"
             filterKind={storeConsts.FILTER_KIND_SUBCAT}
             filterParam={apiConsts.SUBCAT_FANTASY_SPORTS}
+            imageUrl="/img/fantasy.png"
           />
         </Expander>
         <Expander
