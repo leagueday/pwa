@@ -4,6 +4,7 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Hidden from '@material-ui/core/Hidden'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded'
 import StarRoundedIcon from '@material-ui/icons/StarRounded';
@@ -169,10 +170,14 @@ const PodcastDetails = props => {
                 ? (<StarRoundedIcon
                   className={classes.star}
                   onClick={() => removeStar(podcast?.id)}
-                />) : (<StarBorderRoundedIcon
-                  className={classes.star}
-                  onClick={() => addStar(podcast?.id)}
-                />)
+                />) : (
+                  <Tooltip title="Click to add this podcast to your list.">
+                    <StarBorderRoundedIcon
+                      className={classes.star}
+                      onClick={() => addStar(podcast?.id)}
+                    />
+                  </Tooltip>
+                )
               }
             </div>
           </div>

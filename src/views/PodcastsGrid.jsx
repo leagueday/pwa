@@ -57,9 +57,9 @@ const PodcastsGrid = () => {
 
       return data.filter(
         podcast => {
-          if (filterKind === storeConsts.FILTER_KIND_CAT) return filter.cat === podcast.category
+          if (filterKind === storeConsts.FILTER_KIND_CAT) return filterCat === podcast.category
 
-          if (filterKind === storeConsts.FILTER_KIND_SUBCAT) return filter.subcat === podcast.subCategory
+          if (filterKind === storeConsts.FILTER_KIND_SUBCAT) return filterSubcat === podcast.subCategory
 
           if (filterKind === storeConsts.FILTER_KIND_FEATURED) return podcast.suggested != null
 
