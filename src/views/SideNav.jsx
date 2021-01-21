@@ -38,11 +38,16 @@ const useStyles = makeStyles(theme => ({
     marginRight: '0.35em',
   },
   itemName: {
-    fontSize: '85%',
     overflowX: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     width: '100%',
+  },
+  itemNameChild: {
+    fontSize: '75%',
+  },
+  itemNameStandalone: {
+    fontSize: '90%',
   },
   myExpander: {
     userSelect: 'none',
@@ -51,7 +56,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
-    fontSize: '85%',
+    fontSize: '90%',
     justifyContent: 'flex-start',
     marginBottom: '0.5em',
     marginTop: '0.5em',
@@ -127,7 +132,7 @@ const isMatchingFilter = (storeFilter, filterKind, filterParam) => {
     )
 }
 
-const Item = ({text, imageUrl, filterKind, filterParam, disabled}) => {
+const Item = ({text, imageUrl, filterKind, filterParam, disabled, standAlone}) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
@@ -155,7 +160,13 @@ const Item = ({text, imageUrl, filterKind, filterParam, disabled}) => {
       onClick={disabled ? null : toggleIsSelected}
     >
       {maybeProxiedImageUrl && (<img className={classes.itemImage} src={maybeProxiedImageUrl} />)}
-      <div className={classes.itemName}>
+      <div className={cx(
+        classes.itemName,
+        {
+          [classes.itemNameChild]: !standAlone,
+          [classes.itemNameStandalone]: standAlone,
+        }
+      )}>
         {text}
       </div>
     </div>
@@ -273,11 +284,11 @@ const SideNav = () => {
 
   return (
     <div className={classes.sideNav}>
-      <Item text="Featured" filterKind={storeConsts.FILTER_KIND_FEATURED} />
+      <Item text="Featured" filterKind={storeConsts.FILTER_KIND_FEATURED} standAlone />
       <VerticalSpacer />
       {!isStarsEmpty && (
         <>
-          <Item text="My List" filterKind={storeConsts.FILTER_KIND_MY_LIST} />
+          <Item text="My List" filterKind={storeConsts.FILTER_KIND_MY_LIST} standAlone />
           <VerticalSpacer />
         </>
       )}
@@ -285,8 +296,6 @@ const SideNav = () => {
         <Expander
           text="Video Games"
           tag={storeConsts.NAV_EXPANDER_VIDEO_GAMES}
-          filterKind={storeConsts.FILTER_KIND_CAT}
-          filterParam={apiConsts.CAT_GENERAL_GAMING}
         >
           {
             gameboardData && gameboardData.map(
@@ -336,7 +345,7 @@ const SideNav = () => {
         </Expander>
       </NonExpander>
       <VerticalSpacer />
-      <Item text="Search" disabled />
+      <Item text="Search" disabled standAlone />
     </div>
   )
 }

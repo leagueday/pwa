@@ -171,7 +171,7 @@ const PodcastDetails = props => {
                   className={classes.star}
                   onClick={() => removeStar(podcast?.id)}
                 />) : (
-                  <Tooltip title="Click to add this podcast to your list.">
+                  <Tooltip title="Click to add this podcast to My List.">
                     <StarBorderRoundedIcon
                       className={classes.star}
                       onClick={() => addStar(podcast?.id)}
