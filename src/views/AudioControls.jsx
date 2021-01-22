@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
     color: colors.babyBlue,
   },
   sliderThumbColor: {
-    backgroundColor: colors.orange,
+    backgroundColor: colors.brightPlum,
   },
   title: {
     color: theme.palette.text.secondary,

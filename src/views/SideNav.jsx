@@ -25,14 +25,14 @@ const useStyles = makeStyles(theme => ({
   clickable: {
     cursor: 'pointer',
   },
-  item: {
+  item: ({textColor}) => ({
     alignItems: 'center',
-    color: theme.palette.text.secondary,
+    color: textColor ?? theme.palette.text.secondary,
     display: 'flex',
     flexDirection: 'row',
     marginBottom: '0.15em',
     userSelect: 'none',
-  },
+  }),
   itemImage: {
     height: '1em',
     marginRight: '0.35em',
@@ -94,22 +94,19 @@ const useStyles = makeStyles(theme => ({
   selectable: {
     border: `1px solid transparent`,
   },
-  selected: {
+  selected: ({textColor}) => ({
     backgroundColor: Color(theme.palette.primary.dark).fade(0.8).string(),
     border: `1px solid ${Color(theme.palette.primary.dark).fade(0.6).string()}`,
     borderRadius: theme.shape.borderRadius,
-    color: theme.palette.text.primary,
+    color: textColor ?? theme.palette.text.primary,
     fontWeight: theme.typography.fontWeightBold,
-  },
+  }),
   sideNav: {
     display: 'flex',
     flexDirection: 'column',
     marginRight: '0.5em',
     minHeight: '100%',
     padding: '0.5em',
-  },
-  spacer: {
-    minHeight: '0.25em',
   },
 }))
 
@@ -133,8 +130,8 @@ const isMatchingFilter = (storeFilter, filterKind, filterParam) => {
     )
 }
 
-const Item = ({text, imageUrl, filterKind, filterParam, disabled, standAlone}) => {
-  const classes = useStyles()
+const Item = ({text, textColor, imageUrl, filterKind, filterParam, disabled, standAlone}) => {
+  const classes = useStyles({textColor})
   const dispatch = useDispatch()
 
   const filter = useFilter()
@@ -156,7 +153,7 @@ const Item = ({text, imageUrl, filterKind, filterParam, disabled, standAlone}) =
         {
           [classes.clickable]: !disabled,
           [classes.selected]: !disabled && isSelected,
-        }
+        },
       )}
       onClick={disabled ? null : toggleIsSelected}
     >
@@ -172,12 +169,6 @@ const Item = ({text, imageUrl, filterKind, filterParam, disabled, standAlone}) =
       </div>
     </div>
   )
-}
-
-const VerticalSpacer = () => {
-  const classes = useStyles()
-
-  return (<div className={classes.spacer} />)
 }
 
 const Expander = ({children, text, tag, filterKind, filterParam}) => {
@@ -288,7 +279,7 @@ const SideNav = () => {
       <Item text="Featured" filterKind={storeConsts.FILTER_KIND_FEATURED} standAlone />
       {!isStarsEmpty && (
         <>
-          <Item text="My List" filterKind={storeConsts.FILTER_KIND_MY_LIST} standAlone />
+          <Item text="My List" textColor={colors.pinkSalmon} filterKind={storeConsts.FILTER_KIND_MY_LIST} standAlone />
         </>
       )}
       <NonExpander text="By Category">
