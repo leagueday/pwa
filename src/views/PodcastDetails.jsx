@@ -202,6 +202,8 @@ const PodcastDetails = props => {
       <div className={classes.items}>
         {
           (() => {
+            if (!items || !items.map) return null
+
             // there's a kind of fragility to the Next-Track operation,
             // it supposes the durability of a particular listing, and
             // the current track's position in that list. An item's
@@ -218,7 +220,8 @@ const PodcastDetails = props => {
             // in the list, it's not great and is strictly as good
             // as the Next-Track feature...
             let itemIndex = -1
-            return items?.map(
+
+            return items.map(
               item => (
                 <div key={itemIndex++} className={classes.item}>
                   <PodcastDetailsItem

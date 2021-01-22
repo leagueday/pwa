@@ -46,7 +46,22 @@ const useStarred = () => {
     [starred]
   )
 
-  const isStarsEmpty = !(starred && Object.keys(starred).length > 0)
+  const isStarsEmpty = React.useMemo(
+    () => {
+      if (!starred) return true
+
+      const entries = Object.entries(starred)
+
+      if (entries.length < 1) return true
+
+      for (let [k, v] of entries) {
+        if (v) return false
+      }
+
+      return true
+    },
+    [starred]
+  )
 
   return [isStar, add, remove, isStarsEmpty]
 }
