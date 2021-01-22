@@ -15,6 +15,19 @@ const initialState = {
   theme: constants.UI_THEME_SPEC,
 }
 
+const isStarredEmpty = starred => {
+  // tbd move, consolidate
+  const entries = Object.entries(starred)
+
+  if (entries.length < 1) return true
+
+  for (let [k, v] of entries) {
+    if (v) return false
+  }
+
+  return true
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.HIDE_NAV: {
@@ -75,11 +88,18 @@ const reducer = (state = initialState, action) => {
       }
     }
     case ActionType.UNSTAR_PODCAST: {
+      const nextStarred = state.starred
+        ? {...state.starred, ...{[action.payload.podcastId]: false}}
+        : {[action.payload.podcastId]: false}
+
+      const nextFilter = state.filter?.kind === constants.FILTER_KIND_MY_LIST && isStarredEmpty(nextStarred)
+        ? { kind: constants.FILTER_KIND_FEATURED }
+        : state.filter
+
       return {
         ...state,
-        starred: state.starred
-          ? {...state.starred, ...{[action.payload.podcastId]: false}}
-          : {[action.payload.podcastId]: false}
+        filter: nextFilter,
+        starred: nextStarred,
       }
     }
     default:
