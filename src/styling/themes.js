@@ -30,6 +30,7 @@ export const spec = createMuiTheme({
     fontWeightLight: 300,
     fontWeightNormal: 400,
     mono: typography.mono,
+    nav: typography.nav,
     sans: typography.sans,
     serif: typography.serif,
   },
