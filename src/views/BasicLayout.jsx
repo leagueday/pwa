@@ -35,8 +35,8 @@ const useStyles = makeStyles(theme => ({
   },
   basicLayoutContent: {
     alignItems: 'stretch',
-    borderBottom: `1px solid ${colors.darkGreen}`,
-    borderTop: `1px solid ${colors.darkGreen}`,
+    borderBottom: `1px solid ${colors.darkOrange}`,
+    borderTop: `1px solid ${colors.darkOrange}`,
     display: 'flex',
     flexDirection: 'row',
   },

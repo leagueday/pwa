@@ -76,34 +76,34 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     width: '4em',
   },
-  language: {
-    color: theme.palette.text.secondary,
-    fontFamily: typography.mono,
-    fontSize: '75%',
-  },
-  nowPlaying: {
-    color: theme.palette.primary.light,
-    fontFamily: typography.sans,
-    fontSize: '75%',
-    fontStyle: 'oblique',
-    fontWeight: theme.typography.fontWeightLight,
-  },
+  // language: {
+  //   color: theme.palette.text.secondary,
+  //   fontFamily: typography.mono,
+  //   fontSize: '75%',
+  // },
+  // nowPlaying: {
+  //   color: theme.palette.primary.light,
+  //   fontFamily: typography.sans,
+  //   fontSize: '75%',
+  //   fontStyle: 'oblique',
+  //   fontWeight: theme.typography.fontWeightLight,
+  // },
   podcastCard: {
-    border: `1px solid ${colors.vintageTubeDark}`,
+    border: `1px solid ${colors.darkBabyBlue}`,
     borderRadius: '4px',
     cursor: 'pointer',
     margin: '0.1em',
     minHeight: '4em',
     userSelect: 'none',
   },
-  promoted: {
-    color: theme.palette.text.secondary,
-    fontFamily: typography.sans,
-    fontSize: '70%',
-    fontStyle: 'oblique',
-    fontWeight: theme.typography.fontWeightLight,
-    marginLeft: 'auto',
-  },
+  // promoted: {
+  //   color: theme.palette.text.secondary,
+  //   fontFamily: typography.sans,
+  //   fontSize: '70%',
+  //   fontStyle: 'oblique',
+  //   fontWeight: theme.typography.fontWeightLight,
+  //   marginLeft: 'auto',
+  // },
   starred: {
     color: theme.palette.text.secondary,
     fontSize: '75%',
@@ -126,15 +126,15 @@ const PodcastCard = ({podcast}) => {
 
   const classes = useStyles()
 
-  const audioPodcastId = useSelector(selectors.getAudioPodcastId)
-  const audioMode = useSelector(selectors.getAudioMode)
-  const isPlaying = audioPodcastId === podcast?.id && audioMode === storeConstants.AUDIO_MODE_PLAY
+  // const audioPodcastId = useSelector(selectors.getAudioPodcastId)
+  // const audioMode = useSelector(selectors.getAudioMode)
+  // const isPlaying = audioPodcastId === podcast?.id && audioMode === storeConstants.AUDIO_MODE_PLAY
 
   const [isStar] = useStarred()
   const isStarred = isStar(podcast?.id)
 
   const title = channelSelectors.v2.title(rss)
-  const language = channelSelectors.v2.language(rss)
+  // const language = channelSelectors.v2.language(rss)
 
   const dispatch = useDispatch()
   const gotoThisPodcast = () => dispatch(actions.pushHistory(`/podcast/${podcast.id}`))
@@ -153,17 +153,6 @@ const PodcastCard = ({podcast}) => {
               {title}
             </div>
             { isStarred && (<div className={classes.starred}>⭐</div>) }
-          </div>
-          <div className={classes.cardTextRow}>
-            <div className={classes.nowPlaying}>
-              { isPlaying ? 'now playing' : ' ' }
-            </div>
-          </div>
-          <div className={classes.cardTextRow}>
-            <div className={classes.language}>
-              {language}
-            </div>
-            { podcast?.suggested && (<div className={classes.promoted}>(promoted)</div>) }
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ import * as rssSelectors from '../model/rss'
 import usePodcast from '../api/usePodcast'
 import useStarred from '../api/useStarred'
 
-import { stripHtml } from './util'
+import {addScrollStyle, stripHtml} from './util'
 import LazyPodcastTitleImage from './LazyPodcastTitleImage'
 import PodcastAudioControls from './PodcastAudioControls'
 import PodcastDetailsItem from './PodcastDetailsItem'
@@ -45,10 +45,10 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '4px',
     marginBottom: '0.25em',
   },
-  items: {
+  items: addScrollStyle({
     maxHeight: '100%',
     overflowY: 'auto',
-  },
+  }),
   language: {
     color: theme.palette.text.secondary,
     fontWeight: theme.typography.fontWeightLight,

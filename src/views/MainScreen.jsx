@@ -7,23 +7,24 @@ import Hidden from '@material-ui/core/Hidden'
 import {selectors} from '../store'
 
 import * as consts from './consts'
+import {addScrollStyle} from './util'
 import BasicLayout from './BasicLayout'
 import PodcastsGrid from './PodcastsGrid'
 import SideNav from './SideNav'
 
 const useStyles = makeStyles(theme => ({
-  mainPodcastsGrid: {
+  mainPodcastsGrid: addScrollStyle({
     flex: 1,
     maxHeight: '100%',
     overflowX: 'hidden',
     overflowY: 'auto',
-  },
-  mainSidenav: {
+  }),
+  mainSidenav: addScrollStyle({
     maxHeight: '100%',
     overflowY: 'auto',
     paddingTop: '0.5em',
     width: consts.SIDENAV_WIDTH,
-  },
+  }),
 }))
 
 const MainScreen = () => {

@@ -72,6 +72,12 @@ const useStyles = makeStyles(theme => ({
   replayButton: {
     transform: 'scaleX(1.01)',
   },
+  sliderColor: {
+    color: colors.babyBlue,
+  },
+  sliderThumbColor: {
+    backgroundColor: colors.orange,
+  },
   title: {
     color: theme.palette.text.secondary,
     cursor: 'pointer',
@@ -168,6 +174,8 @@ const TooltipThumb = ({children, open, value}) => {
 }
 
 const ProgressBox = () => {
+  const classes = useStyles()
+
   const dispatch = useDispatch()
 
   const duration = maybeHmsToSecondsOnly(
@@ -231,6 +239,10 @@ const ProgressBox = () => {
 
   return (
     <Slider
+      classes={{
+        colorPrimary: classes.sliderColor,
+        thumbColorPrimary: classes.sliderThumbColor,
+      }}
       ValueLabelComponent={TooltipThumb}
       valueLabelDisplay="on"
       valueLabelFormat={hasEphemeralValue ? valueLabelFormat : null}

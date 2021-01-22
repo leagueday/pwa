@@ -3,15 +3,10 @@ import ReactDOM from 'react-dom'
 
 import App from './App'
 
-// import './styling/static.css'
-
-const renderApp = () => {
-  ReactDOM.render(
+ReactDOM.render(
     React.createElement(App, {}, null),
-    document.getElementById('root'))
-}
-
-renderApp()
+    document.getElementById('root')
+)
 
 if (NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {

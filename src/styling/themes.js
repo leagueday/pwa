@@ -26,7 +26,7 @@ export const spec = createMuiTheme({
   },
   typography: {
     fontFamily: typography.sans,
-    fontWeightBold: 700,
+    fontWeightBold: 600,
     fontWeightLight: 300,
     fontWeightNormal: 400,
     mono: typography.mono,

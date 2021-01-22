@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
     display: 'flex',
     flexDirection: 'row',
-    marginBottom: '0.25em',
+    marginBottom: '0.15em',
     userSelect: 'none',
   },
   itemImage: {
@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
   itemName: {
     overflowX: 'hidden',
+    overflowY: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     width: '100%',
@@ -51,6 +52,7 @@ const useStyles = makeStyles(theme => ({
   },
   myExpander: {
     userSelect: 'none',
+    marginBottom: '0.25em',
   },
   myExpanderHeading: {
     alignItems: 'center',
@@ -58,8 +60,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     fontSize: '90%',
     justifyContent: 'flex-start',
-    marginBottom: '0.5em',
-    marginTop: '0.5em',
+    marginBottom: '0.25em',
     width: '100%',
   },
   myExpanderHeadingText: {
@@ -108,7 +109,7 @@ const useStyles = makeStyles(theme => ({
     padding: '0.5em',
   },
   spacer: {
-    minHeight: '1em',
+    minHeight: '0.25em',
   },
 }))
 
@@ -285,11 +286,9 @@ const SideNav = () => {
   return (
     <div className={classes.sideNav}>
       <Item text="Featured" filterKind={storeConsts.FILTER_KIND_FEATURED} standAlone />
-      <VerticalSpacer />
       {!isStarsEmpty && (
         <>
           <Item text="My List" filterKind={storeConsts.FILTER_KIND_MY_LIST} standAlone />
-          <VerticalSpacer />
         </>
       )}
       <NonExpander text="By Category">
@@ -344,7 +343,6 @@ const SideNav = () => {
           />
         </Expander>
       </NonExpander>
-      <VerticalSpacer />
       <Item text="Search" disabled standAlone />
     </div>
   )
