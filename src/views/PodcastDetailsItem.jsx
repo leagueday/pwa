@@ -93,7 +93,7 @@ const PodcastDetailsItem = ({podcastId, podcastUrl, item, itemIndex}) => {
 
   const [expanded, setExpanded] = React.useState(false)
 
-  const audioType = itemSelectors.v2.audioType(item)
+  // const audioType = itemSelectors.v2.audioType(item)
   const itemAudioUrl = itemSelectors.v2.audioUrl(item)
   const description = itemSelectors.v2.description(item)
   const duration = itemSelectors.v2.duration(item)
