@@ -16,6 +16,8 @@ import {proxifyHttpUrl} from '../api/util'
 import useGameboard from '../api/useGameboard'
 import useStarred from '../api/useStarred'
 
+const MY_LIST_TEXT_COLOR = colors.babyBlue
+
 // Note that Material-UI Accordion was tried and had too much spacing,
 // which seemed really difficult to tune. So this component rolls its
 // own Accordion/ExpanderPanel, with hopefully kind of snazzy styling
@@ -281,7 +283,7 @@ const SideNav = () => {
       <Item text="Featured" filterKind={storeConsts.FILTER_KIND_FEATURED} standAlone />
       {!isStarsEmpty && (
         <>
-          <Item text="My List" textColor={colors.pinkSalmon} filterKind={storeConsts.FILTER_KIND_MY_LIST} standAlone />
+          <Item text="My List" textColor={MY_LIST_TEXT_COLOR} filterKind={storeConsts.FILTER_KIND_MY_LIST} standAlone />
         </>
       )}
       <NonExpander text="By Category">
