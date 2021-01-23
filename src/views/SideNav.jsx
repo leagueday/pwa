@@ -97,8 +97,8 @@ const useStyles = makeStyles(theme => ({
     border: `1px solid transparent`,
   },
   selected: ({textColor}) => ({
-    backgroundColor: Color(theme.palette.primary.dark).fade(0.8).string(),
-    border: `1px solid ${Color(theme.palette.primary.dark).fade(0.6).string()}`,
+    backgroundColor: colors.blackPlum,
+    border: `1px solid ${Color(colors.blackPlum).lighten(0.5).string()}`,
     borderRadius: theme.shape.borderRadius,
     color: textColor ?? theme.palette.text.primary,
     fontWeight: theme.typography.fontWeightBold,

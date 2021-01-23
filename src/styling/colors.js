@@ -1,5 +1,7 @@
 
 export const babyBlue = '#1b82c6'
+export const blackBabyBlue = '#18252d'
+export const blackPlum = '#231f28'
 export const bluishBlack = '#191c21' // pdf - card background, sidebar background
 export const brightPlum = '#9430ff'
 export const charcoal = '#25282d' // pdf - grid background

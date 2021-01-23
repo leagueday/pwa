@@ -5,13 +5,15 @@ import { makeStyles } from '@material-ui/core/styles'
 import Collapse from '@material-ui/core/Collapse'
 import Hidden from '@material-ui/core/Hidden'
 
-import {selectors} from '../store'
+import {constants as storeConsts, selectors, useFilter} from '../store'
 
 import * as consts from './consts'
-import {addScrollStyle} from './util'
+import { addScrollStyle } from './util'
 import BasicLayout from './BasicLayout'
+import FeaturedContent from './FeaturedContent'
 import PodcastsGrid from './PodcastsGrid'
 import SideNav from './SideNav'
+import usePodcasts from '../api/usePodcasts'
 
 const useStyles = makeStyles(theme => ({
   horizontalCollapseContainer: addScrollStyle({
@@ -26,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   horizontalCollapseHidden: {
     width: 0,
   },
-  mainPodcastsGrid: addScrollStyle({
+  mainContent: addScrollStyle({
     flex: 1,
     maxHeight: '100%',
     overflowX: 'hidden',
@@ -37,6 +39,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const HorizontalCollapse = props => {
+  // As of material-ui version 5 this will be available with
+  // <Collapse orientation="horizontal"> ...
+
   const classes = useStyles()
 
   return (
@@ -53,10 +58,18 @@ const HorizontalCollapse = props => {
   )
 }
 
+const PodcastsGridWithDefaultData = () => {
+  const {filteredData} = usePodcasts()
+
+  return (<PodcastsGrid data={filteredData} />)
+}
+
 const MainScreen = () => {
   const classes = useStyles()
 
   const navVisibility = useSelector(selectors.getNavVisibility)
+
+  const {kind: filterKind} = useFilter()
 
   // by default the sidenav is visible
   // although currently same category-filter feature is provided by menu and sidenav
@@ -72,8 +85,12 @@ const MainScreen = () => {
           </div>
         </HorizontalCollapse>
       </Hidden>
-      <div className={classes.mainPodcastsGrid}>
-        <PodcastsGrid />
+      <div className={classes.mainContent}>
+        {
+          filterKind === storeConsts.FILTER_KIND_FEATURED
+            ? (<FeaturedContent />)
+            : (<PodcastsGridWithDefaultData />)
+        }
       </div>
     </BasicLayout>
   )

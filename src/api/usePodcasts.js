@@ -3,6 +3,8 @@ import React from 'react'
 import useAirtable from './useAirtable'
 import useStarred from './useStarred'
 
+import {constants as storeConsts, useFilter} from '../store'
+
 const base = 'appXoertP1WJjd4TQ'
 const table = 'Podcasts'
 
@@ -83,6 +85,8 @@ const reformat = (data, isStar) => {
   }
 }
 
+const filterSoftDisabled = podcastsList => podcastsList.filter(podcast => !podcast.softDisabled)
+
 const usePodcasts = () => {
   const {data, error} = useAirtable(base, table)
 
@@ -93,7 +97,40 @@ const usePodcasts = () => {
     [data, isStar]
   )
 
-  return {...reformattedData, error}
+  const refoData = reformattedData.data
+
+  const filter = useFilter()
+
+  const filteredData = React.useMemo(
+    () => {
+      if (!refoData) {
+        return []
+      }
+
+      const {kind: filterKind, cat: filterCat, subcat: filterSubcat} = filter
+
+      if (!filterKind) {
+        return filterSoftDisabled(refoData)
+      }
+
+      return refoData.filter(
+        podcast => {
+          if (filterKind === storeConsts.FILTER_KIND_CAT) return filterCat === podcast.category
+
+          if (filterKind === storeConsts.FILTER_KIND_SUBCAT) return filterSubcat === podcast.subCategory
+
+          if (filterKind === storeConsts.FILTER_KIND_FEATURED) return podcast.suggested != null
+
+          if (filterKind === storeConsts.FILTER_KIND_MY_LIST) return isStar(podcast.id)
+
+          throw new Error(`Unknown filter: ${filterKind}`)
+        }
+      )
+    },
+    [refoData, filter]
+  )
+
+  return {...reformattedData, filteredData, error}
 }
 
 export default usePodcasts

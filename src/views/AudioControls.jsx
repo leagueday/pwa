@@ -247,7 +247,6 @@ const ProgressBox = () => {
       valueLabelDisplay="on"
       valueLabelFormat={hasEphemeralValue ? valueLabelFormat : null}
       value={hasEphemeralValue ? ephemeralValue : valueFromAudioEvent}
-
       onChange={onChange}
       onChangeCommitted={onChangeCommitted}
     />

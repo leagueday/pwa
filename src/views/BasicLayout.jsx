@@ -13,8 +13,9 @@ import SelectedPodcast from './SelectedPodcast'
 
 // BasicLayout
 //
-// * Donut scroll away the app bar
-// * Lets just scroll what makes sense to scroll
+// * nothing in here should scroll
+// * this is like a full screen view (capped to the container)
+// * whatever might scroll is more granular and within the children
 
 const useStyles = makeStyles(theme => ({
   basicLayout: {

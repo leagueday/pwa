@@ -1,11 +1,11 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
+import Card from '@material-ui/core/Card'
 
 import * as colors from '../styling/colors'
-import { constants as storeConstants, actions, selectors } from '../store'
-import * as typography from '../styling/typography'
+import { actions } from '../store'
 import { channelSelectors } from '../model/rss'
 import usePodcast from '../api/usePodcast'
 import useStarred from '../api/useStarred'
@@ -76,19 +76,8 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     width: '4em',
   },
-  // language: {
-  //   color: theme.palette.text.secondary,
-  //   fontFamily: typography.mono,
-  //   fontSize: '75%',
-  // },
-  // nowPlaying: {
-  //   color: theme.palette.primary.light,
-  //   fontFamily: typography.sans,
-  //   fontSize: '75%',
-  //   fontStyle: 'oblique',
-  //   fontWeight: theme.typography.fontWeightLight,
-  // },
   podcastCard: {
+    backgroundColor: colors.blackBabyBlue,
     border: `1px solid ${colors.darkBabyBlue}`,
     borderRadius: '4px',
     cursor: 'pointer',
@@ -96,14 +85,6 @@ const useStyles = makeStyles(theme => ({
     minHeight: '4em',
     userSelect: 'none',
   },
-  // promoted: {
-  //   color: theme.palette.text.secondary,
-  //   fontFamily: typography.sans,
-  //   fontSize: '70%',
-  //   fontStyle: 'oblique',
-  //   fontWeight: theme.typography.fontWeightLight,
-  //   marginLeft: 'auto',
-  // },
   starred: {
     color: theme.palette.text.secondary,
     fontSize: '75%',
@@ -140,7 +121,7 @@ const PodcastCard = ({podcast}) => {
   const gotoThisPodcast = () => dispatch(actions.pushHistory(`/podcast/${podcast.id}`))
 
   return (
-    <div className={classes.podcastCard} onClick={gotoThisPodcast}>
+    <Card className={classes.podcastCard} onClick={gotoThisPodcast}>
       <div className={classes.cardContent}>
         <div className={classes.foregroundImageContainer}>
           <LazyPodcastTitleImage className={classes.foregroundImage} podcast={podcast} />
@@ -156,7 +137,7 @@ const PodcastCard = ({podcast}) => {
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   )
 }
 
