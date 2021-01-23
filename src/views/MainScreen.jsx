@@ -2,9 +2,11 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
+import Card from '@material-ui/core/Card'
 import Collapse from '@material-ui/core/Collapse'
 import Hidden from '@material-ui/core/Hidden'
 
+import * as colors from '../styling/colors'
 import {constants as storeConsts, selectors, useFilter} from '../store'
 
 import * as consts from './consts'
@@ -16,6 +18,11 @@ import SideNav from './SideNav'
 import usePodcasts from '../api/usePodcasts'
 
 const useStyles = makeStyles(theme => ({
+  contentSection: {
+    backgroundColor: colors.blackPlum,
+    margin: '0.5em',
+    padding: '0.5em',
+  },
   horizontalCollapseContainer: addScrollStyle({
     maxHeight: '100%',
     overflowY: 'auto',
@@ -59,9 +66,14 @@ const HorizontalCollapse = props => {
 }
 
 const PodcastsGridWithDefaultData = () => {
+  const classes = useStyles()
+
   const {filteredData} = usePodcasts()
 
-  return (<PodcastsGrid data={filteredData} />)
+  return (
+    <Card className={classes.contentSection}>
+      <PodcastsGrid data={filteredData} />
+    </Card>)
 }
 
 const MainScreen = () => {
