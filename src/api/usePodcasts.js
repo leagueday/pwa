@@ -23,7 +23,8 @@ const reformat = (data, isStar) => {
         "Podcast Name": "EXP Share: Pokemon Playthrough",
         "RSS Feed": "https://anchor.fm/s/1018a71c/podcast/rss",
         "Notes: Podcast Sheet Genre": "Live playthroughs of Poke games"
-        "Suggested": true,
+        "Suggested": 2,
+        "Display Category": "Trending",
        */
 
       const category = fields['Category'] ?? 'Uncategorized'
@@ -49,6 +50,7 @@ const reformat = (data, isStar) => {
         name: fields['Podcast Name'],
         softDisabled: fields.SoftDisable,
         subCategory,
+        displayCategory: fields['Display Category'],
         suggested: fields.Suggested,
         url: fields['RSS Feed'],
       }

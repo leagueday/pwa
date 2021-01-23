@@ -8,6 +8,7 @@ import PauseCircleOutlineRoundedIcon from '@material-ui/icons/PauseCircleOutline
 import PlayCircleOutlineRoundedIcon from '@material-ui/icons/PlayCircleOutlineRounded'
 
 import { makeStyles } from '@material-ui/core/styles'
+import Collapse from '@material-ui/core/Collapse'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
 
@@ -112,7 +113,13 @@ const PodcastDetailsItem = ({podcastId, podcastUrl, item, itemIndex}) => {
     ev.stopPropagation()
   }
   const onPlayClick = ev => {
-    dispatch(actions.selectAudio(podcastId, podcastUrl, itemAudioUrl, itemIndex, duration, title))
+    if (isSelectedAudio)
+      dispatch(actions.playAudio())
+    else {
+      dispatch(actions.selectAudio(podcastId, podcastUrl, itemAudioUrl, itemIndex, duration, title))
+      dispatch(actions.playAudio())
+    }
+
     ev.stopPropagation()
   }
 
@@ -151,15 +158,11 @@ const PodcastDetailsItem = ({podcastId, podcastUrl, item, itemIndex}) => {
           }
         </div>
       </div>
-      {
-        expanded && (
-          <>
-            <div className={classes.description}>
-              {stripHtml(description)}
-            </div>
-          </>
-        )
-      }
+      <Collapse in={expanded} timeout={150}>
+        <div className={classes.description}>
+          {stripHtml(description)}
+        </div>
+      </Collapse>
     </div>
   )
 }

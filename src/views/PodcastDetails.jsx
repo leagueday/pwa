@@ -145,14 +145,17 @@ const PodcastDetails = props => {
 
   const onPlay = isSelectedAudio
     ? () => { dispatch(actions.playAudio()) }
-    : () => { dispatch(actions.selectAudio(
-      podcast?.id,
-      podcast?.url,
-      firstItemAudioUrl,
-      0,
-      firstItemAudioDuration,
-      firstItemTitle,
-    ))}
+    : () => {
+      dispatch(actions.selectAudio(
+        podcast?.id,
+        podcast?.url,
+        firstItemAudioUrl,
+        0,
+        firstItemAudioDuration,
+        firstItemTitle,
+      ))
+      dispatch(actions.playAudio())
+    }
 
   return (
     <div className={cx(classes.podcastDetails, props.className)}>

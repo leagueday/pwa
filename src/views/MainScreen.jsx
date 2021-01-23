@@ -2,6 +2,7 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
+import Collapse from '@material-ui/core/Collapse'
 import Hidden from '@material-ui/core/Hidden'
 
 import {selectors} from '../store'
@@ -13,19 +14,44 @@ import PodcastsGrid from './PodcastsGrid'
 import SideNav from './SideNav'
 
 const useStyles = makeStyles(theme => ({
+  horizontalCollapseContainer: addScrollStyle({
+    maxHeight: '100%',
+    overflowY: 'auto',
+    transitionProperty: 'width',
+    width: 0,
+  }),
+  horizontalCollapseEntered: {
+    width: consts.SIDENAV_WIDTH,
+  },
+  horizontalCollapseHidden: {
+    width: 0,
+  },
   mainPodcastsGrid: addScrollStyle({
     flex: 1,
     maxHeight: '100%',
     overflowX: 'hidden',
     overflowY: 'auto',
   }),
-  mainSidenav: addScrollStyle({
-    maxHeight: '100%',
-    overflowY: 'auto',
-    paddingTop: '0.5em',
-    width: consts.SIDENAV_WIDTH,
-  }),
+  mainSidenav: {
+  },
 }))
+
+const HorizontalCollapse = props => {
+  const classes = useStyles()
+
+  return (
+    <Collapse
+      classes={{
+        container: classes.horizontalCollapseContainer,
+        entered: classes.horizontalCollapseEntered,
+        hidden: classes.horizontalCollapseHidden,
+      }}
+      in={props.in}
+      >
+      {props.children}
+    </Collapse>
+  )
+}
 
 const MainScreen = () => {
   const classes = useStyles()
@@ -40,12 +66,11 @@ const MainScreen = () => {
   return (
     <BasicLayout mode="main">
       <Hidden xsDown>
-        { isSidenavVisible && (
-            <div className={classes.mainSidenav}>
-              <SideNav />
-            </div>
-          )
-        }
+        <HorizontalCollapse in={isSidenavVisible}>
+          <div className={classes.mainSidenav}>
+            <SideNav />
+          </div>
+        </HorizontalCollapse>
       </Hidden>
       <div className={classes.mainPodcastsGrid}>
         <PodcastsGrid />
