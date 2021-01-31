@@ -4,6 +4,12 @@ const fetch = require('node-fetch')
 const PROXY_RESPONSE_KIND_IMG = 'imgBlob'
 const PROXY_RESPONSE_KIND_DOC = 'doc'
 
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS'
+};
+
 const handler = async (event, context) => {
   const queryStringParameters = event.queryStringParameters
   const foreignUrl = queryStringParameters.url
@@ -29,8 +35,8 @@ const handler = async (event, context) => {
     return {
       body: base64String,
       headers: {
+        ...headers,
         'content-type': contentType,
-        // 'x-file-type': bufferFileType,
       },
       isBase64Encoded: true,
       statusCode: 200,
@@ -39,6 +45,7 @@ const handler = async (event, context) => {
     return {
       body: await response.text(),
       headers: {
+        ...headers,
         'content-type': contentType,
       },
       statusCode: 200,
@@ -46,6 +53,10 @@ const handler = async (event, context) => {
   } else {
     return Promise.resolve({
       statusCode: 400,
+      headers: {
+        ...headers,
+        'content-type': contentType,
+      },
       body: 'Bad Request'
     })
   }
