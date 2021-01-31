@@ -76,5 +76,5 @@ export const proxifyUrl = (url, responseKind) => {
     url,
   })
 
-  return `/.netlify/functions/node-fetch?${params}`
+  return `${location.protocol}//d3m09f2pcer1i2.cloudfront.net/.netlify/functions/node-fetch?${params}`
 }
