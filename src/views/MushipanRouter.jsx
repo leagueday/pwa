@@ -1,9 +1,12 @@
 import React from 'react'
+import ReactGA from 'react-ga';
 import { useSelector } from 'react-redux'
 
 import { selectors } from '../store'
 
 // MushipanRouter - obtain location from Redux, then pick a view to render
+
+ReactGA.initialize('UA-180940239-4');
 
 const useLocationPath = () => {
   const location = useSelector(selectors.getRouterLocation)
@@ -75,6 +78,8 @@ const MushipanRouter = ({
   // console.log('pathname', pathname, firstPathToken)
 
   const routeDescriptor = firstPathToken ? routesMap[firstPathToken] : null
+
+  ReactGA.pageview(pathname);
 
   const View = routeDescriptor?.view ?? defaultView
 
