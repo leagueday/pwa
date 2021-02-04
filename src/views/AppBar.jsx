@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Color from 'color'
 import cx from 'classnames'
 
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -25,6 +26,14 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     maxHeight: consts.APPBAR_HEIGHT,
     minHeight: consts.APPBAR_HEIGHT,
+  },
+  betaNotice: {
+    fontFamily: theme.typography.serif,
+    fontSize: '82%',
+    fontStyle: 'oblique',
+    marginLeft: '0.5em',
+    paddingBottom: '0.05em',
+    textShadow: `1px 1px ${Color(colors.pinkSalmon).darken(0.45)}`,
   },
   discordLogo: {
     marginLeft: '0.5em',
@@ -131,6 +140,7 @@ const AppBar = props => {
         alt="LeagueDay"
         onClick={logoOnclick}
       />
+      <div className={classes.betaNotice}>BETA</div>
       <Hidden xsDown>
         <div className={classes.feedbackCluster}>
           <a className={classes.link}

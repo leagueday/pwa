@@ -82,6 +82,8 @@ const FeaturedContent = () => {
 
   const catData = categorize(filteredData, 'displayCategory')
 
+  const hasUncat = catData.uncategorized && catData.uncategorized.length > 0
+
   return (
     <Card className={classes.featuredContent}>
       {
@@ -90,7 +92,7 @@ const FeaturedContent = () => {
         )
       }
       {
-        catData.uncategorized && (<FeaturedCategory cat="Uncategorized" members={catData.uncategorized} />)
+        hasUncat && (<FeaturedCategory cat="Uncategorized" members={catData.uncategorized} />)
       }
     </Card>
   )
