@@ -3,8 +3,6 @@ import useAirtable from './useAirtable'
 const base = 'appXoertP1WJjd4TQ'
 const table = 'Gameboard'
 
-// tbd move this to useAirtable.js and factor out of usePodcasts.js logic
-
 const reformat = (picks=[], renames={}) => data => {
   if (!data) return data
 

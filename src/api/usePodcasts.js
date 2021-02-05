@@ -55,7 +55,7 @@ const reformat = (data, isStar, rankFieldname) => {
         subCategory,
         featuredDisplayCategory: fields['Featured Display Category'],
         featuredDisplayRank: fields['Featured Display Rank'],
-        displayCategory: fields['Display Category Next'], // tbd rm 'next'
+        displayCategory: fields['Display Category'],
         displayRank: fields['Display Rank'],
         url: fields['RSS Feed'],
       }
