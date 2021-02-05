@@ -29,10 +29,10 @@ const useStyles = makeStyles(theme => ({
   },
   betaNotice: {
     fontFamily: theme.typography.serif,
-    fontSize: '82%',
+    fontSize: '75%',
     fontStyle: 'oblique',
     marginLeft: '0.5em',
-    paddingBottom: '0.05em',
+    paddingBottom: '0.04em',
     textShadow: `1px 1px ${Color(colors.pinkSalmon).darken(0.45)}`,
   },
   discordLogo: {

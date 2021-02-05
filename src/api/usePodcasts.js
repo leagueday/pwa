@@ -10,7 +10,7 @@ const table = 'Podcasts'
 
 const sortList = set => ([...set.values()]).sort((a, b) => a.localeCompare(b))
 
-const reformat = (data, isStar) => {
+const reformat = (data, isStar, rankFieldname) => {
   if (!data) return {data: null, categories: null, subCategories: null}
 
   const categories = new Set()
@@ -25,8 +25,10 @@ const reformat = (data, isStar) => {
         "Podcast Name": "EXP Share: Pokemon Playthrough",
         "RSS Feed": "https://anchor.fm/s/1018a71c/podcast/rss",
         "Notes: Podcast Sheet Genre": "Live playthroughs of Poke games"
-        "Suggested": 2,
         "Display Category": "Trending",
+        "Display Rank": 2.0,
+        "Featured Display Category": "Preediction",
+        "Featured Display Rank": 1.0,
        */
 
       const category = fields['Category'] ?? 'Uncategorized'
@@ -50,10 +52,11 @@ const reformat = (data, isStar) => {
         disabled: fields.Disabled,
         id,
         name: fields['Podcast Name'],
-        softDisabled: fields.SoftDisable,
         subCategory,
-        displayCategory: fields['Display Category'],
-        suggested: fields.Suggested,
+        featuredDisplayCategory: fields['Featured Display Category'],
+        featuredDisplayRank: fields['Featured Display Rank'],
+        displayCategory: fields['Display Category Next'], // tbd rm 'next'
+        displayRank: fields['Display Rank'],
         url: fields['RSS Feed'],
       }
     }
@@ -64,16 +67,25 @@ const reformat = (data, isStar) => {
       if (!isStar(feed2.id)) return -1
       else return feed1.name.localeCompare(feed2.name)
     }
-    else if (isStar(feed2.id)) {
+
+    if (isStar(feed2.id)) {
       return 1
     }
-    else if (feed1.suggested) {
-      if (!feed2.suggested) return -1
-      else if (feed1.suggested !== feed2.suggested) return feed1.suggested - feed2.suggested
+
+    const feed1Rank = feed1[rankFieldname]
+    const feed1HasRank = !!feed1Rank || feed1Rank === 0
+    const feed2Rank = feed2[rankFieldname]
+    const feed2HasRank = !!feed2Rank || feed2Rank === 0
+
+    if (feed1HasRank) {
+      if (!feed2HasRank) return -1
+      else if (feed1Rank !== feed2Rank) return feed1Rank - feed2Rank
       else return feed1.name.localeCompare(feed2.name)
     }
-    else if (feed2.suggested) return 1
-    else return feed1.name.localeCompare(feed2.name)
+
+    if (feed2HasRank) return 1
+
+    return feed1.name.localeCompare(feed2.name)
   })
 
   return {
@@ -85,15 +97,13 @@ const reformat = (data, isStar) => {
   }
 }
 
-const filterSoftDisabled = podcastsList => podcastsList.filter(podcast => !podcast.softDisabled)
-
-const usePodcasts = () => {
+const usePodcasts = (rankFieldname='displayRank') => {
   const {data, error} = useAirtable(base, table)
 
   const [isStar] = useStarred()
 
   const reformattedData = React.useMemo(
-    () => reformat(data, isStar),
+    () => reformat(data, isStar, rankFieldname),
     [data, isStar]
   )
 
@@ -109,17 +119,13 @@ const usePodcasts = () => {
 
       const {kind: filterKind, cat: filterCat, subcat: filterSubcat} = filter
 
-      if (!filterKind) {
-        return filterSoftDisabled(refoData)
-      }
-
       return refoData.filter(
         podcast => {
           if (filterKind === storeConsts.FILTER_KIND_CAT) return filterCat === podcast.category
 
           if (filterKind === storeConsts.FILTER_KIND_SUBCAT) return filterSubcat === podcast.subCategory
 
-          if (filterKind === storeConsts.FILTER_KIND_FEATURED) return podcast.suggested != null
+          if (!filterKind || filterKind === storeConsts.FILTER_KIND_FEATURED) return !!podcast.featuredDisplayCategory
 
           if (filterKind === storeConsts.FILTER_KIND_MY_LIST) return isStar(podcast.id)
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import Color from 'color'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
@@ -11,23 +10,23 @@ import { addScrollStyle } from './util'
 import PodcastsGrid from './PodcastsGrid'
 
 const useStyles = makeStyles(theme => ({
-  featuredCategory: {
+  displayCategory: {
     backgroundColor: colors.blackPlum,
     marginBottom: '0.5em',
     padding: '0.5em',
   },
-  featuredCategoryName: {
-    color: colors.vintageTubeBright,
-    fontFamily: theme.typography.nav,
-    paddingBottom: '0.25em',
-  },
-  featuredContent: addScrollStyle({
+  displayCategoryContent: addScrollStyle({
     height: '100%',
     maxHeight: '100%',
     overflowY: 'auto',
     padding: '0.5em',
     width: '100%',
   }),
+  displayCategoryName: {
+    color: colors.vintageTubeBright,
+    fontFamily: theme.typography.nav,
+    paddingBottom: '0.25em',
+  },
 }))
 
 const categorize = (data, categoryKey) => {
@@ -64,38 +63,43 @@ const categorize = (data, categoryKey) => {
   return result
 }
 
-const FeaturedCategory = ({cat, members}) => {
+const Category = ({cat, members}) => {
   const classes = useStyles()
 
   return (
-    <Card className={classes.featuredCategory}>
-      <div className={classes.featuredCategoryName}>{cat}</div>
+    <Card className={classes.displayCategory}>
+      { cat && (<div className={classes.displayCategoryName}>{cat}</div>) }
       <PodcastsGrid data={members}/>
     </Card>
   )
 }
 
-const FeaturedContent = () => {
+const CategorizedContent = ({categoryFieldname, rankFieldname}) => {
   const classes = useStyles()
 
-  const {filteredData} = usePodcasts()
+  const {filteredData} = usePodcasts(rankFieldname)
 
-  const catData = categorize(filteredData, 'displayCategory')
+  const catData = categorize(filteredData, categoryFieldname)
 
   const hasUncat = catData.uncategorized && catData.uncategorized.length > 0
 
   return (
-    <Card className={classes.featuredContent}>
+    <Card className={classes.displayCategoryContent}>
       {
         catData.categories.map(
-          cat => (<FeaturedCategory key={cat} cat={cat} members={catData[cat]} />)
+          cat => (<Category key={cat} cat={cat} members={catData[cat]} />)
         )
       }
       {
-        hasUncat && (<FeaturedCategory cat="Uncategorized" members={catData.uncategorized} />)
+        hasUncat && (<Category members={catData.uncategorized} />)
       }
     </Card>
   )
 }
 
-export default FeaturedContent
+CategorizedContent.defaultProps = {
+  categoryFieldname: 'displayCategory',
+  rankFieldname: 'displayRank',
+}
+
+export default CategorizedContent

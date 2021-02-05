@@ -2,27 +2,18 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Card from '@material-ui/core/Card'
 import Collapse from '@material-ui/core/Collapse'
 import Hidden from '@material-ui/core/Hidden'
 
-import * as colors from '../styling/colors'
 import {constants as storeConsts, selectors, useFilter} from '../store'
 
 import * as consts from './consts'
 import { addScrollStyle } from './util'
 import BasicLayout from './BasicLayout'
-import FeaturedContent from './FeaturedContent'
-import PodcastsGrid from './PodcastsGrid'
+import CategorizedContent from './CategorizedContent'
 import SideNav from './SideNav'
-import usePodcasts from '../api/usePodcasts'
 
 const useStyles = makeStyles(theme => ({
-  contentSection: {
-    backgroundColor: colors.blackPlum,
-    margin: '0.5em',
-    padding: '0.5em',
-  },
   horizontalCollapseContainer: addScrollStyle({
     maxHeight: '100%',
     overflowY: 'auto',
@@ -65,17 +56,6 @@ const HorizontalCollapse = props => {
   )
 }
 
-const PodcastsGridWithDefaultData = () => {
-  const classes = useStyles()
-
-  const {filteredData} = usePodcasts()
-
-  return (
-    <Card className={classes.contentSection}>
-      <PodcastsGrid data={filteredData} />
-    </Card>)
-}
-
 const MainScreen = () => {
   const classes = useStyles()
 
@@ -100,8 +80,8 @@ const MainScreen = () => {
       <div className={classes.mainContent}>
         {
           filterKind === storeConsts.FILTER_KIND_FEATURED
-            ? (<FeaturedContent />)
-            : (<PodcastsGridWithDefaultData />)
+            ? (<CategorizedContent categoryFieldname="featuredDisplayCategory" rankFieldname="featuredDisplayRank"/>)
+            : (<CategorizedContent />)
         }
       </div>
     </BasicLayout>
