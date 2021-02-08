@@ -30,12 +30,14 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'src', 'public', 'index.html')
+      template: path.resolve(__dirname, 'src', 'public', 'index.html'),
+      hash: true, // add a unique ID to all assets (cache busting)
     }),
     new CopyPlugin({
       patterns: [
         {from: 'public/img', to: 'img'},
-        'public/manifest.json'
+        'public/manifest.json',
+        'public/img/favicon.ico'
       ],
     }),
     new webpack.DefinePlugin({

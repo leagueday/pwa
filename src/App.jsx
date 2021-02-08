@@ -59,11 +59,6 @@ const ThemedAppContent = () => {
 
 const Chronicle = () => {
   useChronicle()
-
-  return null
-}
-
-const Chronicler = () => {
   useChronicler()
 
   return null
@@ -75,7 +70,6 @@ const App = () => (
       <CssBaseline />
       <Audio />
       <Chronicle />
-      <Chronicler />
       <ThemedAppContent />
     </ThemeProvider>
   </StoreProvider>
