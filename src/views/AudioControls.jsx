@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
     bottom: '-1em',
     color: theme.palette.text.secondary,
     fontFamily: theme.typography.sans,
-    fontSize: '80%',
+    fontSize: '75%',
     fontStyle: 'oblique',
     position: 'absolute',
     right: '0.5em',
@@ -90,7 +90,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: colors.brightPlum,
   },
   sliderThumbTooltip: {
-    background: Color(colors.blackPlum).toString(),
+    background: Color(colors.blackPlum).fade(0.6).toString(),
     border: `1px solid ${colors.darkBabyBlue}`,
     borderRadius: '3px',
     color: colors.vintageTubeFaint,
