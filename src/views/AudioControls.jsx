@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Color from 'color'
 import cx from 'classnames'
 import dayjs from 'dayjs'
 import dayjsDurationPlugin from 'dayjs/plugin/duration'
@@ -88,6 +89,12 @@ const useStyles = makeStyles(theme => ({
   sliderThumbColor: {
     backgroundColor: colors.brightPlum,
   },
+  sliderThumbTooltip: {
+    background: Color(colors.blackPlum).toString(),
+    border: `1px solid ${colors.darkBabyBlue}`,
+    borderRadius: '3px',
+    color: colors.vintageTubeFaint,
+  },
   title: {
     color: theme.palette.text.secondary,
     cursor: 'pointer',
@@ -167,6 +174,8 @@ const secondsToHms = s => dayjs.duration(s * 1000).format(
   )
 
 const TooltipThumb = ({children, open, value}) => {
+  const classes = useStyles()
+
   const duration = maybeHmsToSecondsOnly(
     useSelector(selectors.getAudioDuration)
   )
@@ -185,7 +194,13 @@ const TooltipThumb = ({children, open, value}) => {
   const hms = typeof(value) === 'string' ? value : secondsToHms(position)
 
   return (
-    <Tooltip open={open} enterTouchDelay={0} placement="right" title={hms}>
+    <Tooltip
+      classes={{tooltip: classes.sliderThumbTooltip}}
+      open={open}
+      enterTouchDelay={0}
+      placement="right"
+      title={hms}
+    >
       {children}
     </Tooltip>
   )
