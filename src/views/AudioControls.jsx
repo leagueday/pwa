@@ -57,6 +57,15 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  durationLabel: {
+    bottom: '-1em',
+    color: theme.palette.text.secondary,
+    fontFamily: theme.typography.sans,
+    fontSize: '80%',
+    fontStyle: 'oblique',
+    position: 'absolute',
+    right: '0.5em',
+  },
   forwardButton: {
     transform: 'scaleX(-1)',
   },
@@ -65,6 +74,7 @@ const useStyles = makeStyles(theme => ({
   progressBox: {
     // backgroundColor: colors.darkerCharcoal,
     // borderRadius: theme.spacing(1),
+    position: 'relative',
     height: PROGRESS_HEIGHT,
     paddingLeft: '0.33em',
     paddingRight: '0.33em',
@@ -124,7 +134,15 @@ const useStyles = makeStyles(theme => ({
 
 const hmsRegex = RegExp('^\\d{1,2}:')
 const maybeHmsToSecondsOnly = maybeDurationString => {
-  if (!hmsRegex.test(maybeDurationString)) {
+  // When the duration comes from the 'itunes:Duration' RSS extension meta,
+  // it's a string in 'hh:mm:ss' format. That's potentially useful for display
+  // prior to loading the <audio /> element with the media url. After that,
+  // the <audio /> element emits an event when it parses the media header and
+  // it conveys the duration in numerical seconds.
+  //
+  // The 'itunes:Duration' value is discarded in Redux in favor of the <audio />
+  // media duration which seems more dependable.
+  if ('string' !== typeof(maybeDurationString) || !hmsRegex.test(maybeDurationString)) {
     return maybeDurationString
   }
 
@@ -140,7 +158,7 @@ const maybeHmsToSecondsOnly = maybeDurationString => {
   return s
 }
 
-const percentageToPosition = duration => percentage  => percentage / 100 * duration
+const percentageToPosition = duration => percentage => percentage / 100 * duration
 
 const secondsToHms = s => dayjs.duration(s * 1000).format(
     s >= 3600
@@ -176,13 +194,24 @@ const TooltipThumb = ({children, open, value}) => {
 const ProgressBox = () => {
   const classes = useStyles()
 
-  const dispatch = useDispatch()
-
+  const position = useSelector(selectors.getAudioPosition)
+  const seeked = useSelector(selectors.getAudioSeeked)
   const duration = maybeHmsToSecondsOnly(
     useSelector(selectors.getAudioDuration)
   )
-  const position = useSelector(selectors.getAudioPosition)
-  const seeked = useSelector(selectors.getAudioSeeked)
+
+  const durationLabel = React.useMemo(
+    () => {
+      const djsDuration = dayjs.duration(duration, 'seconds')
+
+      if (!djsDuration) return ''
+
+      return djsDuration.format('H:mm:ss')
+    },
+    [duration]
+  )
+
+  const dispatch = useDispatch()
 
   // when dragging or while waiting for the consequent seek operation to complete
   const [ephemeralValue, setEphemeralValue] = React.useState()
@@ -238,18 +267,21 @@ const ProgressBox = () => {
   // console.log('duration', duration, 'position', position, 'value', value, 'ephValue', ephemeralValue)
 
   return (
-    <Slider
-      classes={{
-        colorPrimary: classes.sliderColor,
-        thumbColorPrimary: classes.sliderThumbColor,
-      }}
-      ValueLabelComponent={TooltipThumb}
-      valueLabelDisplay="on"
-      valueLabelFormat={hasEphemeralValue ? valueLabelFormat : null}
-      value={hasEphemeralValue ? ephemeralValue : valueFromAudioEvent}
-      onChange={onChange}
-      onChangeCommitted={onChangeCommitted}
-    />
+    <div className={classes.progressBox}>
+      <Slider
+        classes={{
+          colorPrimary: classes.sliderColor,
+          thumbColorPrimary: classes.sliderThumbColor,
+        }}
+        ValueLabelComponent={TooltipThumb}
+        valueLabelDisplay="on"
+        valueLabelFormat={hasEphemeralValue ? valueLabelFormat : null}
+        value={hasEphemeralValue ? ephemeralValue : valueFromAudioEvent}
+        onChange={onChange}
+        onChangeCommitted={onChangeCommitted}
+      />
+      <div className={classes.durationLabel}>{durationLabel}</div>
+    </div>
   )
 }
 
@@ -306,9 +338,7 @@ const AudioControls = () => {
             {itemTitle}
           </div>
         </div>
-        <div className={classes.progressBox}>
-          <ProgressBox />
-        </div>
+        <ProgressBox />
         <div className={classes.underbarControls}>
           <IconButton className={classes.underbarButton} onClick={replayButtonOnclick} size="small" disabled={isDisabled}>
             <ReplayRoundedIcon className={cx(classes.replayButton, buttonColorClass)} />

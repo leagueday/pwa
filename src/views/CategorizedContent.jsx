@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: colors.blackPlum,
     marginBottom: '0.5em',
     padding: '0.5em',
+    userSelect: 'none',
   },
   displayCategoryContent: addScrollStyle({
     height: '100%',

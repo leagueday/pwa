@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     maxHeight: consts.APPBAR_HEIGHT,
     minHeight: consts.APPBAR_HEIGHT,
+    userSelect: 'none',
   },
   betaNotice: {
     fontFamily: theme.typography.serif,
@@ -52,7 +53,6 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.fontWeightBold,
     marginLeft: 'auto',
     marginRight: '2em',
-    userSelect: 'none',
   },
   link: {
     color: theme.palette.secondary.light,

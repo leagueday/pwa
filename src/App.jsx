@@ -66,8 +66,8 @@ const Chronicle = () => {
 
 const App = () => (
   <StoreProvider>
+    <CssBaseline />
     <ThemeProvider>
-      <CssBaseline />
       <Audio />
       <Chronicle />
       <ThemedAppContent />
