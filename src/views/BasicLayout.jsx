@@ -9,7 +9,6 @@ import * as consts from './consts'
 import { selectors } from '../store'
 import AppBar from './AppBar'
 import AudioControls from './AudioControls'
-import SelectedPodcast from './SelectedPodcast'
 
 // BasicLayout
 //
@@ -58,27 +57,24 @@ const BasicLayout = props => {
   const isAudioDisplayed = !!audioItemUrl
 
   return (
-    <>
-      <SelectedPodcast />
-      <div className={classes.basicLayout}>
-        <div className={classes.basicLayoutAppBar}>
-          <AppBar mode={props.mode}/>
-        </div>
-        <div
-          className={cx(
-            classes.basicLayoutContent,
-            isAudioDisplayed ? classes.contentWhenAudioDisplayed : classes.contentWhenAudioHidden
-          )}
-        >
-          {props.children}
-        </div>
-        { isAudioDisplayed && (
-          <div className={classes.basicLayoutAudioControls}>
-            <AudioControls />
-          </div>
-        ) }
+    <div className={classes.basicLayout}>
+      <div className={classes.basicLayoutAppBar}>
+        <AppBar mode={props.mode}/>
       </div>
-    </>
+      <div
+        className={cx(
+          classes.basicLayoutContent,
+          isAudioDisplayed ? classes.contentWhenAudioDisplayed : classes.contentWhenAudioHidden
+        )}
+      >
+        {props.children}
+      </div>
+      { isAudioDisplayed && (
+        <div className={classes.basicLayoutAudioControls}>
+          <AudioControls />
+        </div>
+      ) }
+    </div>
   )
 }
 

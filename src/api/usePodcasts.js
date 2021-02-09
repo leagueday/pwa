@@ -23,6 +23,7 @@ const reformat = (data, isStar, rankFieldname) => {
         "Notes: Podcast Sheet Subcategory": "Game",
         "Sub-Category": "Pokemon",
         "Podcast Name": "EXP Share: Pokemon Playthrough",
+        "Tile Subtext": "Splash text for front page display",
         "RSS Feed": "https://anchor.fm/s/1018a71c/podcast/rss",
         "Notes: Podcast Sheet Genre": "Live playthroughs of Poke games"
         "Display Category": "Trending",
@@ -52,6 +53,7 @@ const reformat = (data, isStar, rankFieldname) => {
         disabled: fields.Disabled,
         id,
         name: fields['Podcast Name'],
+        tileSubtext: fields['Tile Subtext'],
         subCategory,
         featuredDisplayCategory: fields['Featured Display Category'],
         featuredDisplayRank: fields['Featured Display Rank'],

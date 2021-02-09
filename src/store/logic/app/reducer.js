@@ -10,7 +10,6 @@ const initialState = {
   },
   navVisibility: null,
   selectedAudio: null,
-  selectedPodcast: null,
   starred: null,
   theme: constants.UI_THEME_SPEC,
 }
@@ -34,12 +33,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         navVisibility: false
-      }
-    }
-    case ActionType.SELECT_PODCAST: {
-      return {
-        ...state,
-        selectedPodcast: action.payload?.podcast
       }
     }
     case ActionType.SET_FILTER: {

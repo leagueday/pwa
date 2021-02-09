@@ -90,6 +90,12 @@ const useStyles = makeStyles(theme => ({
     fontSize: '75%',
     marginLeft: 'auto',
   },
+  subtext: {
+    color: theme.palette.text.secondary,
+    fontFamily: theme.typography.sans,
+    fontSize: '55%',
+    marginTop: '0.5em',
+  },
   title: {
     color: theme.palette.text.primary,
     fontFamily: theme.typography.serif,
@@ -101,6 +107,14 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
 }))
+
+const breakLines = text => {
+  if (!text) return text
+
+  return text.split('\n').map((item, idx) => (
+    <span key={idx}>{item}<br/></span>
+  ))
+}
 
 const PodcastCard = ({podcast}) => {
   const {rss, error: podcastError} = usePodcast(podcast)
@@ -115,7 +129,9 @@ const PodcastCard = ({podcast}) => {
   const isStarred = isStar(podcast?.id)
 
   const title = channelSelectors.v2.title(rss)
+  // const description = channelSelectors.v2.description(rss)
   // const language = channelSelectors.v2.language(rss)
+  const subtext = podcast?.tileSubtext
 
   const dispatch = useDispatch()
   const gotoThisPodcast = () => dispatch(actions.pushHistory(`/podcast/${podcast.id}`))
@@ -134,6 +150,9 @@ const PodcastCard = ({podcast}) => {
               {title}
             </div>
             { isStarred && (<div className={classes.starred}>⭐</div>) }
+          </div>
+          <div className={classes.subtext}>
+            {breakLines(subtext)}
           </div>
         </div>
       </div>

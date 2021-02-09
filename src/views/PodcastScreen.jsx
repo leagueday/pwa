@@ -9,8 +9,6 @@ import usePodcasts from '../api/usePodcasts'
 import BasicLayout from './BasicLayout'
 import PodcastDetails from './PodcastDetails'
 
-// tbd - get rid of the "selected podcast" view and redux logic, etc
-
 const useStyles = makeStyles(theme => ({
   podcastScreenContent: {
     width: '100%',

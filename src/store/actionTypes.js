@@ -1,6 +1,5 @@
 // app
 export const HIDE_NAV = 'HIDE_NAV'
-export const SELECT_PODCAST = 'SELECT_PODCAST'
 export const SET_FILTER = 'SET_FILTER'
 export const SET_NAV_EXPANDER = 'SET_NAV_EXPANDER'
 export const SET_STARRED = 'SET_STARRED'

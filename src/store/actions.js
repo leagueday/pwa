@@ -10,13 +10,6 @@ export const hideNav = () => ({
   }
 })
 
-export const selectPodcast = podcast => ({
-  type: ActionType.SELECT_PODCAST,
-  payload: {
-    podcast
-  }
-})
-
 export const setFilter = (kind, cat, subcat) => ({
   type: ActionType.SET_FILTER,
   payload: {
