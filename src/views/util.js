@@ -18,7 +18,14 @@ export const addScrollStyle = styleClassInitializer => ({
 })
 
 export const stripHtml =
-    maybeHtmlString =>
-      maybeHtmlString
-        ? stringStripHtml(maybeHtmlString)?.result
-        : maybeHtmlString
+    maybeHtmlString => {
+      if (!maybeHtmlString) return maybeHtmlString
+
+      const t = typeof maybeHtmlString
+
+      if (t === 'string') return stringStripHtml(maybeHtmlString)?.result
+
+      if (t === 'object') return Object.values(maybeHtmlString).join(' ')
+
+      return maybeHtmlString
+    }
