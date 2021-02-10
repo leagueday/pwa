@@ -7,6 +7,7 @@ import * as apiConsts from './consts'
 import { proxifyUrl } from './util'
 import usePodcast from './usePodcast'
 import { channelSelectors } from '../model/rss'
+import * as analytics from '../analytics'
 
 const FRESHNESS = 86400
 const idbStore = new IdbKvTimedExpiryCache('titleImages', FRESHNESS)
@@ -20,9 +21,15 @@ const client = axios.create(clientOptions)
 
 const fetchImageBlobViaProxy = url => {
   const proxyUrl = proxifyUrl(url, apiConsts.PROXY_RESPONSE_KIND_IMG)
-  console.log('fetching img', url, 'via', proxyUrl)
+  // console.log('fetching img', url, 'via', proxyUrl)
 
-  return client.get(proxyUrl).then(response => response.data)
+  const t0 = Date.now()
+
+  return client.get(proxyUrl).then(response => {
+    analytics.timing('podcast', 'channelImage', Date.now() - t0, url)
+
+    return response.data
+  })
 }
 
 const usePodcastImage = podcast => {

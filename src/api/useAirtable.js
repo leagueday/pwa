@@ -1,6 +1,8 @@
 import Airtable from 'airtable'
 import useSWR from 'swr'
 
+import * as analytics from '../analytics'
+
 /*
 RATE LIMITS
 The API is limited to 5 requests per second per base. If you exceed this rate, you will receive a 429 status code and
@@ -21,6 +23,7 @@ const swrOptions = {
 
 const fetcher = (base, table, view='Grid view') => () => new Promise(
   (res, rej) => {
+    const t0 = Date.now()
     let data = []
 
     base(table).select({
@@ -34,9 +37,16 @@ const fetcher = (base, table, view='Grid view') => () => new Promise(
         fetchNextPage()
       },
       (err) => {
-        console.log('done', err)
-        if (err) rej(err)
-        else res(data)
+        if (err) {
+          console.error(err)
+
+          rej(err)
+        }
+        else {
+          analytics.timing('airtable', table, Date.now() - t0)
+
+          res(data)
+        }
       }
     )
   }

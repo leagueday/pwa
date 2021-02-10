@@ -4,6 +4,7 @@ import parseXml from '@rgrove/parse-xml'
 
 import * as apiConsts from './consts'
 import { laminate, proxifyUrl } from './util'
+import * as analytics from '../analytics'
 
 const defaultParseXmlString = parseXml
 
@@ -19,8 +20,13 @@ const client = axios.create(clientOptions)
 const fetchRssDocViaProxy = url => {
   const proxyUrl = proxifyUrl(url, apiConsts.PROXY_RESPONSE_KIND_DOC)
   console.log('fetching doc', url, 'via', proxyUrl)
+  const t0 = Date.now()
 
-  return client.get(proxyUrl).then(response => response.data)
+  return client.get(proxyUrl).then(response => {
+    analytics.timing('podcast', 'rss', Date.now() - t0, url)
+
+    return response.data
+  })
 }
 
 export const loadOrFetchPodcastRssDoc = (podcastId, podcastUrl) =>
