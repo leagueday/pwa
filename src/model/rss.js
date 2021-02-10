@@ -11,7 +11,9 @@
 export const channelSelectors = {
   v2: {
     description: rssDoc => rssDoc?.rss?.channel?.description,
-    imageUrl: rssDoc => rssDoc?.rss?.channel?.image?.url,
+    imageUrl: rssDoc =>
+      rssDoc?.rss?.channel?.image?.url ??
+          rssDoc?.rss?.channel?.['itunes:image']?.attributes?.href,
     items: rssDoc => rssDoc?.rss?.channel?.item,
     language: rssDoc => rssDoc?.rss?.channel?.language,
     title: rssDoc => rssDoc?.rss?.channel?.title,
