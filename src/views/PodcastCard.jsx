@@ -10,7 +10,7 @@ import { channelSelectors } from '../model/rss'
 import usePodcast from '../api/usePodcast'
 import useStarred from '../api/useStarred'
 
-import LazyPodcastTitleImage from './LazyPodcastTitleImage'
+import DumbPodcastTitleImage from './DumbPodcastTitleImage'
 
 const useStyles = makeStyles(theme => ({
   cardContent: {
@@ -117,7 +117,7 @@ const breakLines = text => {
 }
 
 const PodcastCard = ({podcast}) => {
-  const {rss, error: podcastError} = usePodcast(podcast)
+  const {rss: podcastRss, error: podcastError} = usePodcast(podcast)
 
   const classes = useStyles()
 
@@ -128,9 +128,9 @@ const PodcastCard = ({podcast}) => {
   const [isStar] = useStarred()
   const isStarred = isStar(podcast?.id)
 
-  const title = channelSelectors.v2.title(rss)
-  // const description = channelSelectors.v2.description(rss)
-  // const language = channelSelectors.v2.language(rss)
+  const title = channelSelectors.v2.title(podcastRss)
+  // const description = channelSelectors.v2.description(podcastRss)
+  // const language = channelSelectors.v2.language(podcastRss)
   const subtext = podcast?.tileSubtext
 
   const dispatch = useDispatch()
@@ -140,9 +140,7 @@ const PodcastCard = ({podcast}) => {
     <Card className={classes.podcastCard} onClick={gotoThisPodcast}>
       <div className={classes.cardContent}>
         <div className={classes.foregroundImageContainer}>
-          <LazyPodcastTitleImage className={classes.foregroundImage} podcast={podcast} />
-          <div className={classes.foregroundImageVertGloss} />
-          <div className={classes.foregroundImageHorizGloss} />
+          <DumbPodcastTitleImage className={classes.foregroundImage} podcastRss={podcastRss} />
         </div>
         <div className={classes.cardText}>
           <div className={classes.cardTextRow}>
