@@ -15,7 +15,7 @@ import usePodcast from '../api/usePodcast'
 import useStarred from '../api/useStarred'
 
 import {addScrollStyle, stripHtml} from './util'
-import LazyPodcastTitleImage from './LazyPodcastTitleImage'
+import DumbPodcastTitleImage from './DumbPodcastTitleImage'
 import PodcastAudioControls from './PodcastAudioControls'
 import PodcastDetailsItem from './PodcastDetailsItem'
 
@@ -118,13 +118,13 @@ const PodcastDetails = props => {
   const audioPodcastId = useSelector(selectors.getAudioPodcastId)
   const audioMode = useSelector(selectors.getAudioMode)
 
-  const {rss} = usePodcast(podcast, {forceRevalidate: true})
+  const {rss: podcastRss} = usePodcast(podcast, {forceRevalidate: true})
 
-  const description = rssSelectors.channelSelectors.v2.description(rss)
-  const language = rssSelectors.channelSelectors.v2.language(rss)
-  const title = rssSelectors.channelSelectors.v2.title(rss)
+  const description = rssSelectors.channelSelectors.v2.description(podcastRss)
+  const language = rssSelectors.channelSelectors.v2.language(podcastRss)
+  const title = rssSelectors.channelSelectors.v2.title(podcastRss)
 
-  const items = rssSelectors.channelSelectors.v2.items(rss)
+  const items = rssSelectors.channelSelectors.v2.items(podcastRss)
   const firstItem = items?.[0]
   const firstItemAudioUrl = rssSelectors.itemSelectors.v2.audioUrl(firstItem)
   // const firstItemAudioType = rssSelectors.itemSelectors.v2.audioType(firstItem)
@@ -161,7 +161,7 @@ const PodcastDetails = props => {
     <div className={cx(classes.podcastDetails, props.className)}>
       <div className={classes.titleLine}>
         <div className={classes.imageContainer}>
-          <LazyPodcastTitleImage className={classes.image} podcast={podcast} />
+          <DumbPodcastTitleImage className={classes.image} podcastRss={podcastRss} />
         </div>
         <div className={classes.simpleColumn}>
           <div className={classes.simpleRow}>
