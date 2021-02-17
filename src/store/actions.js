@@ -34,10 +34,10 @@ export const setStarred = starred => ({
   }
 })
 
-export const setTheme = theme => ({
-  type: ActionType.SET_THEME,
+export const setViewportHeight = viewportHeight => ({
+  type: ActionType.SET_VIEWPORT_HEIGHT,
   payload: {
-    theme
+    viewportHeight,
   }
 })
 

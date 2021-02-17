@@ -7,6 +7,7 @@ export const getNavExpander = tag => store => getAppState(store)?.navExpanders?.
 export const getNavVisibility = store => getAppState(store)?.navVisibility
 export const getStarred = store => getAppState(store)?.starred
 export const getTheme = store => getAppState(store)?.theme
+export const getViewportHeight = store => getAppState(store)?.viewportHeight
 
 // Router
 

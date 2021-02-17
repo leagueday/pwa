@@ -12,6 +12,7 @@ const initialState = {
   selectedAudio: null,
   starred: null,
   theme: constants.UI_THEME_SPEC,
+  viewportHeight: '100vh',
 }
 
 const isStarredEmpty = starred => {
@@ -60,10 +61,10 @@ const reducer = (state = initialState, action) => {
         starred: action.payload.starred
       }
     }
-    case ActionType.SET_THEME: {
+    case ActionType.SET_VIEWPORT_HEIGHT: {
       return {
         ...state,
-        theme: action.payload.theme
+        viewportHeight: action.payload.viewportHeight,
       }
     }
     case ActionType.SHOW_NAV: {
