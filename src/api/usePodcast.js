@@ -23,7 +23,7 @@ const fetchRssDocViaProxy = url => {
   const t0 = Date.now()
 
   return client.get(proxyUrl).then(response => {
-    analytics.timing('podcast', 'rss', Date.now() - t0, url)
+    analytics.timing('podcast', 'rss-fetch', Date.now() - t0, url)
 
     return response.data
   })
@@ -69,13 +69,25 @@ const usePodcast = (podcast, options={}, parseXmlString=defaultParseXmlString) =
       ([cacheStatus]) => {
         if (cacheStatus === IdbKvTimedExpiryCache.FRESH && !forceRevalidate) return Promise.resolve()
 
-        return fetchRssDocViaProxy(podcastUrl).then(parseRss).then(
-          rss => {
-            if (!componentDidUnmount) setRss(rss)
+        return fetchRssDocViaProxy(podcastUrl).then(
+          rssData => {
+            if (componentDidUnmount) return {}
 
-            return idbStore.set(podcastId, rss)
-          }
-        )
+            const t0 = Date.now()
+
+            const rssJson = parseRss(rssData)
+
+            analytics.timing('podcast', 'parse-rss', Date.now() - t0, podcastUrl)
+
+            return rssJson
+          }).then(
+            rssJson => {
+              if (!componentDidUnmount) {
+                setRss(rssJson)
+                return idbStore.set(podcastId, rssJson)
+              }
+            }
+          )
       }
     ).catch(handleError)
 
