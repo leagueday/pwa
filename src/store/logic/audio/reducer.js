@@ -148,6 +148,9 @@ const reducer = (state = initialState, action) => {
         itemIndex: action.payload.itemIndex,
         podcastId: action.payload.podcastId,
         podcastUrl: action.payload.podcastUrl,
+        seek: {
+          position: action.payload.position ?? null
+        },
         position: action.payload.position ?? 0,
         audioUrl: action.payload.audioUrl,
         title: action.payload.title,

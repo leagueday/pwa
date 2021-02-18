@@ -152,6 +152,8 @@ const Audio = () => {
   const taps = useSelector(selectors.getAudioTaps)
   const seek = useSelector(selectors.getAudioSeek)
 
+  const seekPosition = seek?.position
+
   // console.log('events', events)
   // console.log('taps', taps)
 
@@ -173,8 +175,10 @@ const Audio = () => {
 
     if (audioMode === storeConsts.AUDIO_MODE_PAUSE && !audioDomNode.paused)
       audioDomNode.pause()
-    else if (audioMode === storeConsts.AUDIO_MODE_PLAY && audioDomNode.paused)
+    else if (audioMode === storeConsts.AUDIO_MODE_PLAY && audioDomNode.paused) {
       audioDomNode.play()
+      if (seekPosition) audioDomNode.currentTime = seekPosition
+    }
   }, [audioMode])
 
   //////////////////////////////////////////////////////////////////////////////
@@ -216,14 +220,13 @@ const Audio = () => {
   //////////////////////////////////////////////////////////////////////////////
   // seek - consequence of slider interaction
   React.useEffect(() => {
-    const seekPosition = seek?.position
     if (!seekPosition && seekPosition !== 0) return
 
     const audioDomNode = getAudioRef()
     if (!audioDomNode) return
 
     audioDomNode.currentTime = seekPosition
-  }, [seek?.position])
+  }, [seekPosition])
 
   return audioUrl ? (
     <span>
