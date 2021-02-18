@@ -34,10 +34,10 @@ export const setStarred = starred => ({
   }
 })
 
-export const setTheme = theme => ({
-  type: ActionType.SET_THEME,
+export const setViewportHeight = viewportHeight => ({
+  type: ActionType.SET_VIEWPORT_HEIGHT,
   payload: {
-    theme
+    viewportHeight,
   }
 })
 
@@ -76,15 +76,27 @@ export const forwardAudio = () => ({
 })
 
 export const pauseAudio = () => ({
-  type: ActionType.PAUSE_AUDIO,
+  type: ActionType.PAUSE_ACTION,
   payload: {
   }
 })
 
-export const playAudio = () => ({
-  type: ActionType.PLAY_AUDIO,
+export const pauseAudioEvent = () => ({
+  type: ActionType.PAUSE_EVENT,
   payload: {
-  }
+  },
+})
+
+export const playAudio = () => ({
+  type: ActionType.PLAY_ACTION,
+  payload: {
+  },
+})
+
+export const playAudioEvent = () => ({
+  type: ActionType.PLAY_EVENT,
+  payload: {
+  },
 })
 
 export const replayAudio = () => ({

@@ -16,14 +16,20 @@ import AudioControls from './AudioControls'
 // * this is like a full screen view (capped to the container)
 // * whatever might scroll is more granular and within the children
 
+const calcContentHeight =
+  isAudioControlsHidden =>
+    isAudioControlsHidden
+      ? ({viewportHeight}) => `calc(${viewportHeight} - ${consts.APPBAR_HEIGHT})`
+      : ({viewportHeight}) => `calc(${viewportHeight} - ${consts.APPBAR_HEIGHT} - ${consts.AUDIO_CONTROLS_HEIGHT})`
+
 const useStyles = makeStyles(theme => ({
   basicLayout: {
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'nowrap',
     justifyContent: 'flex-start',
-    maxHeight: '100vh',
-    minHeight: '100vh',
+    maxHeight: '100%',
+    minHeight: '100%',
   },
   basicLayoutAppBar: {
     maxHeight: consts.APPBAR_HEIGHT,
@@ -41,17 +47,19 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
   },
   contentWhenAudioDisplayed: {
-    maxHeight: `calc(100vh - ${consts.APPBAR_HEIGHT} - ${consts.AUDIO_CONTROLS_HEIGHT})`,
-    minHeight: `calc(100vh - ${consts.APPBAR_HEIGHT} - ${consts.AUDIO_CONTROLS_HEIGHT})`,
+    maxHeight: calcContentHeight(false),
+    minHeight: calcContentHeight(false),
   },
   contentWhenAudioHidden: {
-    maxHeight: `calc(100vh - ${consts.APPBAR_HEIGHT})`,
-    minHeight: `calc(100vh - ${consts.APPBAR_HEIGHT})`,
+    maxHeight: calcContentHeight(true),
+    minHeight: calcContentHeight(true),
   },
 }))
 
 const BasicLayout = props => {
-  const classes = useStyles()
+  const viewportHeight = useSelector(selectors.getViewportHeight)
+
+  const classes = useStyles({viewportHeight})
 
   const audioItemUrl = useSelector(selectors.getAudioUrl)
   const isAudioDisplayed = !!audioItemUrl

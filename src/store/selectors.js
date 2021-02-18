@@ -7,6 +7,7 @@ export const getNavExpander = tag => store => getAppState(store)?.navExpanders?.
 export const getNavVisibility = store => getAppState(store)?.navVisibility
 export const getStarred = store => getAppState(store)?.starred
 export const getTheme = store => getAppState(store)?.theme
+export const getViewportHeight = store => getAppState(store)?.viewportHeight
 
 // Router
 
@@ -18,14 +19,14 @@ export const getRouterPreviousLocations = store => getRouterState(store)?.previo
 
 export const getAudioState = store => store.audio
 export const getAudioDuration = store => getAudioState(store)?.duration
+export const getAudioEvents = store => getAudioState(store)?.events
 export const getAudioItemIndex = store => getAudioState(store)?.itemIndex
 export const getAudioMode = store => getAudioState(store)?.mode
 export const getAudioPodcastId = store => getAudioState(store)?.podcastId
 export const getAudioPodcastUrl = store => getAudioState(store)?.podcastUrl
 export const getAudioPosition = store => getAudioState(store)?.position
 export const getAudioSeek = store => getAudioState(store)?.seek
-export const getAudioSeeked = store => getAudioState(store)?.audioSeeked
-export const getAudioTapsForward = store => getAudioState(store)?.controllerTaps.forward
-export const getAudioTapsReplay = store => getAudioState(store)?.controllerTaps.replay
+export const getAudioSeeked = store => getAudioState(store)?.events.seeked
+export const getAudioTaps = store => getAudioState(store)?.taps
 export const getAudioTitle = store => getAudioState(store)?.title
 export const getAudioUrl = store => getAudioState(store)?.audioUrl

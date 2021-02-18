@@ -1,5 +1,5 @@
 import Airtable from 'airtable'
-import useSWR from 'swr'
+import useSWR, { cache as swrCache } from 'swr'
 
 import * as analytics from '../analytics'
 
@@ -16,18 +16,13 @@ and increased limits are not currently available.
 
 const apiKey = AIRTABLE_API_KEY
 
-const swrOptions = {
-  revalidateOnFocus: false,
-  shouldRetryOnError: false,
-} // (see https://swr.vercel.app/docs/options)
-
 const fetcher = (base, table, view='Grid view') => () => new Promise(
   (res, rej) => {
     const t0 = Date.now()
     let data = []
 
     base(table).select({
-      view
+      view,
     }).eachPage(
       (records, fetchNextPage) => {
         console.log(`retrieved ${records.length} records`)
@@ -57,7 +52,14 @@ const useAirtable = (baseKey, table, view) => {
 
   const base = new Airtable({apiKey}).base(baseKey)
 
-  return useSWR(cacheKey, fetcher(base, table, view), swrOptions)
+  return useSWR(
+    cacheKey,
+    fetcher(base, table, view),
+    {
+      revalidateOnFocus: false,
+      revalidateOnMount: !swrCache.has(cacheKey), // default is true
+      shouldRetryOnError: false,
+    })
 }
 
 export default useAirtable

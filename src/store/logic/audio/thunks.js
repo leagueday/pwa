@@ -45,7 +45,7 @@ export const playNextTrack =
       const podcastUrl = selectors.getAudioPodcastUrl(getState())
       const itemIndex = selectors.getAudioItemIndex(getState())
 
-      loadOrFetchPodcastRssDoc(podcastId, podcastUrl).then(
+      loadOrFetchPodcastRssDoc(podcastUrl).then(
         maybePodcastRssDoc => {
           const items = channelSelectors.v2.items(maybePodcastRssDoc)
           if (!items) {

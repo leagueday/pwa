@@ -1,12 +1,11 @@
 import React from 'react'
 import axios from 'axios'
 import parseXml from '@rgrove/parse-xml'
+import useSWR, { cache as swrCache } from 'swr'
 
 import * as apiConsts from './consts'
 import { laminate, proxifyUrl } from './util'
 import * as analytics from '../analytics'
-
-const defaultParseXmlString = parseXml
 
 import { IdbKvTimedExpiryCache } from './idb'
 
@@ -23,64 +22,77 @@ const fetchRssDocViaProxy = url => {
   const t0 = Date.now()
 
   return client.get(proxyUrl).then(response => {
-    analytics.timing('podcast', 'rss', Date.now() - t0, url)
+    analytics.timing('podcast', 'rss-fetch', Date.now() - t0, url)
 
     return response.data
   })
 }
 
-export const loadOrFetchPodcastRssDoc = (podcastId, podcastUrl) =>
-  idbStore.get(podcastId).then(
-    ([, maybeData]) => maybeData ?? fetchRssDocViaProxy(podcastUrl)
+const fetchRssDocViaProxyThenParseThenUpdateIdb = (url, isCanceled=()=>false) =>
+  fetchRssDocViaProxy(url).then(
+    rssData => {
+      if (isCanceled()) return {}
+
+      const t0 = Date.now()
+
+      const rssJson = laminate(parseXml(rssData))
+
+      analytics.timing('podcast', 'parse-rss', Date.now() - t0, url)
+
+      return rssJson
+    }).then(
+      rssJson => {
+        if (!isCanceled()) {
+          idbStore.set(url, rssJson)
+        }
+        return rssJson
+      }
+    )
+
+export const loadOrFetchPodcastRssDoc = url =>
+  idbStore.get(url).then(
+    ([, maybeData]) => maybeData ?? fetchRssDocViaProxyThenParseThenUpdateIdb(url)
   )
 
-const usePodcast = (podcast, options={}, parseXmlString=defaultParseXmlString) => {
+const loadOrFetchIdbSwr = (url, forceRevalidate, isCanceled) => () => {
+  if (!url) return Promise.resolve()
+
+  return idbStore.get(url).then(
+    ([cacheStatus, maybeData]) => {
+      if (cacheStatus === IdbKvTimedExpiryCache.FRESH && !forceRevalidate) return maybeData
+
+      return fetchRssDocViaProxyThenParseThenUpdateIdb(url, isCanceled)
+    }
+  )
+}
+
+const usePodcast = (podcast, options={}) => {
   const forceRevalidate = options.forceRevalidate ?? false
 
-  const [rss, setRss] = React.useState()
-  const [error, setError] = React.useState()
-
-  const podcastId = podcast?.id
   const podcastUrl = podcast?.url
 
-  const parseRss = rssData => laminate(parseXmlString(rssData))
+  let componentDidUnmount = false
 
-  const handleError = e => {
-    console.error('error in podcast fetch+parse', podcastId, podcastUrl, e.message)
-    setError(e.message)
-  }
+  const isCanceled = () => componentDidUnmount
+
+  const {data: rss, error} = useSWR(
+    podcastUrl,
+    loadOrFetchIdbSwr(podcastUrl, forceRevalidate, isCanceled),
+    {
+      revalidateOnFocus: false,
+      revalidateOnMount: !swrCache.has(podcastUrl), // default is true
+      shouldRetryOnError: false,
+    })
 
   React.useEffect(() => {
-    if (!podcastId || !podcastUrl) return
+    if (error) {
+      console.error('error in podcast fetch+parse', podcastUrl, e.message)
+    }
+  }, [error])
 
-    let componentDidUnmount = false
-
-    idbStore.get(podcastId).then(
-      params => {
-        const [cacheStatus, maybeData] = params
-
-        if (cacheStatus !== IdbKvTimedExpiryCache.MISS && !componentDidUnmount) {
-          setRss(maybeData)
-        }
-
-        return params
-      }
-    ).then(
-      ([cacheStatus]) => {
-        if (cacheStatus === IdbKvTimedExpiryCache.FRESH && !forceRevalidate) return Promise.resolve()
-
-        return fetchRssDocViaProxy(podcastUrl).then(parseRss).then(
-          rss => {
-            if (!componentDidUnmount) setRss(rss)
-
-            return idbStore.set(podcastId, rss)
-          }
-        )
-      }
-    ).catch(handleError)
-
+  React.useEffect(() => {
     return () => { componentDidUnmount = true }
-  }, [podcastId, podcastUrl])
+  }, [])
 
   return {error, rss}
 }
