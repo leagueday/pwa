@@ -13,7 +13,6 @@ import ThemeProvider from './styling/ThemeProvider'
 
 import usePodcasts from './api/usePodcasts'
 import useChronicle from './api/useChronicle'
-import useChronicler from './api/useChronicler'
 
 import Audio from './views/Audio'
 import Error from './views/Error'
@@ -82,8 +81,6 @@ const ThemedAppContent = () => {
 
 const Chronicle = () => {
   useChronicle()
-  useChronicler()
-
   return null
 }
 

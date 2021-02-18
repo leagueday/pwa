@@ -50,7 +50,6 @@ const fetcher = (base, table, view='Grid view') => () => new Promise(
 const useAirtable = (baseKey, table, view) => {
   const cacheKey = `${baseKey}/${table}/${view}`
 
-  console.log('cacheKey', cacheKey)
   const base = new Airtable({apiKey}).base(baseKey)
 
   return useSWR(

@@ -12,7 +12,60 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { actions, constants as storeConstants, selectors, thunks } from '../store'
 
+const debugAudio = false
+
 const TAP_INTERVAL = 15
+
+const addDebugEventListeners = debugAudio ?
+  audioDomNode => {
+    for (let [event, description] of [
+      [ 'audioprocess',
+        'The input buffer of a ScriptProcessorNode is ready to be processed.'
+      ], [ 'canplay',
+        'The browser can play the media, but estimates that not enough data has been loaded to play the media up to its end without having to stop for further buffering of content.'
+      ], [ 'canplaythrough',
+        'The browser estimates it can play the media up to its end without stopping for content buffering.'
+      ], [ 'complete',
+        'The rendering of an OfflineAudioContext is terminated.'
+      ], [ 'durationchange',
+        'The duration attribute has been updated.'
+      ], [ 'emptied',
+        'The media has become empty; for example, this event is sent if the media has already been loaded (or partially loaded), and the load() method is called to reload it.'
+      ], [ 'ended',
+        'Playback has stopped because the end of the media was reached.'
+      ], [ 'loadeddata',
+        'The first frame of the media has finished loading.'
+      ], [ 'loadedmetadata',
+        'The metadata has been loaded.'
+      ], [ 'pause',
+        'Playback has been paused.'
+      ], [ 'play',
+        'Playback has begun.'
+      ], [ 'playing',
+        'Playback is ready to start after having been paused or delayed due to lack of data.'
+      ], [ 'ratechange',
+        'The playback rate has changed.'
+      ], [ 'seeked',
+        'A seek operation completed.'
+      ], [ 'seeking',
+        'A seek operation began.'
+      ], [ 'stalled',
+        'The user agent is trying to fetch media data, but data is unexpectedly not forthcoming.'
+      ], [ 'suspend',
+        'Media data loading has been suspended.'
+      ], [ 'timeupdate',
+        'The time indicated by the currentTime attribute has been updated.'
+      ], [ 'volumechange',
+        'The volume has changed.'
+      ], [ 'waiting',
+        'Playback has stopped because of a temporary lack of data'
+      ],
+    ]) {
+      audioDomNode.addEventListener(event, () => {
+        console.log(`Audio Event: ${event} (${description})`)
+      })
+    }
+  } : () => {}
 
 // Set a bunch of event listeners on the <audio /> element.
 //
@@ -36,9 +89,9 @@ const useAudioRef = () => {
   const getRef = React.useCallback(() => ref.current, [])
 
   const setRef = React.useCallback(node => {
-    if (ref.current) {
+    // if (ref.current) {
       // clean up events / references to previous dom `node` instance
-    }
+    // }
 
     if (node) {
       node.addEventListener('error', errorEvent => {
@@ -69,6 +122,18 @@ const useAudioRef = () => {
       node.addEventListener('seeked', () => {
         dispatch(actions.audioSeeked())
       })
+
+      // to track activity due to iOS lock screen controller...
+      node.addEventListener('pause', () => {
+        dispatch(actions.pauseAudioEvent())
+      })
+
+      node.addEventListener('play', () => {
+        dispatch(actions.playAudioEvent())
+      })
+
+      // testing...
+      addDebugEventListeners(node)
     }
 
     // Save a reference to the node
@@ -80,43 +145,63 @@ const useAudioRef = () => {
 
 const Audio = () => {
   const [getAudioRef, setAudioRef] = useAudioRef()
-
-  const audioMode = useSelector(selectors.getAudioMode)
   const audioUrl = useSelector(selectors.getAudioUrl)
 
-  const forwardTaps = useSelector(selectors.getAudioTapsForward)
-  const replayTaps = useSelector(selectors.getAudioTapsReplay)
+  const events = useSelector(selectors.getAudioEvents)
+  const taps = useSelector(selectors.getAudioTaps)
   const seek = useSelector(selectors.getAudioSeek)
 
-  //////////////////////////////////////////////////////////////////////////////
-  // pause/play - consequence of button tap
-  React.useEffect(() => {
-    const audio = getAudioRef()
-    if (!audio) return
+  // console.log('events', events)
+  // console.log('taps', taps)
 
-    if (audioMode === storeConstants.AUDIO_MODE_PAUSE) {
-      audio.pause()
-    } else if (audioMode === storeConstants.AUDIO_MODE_PLAY) {
-      audio.play()
-    }
-  }, [audioMode, audioUrl])
+  const {
+    forward: forwardTaps,
+    pause: pauseTaps,
+    play: playTaps,
+    replay: replayTaps,
+  } = taps
+
+  //////////////////////////////////////////////////////////////////////////////
+  // pause - consequence of button tap, or an event after-effect
+  React.useEffect(() => {
+    if (!pauseTaps) return
+
+    const audioDomNode = getAudioRef()
+    if (!audioDomNode) return
+
+    console.log('handling pause taps effect')
+    audioDomNode.pause()
+  }, [pauseTaps])
+
+  //////////////////////////////////////////////////////////////////////////////
+  // play - consequence of button tap, or an event after-effect
+  React.useEffect(() => {
+    if (!playTaps) return
+
+    const audioDomNode = getAudioRef()
+    if (!audioDomNode) return
+
+    console.log('handling play taps effect')
+
+    audioDomNode.play()
+  }, [playTaps])
 
   //////////////////////////////////////////////////////////////////////////////
   // forward - consequence of button tap
   React.useEffect(() => {
     if (!forwardTaps) return
 
-    const audio = getAudioRef()
-    if (!audio) return
+    const audioDomNode = getAudioRef()
+    if (!audioDomNode) return
 
-    const currentTime = audio.currentTime
-    const duration = audio.duration
+    const currentTime = audioDomNode.currentTime
+    const duration = audioDomNode.duration
 
     const nextTime = currentTime + TAP_INTERVAL
     const tooLate = duration - TAP_INTERVAL
 
     if (nextTime < tooLate) {
-      audio.currentTime = nextTime
+      audioDomNode.currentTime = nextTime
     }
   }, [forwardTaps])
 
@@ -125,16 +210,15 @@ const Audio = () => {
   React.useEffect(() => {
     if (!replayTaps) return
 
-    const audio = getAudioRef()
-    if (!audio) return
+    const audioDomNode = getAudioRef()
+    if (!audioDomNode) return
 
-    const currentTime = audio.currentTime
+    const currentTime = audioDomNode.currentTime
 
     const nextTime = currentTime - TAP_INTERVAL
-    const tooEarly = TAP_INTERVAL
 
-    if (nextTime > tooEarly) {
-      audio.currentTime = nextTime
+    if (nextTime > TAP_INTERVAL) {
+      audioDomNode.currentTime = nextTime
     }
   }, [replayTaps])
 
@@ -144,15 +228,15 @@ const Audio = () => {
     const seekPosition = seek?.position
     if (!seekPosition && seekPosition !== 0) return
 
-    const audio = getAudioRef()
-    if (!audio) return
+    const audioDomNode = getAudioRef()
+    if (!audioDomNode) return
 
-    audio.currentTime = seekPosition
+    audioDomNode.currentTime = seekPosition
   }, [seek?.position])
 
   return audioUrl ? (
     <span>
-      <audio ref={setAudioRef} src={audioUrl} autoPlay />
+      <audio ref={setAudioRef} src={audioUrl} />
     </span>
   ) : null
 }
