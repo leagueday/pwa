@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
  * controller but the way they both use redux is hardwired
  */
 
-import { actions, constants as storeConstants, selectors, thunks } from '../store'
+import { actions, constants as storeConsts, selectors, thunks } from '../store'
 
 const debugAudio = false
 
@@ -145,9 +145,10 @@ const useAudioRef = () => {
 
 const Audio = () => {
   const [getAudioRef, setAudioRef] = useAudioRef()
+  const audioMode = useSelector(selectors.getAudioMode)
   const audioUrl = useSelector(selectors.getAudioUrl)
 
-  const events = useSelector(selectors.getAudioEvents)
+  // const events = useSelector(selectors.getAudioEvents)
   const taps = useSelector(selectors.getAudioTaps)
   const seek = useSelector(selectors.getAudioSeek)
 
@@ -156,35 +157,25 @@ const Audio = () => {
 
   const {
     forward: forwardTaps,
-    pause: pauseTaps,
-    play: playTaps,
+    // pause: pauseTaps,
+    // play: playTaps,
     replay: replayTaps,
   } = taps
 
   //////////////////////////////////////////////////////////////////////////////
-  // pause - consequence of button tap, or an event after-effect
-  React.useEffect(() => {
-    if (!pauseTaps) return
+  // play/pause - consequence of button tap, or an event after-effect
 
+  React.useEffect(() => {
     const audioDomNode = getAudioRef()
     if (!audioDomNode) return
 
-    console.log('handling pause taps effect')
-    audioDomNode.pause()
-  }, [pauseTaps])
+    // console.log('audio mode', audioMode, audioDomNode.paused)
 
-  //////////////////////////////////////////////////////////////////////////////
-  // play - consequence of button tap, or an event after-effect
-  React.useEffect(() => {
-    if (!playTaps) return
-
-    const audioDomNode = getAudioRef()
-    if (!audioDomNode) return
-
-    console.log('handling play taps effect')
-
-    audioDomNode.play()
-  }, [playTaps])
+    if (audioMode === storeConsts.AUDIO_MODE_PAUSE && !audioDomNode.paused)
+      audioDomNode.pause()
+    else if (audioMode === storeConsts.AUDIO_MODE_PLAY && audioDomNode.paused)
+      audioDomNode.play()
+  }, [audioMode])
 
   //////////////////////////////////////////////////////////////////////////////
   // forward - consequence of button tap
