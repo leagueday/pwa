@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux'
 import * as analytics from '../analytics'
 import { selectors } from '../store'
 
+import Loading from './Loading'
+
 // MushipanRouter - obtain location from Redux, then pick a view to render
 
 const useLocationPath = () => {
@@ -89,7 +91,11 @@ const MushipanRouter = ({
   //     <View />
   //   </CSSTransition>
   // </TransitionGroup>
-  return (<View {...viewProps} />)
+  return (
+    <React.Suspense fallback={(<Loading />)}>
+      <View {...viewProps} />
+    </React.Suspense>
+  )
 }
 
 export default MushipanRouter
