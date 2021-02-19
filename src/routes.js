@@ -1,11 +1,17 @@
 import React from 'react'
 
-import MainScreen from './views/MainScreen'
-import PodcastScreen from './views/PodcastScreen'
+const IconDump = React.lazy(() => import('./views/IconDump'))
+const MainScreen = React.lazy(() => import('./views/MainScreen'))
+const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'))
 
 const DEFAULT_PATH = null
 
 export const routesConfig = [
+  [
+    'icons',
+    IconDump,
+    { }
+  ],
   [
     'podcast',
     PodcastScreen,
