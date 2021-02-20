@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack --config webpack-prod.config.js",
     "build-dev": "cross-env NODE_ENV=development webpack --config webpack-dev.config.js",
-    "start": "http-server -p 8888 dist",
+    "start": "http-server -p 8888 --proxy http://localhost:8888? dist",
     "start-dev": "cross-env NODE_ENV=development webpack serve --config webpack-dev.config.js --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,7 +21,6 @@
     "url": "https://github.com/leagueday/pwa/issues"
   },
   "homepage": "https://github.com/leagueday/pwa#readme",
-  "devDependencies": {},
   "dependencies": {
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
@@ -58,6 +57,7 @@
     "redux-thunk": "^2.3.0",
     "string-strip-html": "^7.0.3",
     "style-loader": "^2.0.0",
+    "svg-react-loader": "^0.4.6",
     "swr": "^0.3.11",
     "webpack": "^5.11.0",
     "webpack-bundle-analyzer": "^4.3.0",
