@@ -1,5 +1,4 @@
-
-export const nav = '"Asap Condensed", sans-serif'
-export const mono = '"Roboto Mono", monospace'
-export const serif = '"Aleo", serif'
-export const sans = '"Open Sans", sans-serif'
+export const familyPrimary = '"Barlow Semi Condensed", sans-serif'
+export const familySecondary = '"Raleway", sans-serif'
+export const weightNormal = 400
+export const weightBold = 700

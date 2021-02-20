@@ -25,17 +25,13 @@ export const spec = createMuiTheme({
     type: 'dark',
   },
   typography: {
-    fontFamily: typography.sans,
-    fontWeightBold: 600,
-    fontWeightLight: 300,
-    fontWeightNormal: 400,
-    mono: typography.mono,
-    nav: typography.nav,
-    sans: typography.sans,
-    serif: typography.serif,
+    weight: {
+      bold: typography.weightBold,
+      normal: typography.weightNormal,
+    },
+    family: {
+      primary: typography.familyPrimary,
+      secondary: typography.familySecondary,
+    },
   },
 })
-
-// tbd - convey this via theme...
-// const mainBackground = colors.darkCharcoal
-// const cardBackground = colors.bluishBlack

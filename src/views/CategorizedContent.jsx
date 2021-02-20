@@ -25,7 +25,8 @@ const useStyles = makeStyles(theme => ({
   }),
   displayCategoryName: {
     color: colors.vintageTubeBright,
-    fontFamily: theme.typography.nav,
+    fontFamily: theme.typography.family.primary,
+    fontWeight: theme.typography.weight.bold,
     paddingBottom: '0.25em',
   },
 }))

@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
   },
   betaNotice: {
-    fontFamily: theme.typography.serif,
+    fontFamily: theme.typography.family.primary,
     fontSize: '75%',
     fontStyle: 'oblique',
     marginLeft: '0.5em',
@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     display: 'flex',
     flexDirection: 'row',
-    fontWeight: theme.typography.fontWeightBold,
+    fontWeight: theme.typography.weight.bold,
     marginLeft: 'auto',
     marginRight: '2em',
   },

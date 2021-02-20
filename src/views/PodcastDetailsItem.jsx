@@ -28,13 +28,13 @@ const useStyles = makeStyles(theme => ({
   description: {
     color: theme.palette.text.secondary,
     fontSize: '90%',
-    fontWeight: theme.typography.fontWeightLight,
+    fontWeight: theme.typography.weight.normal,
     padding: '0 0.5em 0.5em 0.5em',
   },
   dump: {
     color: theme.palette.grey[700],
     fontSize: '60%',
-    fontWeight: theme.typography.fontWeightLight,
+    fontWeight: theme.typography.weight.normal,
   },
   podcastDetailsItem: {
     border: '1px solid transparent',
@@ -50,18 +50,19 @@ const useStyles = makeStyles(theme => ({
   },
   pubDate: {
     color: theme.palette.text.secondary,
-    fontFamily: theme.typography.sans,
+    fontFamily: theme.typography.family.primary,
     fontSize: '75%',
     fontStyle: 'oblique',
-    fontWeight: theme.typography.fontWeightLight,
+    fontWeight: theme.typography.weight.normal,
     paddingLeft: '1em',
     paddingRight: '0.5em',
     whiteSpace: 'nowrap',
   },
   title: {
     color: theme.palette.text.primary,
-    fontFamily: theme.typography.serif,
+    fontFamily: theme.typography.family.primary,
     fontSize: '90%',
+    fontWeight: theme.typography.weight.bold,
     maxWidth: '100%',
     overflowX: 'hidden',
     textOverflow: 'ellipsis',

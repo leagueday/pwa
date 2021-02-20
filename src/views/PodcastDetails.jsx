@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   }),
   language: {
     color: theme.palette.text.secondary,
-    fontWeight: theme.typography.fontWeightLight,
+    fontWeight: theme.typography.weight.normal,
     fontSize: '80%',
     fontStyle: 'oblique',
     marginLeft: 'auto',
@@ -97,7 +97,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     color: theme.palette.text.primary,
-    fontFamily: theme.typography.serif,
+    fontFamily: theme.typography.family.primary,
     minWidth: 0,
     overflowX: 'hidden',
     textOverflow: 'ellipsis',

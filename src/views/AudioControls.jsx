@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
   durationLabel: {
     bottom: '-1em',
     color: theme.palette.text.secondary,
-    fontFamily: theme.typography.sans,
+    fontFamily: theme.typography.family.secondary,
     fontSize: '75%',
     fontStyle: 'oblique',
     position: 'absolute',
@@ -99,7 +99,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
     cursor: 'pointer',
     display: 'flex',
-    fontFamily: theme.typography.serif,
+    fontFamily: theme.typography.family.secondary,
     fontSize: '85%',
     height: TITLE_HEIGHT,
     maxWidth: '100%',
