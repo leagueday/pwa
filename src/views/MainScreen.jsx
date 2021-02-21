@@ -11,6 +11,7 @@ import * as consts from './consts'
 import { addScrollStyle } from './util'
 import BasicLayout from './BasicLayout'
 import CategorizedContent from './CategorizedContent'
+import HomeContent from './HomeContent'
 import SideNav from './SideNav'
 
 const useStyles = makeStyles(theme => ({
@@ -68,6 +69,15 @@ const MainScreen = () => {
   // the menu is by default closed
   const isSidenavVisible = navVisibility !== false
 
+  /*
+
+        {
+          // filterKind === storeConsts.FILTER_KIND_FEATURED
+          //   ? (<CategorizedContent categoryFieldname="featuredDisplayCategory" rankFieldname="featuredDisplayRank"/>)
+          //   : (<CategorizedContent />)
+        }
+   */
+
   return (
     <BasicLayout mode="main">
       <Hidden xsDown>
@@ -78,11 +88,7 @@ const MainScreen = () => {
         </HorizontalCollapse>
       </Hidden>
       <div className={classes.mainContent}>
-        {
-          filterKind === storeConsts.FILTER_KIND_FEATURED
-            ? (<CategorizedContent categoryFieldname="featuredDisplayCategory" rankFieldname="featuredDisplayRank"/>)
-            : (<CategorizedContent />)
-        }
+        <HomeContent />
       </div>
     </BasicLayout>
   )

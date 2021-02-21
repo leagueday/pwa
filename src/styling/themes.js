@@ -6,9 +6,9 @@ import * as typography from './typography'
 export const spec = createMuiTheme({
   palette: {
     background: {
-      paper: colors.brandBlack, // card background, sidebar background
-      control: colors.darkGray, // header background
-      default: colors.lightGray, // grid background
+      paper: colors.black, // card background, sidebar background
+      control: colors.black, // header background
+      default: colors.black, // grid background
     },
     secondary: {
       contrastText: colors.darkGray,
