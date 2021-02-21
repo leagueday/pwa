@@ -10,10 +10,10 @@ import * as colors from '../styling/colors'
 
 const useStyles = makeStyles({
   activeButton: {
-    color: colors.vintageTubeFaint,
+    color: colors.white30,
   },
   inactiveButton: {
-    color: colors.vintageTubeDull,
+    color: colors.white30,
   }
 })
 

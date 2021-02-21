@@ -15,7 +15,7 @@ import DumbPodcastTitleImage from './DumbPodcastTitleImage'
 const useStyles = makeStyles(theme => ({
   cardContent: {
     alignItems: 'stretch',
-    backgroundColor: colors.darkCharcoal,
+    backgroundColor: colors.lightGray,
     display: 'flex',
     flexDirection: 'row',
   },
@@ -77,8 +77,8 @@ const useStyles = makeStyles(theme => ({
     width: '4em',
   },
   podcastCard: {
-    backgroundColor: colors.blackBabyBlue,
-    border: `1px solid ${colors.darkBabyBlue}`,
+    backgroundColor: colors.brandBlack,
+    border: `1px solid ${colors.blue}`,
     borderRadius: '4px',
     cursor: 'pointer',
     margin: '0.1em',

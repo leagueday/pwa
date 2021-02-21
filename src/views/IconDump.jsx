@@ -121,14 +121,14 @@ const useStyles = makeStyles({
     width: '100%',
   },
   iconDumpCell: {
-    backgroundColor: colors.blackPlum,
+    backgroundColor: colors.brandBlack,
     color: 'white',
     padding: '0.25em',
   },
   iconDumpGrid: {
   },
   iconDumpHeading: {
-    backgroundColor: colors.blackPlum,
+    backgroundColor: colors.brandBlack,
     color: 'white',
     fontSize: '150%',
     padding: '1em',

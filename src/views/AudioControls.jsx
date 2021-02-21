@@ -58,6 +58,12 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  disabledButtonColor: {
+    color: colors.white30,
+  },
+  enabledButtonColor: {
+    color: colors.white80,
+  },
   durationLabel: {
     bottom: '-1em',
     color: theme.palette.text.secondary,
@@ -84,16 +90,16 @@ const useStyles = makeStyles(theme => ({
     transform: 'scaleX(1.01)',
   },
   sliderColor: {
-    color: colors.babyBlue,
+    color: colors.blue,
   },
   sliderThumbColor: {
-    backgroundColor: colors.brightPlum,
+    backgroundColor: colors.violet,
   },
   sliderThumbTooltip: {
-    background: Color(colors.blackPlum).fade(0.6).toString(),
-    border: `1px solid ${colors.darkBabyBlue}`,
+    background: Color(colors.brandBlack).fade(0.6).toString(),
+    border: `1px solid ${colors.cyan}`,
     borderRadius: '3px',
-    color: colors.vintageTubeFaint,
+    color: colors.cyan,
   },
   title: {
     color: theme.palette.text.secondary,
@@ -130,12 +136,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     height: UNDERBAR_CONTROLS_HEIGHT,
     justifyContent: 'center',
-  },
-  vintageTubeDisabled: {
-    color: colors.vintageTubeDull,
-  },
-  vintageTube: {
-    color: colors.vintageTubeBright,
   },
 }))
 
@@ -308,7 +308,7 @@ const AudioControls = () => {
   const itemTitle = useSelector(selectors.getAudioTitle)
 
   const isDisabled = !itemUrl
-  const buttonColorClass = isDisabled ? classes.vintageTubeDisabled : classes.vintageTube
+  const buttonColorClass = isDisabled ? classes.disabledButtonColor : classes.enabledButtonColor
 
   const dispatch = useDispatch()
 

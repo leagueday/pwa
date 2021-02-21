@@ -16,7 +16,7 @@ import {proxifyHttpUrl} from '../api/util'
 import useGameboard from '../api/useGameboard'
 import useStarred from '../api/useStarred'
 
-const MY_LIST_TEXT_COLOR = colors.babyBlue
+const MY_LIST_TEXT_COLOR = colors.blue
 
 // Note that Material-UI Accordion was tried and had too much spacing,
 // which seemed really difficult to tune. So this component rolls its
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: '0.35em',
   },
   itemName: {
-    fontFamily: theme.typography.nav,
+    fontFamily: theme.typography.family.primary,
     overflowX: 'hidden',
     overflowY: 'hidden',
     textOverflow: 'ellipsis',
@@ -68,14 +68,14 @@ const useStyles = makeStyles(theme => ({
   },
   myExpanderHeadingText: {
     color: theme.palette.text.secondary,
-    fontFamily: theme.typography.nav,
+    fontFamily: theme.typography.family.primary,
     overflowX: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     width: '100%',
   },
   myExpanderHeadingIcon: {
-    color: colors.vintageTubeFaint,
+    color: colors.white30,
     height: '0.4em',
     marginLeft: '-0.1em',
     marginRight: '-0.1em',
@@ -83,14 +83,14 @@ const useStyles = makeStyles(theme => ({
   },
   myExpanderHeadingIconBracket: {
     alignItems: 'center',
-    color: colors.sienna,
+    color: colors.darkGray,
     display: 'flex',
     flexDirection: 'row',
-    fontFamily: theme.typography.mono,
+    fontFamily: theme.typography.family.primary,
     fontSize: '70%',
     justifyContent: 'flex-start',
     marginRight: '0.3em',
-    textShadow: `1px 1px ${colors.darkSienna}`,
+    textShadow: `1px 1px ${colors.lightGray}`,
   },
   myExpanderContent: {
     paddingLeft: '0.5em',
@@ -99,8 +99,8 @@ const useStyles = makeStyles(theme => ({
     border: `1px solid transparent`,
   },
   selected: ({textColor}) => ({
-    backgroundColor: colors.blackPlum,
-    border: `1px solid ${Color(colors.blackPlum).lighten(0.5).string()}`,
+    backgroundColor: colors.brandBlack,
+    border: `1px solid ${colors.lightGray}`,
     borderRadius: theme.shape.borderRadius,
     color: textColor ?? theme.palette.text.primary,
     fontWeight: theme.typography.fontWeightBold,

@@ -11,7 +11,7 @@ import PodcastsGrid from './PodcastsGrid'
 
 const useStyles = makeStyles(theme => ({
   displayCategory: {
-    backgroundColor: colors.blackPlum,
+    backgroundColor: colors.brandBlack,
     marginBottom: '0.5em',
     padding: '0.5em',
     userSelect: 'none',
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   }),
   displayCategoryName: {
-    color: colors.vintageTubeBright,
+    color: colors.white,
     fontFamily: theme.typography.family.primary,
     fontWeight: theme.typography.weight.bold,
     paddingBottom: '0.25em',

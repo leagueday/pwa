@@ -6,21 +6,21 @@ import * as typography from './typography'
 export const spec = createMuiTheme({
   palette: {
     background: {
-      paper: colors.bluishBlack, // card background, sidebar background
-      control: colors.darkCharcoal, // header background
-      default: colors.charcoal, // grid background
+      paper: colors.brandBlack, // card background, sidebar background
+      control: colors.darkGray, // header background
+      default: colors.lightGray, // grid background
     },
     secondary: {
-      contrastText: colors.vintageTubeDark,
-      dark: colors.vintageTubeDull,
-      light: colors.vintageTubeBright,
-      main: colors.vintageTubeFaint,
+      contrastText: colors.darkGray,
+      dark: colors.white30,
+      light: colors.white,
+      main: colors.white80,
     },
     text: {
-      disabled: colors.vintageTubeDull, // tbd this triggers a warning at runtime, type doesn't really have `disabled`
-      hint: colors.vintageTube,
-      primary: colors.vintageTubeBright,
-      secondary: colors.vintageTubeFaint,
+      disabled: colors.white30,
+      hint: colors.white80,
+      primary: colors.white,
+      secondary: colors.white30,
     },
     type: 'dark',
   },

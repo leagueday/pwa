@@ -29,12 +29,12 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
   },
   betaNotice: {
+    color: colors.cyan,
     fontFamily: theme.typography.family.primary,
-    fontSize: '75%',
-    fontStyle: 'oblique',
+    fontSize: '80%',
     marginLeft: '0.5em',
-    paddingBottom: '0.04em',
-    textShadow: `1px 1px ${Color(colors.pinkSalmon).darken(0.45)}`,
+    paddingBottom: '0.25em',
+    textShadow: `1px 1px ${colors.lightGray}`,
   },
   discordLogo: {
     marginLeft: '0.5em',
@@ -69,8 +69,8 @@ const useStyles = makeStyles(theme => ({
     borderRadius: theme.shape.borderRadius,
     margin: '0.1em',
   },
-  vintageTube: {
-    color: colors.vintageTubeBright,
+  mainButtonIcon: {
+    color: colors.white,
   },
 }))
 
@@ -131,7 +131,7 @@ const AppBar = props => {
           size="small"
           value="showNav"
         >
-          <MainButtonMuiIcon className={classes.vintageTube} />
+          <MainButtonMuiIcon className={classes.mainButtonIcon} />
         </IconButton >
       </div>
       <img
