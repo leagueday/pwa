@@ -1,5 +1,4 @@
 import React from 'react'
-import Color from 'color'
 
 import { makeStyles } from '@material-ui/core/styles'
 

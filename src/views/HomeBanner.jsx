@@ -12,11 +12,13 @@ const useStyles = makeStyles(theme => ({
   bannerImageGroup: ({imageUrl}) => ({
     alignItems: 'flex-start',
     background: `url(${imageUrl})`,
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
     display: 'flex',
     flexDirection: 'column',
     height: '360px',
     justifyContent: 'flex-end',
-    width: '1108px',
+    width: '100%',
   }),
   bannerImageText: {
     fontSize: '90%',
@@ -83,7 +85,6 @@ const DotNavigator = ({classes, currentIndex, numElements, setCurrentIndex}) => 
 
             for (let i = 0; i < numElements; i++) {
               const isSelected = i === currentIndex
-              console.log(i, currentIndex, isSelected)
 
               dots.push(
                 <IcoDot
