@@ -64,7 +64,7 @@ const ThemedAppContent = () => {
 
   return (
     <div className={classes.app}>
-      <Container className={classes.appBackground} maxWidth="md" disableGutters={true}>
+      <Container className={classes.appBackground} maxWidth="lg" disableGutters={true}>
         <Paper className={classes.appCanvas}>
           {
             data

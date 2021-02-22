@@ -29,7 +29,7 @@ const UNDERBAR_CONTROLS_HEIGHT = '2em'
 const useStyles = makeStyles(theme => ({
   audioControls: {
     alignItems: 'stretch',
-    backgroundColor: theme.palette.background.control,
+    backgroundColor: colors.brandBlack,
     display: 'flex',
     flexDirection: 'row',
     height: consts.AUDIO_CONTROLS_HEIGHT,

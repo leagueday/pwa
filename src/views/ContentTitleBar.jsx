@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    userSelect: 'none',
   },
   contentTitleBarDatetime: ({primaryColor}) => ({
     color: Color(primaryColor).fade(0.25).toString(),
