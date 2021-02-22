@@ -20,7 +20,7 @@ export const spec = createMuiTheme({
       disabled: colors.white30,
       hint: colors.white80,
       primary: colors.white,
-      secondary: colors.white30,
+      secondary: colors.white80,
     },
     type: 'dark',
   },

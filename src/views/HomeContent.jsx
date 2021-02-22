@@ -49,6 +49,8 @@ const useStyles = makeStyles(theme => ({
   bannerImageTitle: ({primaryColor}) => ({
     color: primaryColor,
   }),
+  homeContent: {
+  },
 }))
 
 const HomeScreenContent = () => {

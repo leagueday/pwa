@@ -2,8 +2,11 @@ import React from 'react'
 import Color from 'color'
 
 import dayjs from 'dayjs'
+import dayjs_advancedFormat from 'dayjs/plugin/advancedFormat'
 
 import { makeStyles } from '@material-ui/core/styles'
+
+dayjs.extend(dayjs_advancedFormat)
 
 const useStyles = makeStyles(theme => ({
   contentTitleBar: {

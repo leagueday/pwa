@@ -48,10 +48,9 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   itemNameChild: {
-    fontSize: '75%',
+    fontSize: '90%',
   },
   itemNameStandalone: {
-    fontSize: '90%',
   },
   myExpander: {
     userSelect: 'none',
@@ -75,19 +74,17 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   myExpanderHeadingIcon: {
-    color: colors.white30,
-    height: '0.4em',
-    marginLeft: '-0.1em',
-    marginRight: '-0.1em',
-    width: '0.4em',
+    color: theme.palette.text.primary,
+    height: '0.7em',
+    width: '0.7em',
   },
   myExpanderHeadingIconBracket: {
     alignItems: 'center',
-    color: colors.darkGray,
+    color: theme.palette.text.secondary,
     display: 'flex',
     flexDirection: 'row',
     fontFamily: theme.typography.family.primary,
-    fontSize: '70%',
+    fontSize: '90%',
     justifyContent: 'flex-start',
     marginRight: '0.3em',
     textShadow: `1px 1px ${colors.lightGray}`,
@@ -99,8 +96,8 @@ const useStyles = makeStyles(theme => ({
     border: `1px solid transparent`,
   },
   selected: ({textColor}) => ({
-    backgroundColor: colors.brandBlack,
-    border: `1px solid ${colors.lightGray}`,
+    backgroundColor: colors.darkGray,
+    border: `1px solid ${colors.blue}`,
     borderRadius: theme.shape.borderRadius,
     color: textColor ?? theme.palette.text.primary,
     fontWeight: theme.typography.fontWeightBold,
