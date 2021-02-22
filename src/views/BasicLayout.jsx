@@ -9,6 +9,7 @@ import * as consts from './consts'
 import { selectors } from '../store'
 import AppBar from './AppBar'
 import AudioControls from './AudioControls'
+import BrandGradientHorizontalStripe from './BrandGradientHorizontalStripe'
 
 // BasicLayout
 //
@@ -16,11 +17,17 @@ import AudioControls from './AudioControls'
 // * this is like a full screen view (capped to the container)
 // * whatever might scroll is more granular and within the children
 
+const getCalcContentHeight = (viewportHeight, isAudioControlsHidden) => {
+  const stripesHeight = isAudioControlsHidden ? consts.STRIPE_HEIGHT : `2 * ${consts.STRIPE_HEIGHT}`
+  const commonPart = `${viewportHeight} - ${consts.APPBAR_HEIGHT} - ${stripesHeight}`
+
+  return `calc(${commonPart}` +
+    (isAudioControlsHidden ? '' : ` - ${consts.AUDIO_CONTROLS_HEIGHT}`) + ')'
+}
+
 const calcContentHeight =
   isAudioControlsHidden =>
-    isAudioControlsHidden
-      ? ({viewportHeight}) => `calc(${viewportHeight} - ${consts.APPBAR_HEIGHT})`
-      : ({viewportHeight}) => `calc(${viewportHeight} - ${consts.APPBAR_HEIGHT} - ${consts.AUDIO_CONTROLS_HEIGHT})`
+    ({viewportHeight}) => getCalcContentHeight(viewportHeight, isAudioControlsHidden)
 
 const useStyles = makeStyles(theme => ({
   basicLayout: {
@@ -41,8 +48,6 @@ const useStyles = makeStyles(theme => ({
   },
   basicLayoutContent: {
     alignItems: 'stretch',
-    borderBottom: `1px solid ${colors.yellow}`,
-    borderTop: `1px solid ${colors.yellow}`,
     display: 'flex',
     flexDirection: 'row',
   },
@@ -66,6 +71,7 @@ const BasicLayout = props => {
 
   return (
     <div className={classes.basicLayout}>
+      <BrandGradientHorizontalStripe />
       <div className={classes.basicLayoutAppBar}>
         <AppBar mode={props.mode}/>
       </div>
@@ -78,9 +84,12 @@ const BasicLayout = props => {
         {props.children}
       </div>
       { isAudioDisplayed && (
-        <div className={classes.basicLayoutAudioControls}>
-          <AudioControls />
-        </div>
+        <>
+          <BrandGradientHorizontalStripe />
+          <div className={classes.basicLayoutAudioControls}>
+            <AudioControls />
+          </div>
+        </>
       ) }
     </div>
   )
