@@ -12,8 +12,8 @@ export const addScrollStyle = styleClassInitializer => ({
     webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
   },
   '&::-webkit-scrollbar-thumb': {
-    backgroundColor: colors.blue,
-    borderRadius: '3px',
+    backgroundColor: colors.magenta,
+    borderRadius: '0.25em',
   }
 })
 

@@ -10,7 +10,6 @@ import {constants as storeConsts, selectors, useFilter} from '../store'
 import * as consts from './consts'
 import { addScrollStyle } from './util'
 import BasicLayout from './BasicLayout'
-import CategorizedContent from './CategorizedContent'
 import HomeContent from './HomeContent'
 import SideNav from './SideNav'
 
@@ -27,12 +26,11 @@ const useStyles = makeStyles(theme => ({
   horizontalCollapseHidden: {
     width: 0,
   },
-  mainContent: addScrollStyle({
-    flex: 1,
+  mainContent: {
     maxHeight: '100%',
-    overflowX: 'hidden',
-    overflowY: 'auto',
-  }),
+    overflowY: 'hidden',
+    width: '100%',
+  },
   mainSidenav: {
   },
 }))

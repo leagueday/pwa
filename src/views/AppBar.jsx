@@ -145,7 +145,7 @@ const AppBar = props => {
         <div className={classes.feedbackCluster}>
           <a className={classes.link}
             href="https://docs.google.com/forms/d/e/1FAIpQLSf_pA_9J5Tcp6wgiyDA5VzjZHvscKtsT2810dDy9MmRjVsBWA/viewform"
-            target="_none">Give us Feedback ☺️
+            target="_none">Give us Feedback ️😊
           </a>
           <a className={classes.link} href="https://discord.gg/uXDQydmnVu" target="_none">
             <img className={classes.discordLogo} src="/img/Discord-Logo-Color.png" alt="Discord" />

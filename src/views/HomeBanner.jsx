@@ -1,5 +1,6 @@
 import React from 'react'
 import Color from 'color'
+import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -12,11 +13,11 @@ const useStyles = makeStyles(theme => ({
   bannerImageGroup: ({imageUrl}) => ({
     alignItems: 'flex-start',
     background: `url(${imageUrl})`,
-    backgroundSize: 'cover',
+    backgroundSize: 'auto',
     backgroundRepeat: 'no-repeat',
     display: 'flex',
     flexDirection: 'column',
-    height: '360px',
+    height: '20em',
     justifyContent: 'flex-end',
     width: '100%',
   }),
@@ -45,14 +46,19 @@ const useStyles = makeStyles(theme => ({
     color: primaryColor,
   }),
   dotNav: {
-    alignItems: 'baseline',
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+    paddingBottom: '0.5em',
     paddingTop: '0.5em',
   },
   dotOuter: {
+    alignItems: 'center',
     cursor: 'pointer',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   dotOuterSelected: {
     cursor: 'default',
@@ -88,12 +94,10 @@ const DotNavigator = ({classes, currentIndex, numElements, setCurrentIndex}) => 
 
               dots.push(
                 <IcoDot
-                  classes={isSelected ? {
-                      inner: classes.dotInnerSelected,
-                      outer: classes.dotOuterSelected,
-                    } : {
-                      inner: classes.dotInner,
-                      outer: classes.dotOuter,
+                  key={i}
+                  classes={{
+                      inner: cx(classes.dotInner, {[classes.dotInnerSelected]: isSelected}),
+                      outer: cx(classes.dotOuter, {[classes.dotOuterSelected]: isSelected}),
                     }}
                   onClick={isSelected ? null : () => setCurrentIndex(i)}
                 />
