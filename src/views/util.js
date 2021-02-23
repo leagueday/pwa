@@ -2,7 +2,7 @@ import stringStripHtml from 'string-strip-html'
 
 import * as colors from '../styling/colors'
 
-export const addScrollStyle = styleClassInitializer => ({
+export const addScrollStyle = scrollbarColor => styleClassInitializer => ({
   ...styleClassInitializer,
   '&::-webkit-scrollbar': {
     width: '0.5em',
@@ -12,7 +12,7 @@ export const addScrollStyle = styleClassInitializer => ({
     webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
   },
   '&::-webkit-scrollbar-thumb': {
-    backgroundColor: colors.magenta,
+    backgroundColor: scrollbarColor,
     borderRadius: '0.25em',
   }
 })

@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     paddingTop: '0.5em',
     width: '100%',
   },
-  podcastTiles: addScrollStyle({
+  podcastTiles: addScrollStyle(colors.magenta)({
     overflowX: 'hidden',
     overflowY: 'auto',
     paddingBottom: '0.5em',
@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const HomeScreenContent = () => {
+const HomeContent = () => {
   const facetedPodcasts = useFacets('Home')
 
   const classes = useStyles()
@@ -52,4 +52,4 @@ const HomeScreenContent = () => {
   )
 }
 
-export default HomeScreenContent
+export default HomeContent

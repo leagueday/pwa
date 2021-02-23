@@ -9,6 +9,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded'
 import StarRoundedIcon from '@material-ui/icons/StarRounded';
 
+import * as colors from '../styling/colors'
 import { constants as storeConstants, actions, selectors } from '../store'
 import * as rssSelectors from '../model/rss'
 import usePodcast from '../api/usePodcast'
@@ -45,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '4px',
     marginBottom: '0.25em',
   },
-  items: addScrollStyle({
+  items: addScrollStyle(colors.magenta)({
     maxHeight: '100%',
     overflowY: 'auto',
   }),

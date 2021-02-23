@@ -1,7 +1,6 @@
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import cx from 'classnames'
-import Color from 'color'
 
 import {makeStyles} from '@material-ui/core/styles'
 import Collapse from '@material-ui/core/Collapse'
@@ -15,6 +14,7 @@ import * as apiConsts from '../api/consts'
 import {proxifyHttpUrl} from '../api/util'
 import useGameboard from '../api/useGameboard'
 import useStarred from '../api/useStarred'
+import { addScrollStyle } from './util'
 
 const MY_LIST_TEXT_COLOR = colors.blue
 
@@ -103,9 +103,9 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.fontWeightBold,
   }),
   sideNav: {
+    backgroundColor: colors.darkerGray,
     display: 'flex',
     flexDirection: 'column',
-    marginRight: '0.5em',
     minHeight: '100%',
     padding: '0.5em',
   },

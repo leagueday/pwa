@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     padding: '0.5em',
     userSelect: 'none',
   },
-  displayCategoryContent: addScrollStyle({
+  displayCategoryContent: addScrollStyle(colors.blue)({
     height: '100%',
     maxHeight: '100%',
     overflowY: 'auto',
