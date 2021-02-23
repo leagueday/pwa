@@ -4,10 +4,8 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import * as colors from '../styling/colors'
 import * as consts from './consts'
 import { selectors } from '../store'
-import AppBar from './AppBar'
 import AudioControls from './AudioControls'
 import BrandGradientHorizontalStripe from './BrandGradientHorizontalStripe'
 
@@ -19,7 +17,7 @@ import BrandGradientHorizontalStripe from './BrandGradientHorizontalStripe'
 
 const getCalcContentHeight = (viewportHeight, isAudioControlsHidden) => {
   const stripesHeight = isAudioControlsHidden ? consts.STRIPE_HEIGHT : `2 * ${consts.STRIPE_HEIGHT}`
-  const commonPart = `${viewportHeight} - ${consts.APPBAR_HEIGHT} - ${stripesHeight}`
+  const commonPart = `${viewportHeight} - ${stripesHeight}`
 
   return `calc(${commonPart}` +
     (isAudioControlsHidden ? '' : ` - ${consts.AUDIO_CONTROLS_HEIGHT}`) + ')'
@@ -30,6 +28,10 @@ const calcContentHeight =
     ({viewportHeight}) => getCalcContentHeight(viewportHeight, isAudioControlsHidden)
 
 const useStyles = makeStyles(theme => ({
+  audioControls: {
+    maxHeight: consts.AUDIO_CONTROLS_HEIGHT,
+    minHeight: consts.AUDIO_CONTROLS_HEIGHT,
+  },
   basicLayout: {
     display: 'flex',
     flexDirection: 'column',
@@ -38,15 +40,7 @@ const useStyles = makeStyles(theme => ({
     maxHeight: '100%',
     minHeight: '100%',
   },
-  basicLayoutAppBar: {
-    maxHeight: consts.APPBAR_HEIGHT,
-    minHeight: consts.APPBAR_HEIGHT,
-  },
-  basicLayoutAudioControls: {
-    maxHeight: consts.AUDIO_CONTROLS_HEIGHT,
-    minHeight: consts.AUDIO_CONTROLS_HEIGHT,
-  },
-  basicLayoutContent: {
+  content: {
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'row',
@@ -72,12 +66,9 @@ const BasicLayout = props => {
   return (
     <div className={classes.basicLayout}>
       <BrandGradientHorizontalStripe />
-      <div className={classes.basicLayoutAppBar}>
-        <AppBar mode={props.mode}/>
-      </div>
       <div
         className={cx(
-          classes.basicLayoutContent,
+          classes.content,
           isAudioDisplayed ? classes.contentWhenAudioDisplayed : classes.contentWhenAudioHidden
         )}
       >
@@ -86,7 +77,7 @@ const BasicLayout = props => {
       { isAudioDisplayed && (
         <>
           <BrandGradientHorizontalStripe />
-          <div className={classes.basicLayoutAudioControls}>
+          <div className={classes.audioControls}>
             <AudioControls />
           </div>
         </>
