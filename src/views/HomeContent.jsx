@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
   podcastTiles: addScrollStyle({
     overflowX: 'hidden',
     overflowY: 'auto',
+    paddingBottom: '0.5em',
   }),
   primaryStripe: {
     backgroundColor: PRIMARY_COLOR,

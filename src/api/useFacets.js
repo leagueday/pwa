@@ -7,15 +7,6 @@ const base = 'appXoertP1WJjd4TQ'
 const viewFacetsTablename = 'ViewFacets'
 const facetsTablename = 'Facets'
 
-const iteratorMap = (iterator, f) => {
-  const result = []
-
-  for (let i = iterator.next(); !i.done; i = iterator.next())
-    result.push(f(i.value))
-
-  return result
-}
-
 const useViewFacets = viewName => {
   const {data} = useAirtable(base, viewFacetsTablename)
 
