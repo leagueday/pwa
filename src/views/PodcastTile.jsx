@@ -1,11 +1,13 @@
 import React from 'react'
 import Color from 'color'
+import { useDispatch } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../styling/colors'
 import usePodcast from '../api/usePodcast'
 import { channelSelectors } from '../model/rss'
+import { actions } from '../store'
 
 const BACKGROUND_COLOR = colors.black
 const WIDTH = '9em'
@@ -16,6 +18,7 @@ const opacityRamp = `linear-gradient(${transparent}, ${transparent} 90%, ${opaqu
 
 const useStyles = makeStyles(theme => ({
   podcastTile: {
+    cursor: 'pointer',
     height: '12em',
     overflow: 'hidden',
     position: 'relative',
@@ -51,6 +54,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: '75%',
     fontWeight: theme.typography.weight.bold,
     left: 0,
+    maxHeight: '4em', // ≅ height - width + 0.1(width)
     paddingLeft: '0.25em',
     paddingRight: '0.25em',
     position: 'absolute',
@@ -66,8 +70,11 @@ const PodcastTile = ({podcast, textColor}) => {
 
   const classes = useStyles({imageUrl, textColor})
 
+  const dispatch = useDispatch()
+  const gotoThisPodcast = () => dispatch(actions.pushHistory(`/podcast/${podcast.id}`))
+
   return (
-    <div className={classes.podcastTile}>
+    <div className={classes.podcastTile} onClick={gotoThisPodcast}>
       <div className={classes.imageContainer}>
         <img className={classes.image} src={imageUrl} />
         <div className={classes.imageOpacityRamp} />
