@@ -1,6 +1,8 @@
 import * as constants from '../../constants'
 import * as ActionType from '../../actionTypes';
 
+const TAP_INTERVAL = 15
+
 const initialState = {
   audioUrl: null,
   duration: null,
@@ -42,6 +44,8 @@ const setCounter = (keyword, nextCount, counters) => Object.entries(counters).re
   { }
 )
 
+// this is used like a post-action middleware, I'm not sure how to set that up in
+// redux-thunk or other, tbd
 const evaluateMode = actionType => intermediateState => {
   switch (actionType) {
     case ActionType.PAUSE_ACTION: {
@@ -89,19 +93,59 @@ const evaluateMode = actionType => intermediateState => {
   }
 }
 
+// this is used like a post-action middleware, I'm not sure how to set that up in
+// redux-thunk or other, tbd
+const evaluatePosition = actionType => intermediateState => {
+  switch (actionType) {
+    case ActionType.FORWARD_AUDIO: {
+      const { duration, position: intermPosition } = intermediateState
+
+      if (!duration || intermPosition == null) return intermediateState
+
+      const nextTime = Math.floor(intermPosition + TAP_INTERVAL)
+      const tooLate = duration - TAP_INTERVAL
+
+      return nextTime < tooLate
+        ? {
+          ...intermediateState,
+          position: nextTime,
+        } : intermediateState
+    }
+    case ActionType.REPLAY_AUDIO: {
+      const { duration, position: intermPosition } = intermediateState
+
+      if (!duration || intermPosition == null) return intermediateState
+
+      const nextTime = Math.floor(intermPosition - TAP_INTERVAL)
+
+      return nextTime < duration && nextTime > TAP_INTERVAL
+        ? {
+          ...intermediateState,
+          position: nextTime,
+        } : intermediateState
+    }
+    default:
+      return intermediateState
+  }
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.AUDIO_SEEKED: {
       return {
         ...state,
-        events: nextCounters('seeked', state.events)
+        events: nextCounters('seeked', state.events),
+        position: action.payload.position,
+        seek: {
+          position: null,
+        },
       }
     }
     case ActionType.FORWARD_AUDIO: {
-      return {
+      return evaluatePosition(ActionType.FORWARD_AUDIO)({
         ...state,
         taps: nextCounters('forward', state.taps)
-      }
+      })
     }
     case ActionType.PAUSE_ACTION: {
       return evaluateMode(ActionType.PAUSE_ACTION)({
@@ -128,10 +172,10 @@ const reducer = (state = initialState, action) => {
       })
     }
     case ActionType.REPLAY_AUDIO: {
-      return {
+      return evaluatePosition(ActionType.REPLAY_AUDIO)({
         ...state,
         taps: nextCounters('replay', state.taps)
-      }
+      })
     }
     case ActionType.SEEK_AUDIO: {
       return {

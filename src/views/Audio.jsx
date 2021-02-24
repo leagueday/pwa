@@ -119,8 +119,8 @@ const useAudioRef = () => {
         dispatch(thunks.audio.playNextTrack())
       })
 
-      node.addEventListener('seeked', () => {
-        dispatch(actions.audioSeeked())
+      node.addEventListener('seeked', eventData => {
+        dispatch(actions.audioSeeked(eventData.target.currentTime))
       })
 
       // to track activity due to iOS lock screen controller...
@@ -151,6 +151,7 @@ const Audio = () => {
   // const events = useSelector(selectors.getAudioEvents)
   const taps = useSelector(selectors.getAudioTaps)
   const seek = useSelector(selectors.getAudioSeek)
+  const position = useSelector(selectors.getAudioPosition)
 
   const seekPosition = seek?.position
 
@@ -182,40 +183,15 @@ const Audio = () => {
   }, [audioMode])
 
   //////////////////////////////////////////////////////////////////////////////
-  // forward - consequence of button tap
+  // forward, replay - consequence of button tap
   React.useEffect(() => {
     if (!forwardTaps) return
 
     const audioDomNode = getAudioRef()
     if (!audioDomNode) return
 
-    const currentTime = audioDomNode.currentTime
-    const duration = audioDomNode.duration
-
-    const nextTime = currentTime + TAP_INTERVAL
-    const tooLate = duration - TAP_INTERVAL
-
-    if (nextTime < tooLate) {
-      audioDomNode.currentTime = nextTime
-    }
-  }, [forwardTaps])
-
-  //////////////////////////////////////////////////////////////////////////////
-  // replay - consequence of button tap
-  React.useEffect(() => {
-    if (!replayTaps) return
-
-    const audioDomNode = getAudioRef()
-    if (!audioDomNode) return
-
-    const currentTime = audioDomNode.currentTime
-
-    const nextTime = currentTime - TAP_INTERVAL
-
-    if (nextTime > TAP_INTERVAL) {
-      audioDomNode.currentTime = nextTime
-    }
-  }, [replayTaps])
+    audioDomNode.currentTime = position
+  }, [forwardTaps, replayTaps])
 
   //////////////////////////////////////////////////////////////////////////////
   // seek - consequence of slider interaction
