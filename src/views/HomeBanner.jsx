@@ -10,29 +10,26 @@ import useHomeBanner from '../api/useHomeBanner'
 import IcoDot from './icons/IcoDot'
 
 const useStyles = makeStyles(theme => ({
-  bannerImageGroup: ({imageUrl}) => ({
-    alignItems: 'flex-start',
-    background: `url(${imageUrl})`,
-    backgroundSize: 'auto',
-    backgroundRepeat: 'no-repeat',
-    display: 'flex',
-    flexDirection: 'column',
+  bannerImageGroup: {
     height: '20em',
-    justifyContent: 'flex-end',
-    width: '100%',
-  }),
+    overflow: 'hidden',
+    position: 'relative',
+    right: 0,
+  },
   bannerImageText: {
     fontSize: '90%',
   },
   bannerImageTextGroup: ({accentColor}) => ({
     alignItems: 'flex-start',
     background: `${Color(accentColor).fade(0.1).darken(0.65).toString()}`,
+    bottom: 0,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     paddingBottom: '0.5em',
     paddingLeft: '0.33em',
     paddingTop: '0.5em',
+    position: 'absolute',
     userSelect: 'none',
     width: '100%',
   }),
@@ -70,10 +67,14 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-start',
     width: '100%',
   },
+  image: {
+    width: '100%',
+  },
 }))
 
-const HomeBannerElement = ({classes, text, title}) => (
+const HomeBannerElement = ({classes, imageUrl, text, title}) => (
   <div className={classes.bannerImageGroup}>
+    <img className={classes.image} src={imageUrl} />
     <div className={classes.bannerImageTextGroup}>
       <div className={classes.bannerImageTitle}>{title}</div>
       <div className={classes.bannerImageText}>{text}</div>
@@ -123,13 +124,13 @@ const HomeBanner = ({primaryColor}) => {
 
   const accentColor = colors[rawAccentColor] ?? rawAccentColor
 
-  const classes = useStyles({accentColor, imageUrl, primaryColor})
+  const classes = useStyles({accentColor, primaryColor})
 
   return (
     <div className={classes.homeBanner}>
       { imageUrl && (
           <>
-            <HomeBannerElement classes={classes} text={text} title={title} />
+            <HomeBannerElement classes={classes} text={text} title={title} imageUrl={imageUrl}/>
             <DotNavigator
               classes={classes}
               currentIndex={currentIndex}

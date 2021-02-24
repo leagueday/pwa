@@ -5,7 +5,12 @@ import cx from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 
-import { IcoFastFwdStop, IcoForwardStop, IcoPlus, IcoRewindStop } from '../icons'
+import {
+  IcoFastFwdStop,
+  IcoForwardStop,
+  IcoPlus,
+  IcoRewindStop
+} from '../icons'
 
 import * as colors from '../../styling/colors'
 import { actions, constants as storeConstants, selectors, thunks } from '../../store'
@@ -15,7 +20,6 @@ import PauseOrPlayButton from './PauseOrPlayButton'
 import ProgressBox from './ProgressBox'
 
 const TITLE_HEIGHT = '2em'
-const UNDERBAR_CONTROLS_HEIGHT = '2em'
 
 const useStyles = makeStyles(theme => ({
   audioControlsRow: {
@@ -144,7 +148,7 @@ const AudioControls = () => {
           </IconButton >
           <div className={classes.titleFlex}>
             <div className={classes.title} onClick={titleOnclick}>
-                {itemTitle}
+              {itemTitle}
             </div>
           </div>
           <IconButton className={classes.nextButton} onClick={nextButtonOnclick} disabled={isDisabled}>
