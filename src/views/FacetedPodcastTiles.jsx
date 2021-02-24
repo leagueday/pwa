@@ -59,9 +59,8 @@ const FacetedPodcastTiles = ({data}) => {
                 {
                   podcasts.map(
                     podcast => (
-                      <div className={classes.tile}>
+                      <div key={podcast.id} className={classes.tile}>
                         <PodcastTile
-                          key={podcast.id}
                           podcast={podcast}
                           textColor={nextColor()}
                         />

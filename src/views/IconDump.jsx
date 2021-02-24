@@ -11,6 +11,8 @@ import {
   IcoFastFwdStop,
   IcoForwardStop,
   IcoHome,
+  IcoPlus,
+  IcoRewindStop,
 } from './icons'
 
 import IcoArrangeListActive from './icons/IcoArrangeListActive'
@@ -40,7 +42,6 @@ import IcoLilPlusHover from './icons/IcoLilPlusHover'
 import IcoLilPlus from './icons/IcoLilPlus'
 import IcoMinusButton from './icons/IcoMinusButton'
 import IcoModuleAdjust from './icons/IcoModuleAdjust'
-import IcoPlus from './icons/IcoPlus'
 import IcoRwd15 from './icons/IcoRwd15'
 import IcoSearch from './icons/IcoSearch'
 import IcoSkipHover from './icons/IcoSkipHover'
@@ -62,7 +63,6 @@ import IcoNavFwdNeutral from './icons/IcoNavFwdNeutral'
 import IcoNavFwd from './icons/IcoNavFwd'
 import IcoPause from './icons/IcoPause'
 import IcoResize from './icons/IcoResize'
-import IcoRewindStop from './icons/IcoRewindStop'
 import IcoSettingsAdjust1 from './icons/IcoSettingsAdjust1'
 import IcoSettingsAdjust2 from './icons/IcoSettingsAdjust2'
 import IcoSettingsAdjust from './icons/IcoSettingsAdjust'

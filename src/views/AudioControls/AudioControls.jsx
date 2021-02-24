@@ -5,7 +5,7 @@ import cx from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 
-import { IcoFastFwdStop, IcoForwardStop, IcoRewindStop } from '../icons'
+import { IcoFastFwdStop, IcoForwardStop, IcoPlus, IcoRewindStop } from '../icons'
 
 import * as colors from '../../styling/colors'
 import { actions, constants as storeConstants, selectors, thunks } from '../../store'
@@ -18,7 +18,7 @@ const TITLE_HEIGHT = '2em'
 const UNDERBAR_CONTROLS_HEIGHT = '2em'
 
 const useStyles = makeStyles(theme => ({
-  audioControls: {
+  audioControlsRow: {
     alignItems: 'stretch',
     backgroundColor: colors.brandBlack,
     display: 'flex',
@@ -27,23 +27,30 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
     width: '100%',
   },
+  barsideButton: {
+    height: '2em',
+    width: '2em',
+  },
+  barsideButtonIcon: {
+    transform: 'scaleY(0.5)',
+  },
   disabledButtonColor: {
     color: colors.white30,
   },
   enabledButtonColor: {
     color: colors.magenta,
   },
-  leftColumn: {
+  logo: {
+    cursor: 'pointer',
+    minWidth: '6em',
+    paddingLeft: '0.5em',
+  },
+  mainColumn: {
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
     maxWidth: '100%',
     overflowX: 'hidden',
-  },
-  logo: {
-    cursor: 'pointer',
-    minWidth: '6em',
-    paddingLeft: '0.5em',
   },
   nextButton: {
     height: '2.25em',
@@ -52,23 +59,19 @@ const useStyles = makeStyles(theme => ({
   nextButtonIcon: {
     transform: 'scaleX(0.75) scaleY(0.5)',
   },
-  rightColumn: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    marginLeft: 'auto',
-    maxWidth: consts.AUDIO_CONTROLS_HEIGHT,
-    minWidth: consts.AUDIO_CONTROLS_HEIGHT,
+  progressBoxFlex: {
+    flex: 1,
   },
-  rightColumnCenter: {
+  progressRow: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: '1em',
+    paddingRight: '1em',
   },
   title: {
     color: theme.palette.text.secondary,
     cursor: 'pointer',
-    display: 'flex',
     fontFamily: theme.typography.family.secondary,
     fontSize: '85%',
     height: TITLE_HEIGHT,
@@ -83,28 +86,17 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.text.primary,
     },
   },
-  titleContainer: {
+  titleFlex: {
+    alignItems: 'center',
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  titleRow: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-  },
-  underbarButton: {
-    height: '2em',
-    width: '2em',
-  },
-  underbarButtonIcon: {
-    transform: 'scaleY(0.5)',
-  },
-  underbarSpacer: {
-    maxWidth: '1em',
-    minWidth: '1em',
-  },
-  underbarControls: {
-    alignItems: 'stretch',
-    display: 'flex',
-    flexDirection: 'row',
-    height: UNDERBAR_CONTROLS_HEIGHT,
-    justifyContent: 'center',
   },
 }))
 
@@ -142,31 +134,32 @@ const AudioControls = () => {
   const audioMode = useSelector(selectors.getAudioMode)
 
   return (
-    <div className={classes.audioControls}>
+    <div className={classes.audioControlsRow}>
       <PauseOrPlayButton className={classes.logo}
                          playing={audioMode === storeConstants.AUDIO_MODE_PLAY} />
-      <div className={classes.leftColumn}>
-        <div className={classes.titleContainer}>
-          <div className={classes.title} onClick={titleOnclick}>
-            {itemTitle}
+      <div className={classes.mainColumn}>
+        <div className={classes.titleRow}>
+          <IconButton className={classes.nextButton} onClick={null} disabled={isDisabled}>
+            <IcoPlus classes={{inner:buttonColorClass}} />
+          </IconButton >
+          <div className={classes.titleFlex}>
+            <div className={classes.title} onClick={titleOnclick}>
+                {itemTitle}
+            </div>
           </div>
-        </div>
-        <ProgressBox />
-        <div className={classes.underbarControls}>
-          <IconButton className={classes.underbarButton} onClick={replayButtonOnclick} size="small" disabled={isDisabled}>
-            <IcoRewindStop classes={{inner:cx(classes.underbarButtonIcon, buttonColorClass)}} />
-          </IconButton >
-          <div className={classes.underbarSpacer} />
-          <div className={classes.underbarSpacer} />
-          <IconButton className={classes.underbarButton} onClick={forwardButtonOnclick} size="small" disabled={isDisabled}>
-            <IcoFastFwdStop classes={{inner:cx(classes.underbarButtonIcon, buttonColorClass)}} />
-          </IconButton >
-        </div>
-      </div>
-      <div className={classes.rightColumn}>
-        <div className={classes.rightColumnCenter}>
           <IconButton className={classes.nextButton} onClick={nextButtonOnclick} disabled={isDisabled}>
             <IcoForwardStop classes={{inner:cx(classes.nextButtonIcon, buttonColorClass)}} strokeWidth={4} />
+          </IconButton >
+        </div>
+        <div className={classes.progressRow}>
+          <IconButton className={classes.barsideButton} onClick={replayButtonOnclick} size="small" disabled={isDisabled}>
+            <IcoRewindStop classes={{inner:cx(classes.barsideButtonIcon, buttonColorClass)}} />
+          </IconButton >
+          <div className={classes.progressBoxFlex}>
+            <ProgressBox />
+          </div>
+          <IconButton className={classes.barsideButton} onClick={forwardButtonOnclick} size="small" disabled={isDisabled}>
+            <IcoFastFwdStop classes={{inner:cx(classes.barsideButtonIcon, buttonColorClass)}} />
           </IconButton >
         </div>
       </div>

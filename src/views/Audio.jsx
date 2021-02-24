@@ -14,8 +14,6 @@ import { actions, constants as storeConsts, selectors, thunks } from '../store'
 
 const debugAudio = false
 
-const TAP_INTERVAL = 15
-
 const addDebugEventListeners = debugAudio ?
   audioDomNode => {
     for (let [event, description] of [
@@ -89,9 +87,16 @@ const useAudioRef = () => {
   const getRef = React.useCallback(() => ref.current, [])
 
   const setRef = React.useCallback(node => {
-    // if (ref.current) {
-      // clean up events / references to previous dom `node` instance
-    // }
+    // If there is some resource that should be released, or dangling
+    // reference to the previous refed dom node, that would be set up
+    // during this function, of which there is no example currently,
+    // the clean up should be done here with code such as
+    //   if (ref.current) {
+    //     recurringEvents.stop()
+    //     freeOutsideDomNodeRef()
+    //   }
+    // where `ref.current` refers to the soon-to-die previous refed
+    // dom node.
 
     if (node) {
       node.addEventListener('error', errorEvent => {
@@ -149,9 +154,9 @@ const Audio = () => {
   const audioUrl = useSelector(selectors.getAudioUrl)
 
   // const events = useSelector(selectors.getAudioEvents)
+  const position = useSelector(selectors.getAudioPosition)
   const taps = useSelector(selectors.getAudioTaps)
   const seek = useSelector(selectors.getAudioSeek)
-  const position = useSelector(selectors.getAudioPosition)
 
   const seekPosition = seek?.position
 
@@ -184,6 +189,7 @@ const Audio = () => {
 
   //////////////////////////////////////////////////////////////////////////////
   // forward, replay - consequence of button tap
+  // seek - consequence of slider interaction
   React.useEffect(() => {
     if (!forwardTaps) return
 
@@ -191,18 +197,7 @@ const Audio = () => {
     if (!audioDomNode) return
 
     audioDomNode.currentTime = position
-  }, [forwardTaps, replayTaps])
-
-  //////////////////////////////////////////////////////////////////////////////
-  // seek - consequence of slider interaction
-  React.useEffect(() => {
-    if (!seekPosition && seekPosition !== 0) return
-
-    const audioDomNode = getAudioRef()
-    if (!audioDomNode) return
-
-    audioDomNode.currentTime = seekPosition
-  }, [seekPosition])
+  }, [forwardTaps, replayTaps, seekPosition])
 
   return audioUrl ? (
     <span>
