@@ -1,8 +1,8 @@
 import React from 'react'
 
-const makeGenericIcon = Svg => ({classes, onClick}) => (
+const makeGenericIcon = Svg => ({classes, onClick, strokeWidth}) => (
   <div className={classes?.outer} onClick={onClick}>
-    <Svg className={classes?.inner} />
+    <Svg className={classes?.inner} strokeWidth={strokeWidth} />
   </div>
 )
 

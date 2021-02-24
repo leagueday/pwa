@@ -10,10 +10,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Slider from '@material-ui/core/Slider'
 import Tooltip from '@material-ui/core/Tooltip'
 
-import PauseRoundedIcon from '@material-ui/icons/PauseRounded'
-import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded'
-import ReplayRoundedIcon from '@material-ui/icons/ReplayRounded'
-import SkipNextRoundedIcon from '@material-ui/icons/SkipNextRounded'
+import { IcoFastFwdStop, IcoForwardStop, IcoRewindStop } from './icons'
 
 import * as colors from '../styling/colors'
 import { actions, constants as storeConstants, selectors, thunks } from '../store'
@@ -24,7 +21,6 @@ dayjs.extend(dayjsDurationPlugin)
 const TITLE_HEIGHT = '2em'
 const PROGRESS_HEIGHT = '1.5em'
 const UNDERBAR_CONTROLS_HEIGHT = '2em'
-// assert(TITLE_HEIGHT + PROGRESS_HEIGHT + UNDERBAR_CONTROLS_HEIGHT == consts.AUDIO_CONTROLS_HEIGHT)
 
 const useStyles = makeStyles(theme => ({
   audioControls: {
@@ -36,33 +32,11 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
     width: '100%',
   },
-  audioControlsLeft: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-    maxWidth: '100%',
-    overflowX: 'hidden',
-    // padding: '1em',
-    paddingLeft: '1em',
-  },
-  audioControlsRight: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    marginLeft: 'auto',
-    maxWidth: consts.AUDIO_CONTROLS_HEIGHT,
-    minWidth: consts.AUDIO_CONTROLS_HEIGHT,
-  },
-  audioControlsRightCenter: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
   disabledButtonColor: {
     color: colors.white30,
   },
   enabledButtonColor: {
-    color: colors.white80,
+    color: colors.magenta,
   },
   durationLabel: {
     bottom: '-1em',
@@ -73,10 +47,24 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     right: '0.5em',
   },
-  forwardButton: {
-    transform: 'scaleX(-1)',
+  leftColumn: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    maxWidth: '100%',
+    overflowX: 'hidden',
+  },
+  logo: {
+    cursor: 'pointer',
+    minWidth: '6em',
+    paddingLeft: '0.5em',
   },
   nextButton: {
+    height: '2.25em',
+    width: '2.25em',
+  },
+  nextButtonIcon: {
+    transform: 'scaleX(0.75) scaleY(0.5)',
   },
   progressBox: {
     // backgroundColor: colors.darkerCharcoal,
@@ -86,8 +74,18 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: '0.33em',
     paddingRight: '0.33em',
   },
-  replayButton: {
-    transform: 'scaleX(1.01)',
+  rightColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginLeft: 'auto',
+    maxWidth: consts.AUDIO_CONTROLS_HEIGHT,
+    minWidth: consts.AUDIO_CONTROLS_HEIGHT,
+  },
+  rightColumnCenter: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   sliderColor: {
     color: colors.blue,
@@ -125,6 +123,11 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-start',
   },
   underbarButton: {
+    height: '2em',
+    width: '2em',
+  },
+  underbarButtonIcon: {
+    transform: 'scaleY(0.5)',
   },
   underbarSpacer: {
     maxWidth: '1em',
@@ -342,12 +345,10 @@ const AudioControls = () => {
       dispatch(actions.pauseAudio())
     }
 
-  const PauseOrPlayIcon = audioMode === storeConstants.AUDIO_MODE_PAUSE
-    ? PlayArrowRoundedIcon : PauseRoundedIcon
-
   return (
     <div className={classes.audioControls}>
-      <div className={classes.audioControlsLeft}>
+      <img className={classes.logo} onClick={pauseOrPlayButtonOnclick} src="img/logo_gray_circle_playing.png" />
+      <div className={classes.leftColumn}>
         <div className={classes.titleContainer}>
           <div className={classes.title} onClick={titleOnclick}>
             {itemTitle}
@@ -356,22 +357,19 @@ const AudioControls = () => {
         <ProgressBox />
         <div className={classes.underbarControls}>
           <IconButton className={classes.underbarButton} onClick={replayButtonOnclick} size="small" disabled={isDisabled}>
-            <ReplayRoundedIcon className={cx(classes.replayButton, buttonColorClass)} />
+            <IcoRewindStop classes={{inner:cx(classes.underbarButtonIcon, buttonColorClass)}} />
           </IconButton >
           <div className={classes.underbarSpacer} />
-          <IconButton className={classes.underbarButton} onClick={pauseOrPlayButtonOnclick} size="small" disabled={isDisabled}>
-            <PauseOrPlayIcon className={buttonColorClass} />
-          </IconButton >
           <div className={classes.underbarSpacer} />
           <IconButton className={classes.underbarButton} onClick={forwardButtonOnclick} size="small" disabled={isDisabled}>
-            <ReplayRoundedIcon className={cx(classes.forwardButton, buttonColorClass)} />
+            <IcoFastFwdStop classes={{inner:cx(classes.underbarButtonIcon, buttonColorClass)}} />
           </IconButton >
         </div>
       </div>
-      <div className={classes.audioControlsRight}>
-        <div className={classes.audioControlsRightCenter}>
+      <div className={classes.rightColumn}>
+        <div className={classes.rightColumnCenter}>
           <IconButton className={classes.nextButton} onClick={nextButtonOnclick} disabled={isDisabled}>
-            <SkipNextRoundedIcon className={buttonColorClass} />
+            <IcoForwardStop classes={{inner:cx(classes.nextButtonIcon, buttonColorClass)}} strokeWidth={4} />
           </IconButton >
         </div>
       </div>

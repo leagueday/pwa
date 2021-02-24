@@ -6,6 +6,13 @@ import Tooltip from '@material-ui/core/Tooltip'
 
 import * as colors from '../styling/colors'
 
+import {
+  IcoDot,
+  IcoFastFwdStop,
+  IcoForwardStop,
+  IcoHome,
+} from './icons'
+
 import IcoArrangeListActive from './icons/IcoArrangeListActive'
 import IcoArrangeList from './icons/IcoArrangeList'
 import IcoButtonOntheair from './icons/IcoButtonOntheair'
@@ -17,9 +24,6 @@ import IcoGlobeM from './icons/IcoGlobeM'
 import IcoGlobeV from './icons/IcoGlobeV'
 import IcoGlobeY from './icons/IcoGlobeY'
 import IcoGlobe from './icons/IcoGlobe'
-import IcoHome1 from './icons/IcoHome1'
-import IcoHome2 from './icons/IcoHome2'
-import IcoHome from './icons/IcoHome'
 import Ico15fwd from './icons/Ico15fwd'
 import Ico15rwdHover from './icons/Ico15rwdHover'
 import Ico1aPlayingNeutral from './icons/Ico1aPlayingNeutral'
@@ -36,8 +40,6 @@ import IcoLilPlusHover from './icons/IcoLilPlusHover'
 import IcoLilPlus from './icons/IcoLilPlus'
 import IcoMinusButton from './icons/IcoMinusButton'
 import IcoModuleAdjust from './icons/IcoModuleAdjust'
-import IcoPlusHover1 from './icons/IcoPlusHover1'
-import IcoPlusHover from './icons/IcoPlusHover'
 import IcoPlus from './icons/IcoPlus'
 import IcoRwd15 from './icons/IcoRwd15'
 import IcoSearch from './icons/IcoSearch'
@@ -60,6 +62,7 @@ import IcoNavFwdNeutral from './icons/IcoNavFwdNeutral'
 import IcoNavFwd from './icons/IcoNavFwd'
 import IcoPause from './icons/IcoPause'
 import IcoResize from './icons/IcoResize'
+import IcoRewindStop from './icons/IcoRewindStop'
 import IcoSettingsAdjust1 from './icons/IcoSettingsAdjust1'
 import IcoSettingsAdjust2 from './icons/IcoSettingsAdjust2'
 import IcoSettingsAdjust from './icons/IcoSettingsAdjust'
@@ -138,6 +141,12 @@ const useStyles = makeStyles({
 })
 
 const iconsList = [
+  [ 'IcoHome', IcoHome ],
+  [ 'IcoDot', IcoDot ],
+  [ 'IcoFastFwdStop', IcoFastFwdStop ],
+  [ 'IcoForwardStop', IcoForwardStop ],
+  [ 'IcoPlus', IcoPlus ],
+  [ 'IcoRewindStop', IcoRewindStop ],
   [ 'IcoArrangeListActive', IcoArrangeListActive ],
   [ 'IcoArrangeList', IcoArrangeList ],
   [ 'IcoButtonOntheair', IcoButtonOntheair ],
@@ -149,9 +158,6 @@ const iconsList = [
   [ 'IcoGlobeV', IcoGlobeV ],
   [ 'IcoGlobeY', IcoGlobeY ],
   [ 'IcoGlobe', IcoGlobe ],
-  [ 'IcoHome1', IcoHome1 ],
-  [ 'IcoHome2', IcoHome2 ],
-  [ 'IcoHome', IcoHome ],
   [ 'Ico15fwd', Ico15fwd ],
   [ 'Ico15rwdHover', Ico15rwdHover ],
   [ 'Ico1aPlayingNeutral', Ico1aPlayingNeutral ],
@@ -168,9 +174,6 @@ const iconsList = [
   [ 'IcoLilPlus', IcoLilPlus ],
   [ 'IcoMinusButton', IcoMinusButton ],
   [ 'IcoModuleAdjust', IcoModuleAdjust ],
-  [ 'IcoPlusHover1', IcoPlusHover1 ],
-  [ 'IcoPlusHover', IcoPlusHover ],
-  [ 'IcoPlus', IcoPlus ],
   [ 'IcoRwd15', IcoRwd15 ],
   [ 'IcoSearch', IcoSearch ],
   [ 'IcoSkipHover', IcoSkipHover ],

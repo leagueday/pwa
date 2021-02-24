@@ -1,7 +1,5 @@
 import stringStripHtml from 'string-strip-html'
 
-import * as colors from '../styling/colors'
-
 export const addScrollStyle = scrollbarColor => styleClassInitializer => ({
   ...styleClassInitializer,
   '&::-webkit-scrollbar': {

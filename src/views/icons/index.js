@@ -1,0 +1,5 @@
+export { default as IcoDot } from './IcoDot'
+export { default as IcoFastFwdStop } from './IcoFastFwdStop'
+export { default as IcoForwardStop } from './IcoForwardStop'
+export { default as IcoHome } from './IcoHome'
+export { default as IcoRewindStop } from './IcoRewindStop'
