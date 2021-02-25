@@ -11,6 +11,8 @@ import {
   IcoFastFwdStop,
   IcoForwardStop,
   IcoHome,
+  IcoMagnifier,
+  IcoMinus,
   IcoPlus,
   IcoRewindStop,
 } from './icons'
@@ -53,8 +55,8 @@ import IcoVol25 from './icons/IcoVol25'
 import IcoVol50Hover from './icons/IcoVol50Hover'
 import IcoVol50 from './icons/IcoVol50'
 import IcoList from './icons/IcoList'
+import IcoMinus0 from './icons/IcoMinus0'
 import IcoMinus1 from './icons/IcoMinus1'
-import IcoMinus from './icons/IcoMinus'
 import IcoNavBackHover from './icons/IcoNavBackHover'
 import IcoNavBackNeutral from './icons/IcoNavBackNeutral'
 import IcoNavBack from './icons/IcoNavBack'
@@ -145,6 +147,8 @@ const iconsList = [
   [ 'IcoDot', IcoDot ],
   [ 'IcoFastFwdStop', IcoFastFwdStop ],
   [ 'IcoForwardStop', IcoForwardStop ],
+  [ 'IcoMagnifier', IcoMagnifier ],
+  [ 'IcoMinus', IcoMinus ],
   [ 'IcoPlus', IcoPlus ],
   [ 'IcoRewindStop', IcoRewindStop ],
   [ 'IcoArrangeListActive', IcoArrangeListActive ],
@@ -185,8 +189,8 @@ const iconsList = [
   [ 'IcoVol50Hover', IcoVol50Hover ],
   [ 'IcoVol50', IcoVol50 ],
   [ 'IcoList', IcoList ],
+  [ 'IcoMinus0', IcoMinus0 ],
   [ 'IcoMinus1', IcoMinus1 ],
-  [ 'IcoMinus', IcoMinus ],
   [ 'IcoNavBackHover', IcoNavBackHover ],
   [ 'IcoNavBackNeutral', IcoNavBackNeutral ],
   [ 'IcoNavBack', IcoNavBack ],

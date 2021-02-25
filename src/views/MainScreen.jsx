@@ -7,6 +7,7 @@ import Hidden from '@material-ui/core/Hidden'
 import {selectors} from '../store'
 import * as colors from '../styling/colors'
 
+import * as consts from './consts'
 import {addScrollStyle} from './util'
 import BasicLayout from './BasicLayout'
 import HomeContent from './HomeContent'
@@ -23,6 +24,7 @@ const useStyles = makeStyles(theme => ({
     maxHeight: '100%',
     minHeight: '100%',
     overflowY: 'auto',
+    width: consts.SIDENAV_WIDTH,
   }),
 }))
 
