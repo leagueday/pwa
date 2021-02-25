@@ -11,10 +11,10 @@ const PauseOrPlayButton = ({className, playing}) => {
     pauseOrPlayButtonOnclick,
   ] = playing
     ? [
-      'img/logo_gray_circle_pause.png',
+      '/img/logo_gray_circle_pause.png',
       () => dispatch(actions.pauseAudio())
     ] : [
-      'img/logo_gray_circle_play.png',
+      '/img/logo_gray_circle_play.png',
       () => dispatch(actions.playAudio())
     ]
 
