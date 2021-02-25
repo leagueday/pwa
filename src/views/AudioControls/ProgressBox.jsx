@@ -24,7 +24,6 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
     fontFamily: theme.typography.family.secondary,
     fontSize: '75%',
-    fontStyle: 'oblique',
     position: 'absolute',
     right: '0.5em',
   },

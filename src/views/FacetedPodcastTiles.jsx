@@ -28,6 +28,7 @@ const useStyles = makeStyles(theme => ({
     paddingTop: '0.75em',
   },
   title: {
+    fontFamily: theme.typography.family.primary,
     fontSize: '125%',
     fontWeight: theme.typography.weight.bold,
   },

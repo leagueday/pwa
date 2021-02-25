@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
   text: ({textColor}) => ({
     bottom: 0,
     color: textColor,
+    fontFamily: theme.typography.family.primary,
     fontSize: '75%',
     fontWeight: theme.typography.weight.bold,
     left: 0,

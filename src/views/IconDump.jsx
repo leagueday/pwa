@@ -15,6 +15,8 @@ import {
   IcoMinus,
   IcoPlus,
   IcoRewindStop,
+  IcoSolidArrowDown,
+  IcoSolidArrowUp,
 } from './icons'
 
 import IcoArrangeListActive from './icons/IcoArrangeListActive'
@@ -151,6 +153,8 @@ const iconsList = [
   [ 'IcoMinus', IcoMinus ],
   [ 'IcoPlus', IcoPlus ],
   [ 'IcoRewindStop', IcoRewindStop ],
+  [ 'IcoSolidArrowDown', IcoSolidArrowDown ],
+  [ 'IcoSolidArrowUp', IcoSolidArrowUp ],
   [ 'IcoArrangeListActive', IcoArrangeListActive ],
   [ 'IcoArrangeList', IcoArrangeList ],
   [ 'IcoButtonOntheair', IcoButtonOntheair ],

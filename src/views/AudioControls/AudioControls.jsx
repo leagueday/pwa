@@ -15,6 +15,7 @@ import {
 import * as colors from '../../styling/colors'
 import { actions, constants as storeConstants, selectors, thunks } from '../../store'
 import * as consts from '../consts'
+import useStarred from '../../api/useStarred'
 
 import PauseOrPlayButton from './PauseOrPlayButton'
 import ProgressBox from './ProgressBox'
@@ -76,7 +77,7 @@ const useStyles = makeStyles(theme => ({
   title: {
     color: theme.palette.text.secondary,
     cursor: 'pointer',
-    fontFamily: theme.typography.family.secondary,
+    fontFamily: theme.typography.family.primary,
     fontSize: '85%',
     height: TITLE_HEIGHT,
     maxWidth: '100%',
@@ -116,6 +117,9 @@ const AudioControls = () => {
 
   const dispatch = useDispatch()
 
+  const [getIsPlussed, plusPodcast, minusPodcast] = useStarred()
+  const isPlussed = getIsPlussed(podcastId)
+
   const titleOnclick = () => {
     dispatch(actions.pushHistory(`/podcast/${podcastId}`))
   }
@@ -128,6 +132,11 @@ const AudioControls = () => {
   const nextButtonOnclick = () => {
     console.log('next')
     dispatch(thunks.audio.playNextTrack())
+  }
+
+  const plusButtonOnclick = () => {
+    console.log('plus')
+    return isPlussed ? minusPodcast(podcastId) : plusPodcast(podcastId)
   }
 
   const replayButtonOnclick = () => {
@@ -143,7 +152,7 @@ const AudioControls = () => {
                          playing={audioMode === storeConstants.AUDIO_MODE_PLAY} />
       <div className={classes.mainColumn}>
         <div className={classes.titleRow}>
-          <IconButton className={classes.nextButton} onClick={null} disabled={isDisabled}>
+          <IconButton className={classes.nextButton} onClick={plusButtonOnclick} disabled={isDisabled}>
             <IcoPlus classes={{inner:buttonColorClass}} />
           </IconButton >
           <div className={classes.titleFlex}>

@@ -13,17 +13,17 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'baseline',
     display: 'flex',
     flexDirection: 'row',
+    fontFamily: theme.typography.family.primary,
+    fontWeight: theme.typography.weight.bold,
     justifyContent: 'flex-start',
     userSelect: 'none',
   },
   contentTitleBarDatetime: ({primaryColor}) => ({
     color: Color(primaryColor).fade(0.25).toString(),
-    fontWeight: theme.typography.weight.bold,
     marginLeft: 'auto',
   }),
   contentTitleBarText: {
     fontSize: '125%',
-    fontWeight: theme.typography.weight.bold,
   },
 }))
 

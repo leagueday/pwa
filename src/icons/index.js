@@ -8,6 +8,8 @@ export { default as SvgMagnifier } from './ico-magnifier.svg'
 export { default as SvgMinus } from './ico-minus.svg'
 export { default as SvgPlus } from './ico-plus.svg'
 export { default as SvgRewindStop } from './ico-rewind-stop.svg'
+export { default as SvgSolidArrowDown } from './ico-solid-arrow-down.svg'
+export { default as SvgSolidArrowUp } from './ico-solid-arrow-up.svg'
 
 export { default as SvgArrangeListActive } from './arrange-list-active.svg'
 export { default as SvgArrangeList } from './arrange-list.svg'

@@ -2,62 +2,78 @@ import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import cx from 'classnames'
 
+import {makeStyles} from '@material-ui/core/styles'
 import Collapse from '@material-ui/core/Collapse'
 
-import {actions, constants as storeConsts, selectors, useFilter} from '../../store'
+import {actions, selectors} from '../../store'
 
-import {IcoMinus, IcoPlus} from '../icons'
-import {isMatchingFilter, makeFilterOnclick} from './util'
+import {IcoSolidArrowDown, IcoSolidArrowUp} from '../icons'
 
-const Expander = ({classes, children, text, tag, filterKind, filterParam}) => {
+const useStyles = makeStyles(theme => ({
+  clickable: {
+    cursor: 'pointer',
+  },
+  content: {
+    marginTop: '0.5em',
+  },
+  expander: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  icon: {
+    transform: 'scaleY(0.5) translateY(-25%) scale(0.6);',
+  },
+  iconContainer: {
+    height: '1em',
+  },
+  row: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  text: {
+    flex: 1,
+    fontFamily: theme.typography.family.primary,
+    fontWeight: theme.typography.weight.bold,
+    marginLeft: '0.25em',
+    userSelect: 'none',
+  },
+}))
+
+const Expander = ({children, className, defaultOpen, text, tag}) => {
+  const classes = useStyles()
+
   const dispatch = useDispatch()
 
-  const filter = useFilter()
+  let open = useSelector(selectors.getNavExpander(tag))
 
-  const isSelectedFilter = isMatchingFilter(filter, filterKind, filterParam)
-
-  const open = useSelector(selectors.getNavExpander(tag))
+  if (open == null) open = defaultOpen
 
   const toggleOpen = () => {
     dispatch(actions.setNavExpander(!open, tag))
   }
 
-  const Icon = open ? IcoMinus : IcoPlus
-
-  const textOnClick = filterKind
-    ? (
-      isSelectedFilter
-        ? makeFilterOnclick(dispatch, storeConsts.FILTER_KIND_FEATURED)
-        : makeFilterOnclick(dispatch, filterKind, filterParam)
-    ) : toggleOpen
+  const Icon = open ? IcoSolidArrowDown : IcoSolidArrowUp
 
   return (
-    <div className={cx(
-      classes.myExpander,
-    )}>
-      <div className={cx(
-        classes.myExpanderHeading,
-        classes.selectable,
-        {
-          [classes.selected]: isSelectedFilter,
-        }
-      )}>
-        <div className={cx(classes.myExpanderHeadingIconBracket, classes.clickable)} onClick={toggleOpen}>
-          [
-          <Icon classes={{inner:classes.myExpanderHeadingIcon}} />
-          ]
-        </div>
-        <div className={cx(classes.myExpanderHeadingText, classes.clickable)} onClick={textOnClick}>
+    <div className={cx(className, classes.expander)}>
+      <div className={cx(classes.row, classes.clickable)} onClick={toggleOpen} >
+        <Icon classes={{inner:classes.icon, outer:classes.iconContainer}} />
+        <div className={classes.text}>
           {text}
         </div>
       </div>
       <Collapse in={open} timeout={'auto'}>
-        <div className={classes.myExpanderContent}>
+        <div className={classes.content}>
           {children}
         </div>
       </Collapse>
     </div>
   )
+}
+
+Expander.defaultProps = {
+  defaultOpen: true,
 }
 
 export default Expander
