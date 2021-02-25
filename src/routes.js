@@ -1,5 +1,6 @@
 import React from 'react'
 
+const ChannelScreen = React.lazy(() => import('./views/ChannelScreen'))
 const IconDump = React.lazy(() => import('./views/IconDump'))
 const MainScreen = React.lazy(() => import('./views/MainScreen'))
 const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'))
@@ -11,6 +12,11 @@ export const routesConfig = [
     'icons',
     IconDump,
     { }
+  ],
+  [
+    'channel',
+    ChannelScreen,
+    { channelTag: 'nextPathToken' },
   ],
   [
     'podcast',
