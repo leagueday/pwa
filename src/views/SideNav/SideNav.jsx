@@ -10,6 +10,7 @@ import useStarred from '../../api/useStarred'
 
 import Item from './Item'
 import Expander from './Expander'
+import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
 import NonExpander from './NonExpander'
 import SearchLozenge from './SearchLozenge'
 
@@ -48,6 +49,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: '90%',
   },
   itemNameStandalone: {
+  },
+  lozenge: {
+    marginBottom: '0.5em',
   },
   myExpander: {
     userSelect: 'none',
@@ -89,9 +93,6 @@ const useStyles = makeStyles(theme => ({
   myExpanderContent: {
     paddingLeft: '0.5em',
   },
-  searchLozenge: {
-    marginBottom: '0.5em',
-  },
   selectable: {
     border: `1px solid transparent`,
   },
@@ -121,7 +122,8 @@ const SideNav = () => {
 
   return (
     <div className={classes.sideNav}>
-      <SearchLozenge className={classes.searchLozenge} />
+      <SearchLozenge className={classes.lozenge} />
+      <LiveAndUpcomingLozenge className={classes.lozenge} />
       <div className={classes.inset}>
         <Item classes={classes} text="Featured" filterKind={storeConsts.FILTER_KIND_FEATURED} standAlone />
         {!isStarsEmpty && (
