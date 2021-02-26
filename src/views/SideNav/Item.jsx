@@ -1,66 +1,64 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
 import cx from 'classnames'
 
 import {makeStyles} from '@material-ui/core/styles'
 
-import {constants as storeConsts, useFilter} from '../../store'
-import {proxifyHttpUrl} from '../../api/util'
-import * as apiConsts from '../../api/consts'
-
-import {isMatchingFilter, makeFilterOnclick} from './util'
+import * as colors from '../../styling/colors'
 
 const useStyles = makeStyles({
-  textColor: ({textColor}) => ({
-    color: textColor,
-  }),
+  image: {
+    cursor: 'pointer',
+    height: '1.5em',
+    marginRight: '0.5em',
+    width: '1.5em',
+  },
+  imageBox: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  item: {
+    alignItems: 'stretch',
+    display: 'flex',
+    flexDirection: 'row',
+    height: '2em',
+    marginBottom: '0.5em',
+    userSelect: 'none',
+  },
+  itemSelected: {
+    backgroundColor: colors.charcoal,
+  },
+  title: {
+    cursor: 'pointer',
+  },
+  titleBox: {
+    alignItems: 'center',
+    borderRadius: '1em',
+    display: 'flex',
+    flexDirection: 'row',
+    flex: 1,
+    paddingLeft: '0.5em',
+    paddingRight: '0.5em',
+  },
 })
 
-const Item = ({ classes,
-                text,
-                textColor,
+const Item = ({ title,
+                imageClass,
                 imageUrl,
-                filterKind,
-                filterParam,
-                disabled,
-                standAlone }) => {
-  const classes2 = useStyles({textColor})
-
-  const dispatch = useDispatch()
-
-  const filter = useFilter()
-
-  const isSelected = isMatchingFilter(filter, filterKind, filterParam)
-
-  const toggleIsSelected = isSelected
-    ? makeFilterOnclick(dispatch, storeConsts.FILTER_KIND_FEATURED)
-    : makeFilterOnclick(dispatch, filterKind, filterParam)
-
-  const maybeProxiedImageUrl = proxifyHttpUrl(imageUrl, apiConsts.PROXY_RESPONSE_KIND_IMG)
+                isSelected,
+                onClick,
+              }) => {
+  const classes = useStyles()
 
   return (
-    <div
-      className={
-        cx(
-          classes.item,
-          classes.selectable,
-          {
-            [classes.clickable]: !disabled,
-            [classes.selected]: !disabled && isSelected,
-          },
-        )}
-      onClick={disabled ? null : toggleIsSelected}
-    >
-      {maybeProxiedImageUrl && (<img className={classes.itemImage} src={maybeProxiedImageUrl} />)}
-      <div className={cx(
-        classes.itemName,
-        classes2.textColor,
-        {
-          [classes.itemNameChild]: !standAlone,
-          [classes.itemNameStandalone]: standAlone,
-        }
-      )}>
-        {text}
+    <div className={classes.item} onClick={onClick}>
+      <div className={classes.imageBox}>
+        <img className={cx(classes.image, imageClass)} src={imageUrl} />
+      </div>
+      <div className={cx(classes.titleBox, {[classes.itemSelected]: isSelected})}>
+        <div className={classes.title}>
+          {title}
+        </div>
       </div>
     </div>
   )

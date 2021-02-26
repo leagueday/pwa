@@ -1,9 +1,11 @@
 import React from 'react'
+import {useDispatch} from 'react-redux'
 import cx from 'classnames'
 
 import {makeStyles} from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
+import {actions} from '../../store'
 
 const useStyles = makeStyles(theme => ({
   contentMockImage: {
@@ -12,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: colors.darkGray,
     borderBottomRightRadius: '2.5em',
     borderTopRightRadius: '2.5em',
+    cursor: 'pointer',
     flex: 1,
     height: '5em',
     overflow: 'hidden',
@@ -20,6 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     fontWeight: theme.typography.weight.bold,
+    userSelect: 'none',
     whiteSpace: 'nowrap',
   },
   titleLive: {
@@ -29,15 +33,20 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
+    paddingTop: '0.5em',
   },
 }))
 
 const LiveAndUpcomingLozenge = ({className}) => {
   const classes = useStyles()
 
+  const dispatch = useDispatch()
+
+  const yourBasicOnclick = () => dispatch(actions.pushHistory('/'))
+
   return (
     <div className={cx(className, classes.liveAndUpcomingLozenge)}>
-      <div className={classes.lozenge}>
+      <div className={classes.lozenge} onClick={yourBasicOnclick}>
         <div className={classes.title}>
           <span className={classes.titleLive}>LIVE</span> & UPCOMING
         </div>

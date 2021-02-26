@@ -15,6 +15,7 @@ export const black = '#000000'
 export const darkGray = '#252534'
 export const darkerGray = '#1A1A21'
 export const lightGray = '#464658'
+export const charcoal = '#282833'
 export const brandBlack = '#323246'
 
 export const white = '#ffffff'

@@ -15,79 +15,10 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
   },
   expander: {
-    marginBottom: '0.5em',
-    paddingTop: '0.5em',
-  },
-  inset: {
     paddingLeft: '0.5em',
     paddingRight: '0.5em',
-    width: '100%',
+    paddingTop: '0.5em',
   },
-  item: ({textColor}) => ({
-    alignItems: 'center',
-    color: textColor ?? theme.palette.text.secondary,
-    display: 'flex',
-    flexDirection: 'row',
-    marginBottom: '0.15em',
-    userSelect: 'none',
-  }),
-  itemImage: {
-    height: '1em',
-    marginRight: '0.35em',
-  },
-  itemName: {
-    overflowX: 'hidden',
-    overflowY: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    width: '100%',
-  },
-  itemNameChild: {
-    fontSize: '90%',
-  },
-  itemNameStandalone: {
-  },
-  lozenge: {
-    marginBottom: '0.5em',
-  },
-  myExpander: {
-    userSelect: 'none',
-    marginBottom: '0.25em',
-  },
-  myExpanderHeading: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    fontSize: '90%',
-    justifyContent: 'flex-start',
-    marginBottom: '0.25em',
-    width: '100%',
-  },
-  myExpanderHeadingText: {
-    color: theme.palette.text.secondary,
-    overflowX: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    width: '100%',
-  },
-  myExpanderHeadingIcon: {
-    color: theme.palette.text.primary,
-    height: '0.7em',
-    width: '0.7em',
-  },
-  myExpanderContent: {
-    paddingLeft: '0.5em',
-  },
-  selectable: {
-    border: `1px solid transparent`,
-  },
-  selected: ({textColor}) => ({
-    backgroundColor: colors.darkGray,
-    border: `1px solid ${colors.blue}`,
-    borderRadius: theme.shape.borderRadius,
-    color: textColor ?? theme.palette.text.primary,
-    fontWeight: theme.typography.fontWeightBold,
-  }),
   sideNav: {
     backgroundColor: colors.darkerGray,
     display: 'flex',
@@ -104,7 +35,7 @@ const SideNav = () => {
 
   return (
     <div className={classes.sideNav}>
-      <SearchLozenge className={classes.lozenge} />
+      <SearchLozenge />
       <LiveAndUpcomingLozenge className={classes.lozenge} />
       <div className={classes.inset}>
         <Expander className={classes.expander} text="MY CHANNELS" tag="chan">

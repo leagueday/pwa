@@ -13,7 +13,6 @@ export const getViewportHeight = store => getAppState(store)?.viewportHeight
 
 export const getRouterState = store => store.router
 export const getRouterLocation = store => getRouterState(store)?.location
-export const getRouterPreviousLocations = store => getRouterState(store)?.previousLocations
 
 // Audio
 

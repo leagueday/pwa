@@ -3,11 +3,15 @@ import { useSelector } from 'react-redux'
 import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
+import Hidden from '@material-ui/core/Hidden'
 
 import * as consts from './consts'
 import { selectors } from '../store'
 import AudioControls from './AudioControls'
 import BrandGradientHorizontalStripe from './BrandGradientHorizontalStripe'
+import SideNav from './SideNav'
+import {addScrollStyle} from './util'
+import * as colors from '../styling/colors'
 
 // BasicLayout
 //
@@ -32,18 +36,26 @@ const useStyles = makeStyles(theme => ({
     maxHeight: consts.AUDIO_CONTROLS_HEIGHT,
     minHeight: consts.AUDIO_CONTROLS_HEIGHT,
   },
-  basicLayout: {
+  basicLayoutCol: {
+    alignItems: 'stretch',
     display: 'flex',
+    flexDirection: 'column',
+  },
+  basicLayoutRow: {
+    alignItems: 'stretch',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  contentFrame: {
+    display: 'flex',
+    flex: 1,
     flexDirection: 'column',
     flexWrap: 'nowrap',
     justifyContent: 'flex-start',
     maxHeight: '100%',
     minHeight: '100%',
-  },
-  content: {
-    alignItems: 'stretch',
-    display: 'flex',
-    flexDirection: 'row',
+    overflowY: 'hidden',
+    width: '100%',
   },
   contentWhenAudioDisplayed: {
     maxHeight: calcContentHeight(false),
@@ -53,6 +65,13 @@ const useStyles = makeStyles(theme => ({
     maxHeight: calcContentHeight(true),
     minHeight: calcContentHeight(true),
   },
+  sideNavScroller: addScrollStyle(colors.blue)({
+    marginRight: '0.5em',
+    maxHeight: '100%',
+    minHeight: '100%',
+    overflowY: 'auto',
+    width: consts.SIDENAV_WIDTH,
+  }),
 }))
 
 const BasicLayout = props => {
@@ -63,16 +82,35 @@ const BasicLayout = props => {
   const audioItemUrl = useSelector(selectors.getAudioUrl)
   const isAudioDisplayed = !!audioItemUrl
 
+  const navVisibility = useSelector(selectors.getNavVisibility)
+
+  // by default the sidenav is visible
+  // although currently same category-filter feature is provided by menu and sidenav
+  // the menu is by default closed
+  const isSidenavVisible = navVisibility !== false
+
   return (
-    <div className={classes.basicLayout}>
+    <div className={classes.basicLayoutCol}>
       <BrandGradientHorizontalStripe />
-      <div
-        className={cx(
-          classes.content,
-          isAudioDisplayed ? classes.contentWhenAudioDisplayed : classes.contentWhenAudioHidden
-        )}
-      >
-        {props.children}
+      <div className={classes.basicLayoutRow}>
+        <Hidden xsDown>
+          { isSidenavVisible && (
+            <div className={classes.sideNavScroller}>
+              <SideNav />
+            </div>
+          ) }
+        </Hidden>
+        <div className={classes.contentFrame}>
+          <div
+            className={
+              isAudioDisplayed
+                ? classes.contentWhenAudioDisplayed
+                : classes.contentWhenAudioHidden
+            }
+          >
+            {props.children}
+          </div>
+        </div>
       </div>
       { isAudioDisplayed && (
         <>

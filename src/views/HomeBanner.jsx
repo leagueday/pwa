@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
   },
   bannerImageText: {
     fontSize: '90%',
+    fontWeight: theme.typography.weight.bold,
   },
   bannerImageTextGroup: ({accentColor}) => ({
     alignItems: 'flex-start',
@@ -35,6 +36,7 @@ const useStyles = makeStyles(theme => ({
   }),
   bannerImageTitle: ({accentColor}) => ({
     color: accentColor,
+    fontWeight: theme.typography.weight.bold,
   }),
   dotInner: {
     color: colors.white80

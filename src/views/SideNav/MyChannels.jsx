@@ -5,38 +5,24 @@ import {makeStyles} from '@material-ui/core/styles'
 
 import useMyChannels from '../../api/useMyChannels'
 import {actions} from '../../store'
+import useLocationPathname from '../../store/api/useLocationPathname'
 
-const useStyles = makeStyles(theme => ({
+import Item from './Item'
+
+const useStyles = makeStyles({
   myChannels: {
-    display: 'flex',
-    flexDirection: 'column',
   },
-  image: {
-    height: '1.5em',
-    marginRight: '1em',
-    width: '1.5em',
-  },
-  item: {
-    alignItems: 'center',
-    cursor: 'pointer',
-    display: 'flex',
-    flexDirection: 'row',
-    paddingBottom: '0.5em',
-    userSelect: 'none',
-  },
-  title: {
-  },
-}))
+})
 
-const MyChannelsItem = ({channel, classes, onClick}) => {
-  return (
-    <div className={classes.item} onClick={onClick}>
-      <img className={classes.image} src={channel.imageUrl} />
-      <div className={classes.title}>
-        {channel.title}
-      </div>
-    </div>
-  )
+const isChannelSelected = (locationPathname, channelTag) => {
+  const path = locationPathname ?? ''
+
+  if (path.substr(0, 9) !== '/channel/') {
+    return false
+  }
+  else {
+    return path.substr(9) === channelTag
+  }
 }
 
 const MyChannels = () => {
@@ -47,17 +33,23 @@ const MyChannels = () => {
   const dispatch = useDispatch()
   const makeGotoThisChannel = channelTag => () => dispatch(actions.pushHistory(`/channel/${channelTag}`))
 
+  const locationPathname = useLocationPathname()
+
   return (
     <div className={classes.myChannels}>
       {
-        channels.map(channel => (
-          <MyChannelsItem
-            channel={channel}
-            classes={classes}
-            key={channel.tag}
-            onClick={makeGotoThisChannel(channel.tag)}
-          />
-        ))
+        channels.map(channel => {
+          const {tag, title, imageUrl} = channel
+          return (
+            <Item
+              key={tag}
+              title={title}
+              imageUrl={imageUrl}
+              isSelected={isChannelSelected(locationPathname, tag)}
+              onClick={makeGotoThisChannel(tag)}
+            />
+          )
+        })
       }
     </div>
   )

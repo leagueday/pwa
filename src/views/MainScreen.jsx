@@ -14,18 +14,6 @@ import HomeContent from './HomeContent'
 import SideNav from './SideNav'
 
 const useStyles = makeStyles(theme => ({
-  mainContent: {
-    maxHeight: '100%',
-    overflowY: 'hidden',
-    width: '100%',
-  },
-  sideNavScroller: addScrollStyle(colors.blue)({
-    marginRight: '0.5em',
-    maxHeight: '100%',
-    minHeight: '100%',
-    overflowY: 'auto',
-    width: consts.SIDENAV_WIDTH,
-  }),
 }))
 
 // const HorizontalCollapse = props => {
@@ -50,14 +38,14 @@ const useStyles = makeStyles(theme => ({
 // }
 
 const MainScreen = () => {
-  const classes = useStyles()
-
-  const navVisibility = useSelector(selectors.getNavVisibility)
-
-  // by default the sidenav is visible
-  // although currently same category-filter feature is provided by menu and sidenav
-  // the menu is by default closed
-  const isSidenavVisible = navVisibility !== false
+  // const classes = useStyles()
+  //
+  // const navVisibility = useSelector(selectors.getNavVisibility)
+  //
+  // // by default the sidenav is visible
+  // // although currently same category-filter feature is provided by menu and sidenav
+  // // the menu is by default closed
+  // const isSidenavVisible = navVisibility !== false
 
   /* {
       filterKind === storeConsts.FILTER_KIND_FEATURED
@@ -66,17 +54,8 @@ const MainScreen = () => {
   } */
 
   return (
-    <BasicLayout mode="main">
-      <Hidden xsDown>
-        { isSidenavVisible && (
-          <div className={classes.sideNavScroller}>
-            <SideNav />
-          </div>
-        ) }
-      </Hidden>
-      <div className={classes.mainContent}>
-        <HomeContent />
-      </div>
+    <BasicLayout>
+      <HomeContent />
     </BasicLayout>
   )
 }

@@ -9,15 +9,12 @@ import usePodcasts from '../api/usePodcasts'
 import BasicLayout from './BasicLayout'
 import PodcastDetails from './PodcastDetails'
 
-const useStyles = makeStyles(theme => ({
-  podcastScreenContent: {
-    width: '100%',
-  },
+const useStyles = makeStyles({
   podcastScreenDetails: {
     maxHeight: '100%',
     width: '100%',
   },
-}))
+})
 
 const PodcastScreen = props => {
   const classes = useStyles()
@@ -46,10 +43,12 @@ const PodcastScreen = props => {
   )
 
   return (
-    <BasicLayout mode="back">
-      <div className={classes.podcastScreenContent}>
-        { podcast && (<PodcastDetails className={classes.podcastScreenDetails} podcast={podcast} />)}
-      </div>
+    <BasicLayout>
+      {
+        podcast && (
+          <PodcastDetails className={classes.podcastScreenDetails} podcast={podcast} />
+        )
+      }
     </BasicLayout>
   )
 }

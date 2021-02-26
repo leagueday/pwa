@@ -22,7 +22,7 @@ const ChannelScreen = ({channelTag}) => {
   const channel = channels.find(channel => channel?.tag === channelTag)
 
   return (
-    <BasicLayout mode="back">
+    <BasicLayout>
       {
         channel && (
           <ChannelContent className={classes.channelContent} channel={channel} />
