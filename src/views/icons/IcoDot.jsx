@@ -1,9 +1,7 @@
 import React from 'react'
 
-import { SvgDot } from '../../icons'
+import DotSvg from '../../svg/dot.svg'
 
 import makeGenericIcon from './GenericIcon'
 
-const IcoDot = makeGenericIcon(SvgDot)
-
-export default IcoDot
+export default makeGenericIcon(DotSvg)

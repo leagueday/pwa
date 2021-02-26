@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
   },
   betaNotice: {
     color: colors.cyan,
-    fontFamily: theme.typography.family.primary,
     fontSize: '80%',
     marginLeft: '0.5em',
     paddingBottom: '0.25em',

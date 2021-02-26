@@ -19,7 +19,6 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '12em',
   },
   title: {
-    fontFamily: theme.typography.family.primary,
     fontWeight: theme.typography.weight.bold,
     whiteSpace: 'nowrap',
   },

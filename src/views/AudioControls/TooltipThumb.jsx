@@ -13,8 +13,11 @@ const useStyles = makeStyles(theme => ({
   sliderThumbTooltip: {
     background: Color(colors.brandBlack).fade(0.6).toString(),
     border: `1px solid ${colors.cyan}`,
-    borderRadius: '3px',
+    borderRadius: '1em',
     color: colors.cyan,
+    fontFamily: theme.typography.family.secondary,
+    fontSize: '90%',
+    height: '2em',
   },
 }))
 

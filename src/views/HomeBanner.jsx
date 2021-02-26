@@ -25,7 +25,6 @@ const useStyles = makeStyles(theme => ({
     bottom: 0,
     display: 'flex',
     flexDirection: 'column',
-    fontFamily: theme.typography.family.primary,
     justifyContent: 'flex-start',
     paddingBottom: '0.5em',
     paddingLeft: '0.33em',

@@ -36,7 +36,6 @@ const useStyles = makeStyles(theme => ({
     marginRight: '0.35em',
   },
   itemName: {
-    fontFamily: theme.typography.family.primary,
     overflowX: 'hidden',
     overflowY: 'hidden',
     textOverflow: 'ellipsis',
@@ -66,7 +65,6 @@ const useStyles = makeStyles(theme => ({
   },
   myExpanderHeadingText: {
     color: theme.palette.text.secondary,
-    fontFamily: theme.typography.family.primary,
     overflowX: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',

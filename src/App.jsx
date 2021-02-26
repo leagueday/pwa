@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
   app: {
     backgroundColor: theme.palette.background.default,
     flexGrow: 1,
+    fontFamily: theme.typography.family.primary,
     maxHeight: viewportHeightStyleProp,
     minHeight: viewportHeightStyleProp,
   },

@@ -92,13 +92,11 @@ const useStyles = makeStyles(theme => ({
   },
   subtext: {
     color: theme.palette.text.secondary,
-    fontFamily: theme.typography.family.primary,
     fontSize: '55%',
     marginTop: '0.5em',
   },
   title: {
     color: theme.palette.text.primary,
-    fontFamily: theme.typography.family.primary,
     fontSize: '75%',
     fontWeight: theme.typography.weight.bold,
     overflowX: 'hidden',

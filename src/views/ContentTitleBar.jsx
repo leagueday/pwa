@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'baseline',
     display: 'flex',
     flexDirection: 'row',
-    fontFamily: theme.typography.family.primary,
     fontWeight: theme.typography.weight.bold,
     justifyContent: 'flex-start',
     userSelect: 'none',

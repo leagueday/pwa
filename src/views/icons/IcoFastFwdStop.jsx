@@ -1,9 +1,7 @@
 import React from 'react'
 
-import { SvgFastFwdStop } from '../../icons'
+import FastFwdStopSvg from '../../svg/fast-fwd-stop.svg'
 
 import makeGenericIcon from './GenericIcon'
 
-const IcoFastFwdStop = makeGenericIcon(SvgFastFwdStop)
-
-export default IcoFastFwdStop
+export default makeGenericIcon(FastFwdStopSvg)

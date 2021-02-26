@@ -50,7 +50,6 @@ const useStyles = makeStyles(theme => ({
   },
   pubDate: {
     color: theme.palette.text.secondary,
-    fontFamily: theme.typography.family.primary,
     fontSize: '75%',
     fontStyle: 'oblique',
     fontWeight: theme.typography.weight.normal,
@@ -60,7 +59,6 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     color: theme.palette.text.primary,
-    fontFamily: theme.typography.family.primary,
     fontSize: '90%',
     fontWeight: theme.typography.weight.bold,
     maxWidth: '100%',

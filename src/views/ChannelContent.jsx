@@ -14,7 +14,6 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
   },
   title: {
-    fontFamily: theme.typography.family.primary,
     fontSize: '125%',
     fontWeight: theme.typography.weight.bold,
   },

@@ -25,7 +25,6 @@ const useStyles = makeStyles(theme => ({
   }),
   displayCategoryName: {
     color: colors.white,
-    fontFamily: theme.typography.family.primary,
     fontWeight: theme.typography.weight.bold,
     paddingBottom: '0.25em',
   },

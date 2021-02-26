@@ -77,7 +77,6 @@ const useStyles = makeStyles(theme => ({
   title: {
     color: theme.palette.text.secondary,
     cursor: 'pointer',
-    fontFamily: theme.typography.family.primary,
     fontSize: '85%',
     height: TITLE_HEIGHT,
     maxWidth: '100%',

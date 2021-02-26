@@ -1,9 +1,7 @@
 import React from 'react'
 
-import { SvgRewindStop } from '../../icons'
+import RewindStopSvg from '../../svg/rewind-stop.svg'
 
 import makeGenericIcon from './GenericIcon'
 
-const IcoRewindStop = makeGenericIcon(SvgRewindStop)
-
-export default IcoRewindStop
+export default makeGenericIcon(RewindStopSvg)

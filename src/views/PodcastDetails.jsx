@@ -98,7 +98,6 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     color: theme.palette.text.primary,
-    fontFamily: theme.typography.family.primary,
     minWidth: 0,
     overflowX: 'hidden',
     textOverflow: 'ellipsis',

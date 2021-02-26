@@ -1,3 +1,5 @@
+// this export pattern supports tree-shaking, and makes the downstream import simple
+
 export { default as IcoDot } from './IcoDot'
 export { default as IcoFastFwdStop } from './IcoFastFwdStop'
 export { default as IcoForwardStop } from './IcoForwardStop'

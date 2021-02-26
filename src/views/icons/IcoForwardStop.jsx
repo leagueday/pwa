@@ -1,9 +1,7 @@
 import React from 'react'
 
-import { SvgForwardStop } from '../../icons'
+import ForwardStopSvg from '../../svg/forward-stop.svg'
 
 import makeGenericIcon from './GenericIcon'
 
-const IcoForwardStop = makeGenericIcon(SvgForwardStop)
-
-export default IcoForwardStop
+export default makeGenericIcon(ForwardStopSvg)

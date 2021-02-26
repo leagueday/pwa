@@ -1,9 +1,7 @@
 import React from 'react'
 
-import { SvgMagnifier } from '../../icons'
+import MagnifierSvg from '../../svg/magnifier.svg'
 
 import makeGenericIcon from './GenericIcon'
 
-const IcoMagnifier = makeGenericIcon(SvgMagnifier)
-
-export default IcoMagnifier
+export default makeGenericIcon(MagnifierSvg)

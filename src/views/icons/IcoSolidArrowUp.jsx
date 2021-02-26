@@ -1,9 +1,7 @@
 import React from 'react'
 
-import { SvgSolidArrowUp } from '../../icons'
+import SolidArrowUpSvg from '../../svg/solid-arrow-up.svg'
 
 import makeGenericIcon from './GenericIcon'
 
-const IcoSolidArrowUp = makeGenericIcon(SvgSolidArrowUp)
-
-export default IcoSolidArrowUp
+export default makeGenericIcon(SolidArrowUpSvg)

@@ -25,7 +25,6 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
   },
   title: {
-    fontFamily: theme.typography.family.primary,
   },
 }))
 

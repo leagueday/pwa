@@ -33,7 +33,6 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     flex: 1,
-    fontFamily: theme.typography.family.primary,
     fontWeight: theme.typography.weight.bold,
     marginLeft: '0.25em',
     userSelect: 'none',

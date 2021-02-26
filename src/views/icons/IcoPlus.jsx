@@ -1,9 +1,7 @@
 import React from 'react'
 
-import { SvgPlus } from '../../icons'
+import PlusSvg from '../../svg/plus.svg'
 
 import makeGenericIcon from './GenericIcon'
 
-const IcoPlus = makeGenericIcon(SvgPlus)
-
-export default IcoPlus
+export default makeGenericIcon(PlusSvg)

@@ -34,7 +34,6 @@ const useItemStyles = makeStyles(theme => ({
   },
   title: {
     color: colors.white80,
-    fontFamily: theme.typography.family.primary,
   },
 }))
 
