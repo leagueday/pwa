@@ -4,7 +4,7 @@ import useAirtable from './useAirtable'
 
 const base = 'appXoertP1WJjd4TQ'
 const myChannelsTablename = 'MyChannels'
-const channelChildrenTablename = 'MyChannels'
+const channelChildrenTablename = 'ChannelChildren'
 
 const useMyChannels = () => {
   const {data: myChannelsData} = useAirtable(base, myChannelsTablename)

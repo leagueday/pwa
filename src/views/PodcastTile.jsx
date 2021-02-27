@@ -10,7 +10,6 @@ import { channelSelectors } from '../model/rss'
 import { actions } from '../store'
 
 const BACKGROUND_COLOR = colors.black
-const WIDTH = '9em'
 
 const transparent = Color(BACKGROUND_COLOR).fade(1).string()
 const opaque = BACKGROUND_COLOR
