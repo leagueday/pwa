@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   audioControls: {
     marginLeft: 'auto',
     minHeight: '1em',
-    minWidth: '3em',
+    width: '3em',
   },
   description: {
     color: theme.palette.text.secondary,

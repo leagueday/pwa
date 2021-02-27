@@ -20,29 +20,28 @@ const useStyles = makeStyles(theme => ({
   podcastTile: {
     cursor: 'pointer',
     height: '12em',
+    maxWidth: WIDTH,
+    minWidth: 0,
     overflow: 'hidden',
     position: 'relative',
     userSelect: 'none',
-    width: WIDTH,
   },
   image: {
-    height: WIDTH,
-    left: 0,
-    position: 'absolute',
-    top: 0,
-    width: WIDTH,
+    maxHeight: '100%',
+    maxWidth: '100%',
   },
   imageContainer: {
-    height: WIDTH,
     left: 0,
     position: 'absolute',
     top: 0,
+    minWidth: 0,
     width: WIDTH,
   },
   imageOpacityRamp: {
     background: opacityRamp,
     height: WIDTH,
     left: 0,
+    minWidth: 0,
     position: 'absolute',
     top: 0,
     width: WIDTH,
@@ -75,9 +74,9 @@ const PodcastTile = ({podcast, textColor}) => {
 
   return (
     <div className={classes.podcastTile} onClick={gotoThisPodcast}>
+      <div className={classes.imageOpacityRamp} />
       <div className={classes.imageContainer}>
         <img className={classes.image} src={imageUrl} />
-        <div className={classes.imageOpacityRamp} />
       </div>
       <div className={classes.text}>
         {title}

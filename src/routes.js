@@ -2,7 +2,7 @@ import React from 'react'
 
 const ChannelScreen = React.lazy(() => import('./views/ChannelScreen'))
 const IconDump = React.lazy(() => import('./views/IconDump'))
-const MainScreen = React.lazy(() => import('./views/MainScreen'))
+const HomeScreen = React.lazy(() => import('./views/HomeScreen'))
 const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'))
 
 const DEFAULT_PATH = null
@@ -25,7 +25,7 @@ export const routesConfig = [
   ],
   [
     DEFAULT_PATH,
-    MainScreen,
+    HomeScreen,
     { },
   ],
 ]

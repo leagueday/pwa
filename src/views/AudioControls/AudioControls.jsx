@@ -17,10 +17,9 @@ import { actions, constants as storeConstants, selectors, thunks } from '../../s
 import * as consts from '../consts'
 import useStarred from '../../api/useStarred'
 
-import PauseOrPlayButton from './PauseOrPlayButton'
+import LogoButton from './LogoButton'
 import ProgressBox from './ProgressBox'
-
-const TITLE_HEIGHT = '2em'
+import Title from './Title'
 
 const useStyles = makeStyles(theme => ({
   audioControlsRow: {
@@ -28,7 +27,10 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: colors.brandBlack,
     display: 'flex',
     flexDirection: 'row',
-    height: consts.AUDIO_CONTROLS_HEIGHT,
+    justifyContent: 'center',
+    marginTop: 'auto',
+    maxHeight: consts.AUDIO_CONTROLS_HEIGHT,
+    minHeight: consts.AUDIO_CONTROLS_HEIGHT,
     userSelect: 'none',
     width: '100%',
   },
@@ -45,16 +47,14 @@ const useStyles = makeStyles(theme => ({
   enabledButtonColor: {
     color: colors.magenta,
   },
-  logo: {
-    cursor: 'pointer',
-    minWidth: '6em',
-    paddingLeft: '0.5em',
+  logoButton: {
+    maxHeight: consts.AUDIO_CONTROLS_HEIGHT,
+    maxWidth: consts.AUDIO_CONTROLS_HEIGHT,
   },
   mainColumn: {
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    maxWidth: '100%',
     overflowX: 'hidden',
   },
   nextButton: {
@@ -70,37 +70,13 @@ const useStyles = makeStyles(theme => ({
   progressRow: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingLeft: '1em',
     paddingRight: '1em',
-  },
-  title: {
-    color: theme.palette.text.secondary,
-    cursor: 'pointer',
-    fontSize: '85%',
-    height: TITLE_HEIGHT,
-    maxWidth: '100%',
-    minWidth: 0,
-    overflowX: 'hidden',
-    paddingLeft: '0.5em',
-    paddingTop: '0.5em',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    '&:hover': {
-      color: theme.palette.text.primary,
-    },
-  },
-  titleFlex: {
-    alignItems: 'center',
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
   },
   titleRow: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
   },
 }))
 
@@ -147,18 +123,14 @@ const AudioControls = () => {
 
   return (
     <div className={classes.audioControlsRow}>
-      <PauseOrPlayButton className={classes.logo}
-                         playing={audioMode === storeConstants.AUDIO_MODE_PLAY} />
+      <LogoButton className={classes.logoButton}
+                  playing={audioMode === storeConstants.AUDIO_MODE_PLAY} />
       <div className={classes.mainColumn}>
         <div className={classes.titleRow}>
           <IconButton className={classes.nextButton} onClick={plusButtonOnclick} disabled={isDisabled}>
             <IcoPlus classes={{inner:buttonColorClass}} />
           </IconButton >
-          <div className={classes.titleFlex}>
-            <div className={classes.title} onClick={titleOnclick}>
-              {itemTitle}
-            </div>
-          </div>
+          <Title title={itemTitle} onClick={titleOnclick} />
           <IconButton className={classes.nextButton} onClick={nextButtonOnclick} disabled={isDisabled}>
             <IcoForwardStop classes={{inner:cx(classes.nextButtonIcon, buttonColorClass)}} strokeWidth={4} />
           </IconButton >

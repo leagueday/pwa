@@ -3,7 +3,6 @@ import { hot } from 'react-hot-loader/root'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Paper from '@material-ui/core/Paper'
 
@@ -26,18 +25,28 @@ const viewportHeightStyleProp = ({viewportHeight}) => viewportHeight
 const useStyles = makeStyles(theme => ({
   app: {
     backgroundColor: theme.palette.background.default,
+    color: theme.palette.text.primary,
+    alignItems: 'stretch',
+    display: 'flex',
+    flexDirection: 'row',
     flexGrow: 1,
     fontFamily: theme.typography.family.primary,
+    justifyContent: 'center',
     maxHeight: viewportHeightStyleProp,
     minHeight: viewportHeightStyleProp,
+    maxWidth: '100vw',
+    minWidth: '100vw',
+    overflow: 'hidden',
   },
   appBackground: {
+    alignItems: 'stretch',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
     maxHeight: '100%',
     minHeight: '100%',
-  },
-  appCanvas: {
-    maxHeight: '100%',
-    minHeight: '100%',
+    maxWidth: '1600px',
+    minWidth: '166px',
   },
 }))
 
@@ -65,17 +74,15 @@ const ThemedAppContent = () => {
 
   return (
     <div className={classes.app}>
-      <Container className={classes.appBackground} maxWidth="lg" disableGutters={true}>
-        <Paper className={classes.appCanvas}>
-          {
-            data
-              ? (<Mushipan routes={routesConfig} />)
-              : error
-              ? (<Error e={error} />)
-              : (<Loading />)
-          }
-        </Paper>
-      </Container>
+      <div className={classes.appBackground}>
+        {
+          data
+            ? (<Mushipan routes={routesConfig} />)
+            : error
+            ? (<Error e={error} />)
+            : (<Loading />)
+        }
+      </div>
     </div>
   )
 }

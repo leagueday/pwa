@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
   },
   tile: {
+    flex: 1,
     marginRight: '0.5em',
     ['&:last-child']: {
       marginRight: 0,
@@ -18,14 +19,17 @@ const useStyles = makeStyles(theme => ({
   },
   tilesRow: {
     display: 'flex',
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: '0.5em',
   },
   tilesRowContainer: {
     display: 'flex',
+    flex: 1,
     flexDirection: 'column',
     paddingTop: '0.75em',
+    maxWidth: '100%',
   },
   title: {
     fontSize: '125%',

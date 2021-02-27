@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Hidden from '@material-ui/core/Hidden'
@@ -10,8 +9,6 @@ import { selectors } from '../store'
 import AudioControls from './AudioControls'
 import BrandGradientHorizontalStripe from './BrandGradientHorizontalStripe'
 import SideNav from './SideNav'
-import {addScrollStyle} from './util'
-import * as colors from '../styling/colors'
 
 // BasicLayout
 //
@@ -32,19 +29,17 @@ const calcContentHeight =
     ({viewportHeight}) => getCalcContentHeight(viewportHeight, isAudioControlsHidden)
 
 const useStyles = makeStyles(theme => ({
-  audioControls: {
-    maxHeight: consts.AUDIO_CONTROLS_HEIGHT,
-    minHeight: consts.AUDIO_CONTROLS_HEIGHT,
-  },
   basicLayoutCol: {
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
+    minHeight: 0,
   },
   basicLayoutRow: {
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'row',
+    minHeight: 0,
   },
   contentFrame: {
     display: 'flex',
@@ -65,13 +60,6 @@ const useStyles = makeStyles(theme => ({
     maxHeight: calcContentHeight(true),
     minHeight: calcContentHeight(true),
   },
-  sideNavScroller: addScrollStyle(colors.blue)({
-    marginRight: '0.5em',
-    maxHeight: '100%',
-    minHeight: '100%',
-    overflowY: 'auto',
-    width: consts.SIDENAV_WIDTH,
-  }),
 }))
 
 const BasicLayout = props => {
@@ -115,9 +103,7 @@ const BasicLayout = props => {
       { isAudioDisplayed && (
         <>
           <BrandGradientHorizontalStripe />
-          <div className={classes.audioControls}>
-            <AudioControls />
-          </div>
+          <AudioControls />
         </>
       ) }
     </div>

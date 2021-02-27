@@ -9,7 +9,14 @@ import { makeStyles } from '@material-ui/core/styles'
 dayjs.extend(dayjs_advancedFormat)
 
 const useStyles = makeStyles(theme => ({
-  contentTitleBar: {
+  datetime: ({primaryColor}) => ({
+    color: Color(primaryColor).fade(0.25).toString(),
+    marginLeft: 'auto',
+  }),
+  text: {
+    fontSize: '125%',
+  },
+  titleBar: {
     alignItems: 'baseline',
     display: 'flex',
     flexDirection: 'row',
@@ -17,28 +24,21 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-start',
     userSelect: 'none',
   },
-  contentTitleBarDatetime: ({primaryColor}) => ({
-    color: Color(primaryColor).fade(0.25).toString(),
-    marginLeft: 'auto',
-  }),
-  contentTitleBarText: {
-    fontSize: '125%',
-  },
 }))
 
-const ContentTitleBar = ({text, primaryColor}) => {
+const TitleBar = ({text, primaryColor}) => {
   const classes = useStyles({primaryColor})
 
   return (
-    <div className={classes.contentTitleBar}>
-      <div className={classes.contentTitleBarText}>
+    <div className={classes.titleBar}>
+      <div className={classes.text}>
         {text}
       </div>
-      <div className={classes.contentTitleBarDatetime}>
+      <div className={classes.datetime}>
         {dayjs().format('MMMM Do, YYYY')}
       </div>
     </div>
   )
 }
 
-export default ContentTitleBar
+export default TitleBar
