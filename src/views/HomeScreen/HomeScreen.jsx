@@ -16,13 +16,16 @@ const useStyles = makeStyles(theme => ({
   homeContent: {
     display: 'flex',
     flexDirection: 'column',
-    maxHeight: '100%',
+    flex: 1,
+    height: '100%',
     paddingTop: '0.5em',
     width: '100%',
   },
   podcastTiles: addScrollStyle(colors.magenta)({
+    height: '100%',
+    minHeight: 0,
     overflow: 'auto',
-    paddingBottom: '0.5em',
+    marginBottom: '0.5em',
   }),
   primaryStripe: {
     backgroundColor: PRIMARY_COLOR,

@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    height: '12em',
+    //height: '12em',
     maxHeight: '100%',
     maxWidth: '100%',
     minHeight: 0,
@@ -52,14 +52,9 @@ const useStyles = makeStyles(theme => ({
   },
   text: ({textColor}) => ({
     color: textColor,
-    flexGrow: 1,
     fontSize: '75%',
     fontWeight: theme.typography.weight.bold,
     height: '100%',
-    marginTop: 'auto',
-    minHeight: '3em',
-    paddingLeft: '0.25em',
-    paddingRight: '0.25em',
     textOverflow: 'ellipsis',
     width: '100%',
     display: 'inline-flex',
@@ -67,8 +62,10 @@ const useStyles = makeStyles(theme => ({
   textBox: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '10%',
+    minHeight: '15%',
     overflow: 'hidden',
+    paddingLeft: '0.25em',
+    paddingRight: '0.25em',
   }
 }))
 
