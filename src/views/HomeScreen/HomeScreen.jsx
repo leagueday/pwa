@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   podcastTiles: addScrollStyle(colors.magenta)({
-    overflowY: 'auto',
+    overflow: 'auto',
     paddingBottom: '0.5em',
   }),
   primaryStripe: {

@@ -19,11 +19,15 @@ const opacityRamp = `linear-gradient(${transparent}, ${transparent} 90%, ${opaqu
 const useStyles = makeStyles(theme => ({
   podcastTile: {
     cursor: 'pointer',
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
     height: '12em',
-    maxWidth: WIDTH,
+    maxHeight: '100%',
+    maxWidth: '100%',
+    minHeight: 0,
     minWidth: 0,
-    overflow: 'hidden',
-    position: 'relative',
+    // position: 'relative',
     userSelect: 'none',
   },
   image: {
@@ -31,34 +35,41 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '100%',
   },
   imageContainer: {
-    left: 0,
-    position: 'absolute',
-    top: 0,
-    minWidth: 0,
-    width: WIDTH,
+    // left: 0,
+    // position: 'absolute',
+    // top: 0,
+    // minWidth: 0,
+    maxWidth: '100%',
   },
   imageOpacityRamp: {
     background: opacityRamp,
-    height: WIDTH,
+    bottom: 0,
     left: 0,
-    minWidth: 0,
     position: 'absolute',
+    right: 0,
     top: 0,
-    width: WIDTH,
     zIndex: 100,
   },
   text: ({textColor}) => ({
-    bottom: 0,
     color: textColor,
+    flexGrow: 1,
     fontSize: '75%',
     fontWeight: theme.typography.weight.bold,
-    left: 0,
-    maxHeight: '4em', // ≅ height - width + 0.1(width)
+    height: '100%',
+    marginTop: 'auto',
+    minHeight: '3em',
     paddingLeft: '0.25em',
     paddingRight: '0.25em',
-    position: 'absolute',
-    right: 0,
+    textOverflow: 'ellipsis',
+    width: '100%',
+    display: 'inline-flex',
   }),
+  textBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '10%',
+    overflow: 'hidden',
+  }
 }))
 
 const PodcastTile = ({podcast, textColor}) => {
@@ -74,12 +85,13 @@ const PodcastTile = ({podcast, textColor}) => {
 
   return (
     <div className={classes.podcastTile} onClick={gotoThisPodcast}>
-      <div className={classes.imageOpacityRamp} />
       <div className={classes.imageContainer}>
         <img className={classes.image} src={imageUrl} />
       </div>
-      <div className={classes.text}>
-        {title}
+      <div className={classes.textBox}>
+        <div className={classes.text}>
+          {title}
+        </div>
       </div>
     </div>
   )
