@@ -2,7 +2,8 @@ import React from 'react'
 import {useDispatch} from 'react-redux'
 import cx from 'classnames'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import * as colors from '../../styling/colors'
 import useMyChannels from '../../api/useMyChannels'
@@ -20,9 +21,10 @@ import {actions} from '../../store'
  */
 const useStyles = makeStyles(theme => ({
   channelChildren: {
-    // alignItems: 'center',
+    alignItems: 'flex-start',
     display: 'flex',
     flexDirection: 'row',
+    height: '100%',
     minHeight: 0,
     overflow: 'hidden',
   },
@@ -30,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   //   minWidth: 0,
   //   width: '100%',
   // },
-  image: {
+  image: ({circleSize, borderRadius}) => ({
     cursor: 'pointer',
     // marginRight: '1em',
     // width: 'auto',
@@ -38,25 +40,46 @@ const useStyles = makeStyles(theme => ({
     // height: '100%',
     // width: '100%',
     marginLeft: '0.5em',
-    width: '10vw',
-    height: '10vw',
-    borderRadius: '5vw',
+    width: circleSize,
+    height: circleSize,
+    borderRadius: borderRadius,
     objectFit: 'cover',
-  },
+  }),
   imageBorderLive: {
     border: `0.33em solid ${colors.lime}`,
   },
   imageBorderDefault: {
     border: `0.33em solid ${colors.white80}`,
   },
-  imageContainer: {
-    width: '10vw',
-    height: '10vw',
-  },
+  imageContainer: ({circleSize}) => ({
+    width: circleSize,
+    height: circleSize,
+  }),
 }))
 
 const ChannelChildren = ({childTags, className}) => {
-  const classes = useStyles()
+  const theme = useTheme()
+
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'))
+  const xlUp = useMediaQuery(theme.breakpoints.up('xl'))
+
+  let borderRadius
+  let circleSize
+
+  if (xlUp) {
+    borderRadius = '4em'
+    circleSize = '8em'
+  } else if (smDown) {
+    borderRadius = '3em'
+    circleSize = '6em'
+  } else {
+    borderRadius = '3.5em'
+    circleSize = '7em'
+    // borderRadius = '5vw'
+    // circleSize = '10vw'
+  }
+
+  const classes = useStyles({borderRadius, circleSize})
 
   const dispatch = useDispatch()
 

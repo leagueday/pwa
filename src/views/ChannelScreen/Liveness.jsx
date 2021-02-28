@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
     color: colors.lime,
     padding: '0.25em 2em',
     textTransform: 'uppercase',
+    whiteSpace: 'nowrap',
   },
   image: {
     width: '50%',

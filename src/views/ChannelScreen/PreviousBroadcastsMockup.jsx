@@ -249,7 +249,7 @@ const SectionRight = ({sectionData, channelColor}) => {
 
 }
 
-const PreviousBroadcasts = ({className, channelColor}) => {
+const PreviousBroadcastsMockup = ({className, channelColor}) => {
   const classes = useStyles()
 
   return (
@@ -268,4 +268,4 @@ const PreviousBroadcasts = ({className, channelColor}) => {
   )
 }
 
-export default PreviousBroadcasts
+export default PreviousBroadcastsMockup
