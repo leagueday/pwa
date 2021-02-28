@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
   episodeTitle: {
     color: colors.white80,
     flex: 1,
-    width: '20vw',
+    width: '12vw',
   },
   previousBroadcasts: {
     alignItems: 'stretch',
@@ -66,10 +66,6 @@ const useStyles = makeStyles(theme => ({
   section: {
     display: 'flex',
     flexDirection: 'row',
-  },
-  sectionEpisodes: {
-    marginLeft: '1em',
-    marginTop: '2em',
   },
   sectionImage: {
     height: '6vw',
@@ -83,6 +79,8 @@ const useStyles = makeStyles(theme => ({
   sectionRightCol: {
     display: 'flex',
     flexDirection: 'column',
+    marginLeft: '1em',
+    marginTop: '3em',
   },
   sectionText: {
     display: 'flex',
