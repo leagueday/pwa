@@ -3,6 +3,9 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 
+import useFacets from '../../api/useFacets'
+import { addScrollStyle } from '../util'
+import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import BottomBlock from './BottomBlock'
 import BroadcasterTextPlate from './BroadcasterTextPlate'
 import ChannelChildren from './ChannelChildren'
@@ -12,32 +15,46 @@ import PreviousBroadcasts from './PreviousBroadcasts'
 
 const useStyles = makeStyles({
   bottomBlockItem: { },
+  bottomGrid: ({channelColor}) => addScrollStyle(channelColor)({
+    flex: 1,
+    height: '100%',
+    overflow: 'auto',
+  }),
   broadcasterContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
     paddingLeft: '1em',
     paddingTop: '1em',
   },
   children: {
-    backgroundColor: 'green',
-    minHeight: 0,
+    marginBottom: '1em',
   },
   childrenGridItem: {
-    backgroundColor: 'blue',
     maxHeight: '100%',
     minHeight: 0,
   },
-  favoritePodcasts: { },
+  favoritePodcasts: {
+    marginBottom: '1em',},
   image: {
+    height: '100%',
     width: '100%',
   },
   imageGridItem: {
     paddingRight: '4em',
   },
-  imageTitleGrid: { },
-  liveness: { },
+  imageTitleGrid: {
+    flex: 0,
+  },
+  liveness: {
+    marginBottom: '1em',
+  },
   livenessGridItem: {
     paddingRight: '4em',
   },
-  previousBroadcasts: { },
+  previousBroadcasts: {
+    marginBottom: '1em',
+  },
   textPlate: {
     width: '100%',
   },
@@ -47,13 +64,10 @@ const useStyles = makeStyles({
 })
 
 const BroadcasterContent = ({channel}) => {
-  const classes = useStyles()
+  const classes = useStyles({channelColor: channel.color})
 
-  /*
-        <Grid className={classes.livenessGridItem} item xs={12} md={6} lg={4} xl={3}>
-          <Liveness className={classes.liveness} />
-        </Grid>
-   */
+  const facetedPodcasts = useFacets(channel.tag)
+
   return (
     <div className={classes.broadcasterContent}>
       <Grid className={classes.imageTitleGrid} container>
@@ -63,17 +77,22 @@ const BroadcasterContent = ({channel}) => {
         <Grid className={classes.titleBioGridItem} item xs={12} md={6} lg={8} xl={9}>
           <BroadcasterTextPlate channel={channel} className={classes.textPlate}/>
         </Grid>
+        <Grid className={classes.livenessGridItem} item xs={12} md={6} lg={4} xl={3}>
+          <Liveness className={classes.liveness} />
+        </Grid>
         <Grid className={classes.childrenGridItem} item xs={12} md={6} lg={8} xl={9}>
           <ChannelChildren className={classes.children} childTags={channel.children} />
         </Grid>
+      </Grid>
+      <Grid className={classes.bottomGrid} container>
         <Grid className={classes.bottomBlockItem} item xs={12}>
-          <BottomBlock title="Previous Broadcasts">
-            <PreviousBroadcasts className={classes.previousBroadcasts} channel={channel} />
+          <BottomBlock title="Previous Broadcasts" channelColor={channel.color}>
+            <PreviousBroadcasts className={classes.previousBroadcasts} channel={channel} channelColor={channel.color} />
           </BottomBlock>
         </Grid>
         <Grid className={classes.bottomBlockItem} item xs={12}>
-          <BottomBlock title="Favorite Podcasts">
-            <FavoritePodcasts className={classes.favoritePodcasts} channel={channel} />
+          <BottomBlock title="Favorite Podcasts" channelColor={channel.color}>
+            <FacetedPodcastTiles data={facetedPodcasts} />
           </BottomBlock>
         </Grid>
       </Grid>

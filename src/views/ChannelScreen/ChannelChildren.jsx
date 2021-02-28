@@ -4,16 +4,27 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
+import * as colors from '../../styling/colors'
 import useMyChannels from '../../api/useMyChannels'
 import {actions} from '../../store'
 
+/*
+.image-container{
+    width:100px;
+}
+.image-container img {
+    width:100%;
+    height:100px;
+    object-fit:cover;
+}
+ */
 const useStyles = makeStyles(theme => ({
   channelChildren: {
     // alignItems: 'center',
-    backgroundColor: 'yellow',
     display: 'flex',
     flexDirection: 'row',
-    height: '20%',
+    minHeight: 0,
+    overflow: 'hidden',
   },
   // child: {
   //   minWidth: 0,
@@ -21,10 +32,26 @@ const useStyles = makeStyles(theme => ({
   // },
   image: {
     cursor: 'pointer',
-    marginRight: '1em',
-    width: 'auto',
-    objectFit: 'scale-down',
-    height: 'auto',
+    // marginRight: '1em',
+    // width: 'auto',
+    // height: 'auto',
+    // height: '100%',
+    // width: '100%',
+    marginLeft: '0.5em',
+    width: '10vw',
+    height: '10vw',
+    borderRadius: '5vw',
+    objectFit: 'cover',
+  },
+  imageBorderLive: {
+    border: `0.33em solid ${colors.lime}`,
+  },
+  imageBorderDefault: {
+    border: `0.33em solid ${colors.white80}`,
+  },
+  imageContainer: {
+    width: '10vw',
+    height: '10vw',
   },
 }))
 
@@ -34,8 +61,6 @@ const ChannelChildren = ({childTags, className}) => {
   const dispatch = useDispatch()
 
   const makeOnclick = channelTag => () => dispatch(actions.pushHistory(`/channel/${channelTag}`))
-
-  console.log(JSON.stringify(childTags, null, 2))
 
   const tagset = new Set(childTags)
 
@@ -48,7 +73,13 @@ const ChannelChildren = ({childTags, className}) => {
       {
         childChannels.map(
           ({imageUrl, tag, title}) => (
-            <img key={tag} className={classes.image} onClick={makeOnclick(tag)} src={imageUrl} />
+            <img key={tag}
+                 className={cx(
+                   classes.image,
+                   tag === 'lol' ? classes.imageBorderLive : classes.imageBorderDefault
+                 )}
+                 onClick={makeOnclick(tag)}
+                 src={imageUrl} />
           )
         )
       }
