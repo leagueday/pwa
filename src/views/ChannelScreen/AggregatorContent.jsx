@@ -1,6 +1,7 @@
 import React from 'react'
+import cx from 'classnames'
 
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 
 import useFacets from '../../api/useFacets'
@@ -15,11 +16,16 @@ const useStyles = makeStyles(theme => ({
   bottomGrid: {
     marginTop: '1em',
   },
+  channelColor: ({channelColor}) => ({
+    color: channelColor,
+  }),
   firstpart: { },
   gridConMain: { },
   gridConTop: { },
   headline: {
-    margin: '1em',
+    padding: '1em',
+    width: '100%',
+    overflow: 'hidden',
   },
   headlineGridItem: {
     alignItems: 'flex-start',
@@ -27,18 +33,14 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
   },
-  headlineTitle: {
+  headlineTitleRow: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    width: '100%',
     fontSize: '150%',
     fontWeight: theme.typography.weight.bold,
     userSelect: 'none',
-  },
-  headlineTitleHighlighted: ({channelColor}) => ({
-    color: channelColor,
-  }),
-  headlineTitleRow: {
-    overflowX: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
   },
   headlineTypename: {
     textTransform: 'uppercase',
@@ -72,15 +74,13 @@ const Headline = ({channel, classes}) => {
   return (
     <div className={classes.headline}>
       <div className={classes.headlineTypename}>
-        Podcast Aggregator
+        Audio Content Aggregator
+      </div>
+      <div className={cx(classes.headlineTitleRow, classes.channelColor)}>
+        {channel.title}
       </div>
       <div className={classes.headlineTitleRow}>
-        <span className={classes.headlineTitle}>
-          <span className={classes.headlineTitleHighlighted}>
-            {channel?.title}
-          </span>
-          &nbsp;Podcasts
-        </span>
+        Podcasts and Live Events AudioCasts
       </div>
     </div>
   )
