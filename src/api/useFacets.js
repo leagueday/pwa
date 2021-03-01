@@ -26,8 +26,8 @@ const useFacetsData = () => {
 
   const map = new Map();
 
-  (data || []).forEach(
-    ({fields: { title: title, podcast_url: podcastUrl }}) => {
+  (data ?? []).forEach(
+    ({fields: { title, podcast_url: podcastUrl }}) => {
       const urlsList = map.get(title)
 
       if (urlsList) {

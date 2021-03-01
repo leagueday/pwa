@@ -1,9 +1,11 @@
 import React from 'react'
+import {useDispatch} from 'react-redux'
 import Color from 'color'
 
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
+import {actions} from '../../store'
 import useHomeBanner from '../../api/useHomeBanner'
 
 import DotNavigator from './DotNavigator'
@@ -27,6 +29,7 @@ const useStyles = makeStyles(theme => ({
     minHeight: '100%',
   },
   text: {
+    cursor: 'pointer',
     fontSize: '90%',
     fontWeight: theme.typography.weight.bold,
   },
@@ -45,17 +48,18 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   }),
   title: ({accentColor}) => ({
+    cursor: 'pointer',
     color: accentColor,
     fontWeight: theme.typography.weight.bold,
   }),
 }))
 
-const Element = ({classes, imageUrl, text, title}) => (
+const Element = ({classes, imageUrl, text, title, onClick}) => (
   <div className={classes.element}>
     <img className={classes.image} src={imageUrl} />
     <div className={classes.textGroup}>
-      <div className={classes.title}>{title}</div>
-      <div className={classes.text}>{text}</div>
+      <div className={classes.title} onClick={onClick}>{title}</div>
+      <div className={classes.text} onClick={onClick}>{text}</div>
     </div>
   </div>
 )
@@ -67,17 +71,19 @@ const Banner = ({primaryColor}) => {
 
   const [currentIndex, setCurrentIndex] = React.useState(0)
 
-  const [imageUrl, title, text, rawAccentColor] = currentIndex < numElements ? data[currentIndex] : []
+  const [imageUrl, title, text, rawAccentColor, link] = currentIndex < numElements ? data[currentIndex] : []
 
   const accentColor = colors[rawAccentColor] ?? rawAccentColor
 
   const classes = useStyles({accentColor, primaryColor})
 
+  const dispatch = useDispatch()
+  const onClick = () => dispatch(actions.pushHistory(link))
   return (
     <div className={classes.homeBanner}>
       { imageUrl && (
           <>
-            <Element classes={classes} text={text} title={title} imageUrl={imageUrl}/>
+            <Element classes={classes} text={text} title={title} imageUrl={imageUrl} onClick={onClick} />
             <DotNavigator
               currentIndex={currentIndex}
               setCurrentIndex={setCurrentIndex}

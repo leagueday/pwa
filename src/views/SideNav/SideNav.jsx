@@ -1,11 +1,13 @@
 import React from 'react'
+import {useDispatch} from 'react-redux'
 
 import {makeStyles} from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
-
+import {actions} from '../../store'
 import * as consts from '../consts'
 import {addScrollStyle} from '../util'
+import { IcoHome } from '../icons'
 import Expander from './Expander'
 import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
 import MyChannels from './MyChannels'
@@ -15,6 +17,9 @@ import SearchLozenge from './SearchLozenge'
 const useStyles = makeStyles(theme => ({
   clickable: {
     cursor: 'pointer',
+  },
+  controls: {
+    padding: '0.5em',
   },
   expander: {
     paddingLeft: '0.5em',
@@ -45,8 +50,14 @@ const useStyles = makeStyles(theme => ({
 const SideNav = () => {
   const classes = useStyles()
 
+  const dispatch = useDispatch()
+  const goHome = () => dispatch(actions.pushHistory('/'))
+
   return (
     <div className={classes.sideNav}>
+      <div className={classes.controls}>
+        <IcoHome classes={{outer:classes.clickable}} onClick={goHome} />
+      </div>
       <SearchLozenge />
       <LiveAndUpcomingLozenge className={classes.lozenge} />
       <div className={classes.scroller}>

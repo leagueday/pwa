@@ -10,7 +10,7 @@ const useHomeBanner = () => {
   const recordList = React.useMemo(
     () =>
       data ? data.map(
-        ({fields: {image_url, title, text, accent_color}}) => [image_url, title, text, accent_color]
+        ({fields: {image_url, title, text, accent_color, link}}) => [image_url, title, text, accent_color, link]
       ) : [],
     [data]
   )
