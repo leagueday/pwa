@@ -15,7 +15,15 @@ const useStyles = makeStyles(theme => ({
   firstpart: { },
   gridConMain: { },
   gridConTop: { },
-  headline: { },
+  headline: {
+    margin: '1em',
+  },
+  headlineGridItem: {
+    alignItems: 'flex-start',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
   headlineTitle: {
     fontSize: '150%',
     fontWeight: theme.typography.weight.bold,
@@ -24,7 +32,11 @@ const useStyles = makeStyles(theme => ({
   headlineTitleHighlighted: ({channelColor}) => ({
     color: channelColor,
   }),
-  headlineTitleRow: { },
+  headlineTitleRow: {
+    overflowX: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
   headlineTypename: {
     textTransform: 'uppercase',
     userSelect: 'none',
@@ -74,10 +86,10 @@ const Headline = ({channel, classes}) => {
 const LogoAndTitle = ({channel, classes}) => {
   return (
     <Grid container>
-      <Grid item sm={12} md={6}>
+      <Grid item sm={12} sm={6} md={4}>
         <Logo channel={channel} classes={classes} />
       </Grid>
-      <Grid item sm={12} md={6}>
+      <Grid className={classes.headlineGridItem} item sm={12} sm={6} md={8}>
         <Headline channel={channel} classes={classes} />
       </Grid>
     </Grid>
