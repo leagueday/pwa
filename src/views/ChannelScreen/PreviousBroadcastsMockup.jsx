@@ -126,6 +126,7 @@ const mockupData = [
     ],
     imageUrl: '/img/restyle_demo/lol_live.png',
     name: 'League of Legends Live',
+    tags: ['riot', 'lol'],
     variety: 'Event Name',
   },
   {
@@ -154,9 +155,14 @@ const mockupData = [
     ],
     imageUrl: '/img/restyle_demo/valorant_live.png',
     name: 'Valorant Live',
+    tags: ['riot', 'valorant'],
     variety: 'Event Recordings',
   },
 ]
+
+const filterMockupData = tag => mockupData.filter(
+  ({tags}) => tags.find(thisTag => thisTag === tag)
+)
 
 const transparent = 'rgba(0,0,0,1)'
 const episodeBackgroundColors = ['#070709', transparent, '#0E0E11', transparent]
@@ -246,20 +252,19 @@ const SectionRight = ({sectionData, channelColor}) => {
       }
     </div>
   )
-
 }
 
-const PreviousBroadcastsMockup = ({className, channelColor}) => {
+const PreviousBroadcastsMockup = ({className, channel}) => {
   const classes = useStyles()
 
   return (
     <div className={cx(classes.previousBroadcasts, className)}>
       {
-        mockupData.map(
+        filterMockupData(channel.tag).map(
           sectionData => (
             <div key={sectionData.name} className={classes.section}>
-              <SectionLeft sectionData={sectionData} channelColor={channelColor} />
-              <SectionRight sectionData={sectionData} channelColor={channelColor} />
+              <SectionLeft sectionData={sectionData} channelColor={channel.color} />
+              <SectionRight sectionData={sectionData} channelColor={channel.color} />
             </div>
           )
         )
