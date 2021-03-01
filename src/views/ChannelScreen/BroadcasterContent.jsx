@@ -105,7 +105,7 @@ const BroadcasterContent = ({channel}) => {
       </Grid>
       <Grid className={classes.bottomGrid} container>
         <Grid className={classes.bottomBlockItem} item xs={12}>
-          <BottomBlock title="Previous Broadcasts" channelColor={channel.color}>
+          <BottomBlock titleStart="Previous" titleRest="Broadcasts" channelColor={channel.color}>
             <PreviousBroadcastsMockup
               className={classes.previousBroadcasts}
               channel={channel}
@@ -114,7 +114,7 @@ const BroadcasterContent = ({channel}) => {
           </BottomBlock>
         </Grid>
         <Grid className={classes.bottomBlockItem} item xs={12}>
-          <BottomBlock title="Top Podcasts" channelColor={channel.color}>
+          <BottomBlock titleStart="Top" titleRest="Podcasts" channelColor={channel.color}>
             <FacetedPodcastTiles data={facetedPodcasts} />
           </BottomBlock>
         </Grid>

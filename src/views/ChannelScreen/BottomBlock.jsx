@@ -48,14 +48,12 @@ const useStyles = makeStyles(theme => ({
 const BottomBlock = props => {
   const classes = useStyles(props)
 
-  const {className, title} = props
-
-  const [titleStart, ...titleRest] = title ? title.split(' ') : ['']
+  const {className, titleRest, titleStart} = props
 
   return (
     <div className={cx(classes.bottomBlock, className)}>
       <div className={classes.titleRow}>
-        <div className={classes.title}><span className={classes.titleStart}>{titleStart}</span> {titleRest.join(' ')}</div>
+        <div className={classes.title}><span className={classes.titleStart}>{titleStart}</span> {titleRest}</div>
         <div className={classes.rhsCol}>
           <div className={cx(classes.rhsCell, classes.pinStripe)} />
           <div className={classes.rhsCell} />

@@ -1,17 +1,20 @@
 import React from 'react'
 
 import { makeStyles, useTheme } from '@material-ui/core/styles'
-// import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Grid from '@material-ui/core/Grid'
 
-// import * as colors from '../../styling/colors'
 import useFacets from '../../api/useFacets'
-// import PodcastTile from '../PodcastTile'
+import BottomBlock from './BottomBlock'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import PreviousBroadcastsMockup from './PreviousBroadcastsMockup'
 
 const useStyles = makeStyles(theme => ({
-  aggregatorContent: { },
+  aggregatorContent: {
+    marginLeft: '1em',
+  },
+  bottomGrid: {
+    marginTop: '1em',
+  },
   firstpart: { },
   gridConMain: { },
   gridConTop: { },
@@ -188,10 +191,10 @@ const AggregatorContent = ({channel}) => {
         <Grid item xs={12}>
           <LogoAndTitle channel={channel} classes={classes} />
         </Grid>
-        <Grid item xs={12}>
-          <FacetedPodcastTiles data={facet} />
-        </Grid>
-        <Grid item xs={12}>
+        <Grid className={classes.bottomGrid} item xs={12}>
+          <BottomBlock titleStart="League of Legends" titleRest="Podcasts" channelColor={channel.color}>
+            <FacetedPodcastTiles data={facet} />
+          </BottomBlock>
           <PreviousBroadcastsMockup
             className={classes.previousBroadcasts}
             channel={channel}
