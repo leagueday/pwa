@@ -71,6 +71,7 @@ const BroadcasterTextPlate = ({className, channel}) => {
       />
       <SchedulePopper className={classes.schedulePopper}
                       text={channel.scheduleNote}
+                      link={channel.scheduleLink}
                       color={color}
       />
     </div>
