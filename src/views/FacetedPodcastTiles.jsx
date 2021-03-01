@@ -12,11 +12,11 @@ const useStyles = makeStyles(theme => ({
   },
   tile: {
     flex: 1,
-    marginRight: '1%',
-    width: '16.667%', // 100/6
-    ['&:last-child']: {
-      marginRight: 0,
-    },
+    height: '100%',
+    // marginRight: '1vw',
+    // ['&:last-child']: {
+    //   marginRight: 0,
+    // },
   },
   tilesRow: {
     display: 'flex',
@@ -64,13 +64,13 @@ const FacetedPodcastTiles = ({data}) => {
                 {
                   podcasts.map(
                     podcast => podcast ? (
-                        <div key={podcast.id} className={classes.tile}>
-                          <PodcastTile
-                            podcast={podcast}
-                            textColor={nextColor()}
-                          />
-                        </div>
-                      ) : null
+                      <div key={podcast.id} className={classes.tile}>
+                        <PodcastTile
+                          podcast={podcast}
+                          textColor={nextColor()}
+                        />
+                      </div>
+                    ) : null
                   )
                 }
               </div>

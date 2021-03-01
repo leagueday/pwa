@@ -8,6 +8,7 @@ import * as colors from '../styling/colors'
 import usePodcast from '../api/usePodcast'
 import { channelSelectors } from '../model/rss'
 import { actions } from '../store'
+import Square from './Square'
 
 const BACKGROUND_COLOR = colors.black
 
@@ -28,21 +29,15 @@ const useStyles = makeStyles(theme => ({
     minWidth: 0,
     // position: 'relative',
     userSelect: 'none',
+    width: '100%',
   },
   image: {
-    maxHeight: '100%',
-    maxWidth: '100%',
+    height: '100%',
+    width: '100%',
     // minHeight: '8em',
     // minWidth: '8em',
     // width: '11vw',
     // height: '11vw',
-  },
-  imageContainer: {
-    // left: 0,
-    // position: 'absolute',
-    // top: 0,
-    // minWidth: 0,
-    maxWidth: '100%',
   },
   imageOpacityRamp: {
     background: opacityRamp,
@@ -52,6 +47,9 @@ const useStyles = makeStyles(theme => ({
     right: 0,
     top: 0,
     zIndex: 100,
+  },
+  imageSquare: {
+    width: '12vw',
   },
   text: ({textColor}) => ({
     color: textColor,
@@ -85,9 +83,10 @@ const PodcastTile = ({podcast, textColor}) => {
 
   return (
     <div className={classes.podcastTile} onClick={gotoThisPodcast}>
-      <div className={classes.imageContainer}>
+      <Square className={classes.imageSquare}>
+        <div className={classes.imageOpacityRamp} />
         <img className={classes.image} src={imageUrl} />
-      </div>
+      </Square>
       <div className={classes.textBox}>
         <div className={classes.text}>
           {title}
