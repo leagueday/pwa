@@ -35,7 +35,9 @@ const TitleBar = ({text, primaryColor}) => {
         {text}
       </div>
       <div className={classes.datetime}>
-        {dayjs().format('MMMM Do, YYYY')}
+        {dayjs(
+          new Date('2021-06-11T12:00:00Z') // <- remove for today
+        ).format('MMMM Do, YYYY')}
       </div>
     </div>
   )
