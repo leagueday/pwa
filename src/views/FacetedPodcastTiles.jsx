@@ -12,10 +12,10 @@ const useStyles = makeStyles(theme => ({
   },
   tile: {
     flex: 1,
-    paddingRight: '1%',
+    marginRight: '1%',
     width: '16.667%', // 100/6
     ['&:last-child']: {
-      paddingRight: 0,
+      marginRight: 0,
     },
   },
   tilesRow: {

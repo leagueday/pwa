@@ -32,10 +32,10 @@ const useStyles = makeStyles(theme => ({
   image: {
     maxHeight: '100%',
     maxWidth: '100%',
-    minHeight: '8em',
-    minWidth: '8em',
-    width: '11vw',
-    height: '11vw',
+    // minHeight: '8em',
+    // minWidth: '8em',
+    // width: '11vw',
+    // height: '11vw',
   },
   imageContainer: {
     // left: 0,
