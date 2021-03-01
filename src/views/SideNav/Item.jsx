@@ -22,6 +22,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     height: '2em',
+    overflow: 'hidden',
     marginBottom: '0.5em',
     userSelect: 'none',
   },
@@ -30,6 +31,10 @@ const useStyles = makeStyles({
   },
   title: {
     cursor: 'pointer',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    width: '100%',
+    whiteSpace: 'nowrap',
   },
   titleBox: {
     alignItems: 'center',
@@ -37,8 +42,10 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'row',
     flex: 1,
+    overflow: 'hidden',
     paddingLeft: '0.5em',
     paddingRight: '0.5em',
+    width: '100%',
   },
 })
 

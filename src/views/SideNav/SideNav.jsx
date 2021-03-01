@@ -8,6 +8,7 @@ import {actions} from '../../store'
 import * as consts from '../consts'
 import {addScrollStyle} from '../util'
 import { IcoHome } from '../icons'
+import IconButton from '../IconButton'
 import Expander from './Expander'
 import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
 import MyChannels from './MyChannels'
@@ -56,7 +57,9 @@ const SideNav = () => {
   return (
     <div className={classes.sideNav}>
       <div className={classes.controls}>
-        <IcoHome classes={{outer:classes.clickable}} onClick={goHome} />
+        <IconButton onClick={goHome}>
+          <IcoHome />
+        </IconButton>
       </div>
       <SearchLozenge />
       <LiveAndUpcomingLozenge className={classes.lozenge} />
