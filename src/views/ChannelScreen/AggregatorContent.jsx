@@ -13,7 +13,7 @@ import PreviousBroadcastsMockup from './PreviousBroadcastsMockup'
 const useStyles = makeStyles(theme => ({
   aggregatorContent: {
     height: '100%',
-    marginLeft: '1em',
+    margin: '1em',
   },
   bottomGrid: {
     height: '100%',

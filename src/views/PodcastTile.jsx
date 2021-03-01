@@ -2,7 +2,8 @@ import React from 'react'
 import Color from 'color'
 import { useDispatch } from 'react-redux'
 
-import { makeStyles } from '@material-ui/core/styles'
+import {makeStyles, useTheme} from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import * as colors from '../styling/colors'
 import usePodcast from '../api/usePodcast'
@@ -48,9 +49,9 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     zIndex: 100,
   },
-  imageSquare: {
-    width: '12vw',
-  },
+  imageSquare: ({isWidthMaxxed}) => ({
+    width: '100%', // isWidthMaxxed ? '100%' : '12vw',
+  }),
   text: ({textColor}) => ({
     color: textColor,
     fontSize: '75%',
@@ -76,7 +77,10 @@ const PodcastTile = ({podcast, textColor}) => {
   const title = rss ? channelSelectors.v2.title(rss) : podcast.title
   const imageUrl = channelSelectors.v2.imageUrl(rss)
 
-  const classes = useStyles({imageUrl, textColor})
+  const theme = useTheme()
+  const lgUp = useMediaQuery(theme.breakpoints.up('lg'))
+
+  const classes = useStyles({imageUrl, isWidthMaxxed: lgUp, textColor})
 
   const dispatch = useDispatch()
   const gotoThisPodcast = () => dispatch(actions.pushHistory(`/podcast/${podcast.id}`))
