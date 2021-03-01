@@ -5,23 +5,41 @@ import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 
 import useFacets from '../../api/useFacets'
+import {addScrollStyle} from '../util'
 import BottomBlock from './BottomBlock'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import PreviousBroadcastsMockup from './PreviousBroadcastsMockup'
 
 const useStyles = makeStyles(theme => ({
   aggregatorContent: {
+    height: '100%',
     marginLeft: '1em',
   },
   bottomGrid: {
+    height: '100%',
     marginTop: '1em',
+    maxHeight: '100%',
+    minHeight: 0,
+    overflow: 'hidden',
   },
+  bottomSection: { },
+  bottomSectionScroller: ({channelColor}) => addScrollStyle(channelColor)({
+    maxHeight: '100%',
+    overflow: 'auto',
+  }),
   channelColor: ({channelColor}) => ({
     color: channelColor,
   }),
   firstpart: { },
-  gridConMain: { },
+  gridConMain: {
+    height: '100%',
+    overflow: 'hidden',
+  },
   gridConTop: { },
+  gridFullCol: {
+    height: '100%',
+    width: '100%',
+  },
   headline: {
     padding: '1em',
     width: '100%',
@@ -188,17 +206,21 @@ const AggregatorContent = ({channel}) => {
   return (
     <div className={classes.aggregatorContent}>
       <Grid className={classes.gridConMain} container>
-        <Grid item xs={12}>
+        <Grid className={classes.gridFullCol} item xs={12}>
           <LogoAndTitle channel={channel} classes={classes} />
-        </Grid>
-        <Grid className={classes.bottomGrid} item xs={12}>
-          <BottomBlock titleStart="League of Legends" titleRest="Podcasts" channelColor={channel.color}>
-            <FacetedPodcastTiles data={facet} />
-          </BottomBlock>
-          <PreviousBroadcastsMockup
-            className={classes.previousBroadcasts}
-            channel={channel}
-            channelColor={channel.color} />
+          <div className={classes.bottomSectionScroller}>
+            <div className={classes.bottomSection}>
+              <BottomBlock titleStart={channel.title} titleRest="Podcasts" channelColor={channel.color}>
+                <FacetedPodcastTiles data={facet} />
+              </BottomBlock>
+              <BottomBlock titleStart={channel.title} titleRest="Live Event Replays" channelColor={channel.color}>
+                <PreviousBroadcastsMockup
+                  className={classes.previousBroadcasts}
+                  channel={channel}
+                  channelColor={channel.color} />
+              </BottomBlock>
+            </div>
+          </div>
         </Grid>
       </Grid>
     </div>

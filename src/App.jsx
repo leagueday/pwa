@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import Container from '@material-ui/core/Container'
 import Paper from '@material-ui/core/Paper'
 
 import { Provider as StoreProvider, actions, selectors } from './store'
@@ -48,6 +49,10 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '1600px',
     minWidth: '166px',
   },
+  appCanvas: {
+    height: '100%',
+    width: '100%',
+  },
 }))
 
 const ThemedAppContent = () => {
@@ -74,15 +79,17 @@ const ThemedAppContent = () => {
 
   return (
     <div className={classes.app}>
-      <div className={classes.appBackground}>
-        {
-          data
-            ? (<Mushipan routes={routesConfig} />)
-            : error
-            ? (<Error e={error} />)
-            : (<Loading />)
-        }
-      </div>
+      <Container className={classes.appBackground} maxWidth="xl" disableGutters>
+        <Paper className={classes.appCanvas}>
+          {
+            data
+              ? (<Mushipan routes={routesConfig} />)
+              : error
+              ? (<Error e={error} />)
+              : (<Loading />)
+          }
+        </Paper>
+      </Container>
     </div>
   )
 }
