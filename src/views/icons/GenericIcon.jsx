@@ -25,7 +25,7 @@ const makeGenericIcon = Svg => {
 
   Icon.defaultProps = {
     size: 24,
-    strokeWidth: 2,
+    strokeWidth: null,
   }
 
   return Icon

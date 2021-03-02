@@ -11,21 +11,22 @@ const useStyles = makeStyles({
     height: '65%',
     width: '65%',
   },
-  iconButton: ({backgroundColor, color, shadowColor, size}) => ({
+  iconButton: ({backgroundColor, color, shadowColor, size, isTransparent}) => ({
     alignItems: 'center',
-    backgroundColor: backgroundColor,
+    backgroundColor: isTransparent ? null : backgroundColor,
     borderRadius: '50%',
     borderWidth: 0,
-    color: color,
+    color: isTransparent ? Color(color).fade(0.5).string() : color,
     cursor: 'pointer',
     display: 'flex',
-    filter: `drop-shadow(1px 1px 4px ${shadowColor})`,
+    filter: shadowColor ? `drop-shadow(1px 1px 4px ${shadowColor})` : 'none',
     flexDirection: 'row',
     height: size,
     justifyContent: 'center',
     width: size,
     '&:hover': {
       backgroundColor: Color(backgroundColor).lighten(0.25).string(),
+      color: isTransparent ? color : null,
     },
     '&:active': {
       filter: 'none',
@@ -61,23 +62,36 @@ const useStyles = makeStyles({
 })
 
 export const makeIconButton = Icon => {
-  const Component = ({backgroundColor, color, onClick, shadowColor, size, className, iconClassName}) => {
-    const classes = useStyles(({backgroundColor, color, shadowColor, size}))
+  const Component = ({ backgroundColor,
+                       color,
+                       isTransparent,
+                       onClick,
+                       shadowColor,
+                       size,
+                       strokeWidth,
+                       className,
+                       iconClassName}) => {
+    const classes = useStyles(({backgroundColor, color, isTransparent, shadowColor, size}))
 
     return (
       <Icon classes={{
-        outer: cx(classes.iconButton, classes.ripple, className),
-        inner: cx(classes.icon, iconClassName)
-      }} onClick={onClick} />
+                      outer: cx(classes.iconButton, classes.ripple, className),
+                      inner: cx(classes.icon, iconClassName)
+                    }}
+            onClick={onClick}
+            strokeWidth={strokeWidth}
+      />
     )
   }
 
   Component.defaultProps = {
     backgroundColor: colors.brandBlack,
     color: colors.magenta,
+    isTransparent: false,
     onClick: null,
     shadowColor: 'black',
     size: '2em',
+    strokeWidth: null,
   }
 
   return Component

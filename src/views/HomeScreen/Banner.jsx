@@ -8,7 +8,6 @@ import * as colors from '../../styling/colors'
 import {actions} from '../../store'
 import useHomeBanner from '../../api/useHomeBanner'
 
-import DotNavigator from './DotNavigator'
 import SideButtons from './SideButtons'
 
 const useStyles = makeStyles(theme => ({
