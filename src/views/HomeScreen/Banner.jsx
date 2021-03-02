@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
 
 const Element = ({classes, imageUrl, text, title, onClick}) => (
   <div className={classes.element}>
-    <img className={classes.image} src={imageUrl} />
+    <img className={classes.image} src={imageUrl} draggable="false" />
     <div className={classes.textGroup}>
       <div className={classes.title} onClick={onClick}>{title}</div>
       <div className={classes.text} onClick={onClick}>{text}</div>
