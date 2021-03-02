@@ -23,7 +23,6 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: '0.5em',
   },
   tilesRowContainer: {
     display: 'flex',

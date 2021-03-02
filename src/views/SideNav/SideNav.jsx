@@ -8,7 +8,7 @@ import {actions} from '../../store'
 import * as consts from '../consts'
 import {addScrollStyle} from '../util'
 import { IcoHome } from '../icons'
-import IconButton from '../IconButton'
+import {makeIconButton} from '../IconButton'
 import Expander from './Expander'
 import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
 import MyChannels from './MyChannels'
@@ -48,6 +48,8 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const HomeButton = makeIconButton(IcoHome)
+
 const SideNav = () => {
   const classes = useStyles()
 
@@ -57,9 +59,7 @@ const SideNav = () => {
   return (
     <div className={classes.sideNav}>
       <div className={classes.controls}>
-        <IconButton onClick={goHome}>
-          <IcoHome />
-        </IconButton>
+        <HomeButton onClick={goHome} size="2em" color={colors.cyan} backgroundColor={colors.brandBlack}/>
       </div>
       <SearchLozenge />
       <LiveAndUpcomingLozenge className={classes.lozenge} />
