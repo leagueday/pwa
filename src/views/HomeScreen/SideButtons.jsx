@@ -26,9 +26,9 @@ const useStyles = makeStyles({
     userSelect: 'none',
   },
   sideButtons: {
-    height: '100%',
+    maxHeight: '100%',
+    overflow: 'hidden',
     position: 'relative',
-    width: '100%',
   },
 })
 

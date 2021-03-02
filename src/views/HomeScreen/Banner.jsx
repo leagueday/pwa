@@ -1,5 +1,6 @@
 import React from 'react'
 import {useDispatch} from 'react-redux'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import Color from 'color'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -9,6 +10,16 @@ import {actions} from '../../store'
 import useHomeBanner from '../../api/useHomeBanner'
 
 import SideButtons from './SideButtons'
+
+const usePrevious = value => {
+  const ref = React.useRef()
+
+  React.useEffect(() => {
+    ref.current = value
+  }, [value])
+
+  return ref.current
+}
 
 const useStyles = makeStyles(theme => ({
   element: {
@@ -27,9 +38,6 @@ const useStyles = makeStyles(theme => ({
   image: {
     width: '100%',
     minHeight: '100%',
-  },
-  sideButtons: {
-
   },
   text: {
     cursor: 'pointer',
@@ -57,6 +65,46 @@ const useStyles = makeStyles(theme => ({
   }),
 }))
 
+const useSlideTransitionGroup = makeStyles({
+  enter: ({isSlidingLeft}) => isSlidingLeft ? {
+    position: 'absolute',
+    overflow: 'hidden',
+    transform: 'translateX(95%)',
+  } : {
+    position: 'absolute',
+    overflow: 'hidden',
+    transform: 'translateX(-100%)',
+  },
+  enterActive: ({isSlidingLeft}) => isSlidingLeft ? {
+    position: 'absolute',
+    overflow: 'hidden',
+    transform: 'translateX(0%)',
+    transition: 'transform 500ms ease-in-out'
+  } : {
+    position: 'absolute',
+    overflow: 'hidden',
+    transform: 'translateX(0%)',
+    transition: 'transform 500ms ease-in-out'
+  },
+  enterDone: {
+  },
+  exit: {
+    overflow: 'hidden',
+    transform: 'translateX(0%)'
+  },
+  exitActive: ({isSlidingLeft}) => isSlidingLeft ? {
+    overflow: 'hidden',
+    transform: 'translateX(-100%)',
+    transition: 'transform 500ms ease-in-out'
+  } : {
+    overflow: 'hidden',
+    transform: 'translateX(100%)',
+    transition: 'transform 500ms ease-in-out'
+  },
+  exitDone: {
+  }
+})
+
 const Element = ({classes, imageUrl, text, title, onClick}) => (
   <div className={classes.element}>
     <img className={classes.image} src={imageUrl} draggable="false" />
@@ -74,11 +122,21 @@ const Banner = ({primaryColor}) => {
 
   const [currentIndex, setCurrentIndex] = React.useState(0)
 
+  const prevIndex = usePrevious(currentIndex)
+
   const [imageUrl, title, text, rawAccentColor, link] = currentIndex < numElements ? data[currentIndex] : []
 
   const accentColor = colors[rawAccentColor] ?? rawAccentColor
 
   const classes = useStyles({accentColor, primaryColor})
+
+  // slides left when the index is increasing, wraparound notwithstanding
+  const isSlidingLeft =
+    (currentIndex === 0 && prevIndex === numElements - 1)
+    // (currentIndex === numElements - 1 && prevIndex === 0)
+    || (currentIndex > prevIndex && (currentIndex !== numElements - 1 || prevIndex !== 0))
+
+  const slideTransition = useSlideTransitionGroup({isSlidingLeft})
 
   const dispatch = useDispatch()
   const onClick = () => dispatch(actions.pushHistory(link))
@@ -90,7 +148,13 @@ const Banner = ({primaryColor}) => {
             setCurrentIndex={setCurrentIndex}
             numElements={data.length}
             primaryColor={accentColor}>
-            <Element classes={classes} text={text} title={title} imageUrl={imageUrl} onClick={onClick} />
+              <TransitionGroup>
+                <CSSTransition key={`${prevIndex} ${currentIndex}`}
+                               classNames={slideTransition}
+                               timeout={500}>
+                  <Element classes={classes} text={text} title={title} imageUrl={imageUrl} onClick={onClick} />
+                </CSSTransition>
+              </TransitionGroup>
           </SideButtons>
         )
       }
