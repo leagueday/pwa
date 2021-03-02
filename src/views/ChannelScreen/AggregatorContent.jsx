@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid'
 
 import useFacets from '../../api/useFacets'
 import {addScrollStyle} from '../util'
+import Square from '../Square'
 import BottomBlock from './BottomBlock'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import PreviousBroadcastsMockup from './PreviousBroadcastsMockup'
@@ -64,8 +65,8 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'uppercase',
     userSelect: 'none',
   },
-  logoImage: { },
-  logoImageContainer: { },
+  logoImage: { width: '100%', },
+  logoImageContainer: { width: '100%', },
   previousBroadcasts: {
     marginTop: '1.5em',
   },
@@ -82,9 +83,9 @@ const useStyles = makeStyles(theme => ({
 
 const Logo = ({channel, classes}) => {
   return (
-    <div className={classes.logoImageContainer}>
+    <Square className={classes.logoImageContainer}>
       <img className={classes.logoImage} src={channel?.imageUrl} />
-    </div>
+    </Square>
   )
 }
 
@@ -107,10 +108,10 @@ const Headline = ({channel, classes}) => {
 const LogoAndTitle = ({channel, classes}) => {
   return (
     <Grid container>
-      <Grid item sm={12} sm={6} md={4}>
+      <Grid item xs={6} sm={4} md={4}>
         <Logo channel={channel} classes={classes} />
       </Grid>
-      <Grid className={classes.headlineGridItem} item sm={12} sm={6} md={8}>
+      <Grid className={classes.headlineGridItem} item xs={12} sm={8} md={8}>
         <Headline channel={channel} classes={classes} />
       </Grid>
     </Grid>
