@@ -273,4 +273,9 @@ const PreviousBroadcastsMockup = ({className, channel}) => {
   )
 }
 
+export const mockupGetHasBroadcasts = channel => {
+  const data = filterMockupData(channel.tag)
+  return data.length > 0
+}
+
 export default PreviousBroadcastsMockup

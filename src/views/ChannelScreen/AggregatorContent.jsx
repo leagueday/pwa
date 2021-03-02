@@ -9,7 +9,7 @@ import {addScrollStyle} from '../util'
 import Square from '../Square'
 import BottomBlock from './BottomBlock'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
-import PreviousBroadcastsMockup from './PreviousBroadcastsMockup'
+import PreviousBroadcastsMockup, {mockupGetHasBroadcasts} from './PreviousBroadcastsMockup'
 
 const useStyles = makeStyles(theme => ({
   aggregatorContent: {
@@ -89,7 +89,7 @@ const Logo = ({channel, classes}) => {
   )
 }
 
-const Headline = ({channel, classes}) => {
+const Headline = ({channel, classes, hasBroadcasts}) => {
   return (
     <div className={classes.headline}>
       <div className={classes.headlineTypename}>
@@ -99,20 +99,22 @@ const Headline = ({channel, classes}) => {
         {channel.title}
       </div>
       <div className={classes.headlineTitleRow}>
-        Podcasts and Live Events AudioCasts
+        {
+          hasBroadcasts ? 'Podcasts and Live Events AudioCasts' : 'Podcasts'
+        }
       </div>
     </div>
   )
 }
 
-const LogoAndTitle = ({channel, classes}) => {
+const LogoAndTitle = ({channel, classes, hasBroadcasts}) => {
   return (
     <Grid container>
       <Grid item xs={6} sm={4} lg={3}>
         <Logo channel={channel} classes={classes} />
       </Grid>
       <Grid className={classes.headlineGridItem} item xs={12} sm={8} lg={9}>
-        <Headline channel={channel} classes={classes} />
+        <Headline channel={channel} classes={classes} hasBroadcasts={hasBroadcasts}/>
       </Grid>
     </Grid>
   )
@@ -204,22 +206,27 @@ const AggregatorContent = ({channel}) => {
         </Grid>
    */
 
+  const hasBroadcasts = mockupGetHasBroadcasts(channel)
+
   return (
     <div className={classes.aggregatorContent}>
       <Grid className={classes.gridConMain} container>
         <Grid className={classes.gridFullCol} item xs={12}>
-          <LogoAndTitle channel={channel} classes={classes} />
+          <LogoAndTitle channel={channel} hasBroadcasts={hasBroadcasts} classes={classes} />
           <div className={classes.bottomSectionScroller}>
             <div className={classes.bottomSection}>
               <BottomBlock titleStart={channel.title} titleRest="Podcasts" channelColor={channel.color}>
                 <FacetedPodcastTiles data={facet} />
               </BottomBlock>
-              <BottomBlock titleStart={channel.title} titleRest="Live Event Replays" channelColor={channel.color}>
-                <PreviousBroadcastsMockup
-                  className={classes.previousBroadcasts}
-                  channel={channel}
-                  channelColor={channel.color} />
-              </BottomBlock>
+              { hasBroadcasts && (
+                  <BottomBlock titleStart={channel.title} titleRest="Live Event Replays" channelColor={channel.color}>
+                    <PreviousBroadcastsMockup
+                      className={classes.previousBroadcasts}
+                      channel={channel}
+                      channelColor={channel.color} />
+                  </BottomBlock>
+                )
+              }
             </div>
           </div>
         </Grid>
