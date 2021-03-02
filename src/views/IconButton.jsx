@@ -27,65 +27,44 @@ const useStyles = makeStyles({
     },
     '&:active': {
       filter: 'none',
-      backgroundColor: Color(backgroundColor).lighten(0.25).string(),
+      backgroundColor: Color(backgroundColor).lighten(0.35).string(),
     },
   }),
-  iconButtonFilter: {
-  },
   ripple: {
-    position: 'absolute',
-    borderRadius: '50%',
-    transform: 'scale(0)',
-    animation: '$ripple 500ms linear',
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-  },
-  '@keyframes ripple': {
-    to: {
-      transform: 'scale(1)',
+    position: 'relative',
+    overflow: 'hidden',
+    transform: 'translate3d(0, 0, 0)',
+    '&:after': {
+      content: '""',
+      display: 'block',
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      top: 0,
+      left: 0,
+      pointerEvents: 'none',
+      backgroundImage: 'radial-gradient(circle, #000 10%, transparent 10.01%)',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: '50%',
+      transform: 'scale(10,10)',
       opacity: 0,
+      transition: 'transform .5s, opacity 1s',
+    },
+    '&:active:after': {
+      transform: 'scale(0,0)',
+      opacity: .2,
+      transition: '0s',
     },
   },
 })
-
-const addRippleCreator = (onClick, rippleClass) => event => {
-  const button = event.currentTarget
-
-  const circle = document.createElement('span')
-  const diameter = Math.min(button.clientHeight, button.clientWidth)
-  const radius = diameter / 2;
-
-  circle.style.width = circle.style.height = `${diameter}px`
-  circle.style.left = `${event.clientX - button.offsetLeft - radius}px`
-  circle.style.top = `${event.clientY - button.offsetTop - radius}px`
-  circle.classList.add(rippleClass)
-
-  const ripple = button.getElementsByClassName(rippleClass)[0];
-
-  if (ripple) {
-    ripple.remove();
-  }
-
-  button.appendChild(circle)
-
-  onClick()
-}
 
 export const makeIconButton = Icon => ({backgroundColor, color, onClick, size}) => {
   const classes = useStyles(({backgroundColor, color, size}))
 
   return (
     <Icon classes={{
-        outer: cx(classes.iconButton, classes.iconButtonFilter),
+        outer: cx(classes.iconButton, classes.ripple),
         inner: classes.icon
-      }} onClick={addRippleCreator(onClick, classes.ripple)} />
+      }} onClick={onClick} />
   )
 }
-
-// const IconButton = ({children, color, onClick, size}) => {
-// }
-//
-// IconButton.defaultProps = {
-//   size: '100%',
-// }
-//
-// export default IconButton
