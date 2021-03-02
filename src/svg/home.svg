@@ -8,5 +8,5 @@
         stroke-width="2"
         stroke-linecap="square"
 >
-    <path d="M2,22L8,22L8,15L16,15L16,22L22,22L22,10L12,2L2,10Z"/>
+    <path d="M2,22L8,22L8,12L16,12L16,22L22,22L22,10L12,2L2,10Z"/>
 </svg>

@@ -1,9 +1,8 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import cx from 'classnames'
+import Color from 'color'
 
 import { makeStyles } from '@material-ui/core/styles'
-import IconButton from '@material-ui/core/IconButton'
 
 import {
   IcoFastFwdStop,
@@ -17,9 +16,16 @@ import { actions, constants as storeConstants, selectors, thunks } from '../../s
 import * as consts from '../consts'
 import useStarred from '../../api/useStarred'
 
+import {makeIconButton} from '../IconButton'
+import ToggleImageButton from '../ToggleImageButton'
 import LogoButton from './LogoButton'
 import ProgressBox from './ProgressBox'
 import Title from './Title'
+
+const FastFwdStopButton = makeIconButton(IcoFastFwdStop)
+const ForwardStopButton = makeIconButton(IcoForwardStop)
+const PlusButton = makeIconButton(IcoPlus)
+const RewindStopButton = makeIconButton(IcoRewindStop)
 
 const useStyles = makeStyles(theme => ({
   audioControlsRow: {
@@ -35,8 +41,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   barsideButton: {
-    height: '2em',
-    width: '2em',
+    margin: '0.25em',
   },
   barsideButtonIcon: {
     transform: 'scaleY(0.5)',
@@ -48,6 +53,7 @@ const useStyles = makeStyles(theme => ({
     color: colors.magenta,
   },
   logoButton: {
+    margin: '0.25em',
     maxHeight: consts.AUDIO_CONTROLS_HEIGHT,
     maxWidth: consts.AUDIO_CONTROLS_HEIGHT,
   },
@@ -61,11 +67,9 @@ const useStyles = makeStyles(theme => ({
     height: '2.25em',
     width: '2.25em',
   },
-  nextButtonIcon: {
-    transform: 'scaleX(0.75) scaleY(0.5)',
-  },
   progressBoxFlex: {
     flex: 1,
+    marginTop: '0.25em',
   },
   progressRow: {
     display: 'flex',
@@ -77,18 +81,20 @@ const useStyles = makeStyles(theme => ({
   titleRow: {
     display: 'flex',
     flexDirection: 'row',
+    padding: '0.25em',
   },
 }))
 
 const AudioControls = () => {
   const classes = useStyles()
 
+  const audioMode = useSelector(selectors.getAudioMode)
   const podcastId = useSelector(selectors.getAudioPodcastId)
   const itemUrl = useSelector(selectors.getAudioUrl)
   const itemTitle = useSelector(selectors.getAudioTitle)
 
   const isDisabled = !itemUrl
-  const buttonColorClass = isDisabled ? classes.disabledButtonColor : classes.enabledButtonColor
+  const buttonColor = isDisabled ? colors.darkGray : colors.magenta
 
   const dispatch = useDispatch()
 
@@ -98,6 +104,10 @@ const AudioControls = () => {
   const titleOnclick = () => {
     dispatch(actions.pushHistory(`/podcast/${podcastId}`))
   }
+
+  const popOnclick = audioMode === storeConstants.AUDIO_MODE_PLAY
+    ? () => dispatch(actions.pauseAudio())
+    : () => dispatch(actions.playAudio())
 
   const forwardButtonOnclick = () => {
     console.log('forward')
@@ -119,32 +129,45 @@ const AudioControls = () => {
     dispatch(actions.replayAudio())
   }
 
-  const audioMode = useSelector(selectors.getAudioMode)
+  const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
 
   return (
     <div className={classes.audioControlsRow}>
-      <LogoButton className={classes.logoButton}
-                  playing={audioMode === storeConstants.AUDIO_MODE_PLAY} />
+      <ToggleImageButton className={classes.logoButton}
+                         size="5em"
+                         on={audioMode === storeConstants.AUDIO_MODE_PLAY}
+                         onClick={popOnclick}
+                         onImage="/img/logo_pause.png"
+                         offImage="/img/logo_play.png"
+                         shadowColor={buttonShadowColor} />
       <div className={classes.mainColumn}>
         <div className={classes.titleRow}>
-          <IconButton className={classes.nextButton} onClick={plusButtonOnclick} disabled={isDisabled}>
-            <IcoPlus classes={{inner:buttonColorClass}} />
-          </IconButton >
+          <PlusButton color={buttonColor}
+                      size="2em"
+                      onClick={plusButtonOnclick}
+                      shadowColor={buttonShadowColor} />
           <Title title={itemTitle} onClick={titleOnclick} />
-          <IconButton className={classes.nextButton} onClick={nextButtonOnclick} disabled={isDisabled}>
-            <IcoForwardStop classes={{inner:cx(classes.nextButtonIcon, buttonColorClass)}} strokeWidth={4} />
-          </IconButton >
+          <ForwardStopButton color={buttonColor}
+                             size="1.75em"
+                             onClick={nextButtonOnclick}
+                             shadowColor={buttonShadowColor} />
         </div>
         <div className={classes.progressRow}>
-          <IconButton className={classes.barsideButton} onClick={replayButtonOnclick} size="small" disabled={isDisabled}>
-            <IcoRewindStop classes={{inner:cx(classes.barsideButtonIcon, buttonColorClass)}} />
-          </IconButton >
+          <RewindStopButton className={classes.barsideButton}
+                            iconClassName={classes.barsideButtonIcon}
+                            color={buttonColor}
+                            size="1.5em"
+                            onClick={replayButtonOnclick}
+                            shadowColor={buttonShadowColor} />
           <div className={classes.progressBoxFlex}>
             <ProgressBox />
           </div>
-          <IconButton className={classes.barsideButton} onClick={forwardButtonOnclick} size="small" disabled={isDisabled}>
-            <IcoFastFwdStop classes={{inner:cx(classes.barsideButtonIcon, buttonColorClass)}} />
-          </IconButton >
+          <FastFwdStopButton className={classes.barsideButton}
+                             iconClassName={classes.barsideButtonIcon}
+                             color={buttonColor}
+                             size="1.5em"
+                             onClick={forwardButtonOnclick}
+                             shadowColor={buttonShadowColor} />
         </div>
       </div>
     </div>

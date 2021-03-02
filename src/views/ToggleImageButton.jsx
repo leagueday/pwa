@@ -7,16 +7,15 @@ import { makeStyles } from '@material-ui/core/styles'
 import * as colors from '../styling/colors'
 
 const useStyles = makeStyles({
-  icon: {
-    height: '65%',
-    width: '65%',
+  image: {
+    width: '70%',
+    height: '70%',
   },
-  iconButton: ({backgroundColor, color, shadowColor, size}) => ({
+  imageButton: ({backgroundColor, shadowColor, size}) => ({
     alignItems: 'center',
     backgroundColor: backgroundColor,
     borderRadius: '50%',
     borderWidth: 0,
-    color: color,
     cursor: 'pointer',
     display: 'flex',
     filter: `drop-shadow(1px 1px 4px ${shadowColor})`,
@@ -60,25 +59,29 @@ const useStyles = makeStyles({
   },
 })
 
-export const makeIconButton = Icon => {
-  const Component = ({backgroundColor, color, onClick, shadowColor, size, className, iconClassName}) => {
-    const classes = useStyles(({backgroundColor, color, shadowColor, size}))
+const ToggleImageButton = ({ className,
+                             backgroundColor,
+                             size,
+                             on,
+                             onClick,
+                             onImage,
+                             offImage,
+                             shadowColor,
+                           }) => {
+  const classes = useStyles(({backgroundColor, shadowColor, size}))
 
-    return (
-      <Icon classes={{
-        outer: cx(classes.iconButton, classes.ripple, className),
-        inner: cx(classes.icon, iconClassName)
-      }} onClick={onClick} />
-    )
-  }
-
-  Component.defaultProps = {
-    backgroundColor: colors.brandBlack,
-    color: colors.magenta,
-    onClick: null,
-    shadowColor: 'black',
-    size: '2em',
-  }
-
-  return Component
+  return (
+    <div className={cx(classes.imageButton, className)} onClick={onClick}>
+      <img className={classes.image} src={on ? onImage : offImage} />
+    </div>
+  )
 }
+
+ToggleImageButton.defaultProps = {
+  backgroundColor: colors.brandBlack,
+  on: false,
+  shadowColor: colors.black,
+  size: '2em',
+}
+
+export default ToggleImageButton
