@@ -115,6 +115,24 @@ const Element = ({classes, imageUrl, text, title, onClick}) => (
   </div>
 )
 
+const debounce = minIntervalMs => {
+  let wait = false
+
+  return f => (...args) => {
+      if (wait) return
+
+      wait = true
+      setTimeout(
+        () => { wait = false },
+        minIntervalMs
+      )
+
+      f(...args)
+    }
+  }
+
+const db500 = debounce(500)
+
 const Banner = ({primaryColor}) => {
   const {data} = useHomeBanner()
 
@@ -145,7 +163,7 @@ const Banner = ({primaryColor}) => {
       { imageUrl && (
           <SideButtons
             currentIndex={currentIndex}
-            setCurrentIndex={setCurrentIndex}
+            setCurrentIndex={db500(setCurrentIndex)}
             numElements={data.length}
             primaryColor={accentColor}>
               <TransitionGroup>
