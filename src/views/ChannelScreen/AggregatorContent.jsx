@@ -108,10 +108,10 @@ const Headline = ({channel, classes}) => {
 const LogoAndTitle = ({channel, classes}) => {
   return (
     <Grid container>
-      <Grid item xs={6} sm={4} md={4}>
+      <Grid item xs={6} sm={4} lg={3}>
         <Logo channel={channel} classes={classes} />
       </Grid>
-      <Grid className={classes.headlineGridItem} item xs={12} sm={8} md={8}>
+      <Grid className={classes.headlineGridItem} item xs={12} sm={8} lg={9}>
         <Headline channel={channel} classes={classes} />
       </Grid>
     </Grid>
