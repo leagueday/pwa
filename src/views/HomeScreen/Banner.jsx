@@ -89,7 +89,7 @@ const Banner = ({primaryColor}) => {
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
             numElements={data.length}
-            primaryColor={primaryColor}>
+            primaryColor={accentColor}>
             <Element classes={classes} text={text} title={title} imageUrl={imageUrl} onClick={onClick} />
           </SideButtons>
         )
