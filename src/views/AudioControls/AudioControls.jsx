@@ -56,6 +56,7 @@ const useStyles = makeStyles(theme => ({
     margin: '0.25em',
     maxHeight: consts.AUDIO_CONTROLS_HEIGHT,
     maxWidth: consts.AUDIO_CONTROLS_HEIGHT,
+    userSelect: 'none',
   },
   mainColumn: {
     display: 'flex',

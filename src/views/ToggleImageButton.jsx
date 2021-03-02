@@ -72,7 +72,7 @@ const ToggleImageButton = ({ className,
 
   return (
     <div className={cx(classes.imageButton, className)} onClick={onClick}>
-      <img className={classes.image} src={on ? onImage : offImage} />
+      <img className={classes.image} src={on ? onImage : offImage} draggable="false" />
     </div>
   )
 }
