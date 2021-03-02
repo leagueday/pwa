@@ -9,6 +9,7 @@ import {actions} from '../../store'
 import useHomeBanner from '../../api/useHomeBanner'
 
 import DotNavigator from './DotNavigator'
+import SideButtons from './SideButtons'
 
 const useStyles = makeStyles(theme => ({
   element: {
@@ -27,6 +28,9 @@ const useStyles = makeStyles(theme => ({
   image: {
     width: '100%',
     minHeight: '100%',
+  },
+  sideButtons: {
+
   },
   text: {
     cursor: 'pointer',
@@ -82,15 +86,13 @@ const Banner = ({primaryColor}) => {
   return (
     <div className={classes.homeBanner}>
       { imageUrl && (
-          <>
+          <SideButtons
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
+            numElements={data.length}
+            primaryColor={primaryColor}>
             <Element classes={classes} text={text} title={title} imageUrl={imageUrl} onClick={onClick} />
-            <DotNavigator
-              currentIndex={currentIndex}
-              setCurrentIndex={setCurrentIndex}
-              numElements={data.length}
-              primaryColor={primaryColor}
-            />
-          </>
+          </SideButtons>
         )
       }
     </div>
