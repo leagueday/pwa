@@ -13,6 +13,7 @@ const useStyles = makeStyles({
     flexGrow: 1,
     flexShrink: 1,
     overflow: 'auto',
+    paddingRight: '0.25em',
     width: '100%',
   }),
   content: {
@@ -20,7 +21,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    padding: '0.25em',
+    paddingLeft: '0.25em',
   },
   topSection: {
     flexShrink: 0,
@@ -39,20 +40,24 @@ const useStyles = makeStyles({
   },
 })
 
-const ContentLayout = ({channelColor, children, renderTopLeft, renderTopRight}) => {
+const ContentLayout = ({channelColor, children, renderTop, renderTopLeft, renderTopRight}) => {
   const classes = useStyles({channelColor})
 
   return (
     <div className={classes.content}>
       <div className={classes.topSection}>
-        <Grid container>
-          <Grid item xs={6} sm={4} lg={3}>
-            {renderTopLeft()}
-          </Grid>
-          <Grid className={classes.topRightGridItem} item xs={12} sm={8} lg={9}>
-            {renderTopRight()}
-          </Grid>
-        </Grid>
+        {
+          renderTop ? renderTop() : (
+            <Grid container>
+              <Grid item xs={6} sm={4} lg={3}>
+                {renderTopLeft()}
+              </Grid>
+              <Grid className={classes.topRightGridItem} item xs={12} sm={8} lg={9}>
+                {renderTopRight()}
+              </Grid>
+            </Grid>
+          )
+        }
       </div>
       <div className={classes.bottomSection}>
         {children}

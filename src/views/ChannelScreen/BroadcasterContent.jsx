@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid'
 
 import useFacets from '../../api/useFacets'
 import { addScrollStyle } from '../util'
+import ContentLayout from '../ContentLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import BottomBlock from './BottomBlock'
 import BroadcasterTextPlate from './BroadcasterTextPlate'
@@ -14,18 +15,7 @@ import PreviousBroadcastsMockup from './PreviousBroadcastsMockup'
 
 const useStyles = makeStyles({
   bottomBlockItem: { },
-  bottomGrid: ({channelColor}) => addScrollStyle(channelColor)({
-    flex: 1,
-    height: '100%',
-    overflow: 'auto',
-  }),
-  broadcasterContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    paddingLeft: '1em',
-    paddingTop: '1em',
-  },
+  bottomGrid: { },
   children: {
     padding: '1em',
   },
@@ -33,8 +23,6 @@ const useStyles = makeStyles({
     maxHeight: '100%',
     minHeight: 0,
   },
-  favoritePodcasts: {
-    marginBottom: '1em',},
   image: {
     height: '100%',
     width: '100%',
@@ -44,6 +32,7 @@ const useStyles = makeStyles({
   },
   imageTitleGrid: {
     flex: 0,
+    paddingTop: '0.25em',
   },
   liveness: {
     marginBottom: '1em',
@@ -74,35 +63,45 @@ const useStyles = makeStyles({
   },
 })
 
+const TopSection = ({classes, channel}) => (
+  <Grid className={classes.imageTitleGrid} container>
+    <Grid className={classes.topLeftGridItem} item xs={12} md={6} lg={4} xl={3}>
+      <Grid className={classes.topLeftGrid} container>
+        <Grid className={classes.imageGridItem} item xs={12}>
+          <img className={classes.image} src={channel.imageUrl} />
+        </Grid>
+        <Grid className={classes.livenessGridItem} item xs={12}>
+          <Liveness className={classes.liveness} />
+        </Grid>
+      </Grid>
+    </Grid>
+    <Grid className={classes.topRightGridItem} item xs={12} md={6} lg={8} xl={9}>
+      <Grid className={classes.topRightGrid} container>
+        <Grid className={classes.titleBioGridItem} item xs={12}>
+          <BroadcasterTextPlate channel={channel} className={classes.textPlate}/>
+        </Grid>
+        <Grid className={classes.childrenGridItem} item xs={12}>
+          <ChannelChildren className={classes.children} childTags={channel.children} />
+        </Grid>
+      </Grid>
+    </Grid>
+  </Grid>
+)
+
 const BroadcasterContent = ({channel}) => {
   const classes = useStyles({channelColor: channel.color})
 
   const facetedPodcasts = useFacets(channel.tag)
 
   return (
-    <div className={classes.broadcasterContent}>
-      <Grid className={classes.imageTitleGrid} container>
-        <Grid className={classes.topLeftGridItem} item xs={12} md={6} lg={4} xl={3}>
-          <Grid className={classes.topLeftGrid} container>
-            <Grid className={classes.imageGridItem} item xs={12}>
-              <img className={classes.image} src={channel.imageUrl} />
-            </Grid>
-            <Grid className={classes.livenessGridItem} item xs={12}>
-              <Liveness className={classes.liveness} />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid className={classes.topRightGridItem} item xs={12} md={6} lg={8} xl={9}>
-          <Grid className={classes.topRightGrid} container>
-            <Grid className={classes.titleBioGridItem} item xs={12}>
-              <BroadcasterTextPlate channel={channel} className={classes.textPlate}/>
-            </Grid>
-            <Grid className={classes.childrenGridItem} item xs={12}>
-              <ChannelChildren className={classes.children} childTags={channel.children} />
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+    <ContentLayout
+      channelColor={channel.color}
+      renderTop={
+        () => (
+          <TopSection channel={channel} classes={classes} />
+        )
+      }
+    >
       <Grid className={classes.bottomGrid} container>
         <Grid className={classes.bottomBlockItem} item xs={12}>
           <BottomBlock titleStart="Previous" titleRest="Broadcasts" channelColor={channel.color}>
@@ -119,7 +118,7 @@ const BroadcasterContent = ({channel}) => {
           </BottomBlock>
         </Grid>
       </Grid>
-    </div>
+    </ContentLayout>
   )
 }
 

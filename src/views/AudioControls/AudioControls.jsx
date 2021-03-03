@@ -18,7 +18,6 @@ import useStarred from '../../api/useStarred'
 
 import {makeIconButton} from '../IconButton'
 import ToggleImageButton from '../ToggleImageButton'
-import LogoButton from './LogoButton'
 import ProgressBox from './ProgressBox'
 import Title from './Title'
 
@@ -53,10 +52,16 @@ const useStyles = makeStyles(theme => ({
     color: colors.magenta,
   },
   logoButton: {
-    margin: '0.25em',
+    marginLeft: '0.5em',
     maxHeight: consts.AUDIO_CONTROLS_HEIGHT,
     maxWidth: consts.AUDIO_CONTROLS_HEIGHT,
     userSelect: 'none',
+  },
+  logoButtonCenter: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   mainColumn: {
     display: 'flex',
@@ -134,13 +139,15 @@ const AudioControls = () => {
 
   return (
     <div className={classes.audioControlsRow}>
-      <ToggleImageButton className={classes.logoButton}
-                         size="5em"
-                         on={audioMode === storeConstants.AUDIO_MODE_PLAY}
-                         onClick={popOnclick}
-                         onImage="/img/logo_pause.png"
-                         offImage="/img/logo_play.png"
-                         shadowColor={buttonShadowColor} />
+      <div className={classes.logoButtonCenter}>
+        <ToggleImageButton className={classes.logoButton}
+                           size="5em"
+                           on={audioMode === storeConstants.AUDIO_MODE_PLAY}
+                           onClick={popOnclick}
+                           onImage="/img/logo_pause.png"
+                           offImage="/img/logo_play.png"
+                           shadowColor={buttonShadowColor} />
+      </div>
       <div className={classes.mainColumn}>
         <div className={classes.titleRow}>
           <PlusButton color={buttonColor}
