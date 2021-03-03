@@ -91,16 +91,16 @@ const useSlideTransitionGroup = makeStyles({
   },
   exit: {
     overflow: 'hidden',
-    transform: 'translateX(0%)'
+    transform: 'translateX(0%)',
   },
   exitActive: ({isSlidingLeft}) => isSlidingLeft ? {
     overflow: 'hidden',
     transform: 'translateX(-100%)',
-    transition: 'transform 500ms ease-in-out'
+    transition: 'transform 500ms ease-in-out',
   } : {
     overflow: 'hidden',
     transform: 'translateX(100%)',
-    transition: 'transform 500ms ease-in-out'
+    transition: 'transform 500ms ease-in-out',
   },
   exitDone: {
   }
@@ -152,7 +152,6 @@ const Banner = ({primaryColor}) => {
   // slides left when the index is increasing, wraparound notwithstanding
   const isSlidingLeft =
     (currentIndex === 0 && prevIndex === numElements - 1)
-    // (currentIndex === numElements - 1 && prevIndex === 0)
     || (currentIndex > prevIndex && (currentIndex !== numElements - 1 || prevIndex !== 0))
 
   const slideTransition = useSlideTransitionGroup({isSlidingLeft})
