@@ -23,6 +23,7 @@ const usePrevious = value => {
 
 const useStyles = makeStyles(theme => ({
   element: {
+    cursor: 'pointer',
     height: '20em',
     overflow: 'hidden',
     position: 'relative',
@@ -40,7 +41,6 @@ const useStyles = makeStyles(theme => ({
     minHeight: '100%',
   },
   text: {
-    cursor: 'pointer',
     fontSize: '90%',
     fontWeight: theme.typography.weight.bold,
   },
@@ -59,7 +59,6 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   }),
   title: ({accentColor}) => ({
-    cursor: 'pointer',
     color: accentColor,
     fontWeight: theme.typography.weight.bold,
   }),
@@ -85,7 +84,8 @@ const useSlideTransitionGroup = makeStyles({
     position: 'absolute',
     overflow: 'hidden',
     transform: 'translateX(0%)',
-    transition: 'transform 500ms ease-in-out'
+    transition: 'transform 500ms ease-in-out',
+    width: '100%',
   },
   enterDone: {
   },
@@ -107,10 +107,10 @@ const useSlideTransitionGroup = makeStyles({
 })
 
 const Element = ({classes, imageUrl, text, title, onClick}) => (
-  <div className={classes.element}>
+  <div className={classes.element} onClick={onClick}>
     <img className={classes.image} src={imageUrl} draggable="false" />
     <div className={classes.textGroup}>
-      <div className={classes.title} onClick={onClick}>{title}</div>
+      <div className={classes.title}>{title}</div>
       <div className={classes.text} onClick={onClick}>{text}</div>
     </div>
   </div>
