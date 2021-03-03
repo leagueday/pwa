@@ -79,7 +79,8 @@ const useSlideTransitionGroup = makeStyles({
     position: 'absolute',
     overflow: 'hidden',
     transform: 'translateX(0%)',
-    transition: 'transform 500ms ease-in-out'
+    transition: 'transform 500ms ease-in-out',
+    width: '100%',
   } : {
     position: 'absolute',
     overflow: 'hidden',
