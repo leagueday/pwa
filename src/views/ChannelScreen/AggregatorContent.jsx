@@ -170,14 +170,14 @@ const AggregatorContent = ({channel}) => {
   const classes = useStyles({channelColor: channel.color})
 
   const facets = useFacets(channel.tag)
-  const firstFacet = facets ? facets.values().next()?.value : null
-  // console.log(JSON.stringify(firstFacet, null, 2))
-  const facet = new Map([
-      [
-        '',
-        Array.isArray(firstFacet) ? firstFacet : []
-      ]
-    ])
+  // const firstFacet = facets ? facets.values().next()?.value : null
+  // // console.log(JSON.stringify(firstFacet, null, 2))
+  // const facet = new Map([
+  //     [
+  //       '',
+  //       Array.isArray(firstFacet) ? firstFacet : []
+  //     ]
+  //   ])
 
   // const firstPartFacet = facet.slice(0, firstPartNumCells)
   // const restFacet = facet.slice(firstPartNumCells)
@@ -216,7 +216,7 @@ const AggregatorContent = ({channel}) => {
           <div className={classes.bottomSectionScroller}>
             <div className={classes.bottomSection}>
               <BottomBlock titleStart={channel.title} titleRest="Podcasts" channelColor={channel.color}>
-                <FacetedPodcastTiles data={facet} />
+                <FacetedPodcastTiles data={facets} />
               </BottomBlock>
               { hasBroadcasts && (
                   <BottomBlock titleStart={channel.title} titleRest="Live Event Replays" channelColor={channel.color}>

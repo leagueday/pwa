@@ -69,7 +69,7 @@ const useSlideTransitionGroup = makeStyles({
   enter: ({isSlidingLeft}) => isSlidingLeft ? {
     position: 'absolute',
     overflow: 'hidden',
-    transform: 'translateX(95%)',
+    transform: 'translateX(100%)',
   } : {
     position: 'absolute',
     overflow: 'hidden',
