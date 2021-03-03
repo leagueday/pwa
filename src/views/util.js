@@ -1,5 +1,6 @@
 import Color from 'color'
 import stringStripHtml from 'string-strip-html'
+import * as colors from '../styling/colors'
 
 export const addScrollStyle = scrollbarColor => styleClassInitializer => ({
   ...styleClassInitializer,
@@ -20,6 +21,14 @@ export const addScrollStyle = scrollbarColor => styleClassInitializer => ({
     webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
   },
 })
+
+export const makeNextColor =  () => (
+    (colorList, offset) => () => {
+      const result = colorList[offset]
+      offset = offset + 1 === colorList.length ? 0 : offset + 1
+      return result
+    }
+  )([colors.cyan, colors.blue, colors.violet, colors.magenta, colors.orange, colors.yellow], 0)
 
 export const stripHtml =
     maybeHtmlString => {

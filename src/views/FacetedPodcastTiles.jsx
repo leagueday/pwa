@@ -3,6 +3,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../styling/colors'
+import { makeNextColor } from './util'
 import PodcastTile from './PodcastTile'
 
 const useStyles = makeStyles(theme => ({
@@ -42,13 +43,7 @@ const FacetedPodcastTiles = ({data}) => {
 
   const entries = data ? Array.from(data.entries()) : []
 
-  const nextColor = (
-    (colorList, offset) => () => {
-      const result = colorList[offset]
-      offset = offset + 1 === colorList.length ? 0 : offset + 1
-      return result
-    }
-  )([colors.cyan, colors.blue, colors.violet, colors.magenta, colors.orange, colors.yellow], 0)
+  const nextColor = makeNextColor()
 
   return (
     <div className={classes.facetedPodcastTiles}>

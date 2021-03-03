@@ -34,6 +34,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: 0,
+    width: '100%',
   },
   basicLayoutRow: {
     alignItems: 'stretch',
