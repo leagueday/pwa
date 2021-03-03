@@ -58,7 +58,7 @@ const MyPodcasts = () => {
   const starredPodcasts = isStarsEmpty ? [] : podcasts.filter(podcast => isStar(podcast.id))
 
   const dispatch = useDispatch()
-  const makeGotoThisPodcast = podcastId => () => dispatch(actions.pushHistory(`/podcast/${podcastId}`))
+  const makeGotoThisPodcast = podcastId => () => dispatch(actions.pushHistory(`/podcast2/${podcastId}`))
 
   const locationPathname = useLocationPathname()
 
