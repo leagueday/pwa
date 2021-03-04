@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import Color from 'color'
 
 import { makeStyles } from '@material-ui/core/styles'
+import Collapse from '@material-ui/core/Collapse'
 import Hidden from '@material-ui/core/Hidden'
 
 import * as colors from '../../styling/colors'
@@ -38,9 +39,31 @@ const useStyles = makeStyles(theme => ({
     padding: '0em 1em',
     whiteSpace: 'nowrap',
   },
-  item: ({accentColor, backgroundColor}) => ({
-    alignItems: 'center',
+  item: ({backgroundColor}) => ({
     backgroundColor,
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+  }),
+  itemDescription: {
+    alignItems: 'center',
+    marginBottom: '0.25em',
+    width: '100%',
+    userSelect: 'none',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 0.5em',
+    },
+    [theme.breakpoints.up('md')]: {
+      padding: '0 4em',
+    },
+  },
+  itemNumber: {
+    color: colors.white30,
+    padding: '0 1em',
+    fontFamily: theme.typography.family.secondary,
+  },
+  itemRow: ({accentColor}) => ({
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     height: '2em',
@@ -51,11 +74,6 @@ const useStyles = makeStyles(theme => ({
       color: accentColor,
     },
   }),
-  itemNumber: {
-    color: colors.white30,
-    padding: '0 1em',
-    fontFamily: theme.typography.family.secondary,
-  },
   popButton: {
     backgroundColor: null,
   },
@@ -81,10 +99,17 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+    width: '100%',
   },
 }))
 
-const Item = ({accentColor, podcastId, podcastUrl, item, itemIndex}) => {
+const Item = ({ accentColor,
+                podcastId,
+                podcastUrl,
+                item,
+                itemIndex,
+                isExpanded,
+                toggleIsExpanded }) => {
   const classes = useStyles({accentColor, backgroundColor: computeBackgroundColor(itemIndex)})
 
   const itemAudioUrl = itemSelectors.v2.audioUrl(item)
@@ -103,6 +128,11 @@ const Item = ({accentColor, podcastId, podcastUrl, item, itemIndex}) => {
   const strippedTitle = React.useMemo(
     () => stripHtml(title),
     [title]
+  )
+
+  const strippedDescription = React.useMemo(
+    () => stripHtml(description),
+    [description]
   )
 
   const formattedPubDate = React.useMemo(
@@ -131,30 +161,37 @@ const Item = ({accentColor, podcastId, podcastUrl, item, itemIndex}) => {
     }
 
   return (
-    <div className={classes.item}>
-      <PopButton
-        className={classes.popButton}
-        iconClassName={classes.popButtonIcon}
-        size="1.5em"
-        onClick={onPopClick}
-        color={colors.white}
-        shadowColor={colors.darkGray} />
-      <div className={classes.itemNumber}>
-        {itemIndex < 9 ? `0${itemIndex+1}` : String(itemIndex+1)}
-      </div>
-      <div className={classes.title}>
-        {strippedTitle}
-      </div>
-      <Hidden smDown>
-        <div className={classes.rightJustified}>
-          <div className={classes.attribute}>
-            {formattedPubDate}
-          </div>
-          <div className={classes.attribute}>
-            {durationHms}
-          </div>
+    <div className={classes.item} onClick={toggleIsExpanded}>
+      <div className={classes.itemRow}>
+        <PopButton
+          className={classes.popButton}
+          iconClassName={classes.popButtonIcon}
+          size="1.5em"
+          onClick={onPopClick}
+          color={colors.white}
+          shadowColor={colors.darkGray} />
+        <div className={classes.itemNumber}>
+          {itemIndex < 9 ? `0${itemIndex+1}` : String(itemIndex+1)}
         </div>
-      </Hidden>
+        <div className={classes.title}>
+          {strippedTitle}
+        </div>
+        <Hidden smDown>
+          <div className={classes.rightJustified}>
+            <div className={classes.attribute}>
+              {formattedPubDate}
+            </div>
+            <div className={classes.attribute}>
+              {durationHms}
+            </div>
+          </div>
+        </Hidden>
+      </div>
+      <Collapse in={isExpanded}>
+        <div className={classes.itemDescription}>
+          {strippedDescription}
+        </div>
+      </Collapse>
     </div>
   )
 }

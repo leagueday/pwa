@@ -108,6 +108,8 @@ const TextPlate = ({classes, title, description}) => (
 )
 
 const Content = ({podcast}) => {
+  const [expandedIndex, setExpandedIndex] = React.useState()
+
   const podcastColor = React.useMemo(
     () => maybeMakeUpColor(podcast?.url, podcast?.color),
     [podcast?.url, podcast?.color]
@@ -158,6 +160,11 @@ const Content = ({podcast}) => {
   //     dispatch(actions.playAudio())
   //   }
 
+  const makeToggleIsExpanded = itemIndex =>
+    expandedIndex === itemIndex
+      ? () => { setExpandedIndex(null) }
+      : () => { setExpandedIndex(itemIndex) }
+
   return (
     <ContentLayout
       accentColor={podcastColor}
@@ -176,19 +183,25 @@ const Content = ({podcast}) => {
               // Here the React key is inadvisably the track offset
               // in the list, it's not great and is strictly as good
               // as the Next-Track feature...
-              let itemIndex = -1
+              let itemIndex = 0
 
               return items.map(
-                item => (
-                  <Item
-                    key={itemIndex++}
-                    accentColor={podcastColor}
-                    podcastId={podcast?.id}
-                    podcastUrl={podcast?.url}
-                    item={item}
-                    itemIndex={itemIndex}
-                  />
-                )
+                item => {
+                  const result = (<Item
+                      key={itemIndex}
+                      accentColor={podcastColor}
+                      podcastId={podcast?.id}
+                      podcastUrl={podcast?.url}
+                      item={item}
+                      itemIndex={itemIndex}
+                      isExpanded={expandedIndex === itemIndex}
+                      toggleIsExpanded={makeToggleIsExpanded(itemIndex)}
+                    />)
+
+                  itemIndex++
+
+                  return result
+                }
               )
             })()
           }
