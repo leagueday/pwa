@@ -3,7 +3,7 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import * as colors from '../../styling/colors'
+import * as colors from '../styling/colors'
 
 const useStyles = makeStyles(theme => ({
   bottomBlock: {
@@ -12,8 +12,8 @@ const useStyles = makeStyles(theme => ({
   children: {
     marginBottom: '0.5em',
   },
-  pinStripe: ({channelColor}) => ({
-    borderBottom: `0.2em solid ${channelColor ?? colors.white80}`,
+  pinStripe: ({accentColor}) => ({
+    borderBottom: `0.2em solid ${accentColor ?? colors.white80}`,
   }),
   rhsCell: {
     height: '50%',
@@ -23,14 +23,18 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
+    flexGrow: 1,
+    flexShrink: 1,
     height: '100%',
-    marginLeft: 'auto',
     paddingLeft: '1em',
-    width: '100%',
   },
   title: {
+    flexGrow: 0,
+    flexShrink: 1,
     fontSize: '150%',
     fontWeight: theme.typography.weight.bold,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
   titleRow: {
@@ -38,10 +42,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     marginBottom: '1em',
+    maxWidth: '100%',
     width: '100%',
   },
-  titleStart: ({channelColor}) => ({
-    color: channelColor
+  titleStart: ({accentColor}) => ({
+    color: accentColor
   }),
 }))
 
@@ -64,6 +69,10 @@ const BottomBlock = props => {
       </div>
     </div>
   )
+}
+
+BottomBlock.defaultProps = {
+  accentColor: colors.white80,
 }
 
 export default BottomBlock

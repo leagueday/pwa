@@ -9,7 +9,7 @@ import {addScrollStyle} from './util'
 // Top-Left/Right and Bottom-Scroller
 
 const useStyles = makeStyles({
-  bottomSection: ({channelColor}) => addScrollStyle(channelColor)({
+  bottomSection: ({accentColor}) => addScrollStyle(accentColor)({
     flexGrow: 1,
     flexShrink: 1,
     overflow: 'auto',
@@ -27,11 +27,6 @@ const useStyles = makeStyles({
     flexShrink: 0,
     width: '100%',
   },
-  gridFullCol2: ({channelColor}) => addScrollStyle(channelColor)({
-    flexShrink: 1,
-    overflow: 'auto',
-    width: '100%',
-  }),
   topRightGridItem: {
     alignItems: 'flex-start',
     display: 'flex',
@@ -40,8 +35,8 @@ const useStyles = makeStyles({
   },
 })
 
-const ContentLayout = ({channelColor, children, renderTop, renderTopLeft, renderTopRight}) => {
-  const classes = useStyles({channelColor})
+const ContentLayout = ({accentColor, children, renderTop, renderTopLeft, renderTopRight}) => {
+  const classes = useStyles({accentColor})
 
   return (
     <div className={classes.content}>
@@ -67,7 +62,7 @@ const ContentLayout = ({channelColor, children, renderTop, renderTopLeft, render
 }
 
 ContentLayout.defaultProps = {
-  channelColor: colors.white80,
+  accentColor: colors.white80,
 }
 
 export default ContentLayout

@@ -4,10 +4,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 
 import useFacets from '../../api/useFacets'
-import { addScrollStyle } from '../util'
+import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
-import BottomBlock from './BottomBlock'
 import BroadcasterTextPlate from './BroadcasterTextPlate'
 import ChannelChildren from './ChannelChildren'
 import Liveness from './Liveness'
@@ -95,7 +94,7 @@ const BroadcasterContent = ({channel}) => {
 
   return (
     <ContentLayout
-      channelColor={channel.color}
+      accentColor={channel.color}
       renderTop={
         () => (
           <TopSection channel={channel} classes={classes} />
@@ -104,7 +103,7 @@ const BroadcasterContent = ({channel}) => {
     >
       <Grid className={classes.bottomGrid} container>
         <Grid className={classes.bottomBlockItem} item xs={12}>
-          <BottomBlock titleStart="Previous" titleRest="Broadcasts" channelColor={channel.color}>
+          <BottomBlock accentColor={channel.color} titleStart="Previous" titleRest="Broadcasts">
             <PreviousBroadcastsMockup
               className={classes.previousBroadcasts}
               channel={channel}
@@ -113,7 +112,7 @@ const BroadcasterContent = ({channel}) => {
           </BottomBlock>
         </Grid>
         <Grid className={classes.bottomBlockItem} item xs={12}>
-          <BottomBlock titleStart="Top" titleRest="Podcasts" channelColor={channel.color}>
+          <BottomBlock accentColor={channel.color} titleStart="Top" titleRest="Podcasts">
             <FacetedPodcastTiles data={facetedPodcasts} />
           </BottomBlock>
         </Grid>
