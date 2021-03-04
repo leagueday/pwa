@@ -59,7 +59,10 @@ const SideNav = () => {
   return (
     <div className={classes.sideNav}>
       <div className={classes.controls}>
-        <HomeButton onClick={goHome} size="2em" color={colors.cyan} backgroundColor={colors.brandBlack}/>
+        <HomeButton onClick={goHome}
+                    size="2em"
+                    color={colors.cyan}
+                    backgroundColor={colors.brandBlack} />
       </div>
       <SearchLozenge />
       <LiveAndUpcomingLozenge className={classes.lozenge} />

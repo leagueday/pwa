@@ -22,13 +22,22 @@ export const addScrollStyle = scrollbarColor => styleClassInitializer => ({
   },
 })
 
-export const makeNextColor =  () => (
-    (colorList, offset) => () => {
-      const result = colorList[offset]
-      offset = offset + 1 === colorList.length ? 0 : offset + 1
+export const cycleColorSequence = [
+  colors.cyan,
+  colors.blue,
+  colors.violet,
+  colors.magenta,
+  colors.orange,
+  colors.yellow
+]
+
+export const makeNextColor = () => (
+    offset => () => {
+      const result = cycleColorSequence[offset]
+      offset = offset + 1 === cycleColorSequence.length ? 0 : offset + 1
       return result
     }
-  )([colors.cyan, colors.blue, colors.violet, colors.magenta, colors.orange, colors.yellow], 0)
+  )(0)
 
 export const stripHtml =
     maybeHtmlString => {

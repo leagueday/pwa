@@ -1,7 +1,7 @@
 import React from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 
-import {makeNextColor} from './util'
+import {cycleColorSequence} from './util'
 
 const useStyles = makeStyles(theme => ({
   loading: {
@@ -17,18 +17,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const cycleColorsSequence = (
-  () => {
-    const nextColor = makeNextColor()
-    const result = [nextColor()]
-
-    for (let nC = nextColor(); nC !== result[0]; nC = nextColor())
-      result.push(nC)
-
-    return result
-  }
-)()
-
 // x cycles/second
 // 1/x s/cycle
 // 1000/x ms/cycle
@@ -36,7 +24,7 @@ const makeCounter = (cycleRate, state, setState) => {
   let stopped = false
   let intervalId = null
 
-  const max = cycleColorsSequence.length - 1
+  const max = cycleColorSequence.length - 1
 
   intervalId = setInterval(
     () => {
@@ -51,8 +39,8 @@ const makeCounter = (cycleRate, state, setState) => {
   }
 }
 
-const makeColorize = (nextColor, s) => {
-  const numColors = cycleColorsSequence.length
+const makeColorize = s => {
+  const numColors = cycleColorSequence.length
   const sa = Array.from(s)
 
   return iteration => (<>{(() => {
@@ -61,7 +49,7 @@ const makeColorize = (nextColor, s) => {
         let i = iteration
 
         for (let c of sa) {
-          const color = cycleColorsSequence[i]
+          const color = cycleColorSequence[i]
 
           spans.push(<span style={{color}}>{c}</span>)
 
@@ -81,7 +69,7 @@ const Loading = () => {
   const stopCounter = makeCounter(5, cycle, setCycle)
 
   const colorize = React.useCallback(
-    makeColorize(makeNextColor(), 'Loading...')
+    makeColorize('Loading...')
   )
 
   React.useEffect(() => stopCounter)

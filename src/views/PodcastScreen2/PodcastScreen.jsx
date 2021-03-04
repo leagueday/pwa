@@ -6,18 +6,19 @@ import usePodcasts from '../../api/usePodcasts'
 import BasicLayout from '../BasicLayout'
 import Loading from '../Loading'
 
-// import Content from './Content'
+const Content = React.lazy(() => import('./Content'))
 
-const Content = React.lazy(
-  () => new Promise(
-    resolve => {
-      setTimeout(
-        () => resolve(import('./Content')),
-        1500
-      )
-    }
-  )
-)
+// test with slow import
+// const Content = React.lazy(
+//   () => new Promise(
+//     resolve => {
+//       setTimeout(
+//         () => resolve(import('./Content')),
+//         1500
+//       )
+//     }
+//   )
+// )
 
 const useStyles = makeStyles({
   podcastScreenContent: {

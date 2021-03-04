@@ -151,11 +151,13 @@ const AudioControls = () => {
       <div className={classes.mainColumn}>
         <div className={classes.titleRow}>
           <PlusButton color={buttonColor}
+                      backgroundColor={colors.brandBlack}
                       size="2em"
                       onClick={plusButtonOnclick}
                       shadowColor={buttonShadowColor} />
           <Title title={itemTitle} onClick={titleOnclick} />
           <ForwardStopButton color={buttonColor}
+                             backgroundColor={colors.brandBlack}
                              size="1.75em"
                              onClick={nextButtonOnclick}
                              shadowColor={buttonShadowColor} />
@@ -164,6 +166,7 @@ const AudioControls = () => {
           <RewindStopButton className={classes.barsideButton}
                             iconClassName={classes.barsideButtonIcon}
                             color={buttonColor}
+                            backgroundColor={colors.brandBlack}
                             size="1.5em"
                             onClick={replayButtonOnclick}
                             shadowColor={buttonShadowColor} />
@@ -173,6 +176,7 @@ const AudioControls = () => {
           <FastFwdStopButton className={classes.barsideButton}
                              iconClassName={classes.barsideButtonIcon}
                              color={buttonColor}
+                             backgroundColor={colors.brandBlack}
                              size="1.5em"
                              onClick={forwardButtonOnclick}
                              shadowColor={buttonShadowColor} />

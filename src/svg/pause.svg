@@ -9,6 +9,6 @@
         stroke-linecap="round"
         stroke-linejoin="round"
 >
-    <rect x="15" y="2" width="2" height="20"/>
-    <rect x="7" y="2" width="2" height="20"/>
+    <rect x="15" y="2" width="3" height="20"/>
+    <rect x="6" y="2" width="3" height="20"/>
 </svg>

@@ -25,12 +25,12 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     width: size,
     '&:hover': {
-      backgroundColor: Color(backgroundColor).lighten(0.25).string(),
+      backgroundColor: backgroundColor ? Color(backgroundColor).lighten(0.25).string() : null,
       color: isTransparent ? color : null,
     },
     '&:active': {
       filter: 'none',
-      backgroundColor: Color(backgroundColor).lighten(0.35).string(),
+      backgroundColor: backgroundColor ? Color(backgroundColor).lighten(0.35).string() : null,
     },
   }),
   ripple: {
@@ -85,7 +85,6 @@ export const makeIconButton = Icon => {
   }
 
   Component.defaultProps = {
-    backgroundColor: colors.brandBlack,
     color: colors.magenta,
     isTransparent: false,
     onClick: null,

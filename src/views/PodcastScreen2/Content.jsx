@@ -101,7 +101,7 @@ const Content = ({podcast}) => {
 
   const strippedDescription = React.useMemo(
     () => stripHtml(description),
-    description
+    [description]
   )
 
   const firstItem = items?.[0]
@@ -159,6 +159,7 @@ const Content = ({podcast}) => {
                 item => (
                   <Item
                     key={itemIndex++}
+                    accentColor={maybePodcastColor}
                     podcastId={podcast?.id}
                     podcastUrl={podcast?.url}
                     item={item}
