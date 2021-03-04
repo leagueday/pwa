@@ -10,7 +10,7 @@ import {
   maybeHmsToSecondsOnly,
   percentageToPosition,
   secondsToHms
-} from './util'
+} from '../dateutil'
 
 import TooltipThumb from './TooltipThumb'
 import {makeStyles} from '@material-ui/core/styles'

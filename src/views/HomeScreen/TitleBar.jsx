@@ -1,12 +1,9 @@
 import React from 'react'
 import Color from 'color'
 
-import dayjs from 'dayjs'
-import dayjs_advancedFormat from 'dayjs/plugin/advancedFormat'
-
 import { makeStyles } from '@material-ui/core/styles'
 
-dayjs.extend(dayjs_advancedFormat)
+import {formatDate} from '../dateutil'
 
 const useStyles = makeStyles(theme => ({
   datetime: ({primaryColor}) => ({
@@ -35,9 +32,7 @@ const TitleBar = ({text, primaryColor}) => {
         {text}
       </div>
       <div className={classes.datetime}>
-        {dayjs(
-          new Date('2021-06-04T12:00:00Z') // <- remove for today
-        ).format('MMMM Do, YYYY')}
+        {formatDate('2021-06-04T12:00:00Z')}
       </div>
     </div>
   )

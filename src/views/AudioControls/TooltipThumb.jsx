@@ -7,7 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 
 import * as colors from '../../styling/colors'
 import {selectors} from '../../store'
-import {secondsToHms} from './util'
+import {secondsToHms} from '../dateutil'
 
 const useStyles = makeStyles(theme => ({
   sliderThumbTooltip: {

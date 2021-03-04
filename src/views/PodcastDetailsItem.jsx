@@ -1,8 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
-import dayjs from 'dayjs'
-import dayjsAdvancedPlugin from 'dayjs/plugin/advancedFormat'
 
 import PauseCircleOutlineRoundedIcon from '@material-ui/icons/PauseCircleOutlineRounded'
 import PlayCircleOutlineRoundedIcon from '@material-ui/icons/PlayCircleOutlineRounded'
@@ -14,11 +12,9 @@ import IconButton from '@material-ui/core/IconButton'
 
 import { constants as storeConstants, actions, selectors } from '../store'
 import { itemSelectors } from '../model/rss'
+import { formatDatetime } from './dateutil'
 
 import { stripHtml } from './util'
-
-dayjs.extend(dayjsAdvancedPlugin)
-
 const useStyles = makeStyles(theme => ({
   audioControls: {
     marginLeft: 'auto',
@@ -74,18 +70,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const formatDate = dt => {
-  const yearAgo = dayjs().subtract(1, 'year')
-
-  const djdt = dayjs(dt)
-
-  if (djdt.isAfter(yearAgo)) {
-    return djdt.format('MMM Do h:mma')
-  } else {
-    return djdt.format('MMM Do, YYYY')
-  }
-}
-
 const PodcastDetailsItem = ({podcastId, podcastUrl, item, itemIndex}) => {
   const classes = useStyles()
 
@@ -139,7 +123,7 @@ const PodcastDetailsItem = ({podcastId, podcastUrl, item, itemIndex}) => {
         </div>
         <Hidden xsDown>
           <div className={classes.pubDate}>
-            {formatDate(pubDate)}
+            {formatDatetime(pubDate)}
           </div>
         </Hidden>
         <div className={classes.audioControls}>

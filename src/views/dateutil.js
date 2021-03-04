@@ -1,6 +1,8 @@
 import dayjs from 'dayjs'
+import dayjsAdvancedPlugin from 'dayjs/plugin/advancedFormat'
 import dayjsDurationPlugin from 'dayjs/plugin/duration'
 
+dayjs.extend(dayjsAdvancedPlugin)
 dayjs.extend(dayjsDurationPlugin)
 
 const hmsRegex = RegExp('^\\d{1,2}:')
@@ -45,3 +47,17 @@ export const secondsToHms = s => dayjs.duration(s * 1000).format(
     ? 'H:mm:ss'
     : 'mm:ss'
 )
+
+export const formatDatetime = dt => {
+  const yearAgo = dayjs().subtract(1, 'year')
+
+  const djdt = dayjs(dt)
+
+  if (djdt.isAfter(yearAgo)) {
+    return djdt.format('MMM Do h:mma')
+  } else {
+    return djdt.format('MMM Do, YYYY')
+  }
+}
+
+export const formatDate = d => dayjs(d).format('MMMM Do, YYYY')

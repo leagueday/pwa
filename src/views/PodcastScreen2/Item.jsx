@@ -8,13 +8,35 @@ import * as colors from '../../styling/colors'
 import { itemSelectors } from '../../model/rss'
 import {actions, constants as storeConstants, selectors} from '../../store'
 import {stripHtml} from '../util'
+import {formatDatetime, secondsToHms} from '../dateutil'
 import {makeIconButton} from '../IconButton'
 import {IcoPause, IcoPlay} from '../icons'
 
 const PauseButton = makeIconButton(IcoPause)
 const PlayButton = makeIconButton(IcoPlay)
 
+const computeBackgroundColor = index => {
+  if (index & 1) return null
+
+  return (
+    normI => {
+      const c = Color(colors.lightGray).fade(Math.max(normI, 0))
+      return `rgba(${c.red()},${c.green()},${c.blue()},${c.alpha()})`
+    }
+  )(
+    (100 - 10 * index / 2) / 100
+  )
+}
+
 const useStyles = makeStyles(theme => ({
+  attribute: {
+    padding: '0em 1em',
+    whiteSpace: 'nowrap',
+  },
+  duration: {
+    padding: '0em 1em',
+    whiteSpace: 'nowrap',
+  },
   item: ({accentColor, backgroundColor}) => ({
     alignItems: 'center',
     backgroundColor,
@@ -33,12 +55,6 @@ const useStyles = makeStyles(theme => ({
     padding: '0 1em',
     fontFamily: theme.typography.family.secondary,
   },
-  itemTitle: {
-    minWidth: 0,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
   popButton: {
     backgroundColor: null,
   },
@@ -48,20 +64,24 @@ const useStyles = makeStyles(theme => ({
       color: accentColor,
     },
   }),
+  pubDate: {
+    padding: '0em 1em',
+    whiteSpace: 'nowrap',
+  },
+  rightJustified: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    marginLeft: 'auto',
+  },
+  title: {
+    fontWeight: theme.typography.weight.bold,
+    minWidth: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
 }))
-
-const computeBackgroundColor = index => {
-  if (index & 1) return null
-
-  return (
-    normI => {
-      const c = Color(colors.lightGray).fade(Math.max(normI, 0))
-      return `rgba(${c.red()},${c.green()},${c.blue()},${c.alpha()})`
-    }
-  )(
-    (100 - 10 * index / 2) / 100
-  )
-}
 
 const Item = ({accentColor, podcastId, podcastUrl, item, itemIndex}) => {
   const classes = useStyles({accentColor, backgroundColor: computeBackgroundColor(itemIndex)})
@@ -82,6 +102,16 @@ const Item = ({accentColor, podcastId, podcastUrl, item, itemIndex}) => {
   const strippedTitle = React.useMemo(
     () => stripHtml(title),
     [title]
+  )
+
+  const formattedPubDate = React.useMemo(
+    () => formatDatetime(pubDate),
+    [pubDate]
+  )
+
+  const durationHms = React.useMemo(
+    () => secondsToHms(duration),
+    [duration]
   )
 
   const dispatch = useDispatch()
@@ -111,8 +141,16 @@ const Item = ({accentColor, podcastId, podcastUrl, item, itemIndex}) => {
       <div className={classes.itemNumber}>
         {itemIndex < 9 ? `0${itemIndex+1}` : String(itemIndex+1)}
       </div>
-      <div className={classes.itemTitle}>
+      <div className={classes.title}>
         {strippedTitle}
+      </div>
+      <div className={classes.rightJustified}>
+        <div className={classes.attribute}>
+          {formattedPubDate}
+        </div>
+        <div className={classes.attribute}>
+          {durationHms}
+        </div>
       </div>
     </div>
   )
