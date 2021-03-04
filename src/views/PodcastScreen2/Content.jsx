@@ -19,6 +19,9 @@ const useStyles = makeStyles(theme => ({
   accentColor: ({accentColor}) => ({
     color: accentColor,
   }),
+  items: {
+    paddingTop: '0.25em',
+  },
   logoImage: {
     width: '100%',
   },
