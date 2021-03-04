@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import Color from 'color'
 
 import { makeStyles } from '@material-ui/core/styles'
+import Hidden from '@material-ui/core/Hidden'
 
 import * as colors from '../../styling/colors'
 import { itemSelectors } from '../../model/rss'
@@ -144,14 +145,16 @@ const Item = ({accentColor, podcastId, podcastUrl, item, itemIndex}) => {
       <div className={classes.title}>
         {strippedTitle}
       </div>
-      <div className={classes.rightJustified}>
-        <div className={classes.attribute}>
-          {formattedPubDate}
+      <Hidden smDown>
+        <div className={classes.rightJustified}>
+          <div className={classes.attribute}>
+            {formattedPubDate}
+          </div>
+          <div className={classes.attribute}>
+            {durationHms}
+          </div>
         </div>
-        <div className={classes.attribute}>
-          {durationHms}
-        </div>
-      </div>
+      </Hidden>
     </div>
   )
 }

@@ -4,7 +4,6 @@ const ChannelScreen = React.lazy(() => import('./views/ChannelScreen'))
 const IconDump = React.lazy(() => import('./views/IconDump'))
 const HomeScreen = React.lazy(() => import('./views/HomeScreen'))
 const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'))
-const PodcastScreen2 = React.lazy(() => import('./views/PodcastScreen2'))
 
 const matchFirstToken = match => pathTokens => pathTokens?.length > 0 && pathTokens[0] === match
 const takeNextToken = pathTokens => pathTokens.length > 1 ? pathTokens[1] : null
@@ -29,13 +28,6 @@ export const routesConfig = [
   [
     matchFirstToken('podcast'),
     PodcastScreen,
-    pathTokens => ({
-      podcastId: takeNextToken(pathTokens)
-    })
-  ],
-  [
-    matchFirstToken('podcast2'),
-    PodcastScreen2,
     pathTokens => ({
       podcastId: takeNextToken(pathTokens)
     })

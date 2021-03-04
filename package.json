@@ -28,7 +28,6 @@
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
     "@material-ui/core": "^4.11.2",
-    "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@rgrove/parse-xml": "^2.0.4",
     "airtable": "^0.10.1",
