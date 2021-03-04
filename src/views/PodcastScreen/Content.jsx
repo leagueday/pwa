@@ -76,7 +76,7 @@ const maybeMakeUpColor = (idString, maybeColor) => {
         result = ((result<<5)-result)+c
         result = result & result // Convert to 32bit integer
       }
-      return result
+      return Math.abs(result)
     }
   )()
 
