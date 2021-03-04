@@ -9,6 +9,7 @@ const initialState = {
     [constants.NAV_EXPANDER_VIDEO_GAMES]: true,
   },
   navVisibility: null,
+  pageNums: {},
   selectedAudio: null,
   starred: null,
   theme: constants.UI_THEME_SPEC,
@@ -53,6 +54,14 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         navExpanders,
+      }
+    }
+    case ActionType.SET_PAGENUM: {
+      const {id, pageNum} = action.payload
+
+      return {
+        ...state,
+        pageNums: {...state.pageNums, [id]: pageNum},
       }
     }
     case ActionType.SET_STARRED: {

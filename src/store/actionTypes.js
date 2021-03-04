@@ -2,6 +2,7 @@
 export const HIDE_NAV = 'HIDE_NAV'
 export const SET_FILTER = 'SET_FILTER'
 export const SET_NAV_EXPANDER = 'SET_NAV_EXPANDER'
+export const SET_PAGENUM = 'SET_PAGENUM'
 export const SET_STARRED = 'SET_STARRED'
 export const SET_VIEWPORT_HEIGHT = 'SET_VIEWPORT_HEIGHT'
 export const SHOW_NAV = 'SHOW_NAV'

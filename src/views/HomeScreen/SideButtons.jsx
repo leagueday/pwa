@@ -38,22 +38,11 @@ const RightButton = makeIconButton(IcoRight)
 const SideButtons = ({ children,
                        currentIndex,
                        numElements,
+                       onLeftClick,
+                       onRightClick,
                        primaryColor,
                        setCurrentIndex}) => {
   const classes = useStyles()
-
-  const [next, prev] = [
-    (
-      nextIndex => () => setCurrentIndex(nextIndex)
-    )(
-      (currentIndex + 1) % numElements
-    ),
-    (
-      prevIndex => () => setCurrentIndex(prevIndex)
-    )(
-      currentIndex === 0 ? numElements - 1 : currentIndex - 1
-    )
-  ]
 
   return (
     <div className={classes.sideButtons}>
@@ -66,14 +55,14 @@ const SideButtons = ({ children,
       <div className={classes.overlay}>
         <LeftButton className={classes.button}
                     color={primaryColor}
-                    onClick={prev}
+                    onClick={onLeftClick}
                     backgroundColor={colors.darkerGray}
                     shadowColor={null}
                     strokeWidth="3"
                     isTransparent />
         <RightButton className={classes.button}
                      color={primaryColor}
-                     onClick={next}
+                     onClick={onRightClick}
                      backgroundColor={colors.darkerGray}
                      shadowColor={null}
                      strokeWidth="3"

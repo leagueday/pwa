@@ -27,6 +27,14 @@ export const setNavExpander = (open, tag) => ({
   }
 })
 
+export const setPageNum = (id, pageNum) => ({
+  type: ActionType.SET_PAGENUM,
+  payload: {
+    id,
+    pageNum,
+  }
+})
+
 export const setStarred = starred => ({
   type: ActionType.SET_STARRED,
   payload: {

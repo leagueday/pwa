@@ -1,12 +1,10 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
 import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
 import * as rssSelectors from '../../model/rss'
-import {actions, constants as storeConstants, selectors} from '../../store'
 import usePodcast from '../../api/usePodcast'
 
 import { cycleColorSequence, stripHtml } from '../util'

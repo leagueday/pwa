@@ -158,13 +158,31 @@ const Banner = ({primaryColor}) => {
 
   const dispatch = useDispatch()
   const onClick = () => dispatch(actions.pushHistory(link))
+
+  const setCurrentIndexDebounced = db500(setCurrentIndex)
+
+  const [onLeftClick, onRightClick] = [
+    (
+      prevIndex => () => setCurrentIndexDebounced(prevIndex)
+    )(
+      currentIndex === 0 ? numElements - 1 : currentIndex - 1
+    ),
+    (
+      nextIndex => () => setCurrentIndexDebounced(nextIndex)
+    )(
+      (currentIndex + 1) % numElements
+    ),
+  ]
+
   return (
     <div className={classes.homeBanner}>
       { imageUrl && (
           <SideButtons
             currentIndex={currentIndex}
-            setCurrentIndex={db500(setCurrentIndex)}
+            setCurrentIndex={setCurrentIndexDebounced}
             numElements={data.length}
+            onLeftClick={onLeftClick}
+            onRightClick={onRightClick}
             primaryColor={accentColor}>
               <TransitionGroup>
                 <CSSTransition key={`${prevIndex} ${currentIndex}`}

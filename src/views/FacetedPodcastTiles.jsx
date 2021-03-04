@@ -2,28 +2,12 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import * as colors from '../styling/colors'
-import { makeNextColor } from './util'
-import PodcastTile from './PodcastTile'
+import PagedPodcastTiles from './PagedPodcastTiles'
 
 const useStyles = makeStyles(theme => ({
   facetedPodcastTiles: {
     display: 'flex',
     flexDirection: 'column',
-  },
-  tile: {
-    flex: 1,
-    height: '100%',
-    marginRight: '1vw',
-    ['&:last-child']: {
-      marginRight: 0,
-    },
-  },
-  tilesRow: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   tilesRowContainer: {
     display: 'flex',
@@ -43,31 +27,18 @@ const FacetedPodcastTiles = ({data}) => {
 
   const entries = data ? Array.from(data.entries()) : []
 
-  const nextColor = makeNextColor()
+  let index = -1
 
   return (
     <div className={classes.facetedPodcastTiles}>
       {
         entries.map(
           ([title, podcasts]) => (
-            <div key={title} className={classes.tilesRowContainer}>
+            <div key={index++} className={classes.tilesRowContainer}>
               <div className={classes.title}>
                 {title}
               </div>
-              <div className={classes.tilesRow}>
-                {
-                  podcasts.map(
-                    podcast => podcast ? (
-                      <div key={podcast.id} className={classes.tile}>
-                        <PodcastTile
-                          podcast={podcast}
-                          textColor={nextColor()}
-                        />
-                      </div>
-                    ) : null
-                  )
-                }
-              </div>
+              <PagedPodcastTiles id={title} podcasts={podcasts} />
             </div>
           )
         )
