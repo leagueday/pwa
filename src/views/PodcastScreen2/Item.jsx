@@ -34,7 +34,8 @@ const useStyles = makeStyles(theme => ({
     fontFamily: theme.typography.family.secondary,
   },
   itemTitle: {
-    width: '100%',
+    minWidth: 0,
+    overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },

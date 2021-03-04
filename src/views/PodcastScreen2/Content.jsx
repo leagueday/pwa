@@ -9,7 +9,7 @@ import * as rssSelectors from '../../model/rss'
 import {actions, constants as storeConstants, selectors} from '../../store'
 import usePodcast from '../../api/usePodcast'
 
-import { stripHtml } from '../util'
+import { cycleColorSequence, stripHtml } from '../util'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import Square from '../Square'
@@ -65,6 +65,26 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const maybeMakeUpColor = (idString, maybeColor) => {
+  if (maybeColor) return maybeColor
+
+  const hash = (
+    () => {
+      if (!idString) return 0
+
+      let result = 0
+      for (let i = 0; i < idString.length; i++) {
+        const c = idString.charCodeAt(i)
+        result = ((result<<5)-result)+c
+        result = result & result // Convert to 32bit integer
+      }
+      return result
+    }
+  )()
+
+  return cycleColorSequence[hash % cycleColorSequence.length]
+}
+
 const PodcastChannelImage = ({classes, imageUrl}) => (
   <div className={classes.logoImageContainer}>
     <Square className={classes.logoImageSquare}>
@@ -88,9 +108,12 @@ const TextPlate = ({classes, title, description}) => (
 )
 
 const Content = ({podcast}) => {
-  const maybePodcastColor = podcast?.color // no such data atm
+  const podcastColor = React.useMemo(
+    () => maybeMakeUpColor(podcast?.url, podcast?.color),
+    [podcast?.url, podcast?.color]
+  )
 
-  const classes = useStyles({accentColor: maybePodcastColor ?? colors.white80})
+  const classes = useStyles({accentColor: podcastColor ?? colors.white80})
 
   const {rss} = usePodcast(podcast, {forceRevalidate: true})
 
@@ -104,47 +127,47 @@ const Content = ({podcast}) => {
     [description]
   )
 
-  const firstItem = items?.[0]
-  const firstItemAudioUrl = rssSelectors.itemSelectors.v2.audioUrl(firstItem)
-  const firstItemAudioDuration = rssSelectors.itemSelectors.v2.duration(firstItem)
-  const firstItemTitle = rssSelectors.itemSelectors.v2.title(firstItem)
+  // const firstItem = items?.[0]
+  // const firstItemAudioUrl = rssSelectors.itemSelectors.v2.audioUrl(firstItem)
+  // const firstItemAudioDuration = rssSelectors.itemSelectors.v2.duration(firstItem)
+  // const firstItemTitle = rssSelectors.itemSelectors.v2.title(firstItem)
 
-  const audioPodcastId = useSelector(selectors.getAudioPodcastId)
-  const audioMode = useSelector(selectors.getAudioMode)
+  // const audioPodcastId = useSelector(selectors.getAudioPodcastId)
+  // const audioMode = useSelector(selectors.getAudioMode)
 
-  const isSelectedAudio = audioPodcastId === podcast?.id
-  const isPlaying = isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
+  // const isSelectedAudio = audioPodcastId === podcast?.id
+  // const isPlaying = isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
 
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
-  const onPause = () => {
-    dispatch(actions.pauseAudio())
-  }
-
-  const onPlay = isSelectedAudio
-    ? () => { dispatch(actions.playAudio()) }
-    : () => {
-      dispatch(actions.selectAudio(
-        podcast?.id,
-        podcast?.url,
-        firstItemAudioUrl,
-        0,
-        firstItemAudioDuration,
-        firstItemTitle,
-      ))
-      dispatch(actions.playAudio())
-    }
+  // const onPause = () => {
+  //   dispatch(actions.pauseAudio())
+  // }
+  //
+  // const onPlay = isSelectedAudio
+  //   ? () => { dispatch(actions.playAudio()) }
+  //   : () => {
+  //     dispatch(actions.selectAudio(
+  //       podcast?.id,
+  //       podcast?.url,
+  //       firstItemAudioUrl,
+  //       0,
+  //       firstItemAudioDuration,
+  //       firstItemTitle,
+  //     ))
+  //     dispatch(actions.playAudio())
+  //   }
 
   return (
     <ContentLayout
-      accentColor={podcast.color}
+      accentColor={podcastColor}
       renderTopLeft={
         () => (<PodcastChannelImage classes={classes} imageUrl={imageUrl} />)
       }
       renderTopRight={
         () => (<TextPlate classes={classes} title={title} description={strippedDescription} />)
       }>
-      <BottomBlock accentColor={maybePodcastColor}>
+      <BottomBlock accentColor={podcastColor}>
         <div className={classes.items}>
           {
             (() => {
@@ -159,7 +182,7 @@ const Content = ({podcast}) => {
                 item => (
                   <Item
                     key={itemIndex++}
-                    accentColor={maybePodcastColor}
+                    accentColor={podcastColor}
                     podcastId={podcast?.id}
                     podcastUrl={podcast?.url}
                     item={item}
