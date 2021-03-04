@@ -82,7 +82,7 @@ const BasicLayout = props => {
     <div className={classes.basicLayoutCol}>
       <BrandGradientHorizontalStripe />
       <div className={classes.basicLayoutRow}>
-        <Hidden smDown>
+        <Hidden xsDown>
           { isSidenavVisible && (
             <div className={classes.sideNavScroller}>
               <SideNav />

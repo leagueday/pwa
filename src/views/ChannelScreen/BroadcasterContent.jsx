@@ -7,6 +7,7 @@ import useFacets from '../../api/useFacets'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
+import Square from '../Square'
 import BroadcasterTextPlate from './BroadcasterTextPlate'
 import ChannelChildren from './ChannelChildren'
 import Liveness from './Liveness'
@@ -23,8 +24,10 @@ const useStyles = makeStyles({
     minHeight: 0,
   },
   image: {
-    height: '100%',
     width: '100%',
+  },
+  imageSquare: {
+    width: '80%',
   },
   imageGridItem: {
     paddingRight: '4em',
@@ -37,7 +40,7 @@ const useStyles = makeStyles({
     marginBottom: '1em',
   },
   livenessGridItem: {
-    padding: '1em 4em',
+    padding: '1em',
   },
   previousBroadcasts: {
     marginBottom: '1em',
@@ -52,7 +55,7 @@ const useStyles = makeStyles({
     marginBottom: '1em',
   },
   topLeftGridItem: {
-    marginBottom: '1em',
+    paddingRight: '1em',
   },
   topRightGrid: {
     marginBottom: '1em',
@@ -64,25 +67,15 @@ const useStyles = makeStyles({
 
 const TopSection = ({classes, channel}) => (
   <Grid className={classes.imageTitleGrid} container>
-    <Grid className={classes.topLeftGridItem} item xs={12} md={6} lg={4} xl={3}>
-      <Grid className={classes.topLeftGrid} container>
-        <Grid className={classes.imageGridItem} item xs={12}>
-          <img className={classes.image} src={channel.imageUrl} />
-        </Grid>
-        <Grid className={classes.livenessGridItem} item xs={12}>
-          <Liveness className={classes.liveness} />
-        </Grid>
-      </Grid>
+    <Grid className={classes.topLeftGridItem} item xs={6} sm={4} lg={4}>
+      <Square className={classes.imageSquare}>
+        <img className={classes.image} src={channel.imageUrl} />
+      </Square>
+      <Liveness className={classes.liveness} />
     </Grid>
-    <Grid className={classes.topRightGridItem} item xs={12} md={6} lg={8} xl={9}>
-      <Grid className={classes.topRightGrid} container>
-        <Grid className={classes.titleBioGridItem} item xs={12}>
-          <BroadcasterTextPlate channel={channel} className={classes.textPlate}/>
-        </Grid>
-        <Grid className={classes.childrenGridItem} item xs={12}>
-          <ChannelChildren className={classes.children} childTags={channel.children} />
-        </Grid>
-      </Grid>
+    <Grid className={classes.topRightGridItem} item xs={12} sm={8} md={6} lg={8}>
+      <BroadcasterTextPlate channel={channel} className={classes.textPlate}/>
+      <ChannelChildren className={classes.children} childTags={channel.children} />
     </Grid>
   </Grid>
 )
