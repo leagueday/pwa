@@ -17,8 +17,8 @@ import SideNav from './SideNav'
 // * whatever might scroll is more granular and within the children
 
 const getCalcContentHeight = (viewportHeight, isAudioControlsHidden) => {
-  const stripesHeight = isAudioControlsHidden ? consts.STRIPE_HEIGHT : `2 * ${consts.STRIPE_HEIGHT}`
-  const commonPart = `${viewportHeight} - ${stripesHeight}`
+  // const stripesHeight = isAudioControlsHidden ? consts.STRIPE_HEIGHT : `2 * ${consts.STRIPE_HEIGHT}`
+  const commonPart = `${viewportHeight} - ${consts.STRIPE_HEIGHT}`
 
   return `calc(${commonPart}` +
     (isAudioControlsHidden ? '' : ` - ${consts.AUDIO_CONTROLS_HEIGHT}`) + ')'

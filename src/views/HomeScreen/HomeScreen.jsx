@@ -25,7 +25,6 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     minHeight: 0,
     overflow: 'auto',
-    marginBottom: '0.5em',
   }),
   primaryStripe: {
     backgroundColor: PRIMARY_COLOR,
