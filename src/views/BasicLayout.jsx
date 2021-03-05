@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Hidden from '@material-ui/core/Hidden'
 
-import * as consts from './consts'
 import { selectors } from '../store'
 import AudioControls from './AudioControls'
 import BrandGradientHorizontalStripe from './BrandGradientHorizontalStripe'
@@ -16,17 +15,17 @@ import SideNav from './SideNav'
 // * this is like a full screen view (capped to the container)
 // * whatever might scroll is more granular and within the children
 
-const getCalcContentHeight = (viewportHeight, isAudioControlsHidden) => {
-  // const stripesHeight = isAudioControlsHidden ? consts.STRIPE_HEIGHT : `2 * ${consts.STRIPE_HEIGHT}`
-  const commonPart = `${viewportHeight} - ${consts.STRIPE_HEIGHT}`
-
-  return `calc(${commonPart}` +
-    (isAudioControlsHidden ? '' : ` - ${consts.AUDIO_CONTROLS_HEIGHT}`) + ')'
-}
-
-const calcContentHeight =
-  isAudioControlsHidden =>
-    ({viewportHeight}) => getCalcContentHeight(viewportHeight, isAudioControlsHidden)
+// const getCalcContentHeight = (viewportHeight, isAudioControlsHidden) => {
+//   const stripesHeight = isAudioControlsHidden ? consts.STRIPE_HEIGHT : `2 * ${consts.STRIPE_HEIGHT}`
+//   const commonPart = `${viewportHeight} - ${stripesHeight}`
+//
+//   return `calc(${commonPart}` +
+//     (isAudioControlsHidden ? '' : ` - ${consts.AUDIO_CONTROLS_HEIGHT}`) + ')'
+// }
+//
+// const calcContentHeight =
+//   isAudioControlsHidden =>
+//     ({viewportHeight}) => getCalcContentHeight(viewportHeight, isAudioControlsHidden)
 
 const useStyles = makeStyles(theme => ({
   basicLayoutCol: {
@@ -47,20 +46,11 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     flexDirection: 'column',
     flexWrap: 'nowrap',
+    height: '100%',
     justifyContent: 'flex-start',
-    maxHeight: '100%',
-    minHeight: '100%',
     overflowY: 'hidden',
     paddingLeft: '0.5em',
     width: '100%',
-  },
-  contentWhenAudioDisplayed: {
-    maxHeight: calcContentHeight(false),
-    minHeight: calcContentHeight(false),
-  },
-  contentWhenAudioHidden: {
-    maxHeight: calcContentHeight(true),
-    minHeight: calcContentHeight(true),
   },
 }))
 
@@ -91,15 +81,7 @@ const BasicLayout = props => {
           ) }
         </Hidden>
         <div className={classes.contentFrame}>
-          <div
-            className={
-              isAudioDisplayed
-                ? classes.contentWhenAudioDisplayed
-                : classes.contentWhenAudioHidden
-            }
-          >
-            {props.children}
-          </div>
+          {props.children}
         </div>
       </div>
       { isAudioDisplayed && (

@@ -28,12 +28,14 @@ const useFacetsData = () => {
 
   (data ?? []).forEach(
     ({fields: { title, podcast_url: podcastUrl }}) => {
-      const urlsList = map.get(title)
+      if (title && podcastUrl) {
+        const urlsList = map.get(title)
 
-      if (urlsList) {
-        urlsList.push(podcastUrl)
-      } else {
-        map.set(title, [podcastUrl])
+        if (urlsList) {
+          urlsList.push(podcastUrl)
+        } else {
+          map.set(title, [podcastUrl])
+        }
       }
     }
   )

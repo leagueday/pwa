@@ -8,7 +8,7 @@ import * as consts from './consts'
 const useStyles = makeStyles(theme => ({
   brandGradientHorizontalStripe: {
     background: `linear-gradient(90deg, ${colors.cyan} 0%, ${colors.magenta} 50%, ${colors.yellow} 100%)`,
-    height: consts.STRIPE_HEIGHT,
+    minHeight: consts.STRIPE_HEIGHT,
     width: '100%',
   },
 }))

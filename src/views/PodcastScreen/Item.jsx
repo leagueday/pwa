@@ -17,18 +17,16 @@ import {IcoPause, IcoPlay} from '../icons'
 const PauseButton = makeIconButton(IcoPause)
 const PlayButton = makeIconButton(IcoPlay)
 
-const computeBackgroundColor = index => {
-  if (index & 1) return null
-
-  return (
-    normI => {
-      const c = Color(colors.lightGray).fade(Math.max(normI, 0))
-      return `rgba(${c.red()},${c.green()},${c.blue()},${c.alpha()})`
-    }
-  )(
-    (100 - 10 * index / 2) / 100
-  )
-}
+// fade to gray ramp, only on even rows
+const computeBackgroundColor = rowIndex =>
+  (rowIndex & 1)
+    ? null
+    : Color(colors.lightGray).fade(
+        Math.max(
+          0,
+          (100 - 10 * rowIndex / 2) / 100
+        )
+      ).rgb().string()
 
 const useStyles = makeStyles(theme => ({
   attribute: {
@@ -67,7 +65,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     height: '2em',
-    marginBottom: '0.25em',
     width: '100%',
     userSelect: 'none',
     '&:hover': {
