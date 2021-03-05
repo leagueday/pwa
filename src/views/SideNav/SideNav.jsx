@@ -5,6 +5,7 @@ import {makeStyles} from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
 import {actions} from '../../store'
+import useContentVariation from '../../api/useContentVariation'
 import * as consts from '../consts'
 import {addScrollStyle} from '../util'
 import { IcoHome } from '../icons'
@@ -54,6 +55,8 @@ const SideNav = () => {
   const dispatch = useDispatch()
   const goHome = () => dispatch(actions.pushHistory('/'))
 
+  const config = useContentVariation().map
+
   return (
     <div className={classes.sideNav}>
       <div className={classes.controls}>
@@ -67,7 +70,7 @@ const SideNav = () => {
       <div className={classes.scroller}>
         <div className={classes.scrollerChild}>
           <Expander className={classes.expander} text="MY CHANNELS" tag="chan">
-            <MyChannels />
+            <MyChannels cutoff={config?.get('channelsCutoff')} />
           </Expander>
           <Expander className={classes.expander} text="MY PODCASTS" tag="poca">
             <MyPodcasts />

@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ChannelTile = ({channel}) => {
-  const classes = useStyles()
+  const classes = useStyles({textColor: channel.color})
 
   const dispatch = useDispatch()
   const gotoThisChannel = () => dispatch(actions.pushHistory(`/channel/${channel.tag}`))

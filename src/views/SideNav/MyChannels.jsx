@@ -9,6 +9,8 @@ import useLocationPathname from '../../store/api/useLocationPathname'
 
 import Item from './Item'
 
+const DEFAULT_CHANNELS_CUTOFF = 6
+
 const useStyles = makeStyles({
   myChannels: {
   },
@@ -25,7 +27,7 @@ const isChannelSelected = (locationPathname, channelTag) => {
   }
 }
 
-const MyChannels = () => {
+const MyChannels = ({cutoff}) => {
   const classes = useStyles()
 
   const channels = useMyChannels()
@@ -38,7 +40,7 @@ const MyChannels = () => {
   return (
     <div className={classes.myChannels}>
       {
-        channels.map(channel => {
+        channels.slice(0, cutoff).map(channel => {
           const {tag, title, imageUrl} = channel
           return (
             <Item
@@ -53,6 +55,10 @@ const MyChannels = () => {
       }
     </div>
   )
+}
+
+MyChannels.defaultProps = {
+  cutoff: DEFAULT_CHANNELS_CUTOFF,
 }
 
 export default MyChannels

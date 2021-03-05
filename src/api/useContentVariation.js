@@ -17,7 +17,7 @@ const useContentVariation = () => {
     [data]
   )
 
-  return {data: map, error}
+  return {map, error}
 }
 
 export default useContentVariation
