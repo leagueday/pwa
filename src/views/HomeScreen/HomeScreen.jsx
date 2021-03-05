@@ -7,12 +7,18 @@ import useFacets from '../../api/useFacets'
 import { addScrollStyle } from '../util'
 import BasicLayout from '../BasicLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
+import Loading from '../Loading'
 import HomeBanner from './Banner'
 import ContentTitleBar from './TitleBar'
+
+const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 
 const PRIMARY_COLOR = colors.magenta
 
 const useStyles = makeStyles(theme => ({
+  channelCategories: {
+    marginTop: '0.5em',
+  },
   homeContent: {
     display: 'flex',
     flexDirection: 'column',
@@ -50,6 +56,9 @@ const HomeScreen = () => {
         <div className={classes.primaryStripe} />
         <div className={classes.podcastTiles}>
           <FacetedPodcastTiles data={facetedPodcasts} />
+          <React.Suspense fallback={(<Loading />)}>
+            <ChannelCategories className={classes.channelCategories} />
+          </React.Suspense>
         </div>
       </div>
     </BasicLayout>

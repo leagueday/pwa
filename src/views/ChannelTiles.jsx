@@ -2,16 +2,14 @@ import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
-
 import {actions, selectors} from '../store'
-import { makeNextColor } from './util'
-import PodcastTile from './PodcastTile'
+import ChannelTile from './ChannelTile'
 import SideButtons from './SideButtons'
 
 const PAGE_LENGTH = 6
 
 const useStyles = makeStyles({
-  pagedPodcastTiles: {
+  channelTiles: {
     display: 'flex',
     flex: 1,
     flexDirection: 'row',
@@ -33,7 +31,7 @@ const EmptyTile = () => {
   )
 }
 
-const PagedPodcastTiles = ({id, podcasts}) => {
+const ChannelTiles = ({id, channels}) => {
   const classes = useStyles()
 
   const maybePageNum = useSelector(selectors.getPageNum(id))
@@ -42,16 +40,14 @@ const PagedPodcastTiles = ({id, podcasts}) => {
   const pageNum = maybePageNum ?? 0
   const setPageNum = pageNum => dispatch(actions.setPageNum(id, pageNum))
 
-  const numPages = Math.ceil((podcasts?.length ?? 0) / PAGE_LENGTH)
+  const numPages = Math.ceil((channels?.length ?? 0) / PAGE_LENGTH)
   const goNextPage = pageNum + 1 < numPages ? () => setPageNum(pageNum + 1) : null
   const goPrevPage = pageNum > 0 ? () => setPageNum(pageNum - 1) : null
 
-  const displayPodcasts =
-    podcasts && pageNum * PAGE_LENGTH < podcasts.length
-      ? podcasts.slice(pageNum * PAGE_LENGTH, (pageNum + 1) * PAGE_LENGTH)
-      : []
-
-  const nextColor = makeNextColor()
+  const displayChannels =
+    channels && pageNum * PAGE_LENGTH < channels.length
+    ? channels.slice(pageNum * PAGE_LENGTH, (pageNum + 1) * PAGE_LENGTH)
+    : []
 
   let baseIndex = pageNum * PAGE_LENGTH
 
@@ -60,35 +56,32 @@ const PagedPodcastTiles = ({id, podcasts}) => {
       accentColor="magenta"
       onLeftClick={goPrevPage}
       onRightClick={goNextPage}>
-      <div className={classes.pagedPodcastTiles}>
-      {[
-        ...displayPodcasts.map(
-          podcast => podcast ? (
-            <div key={baseIndex++} className={classes.tile}>
-              <PodcastTile
-                podcast={podcast}
-                textColor={nextColor()}
-              />
-            </div>
-          ) : null
-        ),
-        ...(
-          () => {
-            const result = []
-            for (let i = displayPodcasts.length; i < PAGE_LENGTH; i++) {
-              result.push(
-                <div key={baseIndex++} className={classes.tile}>
-                  <EmptyTile />
-                </div>
-              )
+      <div className={classes.channelTiles}>
+        {[
+          ...displayChannels.map(
+            channel => (
+              <div key={baseIndex++} className={classes.tile}>
+                <ChannelTile key={baseIndex++} channel={channel} />
+              </div>
+            )
+          ),
+          ...(
+            () => {
+              const result = []
+              for (let i = displayChannels.length; i < PAGE_LENGTH; i++) {
+                result.push(
+                  <div key={baseIndex++} className={classes.tile}>
+                    <EmptyTile />
+                  </div>
+                )
+              }
+              return result
             }
-            return result
-          }
-        )()
-      ]}
+          )()
+        ]}
       </div>
     </SideButtons>
   )
 }
 
-export default PagedPodcastTiles
+export default ChannelTiles
