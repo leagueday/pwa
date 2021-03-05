@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
     maxHeight: '100%',
     minHeight: '100%',
     overflowY: 'hidden',
+    paddingLeft: '0.5em',
     width: '100%',
   },
   contentWhenAudioDisplayed: {

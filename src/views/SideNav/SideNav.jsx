@@ -29,7 +29,6 @@ const useStyles = makeStyles(theme => ({
   },
   scroller: addScrollStyle(colors.blue)({
     flex: 1,
-    marginRight: '0.5em',
     minHeight: 0,
     overflowY: 'auto',
     width: consts.SIDENAV_WIDTH,
