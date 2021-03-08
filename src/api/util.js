@@ -60,6 +60,7 @@ export const laminate = rawXmlParseResult => {
 
 export const proxifyUrl = url => {
   const params = new URLSearchParams({
+    kind: 'doc',
     url,
   })
 
