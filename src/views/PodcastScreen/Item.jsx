@@ -1,6 +1,5 @@
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import Color from 'color'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Collapse from '@material-ui/core/Collapse'
@@ -9,7 +8,7 @@ import Hidden from '@material-ui/core/Hidden'
 import * as colors from '../../styling/colors'
 import { itemSelectors } from '../../model/rss'
 import {actions, constants as storeConstants, selectors} from '../../store'
-import {stripHtml} from '../util'
+import {stripHtml, computeZebraBackgroundColor} from '../util'
 import {formatDatetime, secondsToHms} from '../dateutil'
 import {makeIconButton} from '../IconButton'
 import {IcoPause, IcoPlay} from '../icons'
@@ -17,23 +16,8 @@ import {IcoPause, IcoPlay} from '../icons'
 const PauseButton = makeIconButton(IcoPause)
 const PlayButton = makeIconButton(IcoPlay)
 
-// fade to gray ramp, only on even rows
-const computeBackgroundColor = rowIndex =>
-  (rowIndex & 1)
-    ? null
-    : Color(colors.lightGray).fade(
-        Math.max(
-          0,
-          (100 - 10 * rowIndex / 2) / 100
-        )
-      ).rgb().string()
-
 const useStyles = makeStyles(theme => ({
   attribute: {
-    padding: '0em 1em',
-    whiteSpace: 'nowrap',
-  },
-  duration: {
     padding: '0em 1em',
     whiteSpace: 'nowrap',
   },
@@ -80,10 +64,6 @@ const useStyles = makeStyles(theme => ({
       color: accentColor,
     },
   }),
-  pubDate: {
-    padding: '0em 1em',
-    whiteSpace: 'nowrap',
-  },
   rightJustified: {
     display: 'flex',
     flexDirection: 'row',
@@ -107,7 +87,7 @@ const Item = ({ accentColor,
                 itemIndex,
                 isExpanded,
                 toggleIsExpanded }) => {
-  const classes = useStyles({accentColor, backgroundColor: computeBackgroundColor(itemIndex)})
+  const classes = useStyles({accentColor, backgroundColor: computeZebraBackgroundColor(itemIndex)})
 
   const itemAudioUrl = itemSelectors.v2.audioUrl(item)
   const description = itemSelectors.v2.description(item)

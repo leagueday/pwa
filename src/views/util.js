@@ -22,6 +22,17 @@ export const addScrollStyle = scrollbarColor => styleClassInitializer => ({
   },
 })
 
+// fade to gray ramp, only on even rows
+export const computeZebraBackgroundColor = rowIndex =>
+  (rowIndex & 1)
+    ? null
+    : Color(colors.lightGray).fade(
+    Math.max(
+      0,
+      (100 - 10 * rowIndex / 2) / 100
+    )
+    ).rgb().string()
+
 export const cycleColorSequence = [
   colors.cyan,
   colors.blue,

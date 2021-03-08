@@ -2,6 +2,7 @@ import React from 'react'
 
 const AuthDemo = React.lazy(() => import('./views/AuthDemo'))
 const ChannelScreen = React.lazy(() => import('./views/ChannelScreen'))
+const EventScreen = React.lazy(() => import('./views/EventScreen'))
 const IconDump = React.lazy(() => import('./views/IconDump'))
 const HomeScreen = React.lazy(() => import('./views/HomeScreen'))
 const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'))
@@ -25,6 +26,13 @@ export const routesConfig = [
     pathTokens => ({
       channelTag: takeNextToken(pathTokens)
     }),
+  ],
+  [
+    matchFirstToken('event'),
+    EventScreen,
+    pathTokens => ({
+      tag: takeNextToken(pathTokens)
+    })
   ],
   [
     matchFirstToken('icons'),

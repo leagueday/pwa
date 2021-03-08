@@ -76,6 +76,10 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     flexDirection: 'row',
   },
+  // sectionNameLive: {
+  //   color: colors.lime,
+  //   fontWeight: theme.typography.weight.bold,
+  // },
   sectionRightCol: {
     display: 'flex',
     flexDirection: 'column',
@@ -107,24 +111,24 @@ const mockupData = [
         isPlaying: false,
         canPlay: true,
         fakeDateLabel: '03/02/21',
-        fakeDurationLabel: '00:21:50',
+        fakeDurationLabel: '38:30',
       },
       {
         title: 'Title of Episode Y',
         isPlaying: true,
         canPlay: true,
         fakeDateLabel: '02/28/21',
-        fakeDurationLabel: '02:43:22',
+        fakeDurationLabel: '42:46',
       },
       {
         title: 'Title of Episode Z',
         isPlaying: false,
         canPlay: false,
         fakeDateLabel: '01/22/21',
-        fakeDurationLabel: '01:15:38',
+        fakeDurationLabel: '41:47',
       },
     ],
-    imageUrl: '/img/restyle_demo/lol_live.png',
+    imageUrl: '/img/restyle_demo/lcs.png',
     name: 'League of Legends Live',
     tags: ['riot', 'lol'],
     variety: 'Event Name',
@@ -136,24 +140,24 @@ const mockupData = [
         isPlaying: false,
         canPlay: true,
         fakeDateLabel: '03/02/21',
-        fakeDurationLabel: '00:21:50',
+        fakeDurationLabel: '37:07',
       },
       {
         title: 'Title of Episode Y',
         isPlaying: true,
         canPlay: true,
         fakeDateLabel: '02/28/21',
-        fakeDurationLabel: '02:43:22',
+        fakeDurationLabel: '44:22',
       },
       {
         title: 'Title of Episode Z',
         isPlaying: false,
         canPlay: false,
         fakeDateLabel: '01/22/21',
-        fakeDurationLabel: '01:15:38',
+        fakeDurationLabel: '39:39',
       },
     ],
-    imageUrl: '/img/restyle_demo/valorant_live.png',
+    imageUrl: '/img/restyle_demo/lcs_lockin.png',
     name: 'Valorant Live',
     tags: ['riot', 'valorant'],
     variety: 'Event Recordings',
@@ -211,6 +215,7 @@ const SectionLeft = ({sectionData, channelColor}) => {
 
   const classes = useStyles({channelColor})
 
+  // &nbsp;<span className={classes.sectionNameLive}>Live</span>
   return (
     <div className={classes.sectionLeftRow}>
       <img className={classes.sectionImage} src={imageUrl} />
