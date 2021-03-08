@@ -1,18 +1,21 @@
 import * as constants from '../../constants'
 import * as ActionType from '../../actionTypes'
 
+import {nextCounters} from '../util'
+
 const initialState = {
   filter: {kind: constants.FILTER_KIND_FEATURED},
-  navExpanders: {
-    [constants.NAV_EXPANDER_CLASSIC_GAMES]: true,
-    [constants.NAV_EXPANDER_IGAMING]: true,
-    [constants.NAV_EXPANDER_VIDEO_GAMES]: true,
-  },
+  navExpanders: {},
   navVisibility: null,
   pageNums: {},
   selectedAudio: null,
   starred: null,
+  taps: {
+    login: 0,
+    logout: 0,
+  },
   theme: constants.UI_THEME_SPEC,
+  user: null,
   viewportHeight: '100vh',
 }
 
@@ -35,6 +38,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         navVisibility: false
+      }
+    }
+    case ActionType.LOGIN_ACTION: {
+      return {
+        ...state,
+        taps: nextCounters('login', state.taps)
+      }
+    }
+    case ActionType.LOGOUT_ACTION: {
+      return {
+        ...state,
+        taps: nextCounters('logout', state.taps)
       }
     }
     case ActionType.SET_FILTER: {
@@ -67,7 +82,13 @@ const reducer = (state = initialState, action) => {
     case ActionType.SET_STARRED: {
       return {
         ...state,
-        starred: action.payload.starred
+        starred: action.payload.starred,
+      }
+    }
+    case ActionType.SET_USER: {
+      return {
+        ...state,
+        user: action.payload.user,
       }
     }
     case ActionType.SET_VIEWPORT_HEIGHT: {
@@ -79,7 +100,7 @@ const reducer = (state = initialState, action) => {
     case ActionType.SHOW_NAV: {
       return {
         ...state,
-        navVisibility: true
+        navVisibility: true,
       }
     }
     case ActionType.STAR_PODCAST: {

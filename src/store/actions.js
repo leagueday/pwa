@@ -10,6 +10,16 @@ export const hideNav = () => ({
   }
 })
 
+export const login = () => ({
+  type: ActionType.LOGIN_ACTION,
+  payload: {},
+})
+
+export const logout = () => ({
+  type: ActionType.LOGOUT_ACTION,
+  payload: {},
+})
+
 export const setFilter = (kind, cat, subcat) => ({
   type: ActionType.SET_FILTER,
   payload: {
@@ -39,6 +49,13 @@ export const setStarred = starred => ({
   type: ActionType.SET_STARRED,
   payload: {
     starred
+  }
+})
+
+export const setUser = user => ({
+  type: ActionType.SET_USER,
+  payload: {
+    user
   }
 })
 

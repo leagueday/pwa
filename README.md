@@ -6,6 +6,8 @@ Pre-requisites
 
 1. `nvm`
 2. `nodejs` at version found in `.nvmrc`
+3. install netlify-cli globally with `npm install -g netlify-cli`
+4. `npx netlify login`
 
 Setup
 

@@ -1,8 +1,4 @@
 const fetch = require('node-fetch')
-// const FileType = require('file-type')
-
-const PROXY_RESPONSE_KIND_IMG = 'imgBlob'
-const PROXY_RESPONSE_KIND_DOC = 'doc'
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
@@ -16,50 +12,17 @@ const handler = async (event, context) => {
 
   const response = await fetch(foreignUrl)
 
-  if (!response.ok) {
-    return {
-      statusCode: 502,
-      body: 'Bad Gateway'
-    }
-  }
-
-  const contentType = response.headers.get('content-type')
-
-  if (queryStringParameters.kind === PROXY_RESPONSE_KIND_IMG) {
-    // Netlify restricts lambda responses to strings.
-    // So here we encode a base-64 string.
-    const buffer = await response.buffer()
-    // const bufferFileType = JSON.stringify(await FileType.fromBuffer(buffer))
-    const base64String = buffer.toString('base64')
-
-    return {
-      body: base64String,
-      headers: {
-        ...headers,
-        'content-type': contentType,
-      },
-      isBase64Encoded: true,
-      statusCode: 200,
-    }
-  } else if (queryStringParameters.kind === PROXY_RESPONSE_KIND_DOC) {
-    return {
+  return response.ok ? {
       body: await response.text(),
       headers: {
         ...headers,
-        'content-type': contentType,
+        'content-type': response.headers.get('content-type'),
       },
       statusCode: 200,
+    } : {
+      statusCode: 502,
+      body: 'Bad Gateway'
     }
-  } else {
-    return Promise.resolve({
-      statusCode: 400,
-      headers: {
-        ...headers,
-        'content-type': contentType,
-      },
-      body: 'Bad Request'
-    })
-  }
 }
 
 module.exports = { handler }

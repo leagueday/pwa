@@ -1,10 +1,3 @@
-import * as apiConsts from './consts'
-
-const isHttpUrl =
-  (httpRegex =>
-      url => httpRegex.test(url)
-  )(RegExp('^https?:\/\/'))
-
 // laminate -
 // this function undoes a mechanical pattern introduced by the xml parser -
 // mainly the parse result has arrays of children instead of using node objects
@@ -65,14 +58,8 @@ export const laminate = rawXmlParseResult => {
   return recSub(rawXmlParseResult)
 }
 
-export const proxifyHttpUrl = (url, responseKind) =>
-  isHttpUrl(url)
-    ? proxifyUrl(url, responseKind)
-    : url
-
-export const proxifyUrl = (url, responseKind) => {
+export const proxifyUrl = url => {
   const params = new URLSearchParams({
-    kind: responseKind,
     url,
   })
 

@@ -1,5 +1,7 @@
 import * as constants from '../../constants'
-import * as ActionType from '../../actionTypes';
+import * as ActionType from '../../actionTypes'
+
+import {nextCounters} from '../util'
 
 const TAP_INTERVAL = 15
 
@@ -27,14 +29,6 @@ const initialState = {
   },
   title: null,
 }
-
-const nextCounters = (keyword, counters) => Object.entries(counters).reduce(
-  (acc, [tag, count]) => {
-    acc[tag] = tag === keyword ? count + 1 : count
-    return acc
-  },
-  { }
-)
 
 const setCounter = (keyword, nextCount, counters) => Object.entries(counters).reduce(
   (acc, [tag, count]) => {

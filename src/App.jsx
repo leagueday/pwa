@@ -15,6 +15,7 @@ import usePodcasts from './api/usePodcasts'
 import useChronicle from './api/useChronicle'
 
 import Audio from './views/Audio'
+import Auth from './views/Auth'
 import Error from './views/Error'
 import Loading from './views/Loading'
 import Mushipan from './views/MushipanRouter'
@@ -106,6 +107,7 @@ const App = () => (
     <CssBaseline />
     <ThemeProvider>
       <Audio />
+      <Auth />
       <Chronicle />
       <ThemedAppContent />
     </ThemeProvider>

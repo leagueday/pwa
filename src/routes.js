@@ -1,5 +1,6 @@
 import React from 'react'
 
+const AuthDemo = React.lazy(() => import('./views/AuthDemo'))
 const ChannelScreen = React.lazy(() => import('./views/ChannelScreen'))
 const IconDump = React.lazy(() => import('./views/IconDump'))
 const HomeScreen = React.lazy(() => import('./views/HomeScreen'))
@@ -14,8 +15,8 @@ const takeNextToken = pathTokens => pathTokens.length > 1 ? pathTokens[1] : null
 
 export const routesConfig = [
   [
-    matchFirstToken('icons'),
-    IconDump,
+    matchFirstToken('auth-demo'),
+    AuthDemo,
     () => ({})
   ],
   [
@@ -24,6 +25,11 @@ export const routesConfig = [
     pathTokens => ({
       channelTag: takeNextToken(pathTokens)
     }),
+  ],
+  [
+    matchFirstToken('icons'),
+    IconDump,
+    () => ({})
   ],
   [
     matchFirstToken('podcast'),
