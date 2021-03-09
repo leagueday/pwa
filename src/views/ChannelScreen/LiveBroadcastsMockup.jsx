@@ -111,7 +111,7 @@ const mockupData = [
     imageUrl: '/img/restyle_demo/lcs_versus.png',
     name: 'League of Legends',
     tags: ['riot', 'lol'],
-    variety: 'Event Name',
+    variety: 'LCS Summer Split',
   },
 ]
 
