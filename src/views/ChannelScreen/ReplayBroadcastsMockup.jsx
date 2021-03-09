@@ -137,9 +137,9 @@ const mockupData = [
     ],
     event: 'lcs',
     imageUrl: '/img/restyle_demo/lcs.png',
-    name: 'League of Legends Live',
+    name: 'League of Legends',
     tags: ['riot', 'lol'],
-    variety: 'League Champ',
+    variety: 'League Championship Series',
   },
   {
     episodes: [
@@ -167,7 +167,7 @@ const mockupData = [
     ],
     event: null,
     imageUrl: '/img/restyle_demo/lcs_lockin.png',
-    name: 'League of Legends Series',
+    name: 'League of Legends',
     tags: ['riot', 'lol'],
     variety: 'LCS Lock In',
   },
