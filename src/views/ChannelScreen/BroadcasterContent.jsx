@@ -11,6 +11,7 @@ import Square from '../Square'
 import BroadcasterTextPlate from './BroadcasterTextPlate'
 import ChannelChildren from './ChannelChildren'
 import LiveBroadcastsMockup from './LiveBroadcastsMockup'
+import ReplayBroadcastsMockup from './ReplayBroadcastsMockup'
 
 const useStyles = makeStyles({
   bottomBlockItem: { },
@@ -40,6 +41,9 @@ const useStyles = makeStyles({
   },
   livenessGridItem: {
     padding: '1em',
+  },
+  replayBroadcasts: {
+    marginBottom: '1em',
   },
   textPlate: {
     width: '100%',
@@ -94,6 +98,15 @@ const BroadcasterContent = ({channel}) => {
           <BottomBlock accentColor={channel.color} titleStart="Live" titleRest="Broadcasts">
             <LiveBroadcastsMockup
               className={classes.liveBroadcasts}
+              channel={channel}
+              channelColor={channel.color}
+            />
+          </BottomBlock>
+        </Grid>
+        <Grid className={classes.bottomBlockItem} item xs={12}>
+          <BottomBlock accentColor={channel.color} titleStart="Replay" titleRest="Broadcasts">
+            <ReplayBroadcastsMockup
+              className={classes.replayBroadcasts}
               channel={channel}
               channelColor={channel.color}
             />

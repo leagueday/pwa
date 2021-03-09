@@ -8,7 +8,8 @@ import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import Square from '../Square'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
-import LiveBroadcastsMockup, {mockupGetHasBroadcasts} from './LiveBroadcastsMockup'
+import LiveBroadcastsMockup, {mockupGetHasBroadcasts as hasLiveMockupData} from './LiveBroadcastsMockup'
+import ReplayBroadcastsMockup, {mockupGetHasBroadcasts as hasReplayMockupData} from './ReplayBroadcastsMockup'
 
 const useStyles = makeStyles(theme => ({
   channelColor: ({channelColor}) => ({
@@ -70,7 +71,8 @@ const AggregatorContent = ({channel}) => {
 
   const facets = useFacets(channel.tag)
 
-  const hasBroadcasts = mockupGetHasBroadcasts(channel)
+  const hasLive = hasLiveMockupData(channel)
+  const hasReplay = hasReplayMockupData(channel)
 
   return (
     <ContentLayout
@@ -79,19 +81,27 @@ const AggregatorContent = ({channel}) => {
         () => (<Logo channel={channel} classes={classes} />)
       }
       renderTopRight={
-        () => (<Headline channel={channel} classes={classes} hasBroadcasts={hasBroadcasts}/>)
+        () => (<Headline channel={channel} classes={classes} hasBroadcasts={hasLive || hasReplay}/>)
       }>
+      { hasLive && (
+        <BottomBlock accentColor={channel.color} titleStart={channel.title} titleRest="Live">
+          <LiveBroadcastsMockup
+            className={classes.liveBroadcasts}
+            channel={channel}
+            channelColor={channel.color} />
+        </BottomBlock>
+      )}
+      { hasReplay && (
+        <BottomBlock accentColor={channel.color} titleStart={channel.title} titleRest="Replays">
+          <ReplayBroadcastsMockup
+            className={classes.replayBroadcasts}
+            channel={channel}
+            channelColor={channel.color} />
+        </BottomBlock>
+      )}
         <BottomBlock accentColor={channel.color} titleStart={channel.title} titleRest="Podcasts">
           <FacetedPodcastTiles data={facets} />
         </BottomBlock>
-        { hasBroadcasts && (
-          <BottomBlock accentColor={channel.color} titleStart={channel.title} titleRest="Live Event Replays">
-            <LiveBroadcastsMockup
-              className={classes.liveBroadcasts}
-              channel={channel}
-              channelColor={channel.color} />
-          </BottomBlock>
-        )}
     </ContentLayout>
   )
 }
