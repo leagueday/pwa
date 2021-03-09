@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'row',
+    height: '100%',
     minHeight: 0,
   },
   contentFrame: {
