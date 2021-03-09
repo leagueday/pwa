@@ -8,7 +8,7 @@ import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import Square from '../Square'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
-import PreviousBroadcastsMockup, {mockupGetHasBroadcasts} from './PreviousBroadcastsMockup'
+import LiveBroadcastsMockup, {mockupGetHasBroadcasts} from './LiveBroadcastsMockup'
 
 const useStyles = makeStyles(theme => ({
   channelColor: ({channelColor}) => ({
@@ -32,14 +32,14 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'uppercase',
     userSelect: 'none',
   },
+  liveBroadcasts: {
+    marginTop: '1.5em',
+  },
   logoImage: {
     width: '100%',
   },
   logoImageContainer: {
     width: '100%',
-  },
-  previousBroadcasts: {
-    marginTop: '1.5em',
   },
 }))
 
@@ -86,8 +86,8 @@ const AggregatorContent = ({channel}) => {
         </BottomBlock>
         { hasBroadcasts && (
           <BottomBlock accentColor={channel.color} titleStart={channel.title} titleRest="Live Event Replays">
-            <PreviousBroadcastsMockup
-              className={classes.previousBroadcasts}
+            <LiveBroadcastsMockup
+              className={classes.liveBroadcasts}
               channel={channel}
               channelColor={channel.color} />
           </BottomBlock>

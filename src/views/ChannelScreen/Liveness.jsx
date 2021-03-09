@@ -3,33 +3,48 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import * as colors from '../../styling/colors'
+import Square from '../Square'
 
 const useStyles = makeStyles(theme => ({
-  airbox: {
-    border: `2px solid ${colors.lime}`,
-    color: colors.lime,
-    padding: '0.25em 2em',
-    textTransform: 'uppercase',
-    whiteSpace: 'nowrap',
-  },
+  // airbox: {
+  //   border: `2px solid ${colors.lime}`,
+  //   color: colors.lime,
+  //   padding: '0.25em 2em',
+  //   textTransform: 'uppercase',
+  //   whiteSpace: 'nowrap',
+  // },
   image: {
-    width: '50%',
+    height: '4em',
+    width: '4em',
+  },
+  imageContainer: {
   },
   liveness: {
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
+    width: '6em'
   },
+  livenessCell: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+  },
+  text: {
+    fontWeight: theme.typography.weight.bold,
+  }
 }))
 
-const Liveness = ({className}) => {
+const Liveness = () => {
   const classes = useStyles()
 
+  // <div className={classes.airbox}>On the air</div>
   return (
-    <div className={cx(classes.liveness, className)}>
-      <img className={classes.image} src="/img/logo_gray_circle_live_play.png" />
-      <div className={classes.airbox}>On the air</div>
+    <div className={classes.livenessCell}>
+      <div className={classes.liveness}>
+        <img className={classes.image} src="/img/logo_gray_circle_live_play.png" />
+        <div className={classes.text}>Stream</div>
+      </div>
     </div>
   )
 }

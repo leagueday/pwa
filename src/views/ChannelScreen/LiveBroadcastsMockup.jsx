@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
 import { IcoPause, IcoPlay, IcoPlus } from '../icons'
+import Liveness from './Liveness'
 
 const useStyles = makeStyles(theme => ({
   episodeControls: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     padding: '0 1em',
     fontFamily: theme.typography.family.secondary,
   },
-  episodePlus: ({canPlay, channelColor}) => ({
+  episodePlus: ({channelColor}) => ({
     color: theme.palette.text.primary,
     cursor: 'pointer',
     '&:hover': {
@@ -57,11 +58,13 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     width: '12vw',
   },
-  previousBroadcasts: {
+  liveBroadcasts: {
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
+  },
+  liveness: {
   },
   section: {
     display: 'flex',
@@ -76,10 +79,10 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     flexDirection: 'row',
   },
-  // sectionNameLive: {
-  //   color: colors.lime,
-  //   fontWeight: theme.typography.weight.bold,
-  // },
+  sectionNameLive: {
+    color: colors.lime,
+    fontWeight: theme.typography.weight.bold,
+  },
   sectionRightCol: {
     display: 'flex',
     flexDirection: 'column',
@@ -102,65 +105,13 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-// Ikea Furniture Cardboard Stereo
 const mockupData = [
   {
-    episodes: [
-      {
-        title: 'Title of Episode X',
-        isPlaying: false,
-        canPlay: true,
-        fakeDateLabel: '03/02/21',
-        fakeDurationLabel: '38:30',
-      },
-      {
-        title: 'Title of Episode Y',
-        isPlaying: true,
-        canPlay: true,
-        fakeDateLabel: '02/28/21',
-        fakeDurationLabel: '42:46',
-      },
-      {
-        title: 'Title of Episode Z',
-        isPlaying: false,
-        canPlay: false,
-        fakeDateLabel: '01/22/21',
-        fakeDurationLabel: '41:47',
-      },
-    ],
-    imageUrl: '/img/restyle_demo/lcs.png',
-    name: 'League of Legends Live',
+    episodes: [ ],
+    imageUrl: '/img/restyle_demo/lcs_versus.png',
+    name: 'League of Legends',
     tags: ['riot', 'lol'],
     variety: 'Event Name',
-  },
-  {
-    episodes: [
-      {
-        title: 'Title of Episode X',
-        isPlaying: false,
-        canPlay: true,
-        fakeDateLabel: '03/02/21',
-        fakeDurationLabel: '37:07',
-      },
-      {
-        title: 'Title of Episode Y',
-        isPlaying: true,
-        canPlay: true,
-        fakeDateLabel: '02/28/21',
-        fakeDurationLabel: '44:22',
-      },
-      {
-        title: 'Title of Episode Z',
-        isPlaying: false,
-        canPlay: false,
-        fakeDateLabel: '01/22/21',
-        fakeDurationLabel: '39:39',
-      },
-    ],
-    imageUrl: '/img/restyle_demo/lcs_lockin.png',
-    name: 'Valorant Live',
-    tags: ['riot', 'valorant'],
-    variety: 'Event Recordings',
   },
 ]
 
@@ -215,13 +166,12 @@ const SectionLeft = ({sectionData, channelColor}) => {
 
   const classes = useStyles({channelColor})
 
-  // &nbsp;<span className={classes.sectionNameLive}>Live</span>
   return (
     <div className={classes.sectionLeftRow}>
       <img className={classes.sectionImage} src={imageUrl} />
       <div className={classes.sectionText}>
         <div className={classes.sectionTitle}>
-          {name}
+          {name}&nbsp;<span className={classes.sectionNameLive}>Live</span>
         </div>
         <div className={classes.sectionVariety}>
           {variety}
@@ -259,17 +209,18 @@ const SectionRight = ({sectionData, channelColor}) => {
   )
 }
 
-const PreviousBroadcastsMockup = ({className, channel}) => {
+const LiveBroadcastsMockup = ({className, channel}) => {
   const classes = useStyles()
 
+  // <SectionRight sectionData={sectionData} channelColor={channel.color} />
   return (
-    <div className={cx(classes.previousBroadcasts, className)}>
+    <div className={cx(classes.liveBroadcasts, className)}>
       {
         filterMockupData(channel.tag).map(
           sectionData => (
             <div key={sectionData.name} className={classes.section}>
               <SectionLeft sectionData={sectionData} channelColor={channel.color} />
-              <SectionRight sectionData={sectionData} channelColor={channel.color} />
+              <Liveness className={classes.liveness} />
             </div>
           )
         )
@@ -283,4 +234,4 @@ export const mockupGetHasBroadcasts = channel => {
   return data.length > 0
 }
 
-export default PreviousBroadcastsMockup
+export default LiveBroadcastsMockup

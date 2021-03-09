@@ -10,8 +10,7 @@ import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import Square from '../Square'
 import BroadcasterTextPlate from './BroadcasterTextPlate'
 import ChannelChildren from './ChannelChildren'
-import Liveness from './Liveness'
-import PreviousBroadcastsMockup from './PreviousBroadcastsMockup'
+import LiveBroadcastsMockup from './LiveBroadcastsMockup'
 
 const useStyles = makeStyles({
   bottomBlockItem: { },
@@ -29,21 +28,18 @@ const useStyles = makeStyles({
   imageSquare: {
     width: '80%',
   },
-  imageGridItem: {
-    paddingRight: '4em',
-  },
   imageTitleGrid: {
     flex: 0,
-    paddingTop: '0.25em',
+    paddingTop: '1em',
+  },
+  liveBroadcasts: {
+    marginBottom: '1em',
   },
   liveness: {
     marginBottom: '1em',
   },
   livenessGridItem: {
     padding: '1em',
-  },
-  previousBroadcasts: {
-    marginBottom: '1em',
   },
   textPlate: {
     width: '100%',
@@ -71,7 +67,6 @@ const TopSection = ({classes, channel}) => (
       <Square className={classes.imageSquare}>
         <img className={classes.image} src={channel.imageUrl} />
       </Square>
-      <Liveness className={classes.liveness} />
     </Grid>
     <Grid className={classes.topRightGridItem} item xs={12} sm={8} md={6} lg={8}>
       <BroadcasterTextPlate channel={channel} className={classes.textPlate}/>
@@ -96,9 +91,9 @@ const BroadcasterContent = ({channel}) => {
     >
       <Grid className={classes.bottomGrid} container>
         <Grid className={classes.bottomBlockItem} item xs={12}>
-          <BottomBlock accentColor={channel.color} titleStart="Previous" titleRest="Broadcasts">
-            <PreviousBroadcastsMockup
-              className={classes.previousBroadcasts}
+          <BottomBlock accentColor={channel.color} titleStart="Live" titleRest="Broadcasts">
+            <LiveBroadcastsMockup
+              className={classes.liveBroadcasts}
               channel={channel}
               channelColor={channel.color}
             />
