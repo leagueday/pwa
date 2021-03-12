@@ -1,5 +1,7 @@
 # LeagueDay v.2 WebApp
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/868462ab-5314-4f34-a38e-96f3a6c9ffe4/deploy-status)](https://app.netlify.com/sites/unruffled-jang-4961e9/deploys)
+
 ## dev setup and workflow
 
 Pre-requisites

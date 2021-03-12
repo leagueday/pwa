@@ -49,7 +49,8 @@ const reducer = (state = initialState, action) => {
     case ActionType.LOGOUT_ACTION: {
       return {
         ...state,
-        taps: nextCounters('logout', state.taps)
+        taps: nextCounters('logout', state.taps),
+        user: null,
       }
     }
     case ActionType.SET_FILTER: {

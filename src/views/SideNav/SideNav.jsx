@@ -15,12 +15,16 @@ import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
 import MyChannels from './MyChannels'
 import MyPodcasts from './MyPodcasts'
 import SearchLozenge from './SearchLozenge'
+import SignInOutButton from './SignInOutButton'
 
 const useStyles = makeStyles(theme => ({
   clickable: {
     cursor: 'pointer',
   },
   controls: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
     padding: '0.5em',
   },
   expander: {
@@ -42,8 +46,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    paddingTop: '0.5em',
     width: '100%',
+  },
+  signInOutButton: {
+    marginLeft: 'auto',
   },
 }))
 
@@ -64,6 +70,7 @@ const SideNav = () => {
                     size="2em"
                     color={colors.cyan}
                     backgroundColor={colors.brandBlack} />
+        <SignInOutButton className={classes.signInOutButton} />
       </div>
       <SearchLozenge />
       <LiveAndUpcomingLozenge className={classes.lozenge} />
