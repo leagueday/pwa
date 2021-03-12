@@ -5,6 +5,7 @@
   "scripts": {
     "build": "webpack --config webpack-prod.config.js",
     "build-dev": "cross-env NODE_ENV=development webpack --config webpack-dev.config.js",
+    "postinstall": "(cd functions/node-fetch && npm install); (cd functions/fauna-view-query && npm install)",
     "start": "http-server -p 8888 --proxy http://localhost:8888? dist",
     "start-dev": "cross-env NODE_ENV=development webpack serve --config webpack-dev.config.js --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
