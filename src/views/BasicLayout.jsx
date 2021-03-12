@@ -76,7 +76,7 @@ const BasicLayout = props => {
       <div className={classes.basicLayoutRow}>
         <Hidden xsDown>
           { isSidenavVisible && (
-            <div className={classes.sideNavScroller}>
+            <div>
               <SideNav />
             </div>
           ) }

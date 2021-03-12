@@ -40,21 +40,20 @@ const useStyles = makeStyles(theme => ({
     minWidth: '100vw',
     overflow: 'hidden',
   },
-  appBackground: {
-    alignItems: 'stretch',
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
-    maxHeight: '100%',
-    minHeight: '100%',
-    maxWidth: '1600px',
-    minWidth: '166px',
-  },
   appCanvas: {
     alignItems: 'stretch',
     display: 'flex',
     height: '100%',
     width: '100%',
+  },
+  pseudoContainer: {
+      alignItems: 'stretch',
+      display: 'flex',
+      flexDirection: 'column',
+      flex: 1,
+      maxHeight: '100%',
+      minHeight: '100%',
+      width: '100%',
   },
 }))
 
@@ -82,7 +81,7 @@ const ThemedAppContent = () => {
 
   return (
     <div className={classes.app}>
-      <Container className={classes.appBackground} maxWidth="xl" disableGutters>
+      <div className={classes.pseudoContainer}>
         <Paper className={classes.appCanvas}>
           {
             data
@@ -92,7 +91,7 @@ const ThemedAppContent = () => {
               : (<Loading />)
           }
         </Paper>
-      </Container>
+      </div>
     </div>
   )
 }
