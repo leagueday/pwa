@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     height: size,
     justifyContent: 'center',
-    padding: '0.25em',
+    padding: '0.15em',
     width: size,
     '&:hover': {
       backgroundColor: backgroundColor ? Color(backgroundColor).lighten(0.35).string() : null,

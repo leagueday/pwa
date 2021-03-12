@@ -39,15 +39,21 @@ const useStyles = makeStyles(theme => ({
       color: accentColor,
     },
   }),
-  popButton: {
-    backgroundColor: null,
-  },
-  popButtonIcon: ({accentColor}) => ({
-    width: '60%',
+  popButton: ({accentColor}) => ({
+    backgroundColor: colors.darkGray,
     '&:hover': {
+      backgroundColor: colors.lightGray,
+    },
+    '& *': {
+      color: colors.white,
+    },
+    '&:hover *': {
       color: accentColor,
     },
   }),
+  popButtonIcon: {
+    width: '60%',
+  },
   rightJustified: {
     display: 'flex',
     flexDirection: 'row',

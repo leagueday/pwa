@@ -48,22 +48,25 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
-    height: '2em',
+    height: '2.5em',
     width: '100%',
     userSelect: 'none',
     '&:hover': {
       color: accentColor,
     },
   }),
-  popButton: {
-    backgroundColor: null,
-  },
-  popButtonIcon: ({accentColor}) => ({
-    width: '60%',
-    '&:hover': {
+  popButton: ({accentColor}) => ({
+    backgroundColor: colors.darkGray,
+    width: '2em',
+    '& *': {
+      color: colors.white,
+    },
+    '&:hover *': {
       color: accentColor,
     },
   }),
+  popButtonIcon: {
+  },
   rightJustified: {
     display: 'flex',
     flexDirection: 'row',
@@ -145,7 +148,6 @@ const Item = ({ accentColor,
           iconClassName={classes.popButtonIcon}
           size="1.5em"
           onClick={onPopClick}
-          color={colors.white}
           shadowColor={colors.darkGray} />
         <div className={classes.itemNumber}>
           {itemIndex < 9 ? `0${itemIndex+1}` : String(itemIndex+1)}
