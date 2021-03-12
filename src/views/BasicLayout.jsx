@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: '0.5em',
     width: '100%',
   },
+  sideNav: { },
 }))
 
 const BasicLayout = props => {
@@ -77,7 +78,7 @@ const BasicLayout = props => {
         <Hidden xsDown>
           { isSidenavVisible && (
             <div>
-              <SideNav />
+              <SideNav className={classes.sideNav}/>
             </div>
           ) }
         </Hidden>

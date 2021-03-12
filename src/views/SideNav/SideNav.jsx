@@ -1,5 +1,6 @@
 import React from 'react'
 import {useDispatch} from 'react-redux'
+import cx from 'classnames'
 
 import {makeStyles} from '@material-ui/core/styles'
 
@@ -32,6 +33,12 @@ const useStyles = makeStyles(theme => ({
     paddingRight: '0.5em',
     paddingTop: '0.5em',
   },
+  logo: {
+    flex: 1,
+    minWidth: 0,
+    maxWidth: '8em',
+    paddingLeft: '0.25em',
+  },
   scroller: addScrollStyle(colors.blue)({
     flex: 1,
     minHeight: 0,
@@ -55,7 +62,7 @@ const useStyles = makeStyles(theme => ({
 
 const HomeButton = makeIconButton(IcoHome)
 
-const SideNav = () => {
+const SideNav = ({className}) => {
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -64,12 +71,13 @@ const SideNav = () => {
   const config = useContentVariation().map
 
   return (
-    <div className={classes.sideNav}>
+    <div className={cx(classes.sideNav, className)}>
       <div className={classes.controls}>
         <HomeButton onClick={goHome}
                     size="2em"
                     color={colors.cyan}
                     backgroundColor={colors.brandBlack} />
+        <img className={classes.logo} src="/img/logo.png" />
         <SignInOutButton className={classes.signInOutButton} />
       </div>
       <SearchLozenge />

@@ -1,6 +1,5 @@
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import cx from 'classnames'
 
 import {makeStyles} from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
