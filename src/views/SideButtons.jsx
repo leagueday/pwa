@@ -3,7 +3,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../styling/colors'
-import { IcoLeft, IcoRight } from './icons'
+import { IcoLeftSolid, IcoRightSolid } from './icons'
 import {makeIconButton} from './IconButton'
 
 const useStyles = makeStyles({
@@ -32,8 +32,8 @@ const useStyles = makeStyles({
   },
 })
 
-const LeftButton = makeIconButton(IcoLeft)
-const RightButton = makeIconButton(IcoRight)
+const LeftButton = makeIconButton(IcoLeftSolid)
+const RightButton = makeIconButton(IcoRightSolid)
 
 const SideButtons = ({ children,
                        accentColor,

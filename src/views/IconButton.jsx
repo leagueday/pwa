@@ -7,30 +7,32 @@ import { makeStyles } from '@material-ui/core/styles'
 import * as colors from '../styling/colors'
 
 const useStyles = makeStyles({
-  icon: {
+  icon: ({isTransparent}) => ({
     height: '65%',
+    strokeOpacity: isTransparent ? 0.3 : null,
     width: '65%',
-  },
+  }),
   iconButton: ({backgroundColor, color, shadowColor, size, isTransparent}) => ({
     alignItems: 'center',
-    backgroundColor: isTransparent ? null : backgroundColor,
+    backgroundColor,
     borderRadius: '50%',
     borderWidth: 0,
-    color: isTransparent ? Color(color).fade(0.5).string() : color,
+    color: isTransparent ? Color(color).fade(0.2).string() : color,
     cursor: 'pointer',
     display: 'flex',
     filter: shadowColor ? `drop-shadow(1px 1px 4px ${shadowColor})` : 'none',
     flexDirection: 'row',
     height: size,
     justifyContent: 'center',
+    padding: '0.25em',
     width: size,
     '&:hover': {
-      backgroundColor: backgroundColor ? Color(backgroundColor).lighten(0.25).string() : null,
+      backgroundColor: backgroundColor ? Color(backgroundColor).lighten(0.35).string() : null,
       color: isTransparent ? color : null,
     },
     '&:active': {
       filter: 'none',
-      backgroundColor: backgroundColor ? Color(backgroundColor).lighten(0.35).string() : null,
+      backgroundColor: backgroundColor ? Color(backgroundColor).lighten(0.45).string() : null,
     },
   }),
   ripple: {

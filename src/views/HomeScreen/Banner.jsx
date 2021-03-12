@@ -9,7 +9,7 @@ import * as colors from '../../styling/colors'
 import {actions} from '../../store'
 import useHomeBanner from '../../api/useHomeBanner'
 
-import SideButtons from './SideButtons'
+import SideButtons from '../SideButtons'
 
 const usePrevious = value => {
   const ref = React.useRef()
@@ -22,19 +22,19 @@ const usePrevious = value => {
 }
 
 const useStyles = makeStyles(theme => ({
+  banner: {
+    alignItems: 'stretch',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    width: '100%',
+  },
   element: {
     cursor: 'pointer',
     height: '20em',
     overflow: 'hidden',
     position: 'relative',
     right: 0,
-  },
-  homeBanner: {
-    alignItems: 'stretch',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    width: '100%',
   },
   image: {
     width: '100%',
@@ -175,7 +175,7 @@ const Banner = ({primaryColor}) => {
   ]
 
   return (
-    <div className={classes.homeBanner}>
+    <div className={classes.banner}>
       { imageUrl && (
           <SideButtons
             currentIndex={currentIndex}

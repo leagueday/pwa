@@ -5,10 +5,10 @@ import { makeStyles } from '@material-ui/core/styles'
 import * as colors from '../../styling/colors'
 import useFacets from '../../api/useFacets'
 import { addScrollStyle } from '../util'
+import Banner from './Banner'
 import BasicLayout from '../BasicLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import Loading from '../Loading'
-import HomeBanner from './Banner'
 import ContentTitleBar from './TitleBar'
 
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
@@ -52,7 +52,7 @@ const HomeScreen = () => {
       <div className={classes.homeContent}>
         <ContentTitleBar text="Home" primaryColor={PRIMARY_COLOR} />
         <div className={classes.titleSeparator} />
-        <HomeBanner primaryColor={PRIMARY_COLOR} />
+        <Banner primaryColor={PRIMARY_COLOR} />
         <div className={classes.primaryStripe} />
         <div className={classes.podcastTiles}>
           <FacetedPodcastTiles data={facetedPodcasts} />
