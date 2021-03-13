@@ -5,11 +5,10 @@ import {makeStyles} from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
 import {channelSelectors} from '../../model/rss'
-import useStarred from '../../api/useStarred'
+import useMyList from '../../api/useMyList'
 import usePodcast from '../../api/usePodcast'
 import usePodcasts from '../../api/usePodcasts'
-import {actions} from '../../store'
-import useLocationPathname from '../../store/api/useLocationPathname'
+import {actions, useLocationPathname} from '../../store'
 
 import Item from './Item'
 
@@ -52,10 +51,12 @@ const MyPodcastItem = ({podcast, isSelected, onClick, imageClass}) => {
 const MyPodcasts = () => {
   const classes = useStyles()
 
-  const [isStar,,,isStarsEmpty] = useStarred()
+  const [getIsOnMyList, addToMyList, removeFromMyList, isMyListEmpty] = useMyList()
   const {data: podcasts} = usePodcasts()
 
-  const starredPodcasts = isStarsEmpty ? [] : podcasts.filter(podcast => isStar(podcast.id))
+  const myListPodcasts = isMyListEmpty ? [] : podcasts.filter(podcast => getIsOnMyList('podcast', podcast.id))
+
+  // tbd add channels
 
   const dispatch = useDispatch()
   const makeGotoThisPodcast = podcastId => () => dispatch(actions.pushHistory(`/podcast/${podcastId}`))
@@ -65,7 +66,7 @@ const MyPodcasts = () => {
   return (
     <div className={classes.myPodcasts}>
       {
-        starredPodcasts.map(
+        myListPodcasts.map(
           podcast => (
             <MyPodcastItem
               key={podcast.id}

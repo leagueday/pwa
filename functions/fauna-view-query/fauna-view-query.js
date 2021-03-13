@@ -60,7 +60,8 @@ const handler = async (event, context) => {
   const queryStringParameters = event.queryStringParameters
   const {identity, user} = context.clientContext
 
-  console.log('fauna-view-query', JSON.stringify(identity, null, 2), JSON.stringify(user, null, 2))
+  if (process.env.NODE_ENV === 'development')
+    console.log('fauna-view-query', JSON.stringify(user, null, 2))
 
   // obtain the user email from the context, depends on netlify identity
   const userEmail = user?.email
@@ -76,7 +77,7 @@ const handler = async (event, context) => {
   })
 
   let status
-  let data
+  let data = {}
   if (queryStringParameters.doDelete) {
     [status] = await deleteUserData(client, userEmail)
   } else {
@@ -86,8 +87,6 @@ const handler = async (event, context) => {
       [status, data] = await createUserData(client, userEmail, userName)
     }
   }
-
-
 
   if (status === STATUS_OK) {
     return {

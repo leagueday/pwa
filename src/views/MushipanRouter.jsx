@@ -1,7 +1,7 @@
 import React from 'react'
 
 import * as analytics from '../analytics'
-import useLocationPathname from '../store/api/useLocationPathname'
+import {useLocationPathname} from '../store'
 
 import Loading from './Loading'
 

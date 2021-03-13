@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import {
   IcoFastFwdStop,
   IcoForwardStop,
+  IcoMinus,
   IcoPlus,
   IcoRewindStop
 } from '../icons'
@@ -14,7 +15,7 @@ import {
 import * as colors from '../../styling/colors'
 import { actions, constants as storeConstants, selectors, thunks } from '../../store'
 import * as consts from '../consts'
-import useStarred from '../../api/useStarred'
+import useMyList from '../../api/useMyList'
 
 import {makeIconButton} from '../IconButton'
 import ToggleImageButton from '../ToggleImageButton'
@@ -23,6 +24,7 @@ import Title from './Title'
 
 const FastFwdStopButton = makeIconButton(IcoFastFwdStop)
 const ForwardStopButton = makeIconButton(IcoForwardStop)
+const MinusButton = makeIconButton(IcoMinus)
 const PlusButton = makeIconButton(IcoPlus)
 const RewindStopButton = makeIconButton(IcoRewindStop)
 
@@ -94,6 +96,7 @@ const useStyles = makeStyles(theme => ({
 const AudioControls = () => {
   const classes = useStyles()
 
+  const user = useSelector(selectors.getUser)
   const audioMode = useSelector(selectors.getAudioMode)
   const podcastId = useSelector(selectors.getAudioPodcastId)
   const itemUrl = useSelector(selectors.getAudioUrl)
@@ -104,8 +107,8 @@ const AudioControls = () => {
 
   const dispatch = useDispatch()
 
-  const [getIsPlussed, plusPodcast, minusPodcast] = useStarred()
-  const isPlussed = getIsPlussed(podcastId)
+  const [getIsOnMyList, addToMyList, removeFromMyList] = useMyList(user?.token?.access_token)
+  const isOnMyList = getIsOnMyList('podcast', podcastId)
 
   const titleOnclick = () => {
     dispatch(actions.pushHistory(`/podcast/${podcastId}`))
@@ -120,6 +123,11 @@ const AudioControls = () => {
     dispatch(actions.forwardAudio())
   }
 
+  const minusButtonOnclick = () => {
+    console.log('minus')
+    return removeFromMyList('podcast', podcastId)
+  }
+
   const nextButtonOnclick = () => {
     console.log('next')
     dispatch(thunks.audio.playNextTrack())
@@ -127,13 +135,22 @@ const AudioControls = () => {
 
   const plusButtonOnclick = () => {
     console.log('plus')
-    return isPlussed ? minusPodcast(podcastId) : plusPodcast(podcastId)
+    return addToMyList('podcast', podcastId)
   }
 
   const replayButtonOnclick = () => {
     console.log('replay')
     dispatch(actions.replayAudio())
   }
+
+  const [PlusOrMinusButton, plusOrMinusOnclick] =
+    isOnMyList ? [
+      MinusButton,
+      minusButtonOnclick
+    ] : [
+      PlusButton,
+      plusButtonOnclick
+    ]
 
   const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
 
@@ -150,11 +167,11 @@ const AudioControls = () => {
       </div>
       <div className={classes.mainColumn}>
         <div className={classes.titleRow}>
-          <PlusButton color={buttonColor}
-                      backgroundColor={colors.brandBlack}
-                      size="2em"
-                      onClick={plusButtonOnclick}
-                      shadowColor={buttonShadowColor} />
+          <PlusOrMinusButton color={buttonColor}
+                             backgroundColor={colors.brandBlack}
+                             size="2em"
+                             onClick={plusOrMinusOnclick}
+                             shadowColor={buttonShadowColor} />
           <Title title={itemTitle} onClick={titleOnclick} />
           <ForwardStopButton color={buttonColor}
                              backgroundColor={colors.brandBlack}

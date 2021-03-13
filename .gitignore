@@ -7,3 +7,9 @@ dist
 # Local Netlify folder
 .netlify
 
+#
+# According to some netlify doc I saw (?), one should allow netlify build to
+# generate its own package-lock.json for functions.
+#
+functions/fauna-toggle-mylist/package-lock.json
+functions/fauna-view-query/package-lock.json

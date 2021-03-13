@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     right: 0,
     top: 0,
-    zIndex: 100,
+    zIndex: 2,
   },
   imageSquare: {
     width: '100%',

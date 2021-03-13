@@ -12,7 +12,8 @@
     "js"
   ],
   "author": "LeagueDay",
-  "license": "PRIVATE",
+  "license": "UNLICENSED",
+  "private": true,
   "dependencies": {
     "node-fetch": "^2.6.1"
   }

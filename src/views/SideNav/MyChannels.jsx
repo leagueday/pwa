@@ -4,8 +4,7 @@ import {useDispatch} from 'react-redux'
 import {makeStyles} from '@material-ui/core/styles'
 
 import useMyChannels from '../../api/useMyChannels'
-import {actions} from '../../store'
-import useLocationPathname from '../../store/api/useLocationPathname'
+import {actions, useLocationPathname} from '../../store'
 
 import Item from './Item'
 

@@ -9,31 +9,51 @@ const initialState = {
   navVisibility: null,
   pageNums: {},
   selectedAudio: null,
-  starred: null,
   taps: {
     login: 0,
     logout: 0,
   },
   theme: constants.UI_THEME_SPEC,
   user: null,
+  userData: null,
   viewportHeight: '100vh',
 }
 
-const isStarredEmpty = starred => {
-  // tbd move, consolidate
-  const entries = Object.entries(starred)
+const addToMyList = (userData, id, kind) => {
+  const myList = userData?.my ?? []
+  const nextMyList = [...myList, {id, kind}]
 
-  if (entries.length < 1) return true
-
-  for (let [k, v] of entries) {
-    if (v) return false
+  return {
+    ...userData,
+    my: nextMyList
   }
+}
 
-  return true
+const removeFromMyList = (userData, id, kind) => {
+  if (!userData) return userData
+
+  const myList = userData.my
+
+  const nextMyList = !myList ? [] : myList.filter(
+    ({id: liId, kind: liKind}) => liId !== id && liKind !== kind
+  )
+
+  return {
+    ...userData,
+    my: nextMyList
+  }
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case ActionType.ADD_TO_MYLIST: {
+      const {id, kind} = action.payload
+
+      return {
+        ...state,
+        userData: addToMyList(state.userData, id, kind)
+      }
+    }
     case ActionType.HIDE_NAV: {
       return {
         ...state,
@@ -51,6 +71,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         taps: nextCounters('logout', state.taps),
         user: null,
+      }
+    }
+    case ActionType.REMOVE_FROM_MYLIST: {
+      const {id, kind} = action.payload
+
+      return {
+        ...state,
+        userData: removeFromMyList(state.userData, id, kind)
       }
     }
     case ActionType.SET_FILTER: {
@@ -80,16 +108,16 @@ const reducer = (state = initialState, action) => {
         pageNums: {...state.pageNums, [id]: pageNum},
       }
     }
-    case ActionType.SET_STARRED: {
-      return {
-        ...state,
-        starred: action.payload.starred,
-      }
-    }
     case ActionType.SET_USER: {
       return {
         ...state,
         user: action.payload.user,
+      }
+    }
+    case ActionType.SET_USERDATA: {
+      return {
+        ...state,
+        userData: action.payload.userData,
       }
     }
     case ActionType.SET_VIEWPORT_HEIGHT: {
@@ -102,29 +130,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         navVisibility: true,
-      }
-    }
-    case ActionType.STAR_PODCAST: {
-      return {
-        ...state,
-        starred: state.starred
-          ? {...state.starred, ...{[action.payload.podcastId]: true}}
-          : {[action.payload.podcastId]: true}
-      }
-    }
-    case ActionType.UNSTAR_PODCAST: {
-      const nextStarred = state.starred
-        ? {...state.starred, ...{[action.payload.podcastId]: false}}
-        : {[action.payload.podcastId]: false}
-
-      const nextFilter = state.filter?.kind === constants.FILTER_KIND_MY_LIST && isStarredEmpty(nextStarred)
-        ? { kind: constants.FILTER_KIND_FEATURED }
-        : state.filter
-
-      return {
-        ...state,
-        filter: nextFilter,
-        starred: nextStarred,
       }
     }
     default:

@@ -1,8 +1,10 @@
 import React from 'react'
+import {useSelector} from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
+import {selectors} from '../../store'
 import useFacets from '../../api/useFacets'
 import { addScrollStyle } from '../util'
 import Banner from './Banner'
@@ -47,10 +49,13 @@ const HomeScreen = () => {
 
   const classes = useStyles()
 
+  const user = useSelector(selectors.getUser)
+  const userName = user?.user_metadata?.full_name
+
   return (
     <BasicLayout>
       <div className={classes.homeContent}>
-        <ContentTitleBar text="Home" primaryColor={PRIMARY_COLOR} />
+        <ContentTitleBar text={userName ? `Welcome back, ${userName}!` : 'Home'} primaryColor={PRIMARY_COLOR} />
         <div className={classes.titleSeparator} />
         <Banner primaryColor={PRIMARY_COLOR} />
         <div className={classes.primaryStripe} />

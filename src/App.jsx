@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import Container from '@material-ui/core/Container'
 import Paper from '@material-ui/core/Paper'
 
 import { Provider as StoreProvider, actions, selectors } from './store'
@@ -19,6 +18,7 @@ import Auth from './views/Auth'
 import Error from './views/Error'
 import Loading from './views/Loading'
 import Mushipan from './views/MushipanRouter'
+import UserData from './views/UserData'
 
 import { routesConfig } from './routes'
 
@@ -103,13 +103,14 @@ const Chronicle = () => {
 
 const App = () => (
   <StoreProvider>
+    <Audio />
+    <Auth />
+    <Chronicle />
     <CssBaseline />
     <ThemeProvider>
-      <Audio />
-      <Auth />
-      <Chronicle />
       <ThemedAppContent />
     </ThemeProvider>
+    <UserData />
   </StoreProvider>
 )
 

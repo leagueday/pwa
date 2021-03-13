@@ -3,13 +3,14 @@
 
 export const getAppState = store => store.app
 export const getFilter = store => getAppState(store)?.filter
+export const getMyList = store => getAppState(store)?.userData?.my
 export const getNavExpander = tag => store => getAppState(store)?.navExpanders?.[tag]
 export const getNavVisibility = store => getAppState(store)?.navVisibility
 export const getPageNum = id => store => getAppState(store)?.pageNums[id]
-export const getStarred = store => getAppState(store)?.starred
 export const getTaps = store => getAppState(store)?.taps
 export const getTheme = store => getAppState(store)?.theme
 export const getUser = store => getAppState(store)?.user
+export const getUserData = store => getAppState(store)?.userData
 export const getViewportHeight = store => getAppState(store)?.viewportHeight
 
 // Router

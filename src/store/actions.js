@@ -4,6 +4,14 @@ import * as ActionType from './actionTypes'
 
 // App
 
+export const addToMyList = (kind, id) => ({
+  type: ActionType.ADD_TO_MYLIST,
+  payload: {
+    id,
+    kind,
+  }
+})
+
 export const hideNav = () => ({
   type: ActionType.HIDE_NAV,
   payload: {
@@ -18,6 +26,14 @@ export const login = () => ({
 export const logout = () => ({
   type: ActionType.LOGOUT_ACTION,
   payload: {},
+})
+
+export const removeFromMyList = (kind, id) => ({
+  type: ActionType.REMOVE_FROM_MYLIST,
+  payload: {
+    id,
+    kind,
+  }
 })
 
 export const setFilter = (kind, cat, subcat) => ({
@@ -45,17 +61,17 @@ export const setPageNum = (id, pageNum) => ({
   }
 })
 
-export const setStarred = starred => ({
-  type: ActionType.SET_STARRED,
-  payload: {
-    starred
-  }
-})
-
 export const setUser = user => ({
   type: ActionType.SET_USER,
   payload: {
     user
+  }
+})
+
+export const setUserData = userData => ({
+  type: ActionType.SET_USERDATA,
+  payload: {
+    userData
   }
 })
 
@@ -69,20 +85,6 @@ export const setViewportHeight = viewportHeight => ({
 export const showNav = () => ({
   type: ActionType.SHOW_NAV,
   payload: {
-  }
-})
-
-export const starPodcast = podcastId => ({
-  type: ActionType.STAR_PODCAST,
-  payload: {
-    podcastId
-  }
-})
-
-export const unstarPodcast = podcastId => ({
-  type: ActionType.UNSTAR_PODCAST,
-  payload: {
-    podcastId
   }
 })
 

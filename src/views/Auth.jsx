@@ -28,13 +28,13 @@ const onError = err => {
   console.error('auth error', err)
 }
 
-const onOpen = () => {
-  console.log('auth opened')
-}
-
-const onClose = () => {
-  console.log('auth closed')
-}
+// const onOpen = () => {
+//   console.log('auth opened')
+// }
+//
+// const onClose = () => {
+//   console.log('auth closed')
+// }
 
 const Auth = () => {
   const dispatch = useDispatch()
@@ -50,8 +50,8 @@ const Auth = () => {
       netlifyIdentity.on('login', makeOnLogin(dispatch))
       netlifyIdentity.on('logout', makeOnLogout(dispatch))
       netlifyIdentity.on('error', onError)
-      netlifyIdentity.on('open', onOpen)
-      netlifyIdentity.on('close', onClose)
+      // netlifyIdentity.on('open', onOpen)
+      // netlifyIdentity.on('close', onClose)
 
       netlifyIdentity.init()
     },

@@ -58,6 +58,10 @@ export const laminate = rawXmlParseResult => {
   return recSub(rawXmlParseResult)
 }
 
+export const makeRequestHeaders = bearerToken => bearerToken ? {
+  authorization: `Bearer ${bearerToken}`,
+} : { }
+
 export const proxifyUrl = url => {
   const params = new URLSearchParams({
     kind: 'doc',
