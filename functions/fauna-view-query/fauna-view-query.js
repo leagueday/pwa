@@ -27,7 +27,7 @@ const fetchUserData = async (client, email) => {
 
 const createUserData = async (client, email, name) => {
   try {
-    const clientResponse = await client.query(
+    await client.query(
       q.Create(
         q.Collection('user'),
         { data: { email, name } },
@@ -42,7 +42,7 @@ const createUserData = async (client, email, name) => {
 
 const deleteUserData = async (client, email) => {
   try {
-    const clientResponse = await client.query(
+    await client.query(
       q.Delete(
         q.Get(
           q.Match(q.Index('user_email'), email)
@@ -58,7 +58,7 @@ const deleteUserData = async (client, email) => {
 
 const handler = async (event, context) => {
   const queryStringParameters = event.queryStringParameters
-  const {identity, user} = context.clientContext
+  const {user} = context.clientContext
 
   if (process.env.NODE_ENV === 'development')
     console.log('fauna-view-query', JSON.stringify(user, null, 2))
