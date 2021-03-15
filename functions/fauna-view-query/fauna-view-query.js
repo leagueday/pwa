@@ -64,8 +64,8 @@ const handler = async (event, context) => {
     console.log('fauna-view-query', JSON.stringify(user, null, 2))
 
   // obtain the user email from the context, depends on netlify identity
-  const userEmail = user?.email
-  const userName = user?.user_metadata?.full_name
+  const userEmail = user ? user.email : null
+  const userName = user && user.user_metadata ? user.user_metadata.full_name : null
 
   if (!userEmail) return {
       body: 'Unauthorized',

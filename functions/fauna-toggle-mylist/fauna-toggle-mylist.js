@@ -74,22 +74,22 @@ const removeItemFromMyList = async (client, email, kind, id) => {
 
 const handler = async (event, context) => {
   const queryStringParameters = event.queryStringParameters
-  const {identity, user} = context.clientContext
+  const {user} = context.clientContext
 
   if (process.env.NODE_ENV === 'development')
     console.log('fauna-toggle-mylist', user, queryStringParameters)
 
   // obtain the user email from the context, depends on netlify identity
-  const userEmail = user?.email
+  const userEmail = user ? user.email : null
 
   if (!userEmail) return {
       body: 'Unauthorized',
       statusCode: 401,
     }
 
-  const op = queryStringParameters?.op
-  const id = queryStringParameters?.id
-  const kind = queryStringParameters?.kind
+  const op = queryStringParameters ? queryStringParameters.op : null
+  const id = queryStringParameters ? queryStringParameters.id : null
+  const kind = queryStringParameters ? queryStringParameters.kind : null
 
   if (!op || !id || !kind || (op !== '+' && op !== '-')) return {
       body: 'Bad Request',
