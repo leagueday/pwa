@@ -8,7 +8,8 @@ const useStyles = makeStyles(theme => ({
   title: {
     color: theme.palette.text.secondary,
     cursor: 'pointer',
-    fontSize: '85%',
+    fontSize: '90%',
+    fontWeight: theme.typography.weight.bold,
     overflow: 'hidden',
     textAlign: 'center',
     textOverflow: 'ellipsis',

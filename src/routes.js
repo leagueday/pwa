@@ -1,6 +1,5 @@
 import React from 'react'
 
-const AuthDemo = React.lazy(() => import('./views/AuthDemo'))
 const ChannelScreen = React.lazy(() => import('./views/ChannelScreen'))
 const EventScreen = React.lazy(() => import('./views/EventScreen'))
 const IconDump = React.lazy(() => import('./views/IconDump'))
@@ -15,11 +14,6 @@ const takeNextToken = pathTokens => pathTokens.length > 1 ? pathTokens[1] : null
 //
 
 export const routesConfig = [
-  [
-    matchFirstToken('auth-demo'),
-    AuthDemo,
-    () => ({})
-  ],
   [
     matchFirstToken('channel'),
     ChannelScreen,

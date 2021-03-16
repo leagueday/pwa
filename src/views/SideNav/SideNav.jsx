@@ -1,11 +1,11 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import cx from 'classnames'
 
 import {makeStyles} from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
-import {actions} from '../../store'
+import {actions, selectors} from '../../store'
 import useContentVariation from '../../api/useContentVariation'
 import * as consts from '../consts'
 import {addScrollStyle} from '../util'
@@ -68,6 +68,8 @@ const SideNav = ({className}) => {
   const dispatch = useDispatch()
   const goHome = () => dispatch(actions.pushHistory('/'))
 
+  const userData = useSelector(selectors.getUserData)
+
   const config = useContentVariation().map
 
   return (
@@ -87,9 +89,11 @@ const SideNav = ({className}) => {
           <Expander className={classes.expander} text="MY CHANNELS" tag="chan">
             <MyChannels cutoff={config?.get('channelsCutoff')} />
           </Expander>
-          <Expander className={classes.expander} text="MY PODCASTS" tag="poca">
-            <MyPodcasts />
-          </Expander>
+          {userData && (
+            <Expander className={classes.expander} text="MY PODCASTS" tag="poca">
+              <MyPodcasts />
+            </Expander>
+          )}
         </div>
       </div>
     </div>

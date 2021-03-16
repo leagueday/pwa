@@ -1,14 +1,21 @@
 import React from 'react'
+import {useSelector} from 'react-redux'
 
+import {selectors} from '../store'
 import useAirtable from './useAirtable'
+import useMyList from './useMyList'
 
 const base = 'appXoertP1WJjd4TQ'
 const myChannelsTablename = 'MyChannels'
 const channelChildrenTablename = 'ChannelChildren'
 
 const useMyChannels = () => {
+  const userData = useSelector(selectors.getUserData)
+
   const {data: myChannelsData} = useAirtable(base, myChannelsTablename)
   const {data: channelChildrenData} = useAirtable(base, channelChildrenTablename)
+
+  const [getIsOnMyList, addToMyList, removeFromMyList, isMyListEmpty] = useMyList()
 
   const channelChildren = React.useMemo(
     () => {

@@ -148,6 +148,9 @@ const useAudioRef = () => {
   return [getRef, setRef]
 }
 
+const startsWith = (s, maybePrefix) => s.substr(0, maybePrefix.length) === maybePrefix
+const nonsecBlubrryPrefix = 'http://media.blubrry.com/'
+
 const Audio = () => {
   const [getAudioRef, setAudioRef] = useAudioRef()
   const audioMode = useSelector(selectors.getAudioMode)
@@ -169,6 +172,21 @@ const Audio = () => {
     // play: playTaps,
     replay: replayTaps,
   } = taps
+
+  const scrubbedAudioUrl = React.useMemo(
+    () => {
+      if (audioUrl && startsWith(audioUrl, nonsecBlubrryPrefix)) {
+        const embeddedUrlOffset = audioUrl.indexOf('http', nonsecBlubrryPrefix.length)
+
+        if (embeddedUrlOffset > 0) {
+          return audioUrl.substr(embeddedUrlOffset)
+        }
+      }
+
+      return audioUrl
+    },
+    [audioUrl]
+  )
 
   //////////////////////////////////////////////////////////////////////////////
   // play/pause - consequence of button tap, or an event after-effect
@@ -201,7 +219,7 @@ const Audio = () => {
 
   return audioUrl ? (
     <span>
-      <audio ref={setAudioRef} src={audioUrl} />
+      <audio ref={setAudioRef} src={scrubbedAudioUrl} />
     </span>
   ) : null
 }

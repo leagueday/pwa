@@ -71,6 +71,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         taps: nextCounters('logout', state.taps),
         user: null,
+        userData: null,
       }
     }
     case ActionType.REMOVE_FROM_MYLIST: {
