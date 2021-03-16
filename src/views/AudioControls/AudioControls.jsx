@@ -70,6 +70,15 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     flexDirection: 'column',
     overflowX: 'hidden',
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '70%',
+    },
+    [theme.breakpoints.up('lg')]: {
+      maxWidth: '60%',
+    },
+    [theme.breakpoints.up('xl')]: {
+      maxWidth: '50%',
+    },
   },
   nextButton: {
     height: '2.25em',
