@@ -14,8 +14,8 @@ const useStyles = makeStyles(theme => ({
   //   whiteSpace: 'nowrap',
   // },
   image: {
-    height: '4em',
-    width: '4em',
+    height: '6em',
+    width: '6em',
   },
   imageContainer: {
   },

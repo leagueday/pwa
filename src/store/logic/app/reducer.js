@@ -34,9 +34,9 @@ const removeFromMyList = (userData, id, kind) => {
 
   const myList = userData.my
 
-  const nextMyList = !myList ? [] : myList.filter(
-    ({id: liId, kind: liKind}) => liId !== id && liKind !== kind
-  )
+  const nextMyList = myList ? myList.filter(
+    ({id: liId, kind: liKind}) => liId !== id || liKind !== kind
+  ) : []
 
   return {
     ...userData,

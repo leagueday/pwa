@@ -1,5 +1,5 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 
 import {makeStyles} from '@material-ui/core/styles'
 
@@ -8,7 +8,7 @@ import {channelSelectors} from '../../model/rss'
 import useMyList from '../../api/useMyList'
 import usePodcast from '../../api/usePodcast'
 import usePodcasts from '../../api/usePodcasts'
-import {actions, useLocationPathname} from '../../store'
+import {actions, selectors, useLocationPathname} from '../../store'
 
 import Item from './Item'
 
@@ -51,7 +51,9 @@ const MyPodcastItem = ({podcast, isSelected, onClick, imageClass}) => {
 const MyPodcasts = () => {
   const classes = useStyles()
 
-  const [getIsOnMyList, addToMyList, removeFromMyList, isMyListEmpty] = useMyList()
+  const user = useSelector(selectors.getUser)
+
+  const [getIsOnMyList, isMyListEmpty] = useMyList(user?.token?.access_token)
   const {data: podcasts} = usePodcasts()
 
   const myListPodcasts = isMyListEmpty ? [] : podcasts.filter(podcast => getIsOnMyList('podcast', podcast.id))

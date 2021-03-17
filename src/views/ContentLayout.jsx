@@ -44,10 +44,10 @@ const ContentLayout = ({accentColor, children, renderTop, renderTopLeft, renderT
         {
           renderTop ? renderTop() : (
             <Grid container>
-              <Grid item xs={6} sm={4} lg={3}>
+              <Grid item xs={4} sm={3} lg={2}>
                 {renderTopLeft()}
               </Grid>
-              <Grid className={classes.topRightGridItem} item xs={12} sm={8} lg={9}>
+              <Grid className={classes.topRightGridItem} item xs={12} sm={9} lg={10}>
                 {renderTopRight()}
               </Grid>
             </Grid>

@@ -9,6 +9,7 @@ import ContentLayout from '../ContentLayout'
 import Square from '../Square'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import LiveBroadcastsMockup, {mockupGetHasBroadcasts as hasLiveMockupData} from './LiveBroadcastsMockup'
+import MockupPlusMinusButtons from './MockupPlusMinusButtons'
 import ReplayBroadcastsMockup, {mockupGetHasBroadcasts as hasReplayMockupData} from './ReplayBroadcastsMockup'
 
 const useStyles = makeStyles(theme => ({
@@ -40,7 +41,8 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   logoImageContainer: {
-    width: '100%',
+    paddingTop: '0.5em',
+    width: '7em',
   },
 }))
 
@@ -62,6 +64,9 @@ const Headline = ({channel, classes, hasBroadcasts}) => (
       {
         hasBroadcasts ? 'Podcasts and Live Events AudioCasts' : 'Podcasts'
       }
+    </div>
+    <div className={classes.headlineTitleRow}>
+      <MockupPlusMinusButtons channelTag={channel.tag} channelTitle={channel.title} />
     </div>
   </div>
 )
