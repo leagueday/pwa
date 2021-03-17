@@ -24,22 +24,19 @@ const fetchUserData = bearerToken => fetch(
 const UserData = () => {
   const dispatch = useDispatch()
   const user = useSelector(selectors.getUser)
-  const userData = useSelector(selectors.getUserData)
 
   React.useEffect(
     () => {
-      if (user && !userData) {
-        fetchUserData(user?.token?.access_token).then(
-          maybeData => {
-            if (NODE_ENV === 'development') console.log('user data', JSON.stringify(maybeData, null, 2))
-            if (typeof(maybeData) === 'object') {
-              dispatch(actions.setUserData(maybeData))
-            }
+      fetchUserData(user?.token?.access_token).then(
+        maybeData => {
+          if (NODE_ENV === 'development') console.log('user data', maybeData)
+          if (typeof(maybeData) === 'object') {
+            dispatch(actions.setUserData(maybeData))
           }
-        )
-      }
+        }
+      )
     },
-    [user, userData]
+    [user]
   )
 
   return null

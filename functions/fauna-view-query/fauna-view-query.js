@@ -25,12 +25,26 @@ const fetchUserData = async (client, email) => {
   }
 }
 
+const fetchNonUserData = async client => {
+  return fetchUserData(client, 'ANON')
+}
+
 const createUserData = async (client, email, name) => {
   try {
+    // fetch ANON template user record
+    const clientResponse = await client.query(
+      q.Get(
+        q.Match(q.Index('user_email'), 'ANON')
+      )
+    )
+
+    const templateDocument = clientResponse.data
+
+    // then save template document along with new email and name
     await client.query(
       q.Create(
         q.Collection('user'),
-        { data: { email, name } },
+        { data: { ...templateDocument, email, name } },
       )
     )
 
@@ -67,11 +81,6 @@ const handler = async (event, context) => {
   const userEmail = user ? user.email : null
   const userName = user && user.user_metadata ? user.user_metadata.full_name : null
 
-  if (!userEmail) return {
-      body: 'Unauthorized',
-      statusCode: 401,
-    }
-
   const client = new Client({
     secret: process.env.FAUNADB_SECRET
   })
@@ -79,12 +88,22 @@ const handler = async (event, context) => {
   let status
   let data = {}
   if (queryStringParameters.doDelete) {
+    if (!userEmail) return {
+      body: 'Unauthorized',
+      statusCode: 401,
+    }
+
     [status] = await deleteUserData(client, userEmail)
   } else {
-    [status, data] = await fetchUserData(client, userEmail)
+    if (userEmail) {
+      [status, data] = await fetchUserData(client, userEmail)
 
-    if (status === STATUS_NOT_FOUND) {
-      [status, data] = await createUserData(client, userEmail, userName)
+      if (status === STATUS_NOT_FOUND) {
+        [status, data] = await createUserData(client, userEmail, userName)
+      }
+    } else {
+      // note this branch is specifically not authenticated
+      [status, data] = await fetchNonUserData(client)
     }
   }
 

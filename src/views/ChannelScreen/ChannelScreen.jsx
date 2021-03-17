@@ -2,7 +2,7 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import useMyChannels from '../../api/useMyChannels'
+import useChannels from '../../api/useChannels'
 import Loading from '../Loading'
 import BasicLayout from '../BasicLayout'
 
@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 const ChannelScreen = ({channelTag}) => {
   const classes = useStyles()
 
-  const channels = useMyChannels()
+  const channels = useChannels().list
 
   const channel = channels?.find(channel => channel?.tag === channelTag)
 

@@ -6,7 +6,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import * as colors from '../../styling/colors'
-import useMyChannels from '../../api/useMyChannels'
+import useChannels from '../../api/useChannels'
 import {actions} from '../../store'
 
 /*
@@ -87,7 +87,7 @@ const ChannelChildren = ({childTags, className}) => {
 
   const tagset = new Set(childTags)
 
-  const channels = useMyChannels()
+  const channels = useChannels().list
 
   const childChannels = channels.filter(({tag}) => tagset.has(tag))
 

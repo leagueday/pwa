@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux'
 
 import {makeStyles} from '@material-ui/core/styles'
 
-import useMyChannels from '../../api/useMyChannels'
+import useChannels from '../../api/useChannels'
 import {actions, useLocationPathname} from '../../store'
 
 import Item from './Item'
@@ -26,10 +26,10 @@ const isChannelSelected = (locationPathname, channelTag) => {
   }
 }
 
-const MyChannels = ({cutoff}) => {
+const MyChannels = () => {
   const classes = useStyles()
 
-  const channels = useMyChannels()
+  const myChannels = useChannels().myList
 
   const dispatch = useDispatch()
   const makeGotoThisChannel = channelTag => () => dispatch(actions.pushHistory(`/channel/${channelTag}`))
@@ -39,7 +39,7 @@ const MyChannels = ({cutoff}) => {
   return (
     <div className={classes.myChannels}>
       {
-        channels.slice(0, cutoff).map(channel => {
+        myChannels.map(channel => {
           const {tag, title, imageUrl} = channel
           return (
             <Item

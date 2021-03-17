@@ -1,29 +1,23 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
 
-import {selectors} from '../store'
 import useAirtable from './useAirtable'
 import useMyList from './useMyList'
 
 const base = 'appXoertP1WJjd4TQ'
-const myChannelsTablename = 'MyChannels'
+const channelsTablename = 'Channels'
 const channelChildrenTablename = 'ChannelChildren'
 
-const useMyChannels = () => {
-  const userData = useSelector(selectors.getUserData)
-
-  const {data: myChannelsData} = useAirtable(base, myChannelsTablename)
+const useChannels = () => {
+  const {data: channelsData} = useAirtable(base, channelsTablename)
   const {data: channelChildrenData} = useAirtable(base, channelChildrenTablename)
 
   const [getIsOnMyList, addToMyList, removeFromMyList, isMyListEmpty] = useMyList()
 
   const channelChildren = React.useMemo(
     () => {
-      if (!channelChildrenData) return null
-
       const map = new Map()
 
-      channelChildrenData.forEach(
+      if (channelChildrenData) channelChildrenData.forEach(
         ({fields: {channelTag, childChannelTag}}) => {
           const childChannels = map.get(channelTag)
 
@@ -40,15 +34,25 @@ const useMyChannels = () => {
     [channelChildrenData]
   )
 
+  const spreadChannelsData = React.useMemo(
+    () => (channelsData || []).map(({fields}) => ({...fields})),
+    [channelsData]
+  )
+
   return React.useMemo(
-    () => myChannelsData && channelChildren ? myChannelsData.map(
-      ({fields}) => ({
-        ...fields,
-        children: channelChildren.get(fields.tag) || []
-      }),
-    ) : [],
-    [channelChildren, myChannelsData]
+    () => ({
+      list: spreadChannelsData.map(
+        fields => ({
+          ...fields,
+          children: channelChildren.get(fields.tag) || []
+        }),
+      ),
+      myList: spreadChannelsData.filter(
+        ({tag}) => getIsOnMyList('channel', tag)
+      ),
+    }),
+    [channelChildren, spreadChannelsData, getIsOnMyList]
   )
 }
 
-export default useMyChannels
+export default useChannels

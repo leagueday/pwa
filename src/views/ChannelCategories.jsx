@@ -3,8 +3,8 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
+import useChannels from '../api/useChannels'
 import useChannelCategories from '../api/useChannelCategories'
-import useMyChannels from '../api/useMyChannels'
 import BottomBlock from './BottomBlock'
 import ChannelTiles from './ChannelTiles'
 
@@ -15,13 +15,13 @@ const useStyles = makeStyles({
 const ChannelCategories = ({className}) => {
   const classes = useStyles()
 
-  const myChannels = useMyChannels()
+  const channels = useChannels().list
   const channelCategories = useChannelCategories()
 
   const channelsByCat = React.useMemo(() => {
-    if (channelCategories.size === 0 || myChannels.length === 0) return []
+    if (channelCategories.size === 0 || channels.length === 0) return []
 
-    const channelMap = new Map(myChannels.map(record => ([record.tag, record])))
+    const channelMap = new Map(channels.map(record => ([record.tag, record])))
 
     const result = []
     for (let [title, tagSet] of channelCategories.entries()) {
@@ -32,7 +32,7 @@ const ChannelCategories = ({className}) => {
       result.push([title, channels])
     }
     return result
-  }, [myChannels, channelCategories])
+  }, [channels, channelCategories])
 
   return (
     <div className={cx(className, classes.channelCategories)}>
