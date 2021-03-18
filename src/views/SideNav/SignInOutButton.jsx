@@ -1,13 +1,19 @@
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+import cx from 'classnames'
 
 import {makeStyles} from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
 import {actions, selectors} from '../../store'
 
-const useStyles = makeStyles({
-})
+const useStyles = makeStyles(theme => ({
+  inNOutButton: {
+    "&:hover": {
+      backgroundColor: theme.palette.primary.active,
+    },
+  }
+}))
 
 const SignInOutButton = ({className}) => {
   const classes = useStyles()
@@ -23,7 +29,13 @@ const SignInOutButton = ({className}) => {
       : [ () => dispatch(actions.login()), 'Sign In' ]
 
   return (
-    <Button className={className} color="primary" onClick={onClick} variant="contained">
+    <Button
+      className={cx(classes.inNOutButton, className)}
+      color="primary"
+      onClick={onClick}
+      size="small"
+      variant="contained"
+    >
       {text}
     </Button>
   )

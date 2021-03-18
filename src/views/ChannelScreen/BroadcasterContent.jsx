@@ -8,10 +8,11 @@ import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import Square from '../Square'
+
 import BroadcasterTextPlate from './BroadcasterTextPlate'
 import ChannelChildren from './ChannelChildren'
 import LiveBroadcastsMockup from './LiveBroadcastsMockup'
-import MockupPlusMinusButtons from './MockupPlusMinusButtons'
+import PlusMinusButton from './PlusMinusButton'
 import ReplayBroadcastsMockup from './ReplayBroadcastsMockup'
 
 const useStyles = makeStyles({
@@ -75,7 +76,7 @@ const TopSection = ({classes, channel}) => (
     </Grid>
     <Grid className={classes.topRightGridItem} item xs={12} sm={8} md={6} lg={10}>
       <BroadcasterTextPlate channel={channel} className={classes.textPlate}/>
-      <MockupPlusMinusButtons channelTag={channel.tag} channelTitle={channel.title} />
+      <PlusMinusButton channelTag={channel.tag} channelTitle={channel.title} />
       <ChannelChildren className={classes.children} childTags={channel.children} />
     </Grid>
   </Grid>

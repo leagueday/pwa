@@ -19,7 +19,8 @@ Setup
 
 ### "Full Stack" Netlify Dev With HMR
 
-1. `$ npx cross-env NODE_ENV=development AIRTABLE_API_KEY=A1B2C3 npx netlify dev`
+0. Find AIRTABLE_API_KEY and FAUNADB_SECRET in the netlify app dashboard.
+1. `$ npx cross-env NODE_ENV=development AIRTABLE_API_KEY=123 FAUNADB_SECRET=123 netlify dev`
 2. `$ npx netlify dev`
 3. View [http://localhost:8888](http://localhost:8888); it should open automatically.
 

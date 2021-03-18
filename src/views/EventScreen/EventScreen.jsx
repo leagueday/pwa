@@ -105,7 +105,7 @@ const useStyles = makeStyles(theme => ({
     margin: '1em',
   },
   logoImageSquare: {
-    width: '100%',
+    width: '7em',
   },
 }))
 

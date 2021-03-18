@@ -1,3 +1,5 @@
+import Color from 'color'
+
 import { createMuiTheme } from '@material-ui/core/styles'
 
 import * as colors from './colors'
@@ -9,6 +11,13 @@ export const spec = createMuiTheme({
       paper: colors.black, // card background, sidebar background
       control: colors.black, // header background
       default: colors.black, // grid background
+    },
+    primary: {
+      active: Color(colors.blue).lighten(0.2).string(),
+      contrastText: colors.darkGray,
+      dark: colors.white30,
+      light: colors.white,
+      main: colors.blue,
     },
     secondary: {
       contrastText: colors.darkGray,

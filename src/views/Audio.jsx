@@ -148,7 +148,6 @@ const useAudioRef = () => {
   return [getRef, setRef]
 }
 
-const startsWith = (s, maybePrefix) => s.substr(0, maybePrefix.length) === maybePrefix
 const nonsecBlubrryPrefix = 'http://media.blubrry.com/'
 
 const Audio = () => {
@@ -175,7 +174,7 @@ const Audio = () => {
 
   const scrubbedAudioUrl = React.useMemo(
     () => {
-      if (audioUrl && startsWith(audioUrl, nonsecBlubrryPrefix)) {
+      if (audioUrl && audioUrl.startsWith(nonsecBlubrryPrefix)) {
         const embeddedUrlOffset = audioUrl.indexOf('http', nonsecBlubrryPrefix.length)
 
         if (embeddedUrlOffset > 0) {

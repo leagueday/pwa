@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack --config webpack-prod.config.js",
     "build-dev": "cross-env NODE_ENV=development webpack --config webpack-dev.config.js",
-    "postinstall": "(cd functions/node-fetch && npm install); (cd functions/fauna-view-query && npm install); (cd functions/fauna-toggle-mylist && npm install)",
+    "postinstall": "node scripts/install-functions.mjs",
     "start": "http-server -p 8888 --proxy http://localhost:8888? dist",
     "start-dev": "cross-env NODE_ENV=development webpack serve --config webpack-dev.config.js --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -41,7 +41,6 @@
     "cross-env": "^7.0.3",
     "css-loader": "^5.0.1",
     "dayjs": "^1.10.1",
-    "faunadb": "^4.1.1",
     "history": "^5.0.0",
     "html-webpack-plugin": "^4.5.0",
     "http-server": "^0.12.3",

@@ -9,7 +9,7 @@ import ContentLayout from '../ContentLayout'
 import Square from '../Square'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import LiveBroadcastsMockup, {mockupGetHasBroadcasts as hasLiveMockupData} from './LiveBroadcastsMockup'
-import MockupPlusMinusButtons from './MockupPlusMinusButtons'
+import PlusMinusButton from './PlusMinusButton'
 import ReplayBroadcastsMockup, {mockupGetHasBroadcasts as hasReplayMockupData} from './ReplayBroadcastsMockup'
 
 const useStyles = makeStyles(theme => ({
@@ -66,7 +66,7 @@ const Headline = ({channel, classes, hasBroadcasts}) => (
       }
     </div>
     <div className={classes.headlineTitleRow}>
-      <MockupPlusMinusButtons channelTag={channel.tag} channelTitle={channel.title} />
+      <PlusMinusButton channelTag={channel.tag} channelTitle={channel.title} />
     </div>
   </div>
 )
