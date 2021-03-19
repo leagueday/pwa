@@ -11,6 +11,11 @@ import {IcoMinus, IcoPlus} from './icons'
 const MinusButton = makeIconButton(IcoMinus)
 const PlusButton = makeIconButton(IcoPlus)
 
+const stopEventPropagation = handler => event => {
+  handler(event)
+  event.stopPropagation()
+}
+
 const PlusMinusButton = ({className, subjectId, subjectKind}) => {
   const user = useSelector(selectors.getUser)
   const isAuthenticated = !!user
@@ -28,11 +33,13 @@ const PlusMinusButton = ({className, subjectId, subjectKind}) => {
         PlusButton
       ]
 
+  const handler = stopEventPropagation(onClick)
+
   return isAuthenticated ? (
     <Button backgroundColor={colors.brandBlack}
             className={className}
             color={colors.magenta}
-            onClick={onClick}
+            onClick={handler}
             shadowColor={Color(colors.magenta).darken(0.75).string()}
             size="1em"
     />

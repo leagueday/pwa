@@ -66,6 +66,9 @@ const Loading = () => {
   const classes = useStyles()
 
   const [cycle, setCycle] = React.useState(0)
+
+  // tbd stop calling this fn on each render
+  // note to self: grow a brain
   const stopCounter = makeCounter(5, cycle, setCycle)
 
   const colorize = React.useCallback(

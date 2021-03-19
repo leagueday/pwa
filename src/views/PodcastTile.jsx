@@ -8,6 +8,7 @@ import * as colors from '../styling/colors'
 import usePodcast from '../api/usePodcast'
 import { channelSelectors } from '../model/rss'
 import { actions } from '../store'
+import PlusMinusButton from './PlusMinusButton'
 import Square from './Square'
 
 const BACKGROUND_COLOR = colors.black
@@ -46,7 +47,12 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     right: 0,
     top: 0,
-    zIndex: 2,
+  },
+  plusMinusButton: {
+    bottom: '0.15em',
+    fontSize: '150%',
+    position: 'absolute',
+    right: '0.15em',
   },
   imageSquare: {
     width: '100%',
@@ -84,8 +90,9 @@ const PodcastTile = ({podcast, textColor}) => {
   return (
     <div className={classes.podcastTile} onClick={gotoThisPodcast}>
       <Square className={classes.imageSquare}>
-        <div className={classes.imageOpacityRamp} />
         <img className={classes.image} src={imageUrl} />
+        <div className={classes.imageOpacityRamp} />
+        <PlusMinusButton className={classes.plusMinusButton} subjectId={podcast.id} subjectKind="podcast" />
       </Square>
       <div className={classes.textBox}>
         <div className={classes.text}>
