@@ -7,11 +7,11 @@ import useFacets from '../../api/useFacets'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
+import PlusMinusButton from '../PlusMinusButton'
 
 import BroadcasterTextPlate from './BroadcasterTextPlate'
 import ChannelChildren from './ChannelChildren'
 import LiveBroadcastsMockup from './LiveBroadcastsMockup'
-import PlusMinusButton from './PlusMinusButton'
 import ReplayBroadcastsMockup from './ReplayBroadcastsMockup'
 
 const useStyles = makeStyles({
@@ -41,13 +41,13 @@ const useStyles = makeStyles({
     width: '100%',
   },
   logoImageContainer: {
+    fontSize: '150%',
     paddingTop: '0.5em',
     position: 'relative',
     width: '7em',
   },
   plusMinusButton: {
     bottom: '0.25em',
-    fontSize: '150%',
     position: 'absolute',
     right: '0.25em',
   },
@@ -82,7 +82,7 @@ const TopSection = ({classes, channel}) => (
     <Grid className={classes.topLeftGridItem} item xs={6} sm={4} md={4} lg={2}>
       <div className={classes.logoImageContainer}>
         <img className={classes.logoImage} src={channel.imageUrl} />
-        <PlusMinusButton channelTag={channel.tag} className={classes.plusMinusButton} />
+        <PlusMinusButton className={classes.plusMinusButton} subjectId={channel.tag} subjectKind="channel" />
       </div>
     </Grid>
     <Grid className={classes.topRightGridItem} item xs={12} sm={8} md={8} lg={10}>

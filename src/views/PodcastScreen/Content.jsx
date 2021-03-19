@@ -10,7 +10,7 @@ import usePodcast from '../../api/usePodcast'
 import { cycleColorSequence, stripHtml } from '../util'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
-import Square from '../Square'
+import PlusMinusButton from '../PlusMinusButton'
 import Item from './Item'
 
 const useStyles = makeStyles(theme => ({
@@ -20,18 +20,27 @@ const useStyles = makeStyles(theme => ({
   items: {
     paddingTop: '0.25em',
   },
-  logoImage: {
-    width: '100%',
-  },
-  logoImageContainer: {
-    marginRight: '1em',
-    padding: '1em',
-  },
-  logoImageSquare: ({accentColor}) => ({
-    border: `1px solid ${accentColor}`,
+  logoImage: ({accentColor}) => ({
+    border: `0.15em solid ${accentColor}`,
+    display: 'block',
     width: '100%',
   }),
+  logoImageContainer: {
+    fontSize: '150%',
+    margin: '1em',
+    width: '100%',
+  },
+  logoImageContainer2: {
+    position: 'relative',
+    width: '100%',
+  },
+  plusMinusButton: {
+    bottom: '0.25em',
+    position: 'absolute',
+    right: '0.25em',
+  },
   textplate: {
+    marginLeft: '1em',
     padding: '1em',
     width: '100%',
     overflow: 'hidden',
@@ -83,11 +92,12 @@ const maybeMakeUpColor = (idString, maybeColor) => {
   return cycleColorSequence[hash % cycleColorSequence.length]
 }
 
-const PodcastChannelImage = ({classes, imageUrl}) => (
+const PodcastChannelImage = ({classes, imageUrl, podcastId}) => (
   <div className={classes.logoImageContainer}>
-    <Square className={classes.logoImageSquare}>
+    <div className={classes.logoImageContainer2}>
       <img className={classes.logoImage} src={imageUrl} />
-    </Square>
+      <PlusMinusButton className={classes.plusMinusButton} subjectId={podcastId} subjectKind="podcast" />
+    </div>
   </div>
 )
 
@@ -127,37 +137,6 @@ const Content = ({podcast}) => {
     [description]
   )
 
-  // const firstItem = items?.[0]
-  // const firstItemAudioUrl = rssSelectors.itemSelectors.v2.audioUrl(firstItem)
-  // const firstItemAudioDuration = rssSelectors.itemSelectors.v2.duration(firstItem)
-  // const firstItemTitle = rssSelectors.itemSelectors.v2.title(firstItem)
-
-  // const audioPodcastId = useSelector(selectors.getAudioPodcastId)
-  // const audioMode = useSelector(selectors.getAudioMode)
-
-  // const isSelectedAudio = audioPodcastId === podcast?.id
-  // const isPlaying = isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
-
-  // const dispatch = useDispatch()
-
-  // const onPause = () => {
-  //   dispatch(actions.pauseAudio())
-  // }
-  //
-  // const onPlay = isSelectedAudio
-  //   ? () => { dispatch(actions.playAudio()) }
-  //   : () => {
-  //     dispatch(actions.selectAudio(
-  //       podcast?.id,
-  //       podcast?.url,
-  //       firstItemAudioUrl,
-  //       0,
-  //       firstItemAudioDuration,
-  //       firstItemTitle,
-  //     ))
-  //     dispatch(actions.playAudio())
-  //   }
-
   const makeToggleIsExpanded = itemIndex =>
     expandedIndex === itemIndex
       ? () => { setExpandedIndex(null) }
@@ -167,7 +146,7 @@ const Content = ({podcast}) => {
     <ContentLayout
       accentColor={podcastColor}
       renderTopLeft={
-        () => (<PodcastChannelImage classes={classes} imageUrl={imageUrl} />)
+        () => (<PodcastChannelImage classes={classes} imageUrl={imageUrl} podcastId={podcast?.id} />)
       }
       renderTopRight={
         () => (<TextPlate classes={classes} title={title} description={strippedDescription} />)

@@ -2,29 +2,29 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 import Color from 'color'
 
-import * as colors from '../../styling/colors'
-import {selectors} from '../../store'
-import useMyList from '../../api/useMyList'
-import {makeIconButton} from '../IconButton'
-import {IcoMinus, IcoPlus} from '../icons'
+import * as colors from '../styling/colors'
+import {selectors} from '../store'
+import useMyList from '../api/useMyList'
+import {makeIconButton} from './IconButton'
+import {IcoMinus, IcoPlus} from './icons'
 
 const MinusButton = makeIconButton(IcoMinus)
 const PlusButton = makeIconButton(IcoPlus)
 
-const PlusMinusButton = ({channelTag, className}) => {
+const PlusMinusButton = ({className, subjectId, subjectKind}) => {
   const user = useSelector(selectors.getUser)
   const isAuthenticated = !!user
 
   const [getIsOnMyList, addToMyList, removeFromMyList] = useMyList(user?.token?.access_token)
-  const isOnMyList = getIsOnMyList('channel', channelTag)
+  const isOnMyList = getIsOnMyList(subjectKind, subjectId)
 
   const [onClick, Button] =
     isOnMyList
       ? [
-        () => removeFromMyList('channel', channelTag),
+        () => removeFromMyList(subjectKind, subjectId),
         MinusButton
       ] : [
-        () => addToMyList('channel', channelTag),
+        () => addToMyList(subjectKind, subjectId),
         PlusButton
       ]
 

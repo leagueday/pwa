@@ -7,8 +7,8 @@ import useFacets from '../../api/useFacets'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
+import PlusMinusButton from '../PlusMinusButton'
 import LiveBroadcastsMockup, {mockupGetHasBroadcasts as hasLiveMockupData} from './LiveBroadcastsMockup'
-import PlusMinusButton from './PlusMinusButton'
 import ReplayBroadcastsMockup, {mockupGetHasBroadcasts as hasReplayMockupData} from './ReplayBroadcastsMockup'
 
 const useStyles = makeStyles(theme => ({
@@ -55,7 +55,7 @@ const Logo = ({channel, classes}) => (
   <div className={classes.logoImageContainer}>
     <img className={classes.logoImage} src={channel?.imageUrl} />
     <div className={classes.headlineTitleRow}>
-      <PlusMinusButton className={classes.plusMinusButton} channelTag={channel.tag} />
+      <PlusMinusButton className={classes.plusMinusButton} subjectId={channel.tag} subjectKind="channel" />
     </div>
   </div>
 )

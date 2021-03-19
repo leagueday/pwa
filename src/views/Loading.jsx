@@ -48,10 +48,10 @@ const makeColorize = s => {
 
         let i = iteration
 
-        for (let c of sa) {
+        for (let j = 0; j < sa.length; j++) {
           const color = cycleColorSequence[i]
 
-          spans.push(<span key={i} style={{color}}>{c}</span>)
+          spans.push(<span key={j} style={{color}}>{sa[j]}</span>)
 
           i = i + 1
           if (i === numColors) i = 0

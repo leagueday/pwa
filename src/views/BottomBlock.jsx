@@ -26,7 +26,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     flexShrink: 1,
     height: '100%',
-    paddingLeft: '1em',
   },
   title: {
     flexGrow: 0,
@@ -34,6 +33,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: '150%',
     fontWeight: theme.typography.weight.bold,
     overflow: 'hidden',
+    paddingRight: '1em',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
@@ -59,7 +59,9 @@ const BottomBlock = props => {
     <div className={cx(classes.bottomBlock, className)}>
       <div className={classes.titleRow}>
         {(titleStart || titleRest) && (
-          <div className={classes.title}><span className={classes.titleStart}>{titleStart}</span> {titleRest}</div>
+          <div className={classes.title}>
+            <span className={classes.titleStart}>{titleStart}</span> {titleRest}
+          </div>
         )}
         <div className={classes.rhsCol}>
           <div className={cx(classes.rhsCell, classes.pinStripe)} />
