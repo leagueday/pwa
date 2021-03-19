@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   logoImageContainer: {
     paddingTop: '0.5em',
     position: 'relative',
-    width: '7em',
+    width: '10.5em',
   },
   plusMinusButton: {
     bottom: '0.5em',

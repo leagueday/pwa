@@ -41,15 +41,15 @@ const useStyles = makeStyles({
     width: '100%',
   },
   logoImageContainer: {
-    fontSize: '150%',
     paddingTop: '0.5em',
     position: 'relative',
-    width: '7em',
+    width: '10.5em',
   },
   plusMinusButton: {
-    bottom: '0.25em',
+    bottom: '0.5em',
     position: 'absolute',
-    right: '0.25em',
+    fontSize: '150%',
+    right: '0.5em',
   },
   replayBroadcasts: {
     marginBottom: '1em',
@@ -86,7 +86,7 @@ const TopSection = ({classes, channel}) => (
       </div>
     </Grid>
     <Grid className={classes.topRightGridItem} item xs={12} sm={8} md={8} lg={10}>
-      <BroadcasterTextPlate channel={channel} className={classes.textPlate}/>
+      <BroadcasterTextPlate channel={channel} className={classes.textPlate} />
       <ChannelChildren className={classes.children} childTags={channel.children} />
     </Grid>
   </Grid>
