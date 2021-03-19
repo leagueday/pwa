@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
     cursor: 'pointer',
     fontSize: '90%',
+    fontWeight: theme.typography.weight.bold,
     overflow: 'hidden',
     paddingLeft: HALF_HEIGHT,
     paddingRight: HALF_HEIGHT,
