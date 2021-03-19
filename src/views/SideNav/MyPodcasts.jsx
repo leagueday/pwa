@@ -53,7 +53,7 @@ const MyPodcasts = () => {
 
   const user = useSelector(selectors.getUser)
 
-  const [getIsOnMyList, isMyListEmpty] = useMyList(user?.token?.access_token)
+  const [getIsOnMyList, addToMyList, removeFromMyList, isMyListEmpty] = useMyList(user?.token?.access_token)
   const {data: podcasts} = usePodcasts()
 
   const myListPodcasts = isMyListEmpty ? [] : podcasts.filter(podcast => getIsOnMyList('podcast', podcast.id))
