@@ -8,8 +8,6 @@ import * as colors from '../../styling/colors'
 import {actions, selectors} from '../../store'
 import * as consts from '../consts'
 import {addScrollStyle} from '../util'
-import { IcoHome } from '../icons'
-import {makeIconButton} from '../IconButton'
 import Expander from './Expander'
 import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
 import MyChannels from './MyChannels'
@@ -33,10 +31,10 @@ const useStyles = makeStyles(theme => ({
     paddingTop: '0.5em',
   },
   logo: {
+    cursor: ({isHome}) => isHome ? 'default' : 'pointer',
     flex: 1,
     minWidth: 0,
     maxWidth: '8em',
-    paddingLeft: '0.25em',
   },
   scroller: addScrollStyle(colors.blue)({
     flex: 1,
@@ -59,24 +57,18 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const HomeButton = makeIconButton(IcoHome)
-
-const SideNav = ({className}) => {
-  const classes = useStyles()
+const SideNav = ({className, isHome}) => {
+  const classes = useStyles(({isHome}))
 
   const dispatch = useDispatch()
-  const goHome = () => dispatch(actions.pushHistory('/'))
+  const goHome = isHome ? null : () => dispatch(actions.pushHistory('/'))
 
   const user = useSelector(selectors.getUser)
 
   return (
     <div className={cx(classes.sideNav, className)}>
       <div className={classes.controls}>
-        <HomeButton onClick={goHome}
-                    size="2em"
-                    color={colors.cyan}
-                    backgroundColor={colors.brandBlack} />
-        <img className={classes.logo} src="/img/logo.png" />
+        <img className={classes.logo} onClick={goHome} src="/img/logo.png" />
         <SignInOutButton className={classes.signInOutButton} />
       </div>
       <SearchLozenge />

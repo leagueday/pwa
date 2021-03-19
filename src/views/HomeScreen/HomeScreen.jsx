@@ -53,7 +53,7 @@ const HomeScreen = () => {
   const userName = user?.user_metadata?.full_name
 
   return (
-    <BasicLayout>
+    <BasicLayout isHome>
       <div className={classes.homeContent}>
         <ContentTitleBar text={userName ? `Welcome back, ${userName}!` : 'Home'} primaryColor={PRIMARY_COLOR} />
         <div className={classes.titleSeparator} />

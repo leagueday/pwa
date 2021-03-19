@@ -31,12 +31,8 @@ const fetchRssDocViaProxy = url => {
 
 // tbd move this to a component if there gets to be more of it
 const scrubRssData = rssData => {
-  const imgUrl = channelSelectors.v2.imageUrl(rssData)
-
-  if (imgUrl && imgUrl.startsWith('http://podcast.nintendopower.com/')) {
-    const nextImageUrl = String('https').concat(imgUrl.substr(4))
-    rssData = channelMutators.v2.imageUrl(rssData, nextImageUrl)
-  }
+  // nothing here atm.  could very well be a quick need for something
+  // use models/rss/mutators to alter values if necessary
 
   return rssData
 }
