@@ -16,7 +16,7 @@ const stopEventPropagation = handler => event => {
   event.stopPropagation()
 }
 
-const PlusMinusButton = ({className, subjectId, subjectKind}) => {
+const PlusMinusButton = ({className, size, subjectId, subjectKind}) => {
   const user = useSelector(selectors.getUser)
   const isAuthenticated = !!user
 
@@ -41,7 +41,8 @@ const PlusMinusButton = ({className, subjectId, subjectKind}) => {
             color={colors.magenta}
             onClick={handler}
             shadowColor={Color(colors.magenta).darken(0.75).string()}
-            size="1em"
+            size={size ?? '1em'}
+            strokeWidth="3"
     />
   ) : null
 }

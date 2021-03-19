@@ -176,11 +176,12 @@ const AudioControls = () => {
       </div>
       <div className={classes.mainColumn}>
         <div className={classes.titleRow}>
-          <PlusOrMinusButton color={buttonColor}
-                             backgroundColor={colors.brandBlack}
-                             size="2em"
+          <PlusOrMinusButton backgroundColor={colors.brandBlack}
+                             color={buttonColor}
                              onClick={plusOrMinusOnclick}
-                             shadowColor={buttonShadowColor} />
+                             shadowColor={buttonShadowColor}
+                             size="2em"
+                             strokeWidth="3" />
           <Title title={itemTitle} onClick={titleOnclick} />
           <ForwardStopButton color={buttonColor}
                              backgroundColor={colors.brandBlack}

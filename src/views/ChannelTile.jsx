@@ -5,6 +5,7 @@ import {makeStyles} from '@material-ui/core/styles'
 
 import * as colors from '../styling/colors'
 import {actions} from '../store'
+import PlusMinusButton from './PlusMinusButton'
 import Square from './Square'
 
 const useStyles = makeStyles(theme => ({
@@ -28,6 +29,14 @@ const useStyles = makeStyles(theme => ({
   }),
   imageSquare: {
     width: '80%',
+  },
+  plusMinusButton: {
+    // bottom: 'calc(50% * sin(50%)) + 0.25em',
+    bottom: '0.25em',
+    position: 'absolute',
+    // right: 'calc(50% * sin(50%)) + 0.25em',
+    right: '0.25em',
+    zIndex: 3,
   },
   text: ({textColor}) => ({
     color: textColor ?? colors.white80,
@@ -58,6 +67,7 @@ const ChannelTile = ({channel}) => {
     <div className={classes.channelTile} onClick={gotoThisChannel}>
       <Square className={classes.imageSquare}>
         <img className={classes.image} src={channel.imageUrl} />
+        <PlusMinusButton size="25%" className={classes.plusMinusButton} subjectId={channel.tag} subjectKind="channel" />
       </Square>
       <div className={classes.textBox}>
         <div className={classes.text}>
