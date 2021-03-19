@@ -3,8 +3,9 @@ import axios from 'axios'
 import parseXml from '@rgrove/parse-xml'
 import useSWR, { cache as swrCache } from 'swr'
 
-import { laminate, proxifyUrl } from './util'
 import * as analytics from '../analytics'
+import {channelMutators, channelSelectors} from '../model/rss'
+import { laminate, proxifyUrl } from './util'
 
 import { IdbKvTimedExpiryCache } from './idb'
 
@@ -28,6 +29,18 @@ const fetchRssDocViaProxy = url => {
   })
 }
 
+// tbd move this to a component if there gets to be more of it
+const scrubRssData = rssData => {
+  const imgUrl = channelSelectors.v2.imageUrl(rssData)
+
+  if (imgUrl && imgUrl.startsWith('http://podcast.nintendopower.com/')) {
+    const nextImageUrl = String('https').concat(imgUrl.substr(4))
+    rssData = channelMutators.v2.imageUrl(rssData, nextImageUrl)
+  }
+
+  return rssData
+}
+
 const fetchRssDocViaProxyThenParseThenUpdateIdb = (url, isCanceled=()=>false) =>
   fetchRssDocViaProxy(url).then(
     rssData => {
@@ -35,7 +48,7 @@ const fetchRssDocViaProxyThenParseThenUpdateIdb = (url, isCanceled=()=>false) =>
 
       const t0 = Date.now()
 
-      const rssJson = laminate(parseXml(rssData))
+      const rssJson = scrubRssData(laminate(parseXml(rssData)))
 
       analytics.timing('podcast', 'parse-rss', Date.now() - t0, url)
 

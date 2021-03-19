@@ -2,15 +2,21 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 
+import * as colors from '../../styling/colors'
+
 const TITLE_HEIGHT = '2em'
+const HALF_HEIGHT = '1em'
 
 const useStyles = makeStyles(theme => ({
   title: {
+    backgroundColor: colors.darkGray,
+    borderRadius: HALF_HEIGHT,
     color: theme.palette.text.secondary,
     cursor: 'pointer',
     fontSize: '90%',
-    fontWeight: theme.typography.weight.bold,
     overflow: 'hidden',
+    paddingLeft: HALF_HEIGHT,
+    paddingRight: HALF_HEIGHT,
     textAlign: 'center',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -19,6 +25,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   titleFlex: {
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
