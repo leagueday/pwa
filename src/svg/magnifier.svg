@@ -1,0 +1,16 @@
+<svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        stroke="white"
+        fill="none"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+>
+    <circle cx="10" cy="10" r="8" />
+    // x = r * sin(θ) + x0, y = r * cos(θ) + y0
+    // where θ = 45°
+    <line x1="15.65685" y1="15.65685" x2="22" y2="22" />
+</svg>

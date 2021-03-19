@@ -1,7 +1,7 @@
 {
   "name": "node-fetch",
   "version": "1.0.0",
-  "description": "netlify functions:create - default template for node fetch function",
+  "description": "CORS proxy",
   "main": "node-fetch.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,10 +11,10 @@
     "serverless",
     "js"
   ],
-  "author": "Netlify",
-  "license": "MIT",
+  "author": "LeagueDay",
+  "license": "UNLICENSED",
+  "private": true,
   "dependencies": {
-    "file-type": "^16.1.0",
     "node-fetch": "^2.6.1"
   }
 }

@@ -14,8 +14,6 @@ import { actions, constants as storeConsts, selectors, thunks } from '../store'
 
 const debugAudio = false
 
-const TAP_INTERVAL = 15
-
 const addDebugEventListeners = debugAudio ?
   audioDomNode => {
     for (let [event, description] of [
@@ -89,9 +87,16 @@ const useAudioRef = () => {
   const getRef = React.useCallback(() => ref.current, [])
 
   const setRef = React.useCallback(node => {
-    // if (ref.current) {
-      // clean up events / references to previous dom `node` instance
-    // }
+    // If there is some resource that should be released, or dangling
+    // reference to the previous refed dom node, that would be set up
+    // during this function, of which there is no example currently,
+    // the clean up should be done here with code such as
+    //   if (ref.current) {
+    //     recurringEvents.stop()
+    //     freeOutsideDomNodeRef()
+    //   }
+    // where `ref.current` refers to the soon-to-die previous refed
+    // dom node.
 
     if (node) {
       node.addEventListener('error', errorEvent => {
@@ -119,8 +124,8 @@ const useAudioRef = () => {
         dispatch(thunks.audio.playNextTrack())
       })
 
-      node.addEventListener('seeked', () => {
-        dispatch(actions.audioSeeked())
+      node.addEventListener('seeked', eventData => {
+        dispatch(actions.audioSeeked(eventData.target.currentTime))
       })
 
       // to track activity due to iOS lock screen controller...
@@ -143,12 +148,15 @@ const useAudioRef = () => {
   return [getRef, setRef]
 }
 
+const nonsecBlubrryPrefix = 'http://media.blubrry.com/'
+
 const Audio = () => {
   const [getAudioRef, setAudioRef] = useAudioRef()
   const audioMode = useSelector(selectors.getAudioMode)
   const audioUrl = useSelector(selectors.getAudioUrl)
 
   // const events = useSelector(selectors.getAudioEvents)
+  const position = useSelector(selectors.getAudioPosition)
   const taps = useSelector(selectors.getAudioTaps)
   const seek = useSelector(selectors.getAudioSeek)
 
@@ -163,6 +171,21 @@ const Audio = () => {
     // play: playTaps,
     replay: replayTaps,
   } = taps
+
+  const scrubbedAudioUrl = React.useMemo(
+    () => {
+      if (audioUrl && audioUrl.startsWith(nonsecBlubrryPrefix)) {
+        const embeddedUrlOffset = audioUrl.indexOf('http', nonsecBlubrryPrefix.length)
+
+        if (embeddedUrlOffset > 0) {
+          return audioUrl.substr(embeddedUrlOffset)
+        }
+      }
+
+      return audioUrl
+    },
+    [audioUrl]
+  )
 
   //////////////////////////////////////////////////////////////////////////////
   // play/pause - consequence of button tap, or an event after-effect
@@ -182,55 +205,20 @@ const Audio = () => {
   }, [audioMode])
 
   //////////////////////////////////////////////////////////////////////////////
-  // forward - consequence of button tap
+  // forward, replay - consequence of button tap
+  // seek - consequence of slider interaction
   React.useEffect(() => {
     if (!forwardTaps) return
 
     const audioDomNode = getAudioRef()
     if (!audioDomNode) return
 
-    const currentTime = audioDomNode.currentTime
-    const duration = audioDomNode.duration
-
-    const nextTime = currentTime + TAP_INTERVAL
-    const tooLate = duration - TAP_INTERVAL
-
-    if (nextTime < tooLate) {
-      audioDomNode.currentTime = nextTime
-    }
-  }, [forwardTaps])
-
-  //////////////////////////////////////////////////////////////////////////////
-  // replay - consequence of button tap
-  React.useEffect(() => {
-    if (!replayTaps) return
-
-    const audioDomNode = getAudioRef()
-    if (!audioDomNode) return
-
-    const currentTime = audioDomNode.currentTime
-
-    const nextTime = currentTime - TAP_INTERVAL
-
-    if (nextTime > TAP_INTERVAL) {
-      audioDomNode.currentTime = nextTime
-    }
-  }, [replayTaps])
-
-  //////////////////////////////////////////////////////////////////////////////
-  // seek - consequence of slider interaction
-  React.useEffect(() => {
-    if (!seekPosition && seekPosition !== 0) return
-
-    const audioDomNode = getAudioRef()
-    if (!audioDomNode) return
-
-    audioDomNode.currentTime = seekPosition
-  }, [seekPosition])
+    audioDomNode.currentTime = position
+  }, [forwardTaps, replayTaps, seekPosition])
 
   return audioUrl ? (
     <span>
-      <audio ref={setAudioRef} src={audioUrl} />
+      <audio ref={setAudioRef} src={scrubbedAudioUrl} />
     </span>
   ) : null
 }

@@ -1,14 +1,13 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
+import Hidden from '@material-ui/core/Hidden'
 
-import * as colors from '../styling/colors'
-import * as consts from './consts'
 import { selectors } from '../store'
-import AppBar from './AppBar'
 import AudioControls from './AudioControls'
+import BrandGradientHorizontalStripe from './BrandGradientHorizontalStripe'
+import SideNav from './SideNav'
 
 // BasicLayout
 //
@@ -16,44 +15,45 @@ import AudioControls from './AudioControls'
 // * this is like a full screen view (capped to the container)
 // * whatever might scroll is more granular and within the children
 
-const calcContentHeight =
-  isAudioControlsHidden =>
-    isAudioControlsHidden
-      ? ({viewportHeight}) => `calc(${viewportHeight} - ${consts.APPBAR_HEIGHT})`
-      : ({viewportHeight}) => `calc(${viewportHeight} - ${consts.APPBAR_HEIGHT} - ${consts.AUDIO_CONTROLS_HEIGHT})`
+// const getCalcContentHeight = (viewportHeight, isAudioControlsHidden) => {
+//   const stripesHeight = isAudioControlsHidden ? consts.STRIPE_HEIGHT : `2 * ${consts.STRIPE_HEIGHT}`
+//   const commonPart = `${viewportHeight} - ${stripesHeight}`
+//
+//   return `calc(${commonPart}` +
+//     (isAudioControlsHidden ? '' : ` - ${consts.AUDIO_CONTROLS_HEIGHT}`) + ')'
+// }
+//
+// const calcContentHeight =
+//   isAudioControlsHidden =>
+//     ({viewportHeight}) => getCalcContentHeight(viewportHeight, isAudioControlsHidden)
 
 const useStyles = makeStyles(theme => ({
-  basicLayout: {
+  basicLayoutCol: {
+    alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
-    flexWrap: 'nowrap',
-    justifyContent: 'flex-start',
-    maxHeight: '100%',
-    minHeight: '100%',
+    minHeight: 0,
+    width: '100%',
   },
-  basicLayoutAppBar: {
-    maxHeight: consts.APPBAR_HEIGHT,
-    minHeight: consts.APPBAR_HEIGHT,
-  },
-  basicLayoutAudioControls: {
-    maxHeight: consts.AUDIO_CONTROLS_HEIGHT,
-    minHeight: consts.AUDIO_CONTROLS_HEIGHT,
-  },
-  basicLayoutContent: {
+  basicLayoutRow: {
     alignItems: 'stretch',
-    borderBottom: `1px solid ${colors.pinkSalmon}`,
-    borderTop: `1px solid ${colors.pinkSalmon}`,
     display: 'flex',
     flexDirection: 'row',
+    height: '100%',
+    minHeight: 0,
   },
-  contentWhenAudioDisplayed: {
-    maxHeight: calcContentHeight(false),
-    minHeight: calcContentHeight(false),
+  contentFrame: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+    height: '100%',
+    justifyContent: 'flex-start',
+    overflowY: 'hidden',
+    paddingLeft: '0.5em',
+    width: '100%',
   },
-  contentWhenAudioHidden: {
-    maxHeight: calcContentHeight(true),
-    minHeight: calcContentHeight(true),
-  },
+  sideNav: { },
 }))
 
 const BasicLayout = props => {
@@ -64,23 +64,33 @@ const BasicLayout = props => {
   const audioItemUrl = useSelector(selectors.getAudioUrl)
   const isAudioDisplayed = !!audioItemUrl
 
+  const navVisibility = useSelector(selectors.getNavVisibility)
+
+  // by default the sidenav is visible
+  // although currently same category-filter feature is provided by menu and sidenav
+  // the menu is by default closed
+  const isSidenavVisible = navVisibility !== false
+
   return (
-    <div className={classes.basicLayout}>
-      <div className={classes.basicLayoutAppBar}>
-        <AppBar mode={props.mode}/>
-      </div>
-      <div
-        className={cx(
-          classes.basicLayoutContent,
-          isAudioDisplayed ? classes.contentWhenAudioDisplayed : classes.contentWhenAudioHidden
-        )}
-      >
-        {props.children}
+    <div className={classes.basicLayoutCol}>
+      <BrandGradientHorizontalStripe />
+      <div className={classes.basicLayoutRow}>
+        <Hidden xsDown>
+          { isSidenavVisible && (
+            <div>
+              <SideNav className={classes.sideNav} isHome={props.isHome} />
+            </div>
+          ) }
+        </Hidden>
+        <div className={classes.contentFrame}>
+          {props.children}
+        </div>
       </div>
       { isAudioDisplayed && (
-        <div className={classes.basicLayoutAudioControls}>
+        <>
+          <BrandGradientHorizontalStripe />
           <AudioControls />
-        </div>
+        </>
       ) }
     </div>
   )

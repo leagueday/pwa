@@ -3,9 +3,9 @@ import axios from 'axios'
 import parseXml from '@rgrove/parse-xml'
 import useSWR, { cache as swrCache } from 'swr'
 
-import * as apiConsts from './consts'
-import { laminate, proxifyUrl } from './util'
 import * as analytics from '../analytics'
+import {channelMutators, channelSelectors} from '../model/rss'
+import { laminate, proxifyUrl } from './util'
 
 import { IdbKvTimedExpiryCache } from './idb'
 
@@ -17,8 +17,9 @@ const clientOptions = {
 const client = axios.create(clientOptions)
 
 const fetchRssDocViaProxy = url => {
-  const proxyUrl = proxifyUrl(url, apiConsts.PROXY_RESPONSE_KIND_DOC)
+  const proxyUrl = proxifyUrl(url)
   console.log('fetching doc', url, 'via', proxyUrl)
+
   const t0 = Date.now()
 
   return client.get(proxyUrl).then(response => {
@@ -28,6 +29,14 @@ const fetchRssDocViaProxy = url => {
   })
 }
 
+// tbd move this to a component if there gets to be more of it
+const scrubRssData = rssData => {
+  // nothing here atm.  could very well be a quick need for something
+  // use models/rss/mutators to alter values if necessary
+
+  return rssData
+}
+
 const fetchRssDocViaProxyThenParseThenUpdateIdb = (url, isCanceled=()=>false) =>
   fetchRssDocViaProxy(url).then(
     rssData => {
@@ -35,7 +44,7 @@ const fetchRssDocViaProxyThenParseThenUpdateIdb = (url, isCanceled=()=>false) =>
 
       const t0 = Date.now()
 
-      const rssJson = laminate(parseXml(rssData))
+      const rssJson = scrubRssData(laminate(parseXml(rssData)))
 
       analytics.timing('podcast', 'parse-rss', Date.now() - t0, url)
 
@@ -86,7 +95,7 @@ const usePodcast = (podcast, options={}) => {
 
   React.useEffect(() => {
     if (error) {
-      console.error('error in podcast fetch+parse', podcastUrl, e.message)
+      console.error('error in podcast fetch+parse', podcastUrl, error.message)
     }
   }, [error])
 

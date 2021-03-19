@@ -20,18 +20,22 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: ['babel-loader']
-      }
+      },
+      {
+        test: /\.svg$/,
+        exclude: /node_modules/,
+        use: ['svg-react-loader'],
+      },
     ]
   },
   output: {
-    filename: '[name].bundle.js',
+    filename: '[name]-[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src', 'public', 'index.html'),
-      hash: true, // add a unique ID to all assets (cache busting)
     }),
     new CopyPlugin({
       patterns: [

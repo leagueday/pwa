@@ -4,9 +4,35 @@ import * as ActionType from './actionTypes'
 
 // App
 
+export const addToMyList = (kind, id) => ({
+  type: ActionType.ADD_TO_MYLIST,
+  payload: {
+    id,
+    kind,
+  }
+})
+
 export const hideNav = () => ({
   type: ActionType.HIDE_NAV,
   payload: {
+  }
+})
+
+export const login = () => ({
+  type: ActionType.LOGIN_ACTION,
+  payload: {},
+})
+
+export const logout = () => ({
+  type: ActionType.LOGOUT_ACTION,
+  payload: {},
+})
+
+export const removeFromMyList = (kind, id) => ({
+  type: ActionType.REMOVE_FROM_MYLIST,
+  payload: {
+    id,
+    kind,
   }
 })
 
@@ -27,10 +53,25 @@ export const setNavExpander = (open, tag) => ({
   }
 })
 
-export const setStarred = starred => ({
-  type: ActionType.SET_STARRED,
+export const setPageNum = (id, pageNum) => ({
+  type: ActionType.SET_PAGENUM,
   payload: {
-    starred
+    id,
+    pageNum,
+  }
+})
+
+export const setUser = user => ({
+  type: ActionType.SET_USER,
+  payload: {
+    user
+  }
+})
+
+export const setUserData = userData => ({
+  type: ActionType.SET_USERDATA,
+  payload: {
+    userData
   }
 })
 
@@ -47,25 +88,12 @@ export const showNav = () => ({
   }
 })
 
-export const starPodcast = podcastId => ({
-  type: ActionType.STAR_PODCAST,
-  payload: {
-    podcastId
-  }
-})
-
-export const unstarPodcast = podcastId => ({
-  type: ActionType.UNSTAR_PODCAST,
-  payload: {
-    podcastId
-  }
-})
-
 // Audio
 
-export const audioSeeked = () => ({
+export const audioSeeked = position => ({
   type: ActionType.AUDIO_SEEKED,
   payload: {
+    position
   }
 })
 

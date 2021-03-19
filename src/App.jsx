@@ -3,7 +3,6 @@ import { hot } from 'react-hot-loader/root'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Paper from '@material-ui/core/Paper'
 
@@ -15,9 +14,11 @@ import usePodcasts from './api/usePodcasts'
 import useChronicle from './api/useChronicle'
 
 import Audio from './views/Audio'
+import Auth from './views/Auth'
 import Error from './views/Error'
 import Loading from './views/Loading'
 import Mushipan from './views/MushipanRouter'
+import UserData from './views/UserData'
 
 import { routesConfig } from './routes'
 
@@ -26,17 +27,33 @@ const viewportHeightStyleProp = ({viewportHeight}) => viewportHeight
 const useStyles = makeStyles(theme => ({
   app: {
     backgroundColor: theme.palette.background.default,
+    color: theme.palette.text.primary,
+    alignItems: 'stretch',
+    display: 'flex',
+    flexDirection: 'row',
     flexGrow: 1,
+    fontFamily: theme.typography.family.primary,
+    justifyContent: 'center',
     maxHeight: viewportHeightStyleProp,
     minHeight: viewportHeightStyleProp,
-  },
-  appBackground: {
-    maxHeight: '100%',
-    minHeight: '100%',
+    maxWidth: '100vw',
+    minWidth: '100vw',
+    overflow: 'hidden',
   },
   appCanvas: {
-    maxHeight: '100%',
-    minHeight: '100%',
+    alignItems: 'stretch',
+    display: 'flex',
+    height: '100%',
+    width: '100%',
+  },
+  pseudoContainer: {
+      alignItems: 'stretch',
+      display: 'flex',
+      flexDirection: 'column',
+      flex: 1,
+      maxHeight: '100%',
+      minHeight: '100%',
+      width: '100%',
   },
 }))
 
@@ -64,7 +81,7 @@ const ThemedAppContent = () => {
 
   return (
     <div className={classes.app}>
-      <Container className={classes.appBackground} maxWidth="md" disableGutters={true}>
+      <div className={classes.pseudoContainer}>
         <Paper className={classes.appCanvas}>
           {
             data
@@ -74,7 +91,7 @@ const ThemedAppContent = () => {
               : (<Loading />)
           }
         </Paper>
-      </Container>
+      </div>
     </div>
   )
 }
@@ -86,12 +103,14 @@ const Chronicle = () => {
 
 const App = () => (
   <StoreProvider>
+    <Audio />
+    <Auth />
+    <Chronicle />
     <CssBaseline />
     <ThemeProvider>
-      <Audio />
-      <Chronicle />
       <ThemedAppContent />
     </ThemeProvider>
+    <UserData />
   </StoreProvider>
 )
 

@@ -1,16 +1,13 @@
 import React from 'react'
 
 import useAirtable from './useAirtable'
-import useStarred from './useStarred'
-
-import {constants as storeConsts, useFilter} from '../store'
 
 const base = 'appXoertP1WJjd4TQ'
 const table = 'Podcasts'
 
 const sortList = set => ([...set.values()]).sort((a, b) => a.localeCompare(b))
 
-const reformat = (data, isStar, rankFieldname) => {
+const reformat = (data, rankFieldname) => {
   if (!data) return {data: null, categories: null, subCategories: null}
 
   const categories = new Set()
@@ -65,15 +62,6 @@ const reformat = (data, isStar, rankFieldname) => {
   ).filter(feed => {
     return !feed.disabled && !!feed.url
   }).sort((feed1, feed2) => {
-    if (isStar(feed1.id)) {
-      if (!isStar(feed2.id)) return -1
-      else return feed1.name.localeCompare(feed2.name)
-    }
-
-    if (isStar(feed2.id)) {
-      return 1
-    }
-
     const feed1Rank = feed1[rankFieldname]
     const feed1HasRank = !!feed1Rank || feed1Rank === 0
     const feed2Rank = feed2[rankFieldname]
@@ -102,43 +90,12 @@ const reformat = (data, isStar, rankFieldname) => {
 const usePodcasts = (rankFieldname='displayRank') => {
   const {data, error} = useAirtable(base, table)
 
-  const [isStar] = useStarred()
-
   const reformattedData = React.useMemo(
-    () => reformat(data, isStar, rankFieldname),
-    [data, isStar]
+    () => reformat(data, rankFieldname),
+    [data]
   )
 
-  const refoData = reformattedData.data
-
-  const filter = useFilter()
-
-  const filteredData = React.useMemo(
-    () => {
-      if (!refoData) {
-        return []
-      }
-
-      const {kind: filterKind, cat: filterCat, subcat: filterSubcat} = filter
-
-      return refoData.filter(
-        podcast => {
-          if (filterKind === storeConsts.FILTER_KIND_CAT) return filterCat === podcast.category
-
-          if (filterKind === storeConsts.FILTER_KIND_SUBCAT) return filterSubcat === podcast.subCategory
-
-          if (!filterKind || filterKind === storeConsts.FILTER_KIND_FEATURED) return !!podcast.featuredDisplayCategory
-
-          if (filterKind === storeConsts.FILTER_KIND_MY_LIST) return isStar(podcast.id)
-
-          throw new Error(`Unknown filter: ${filterKind}`)
-        }
-      )
-    },
-    [refoData, filter]
-  )
-
-  return {...reformattedData, filteredData, error}
+  return {...reformattedData, error}
 }
 
 export default usePodcasts

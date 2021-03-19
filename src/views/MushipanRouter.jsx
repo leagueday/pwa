@@ -1,24 +1,11 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 
 import * as analytics from '../analytics'
-import { selectors } from '../store'
+import {useLocationPathname} from '../store'
 
 import Loading from './Loading'
 
 // MushipanRouter - obtain location from Redux, then pick a view to render
-
-const useLocationPath = () => {
-  const location = useSelector(selectors.getRouterLocation)
-
-  if (!location) {
-    return [null, null]
-  } else if (location.pathname) {
-    return [location.pathname, location.key]
-  } else {
-    return [location.location?.pathname, location.location?.key]
-  }
-}
 
 const parsePathname = pathname => {
   if (!pathname) return [[], '']
@@ -37,60 +24,26 @@ const parsePathname = pathname => {
   return [s.split('/'), p]
 }
 
-const getViewProps = (descriptor, pathTokens, paramString) => {
-  const result = {}
-
-  if (descriptor)
-    for (let [propName, strategy] of Object.entries(descriptor)) {
-      if (strategy === 'nextPathToken') {
-        result[propName] = pathTokens?.[1] ?? null
-      }
+const matchView = (routes, pathTokens, paramString) => {
+  for (let [testRoute, View, getViewProps] of routes) {
+    if (testRoute(pathTokens, paramString)) {
+      return [View, getViewProps(pathTokens, paramString)]
     }
-
-  return result
+  }
 }
 
 const MushipanRouter = ({
   routes,
-  // useTransitionGroup
 }) => {
-  const [defaultView, routesMap] = React.useMemo(
-    () => {
-      let defaultView = null
-      const routesMap = {}
-
-      for (let [pathname, view, propsDescriptor] of routes) {
-        if (pathname == null) defaultView = view
-        else {
-          routesMap[pathname] = { propsDescriptor, view }
-        }
-      }
-
-      return [defaultView, routesMap]
-    },
-    [routes]
-  )
-
-  const [pathname] = useLocationPath()
+  const pathname = useLocationPathname()
   const [pathTokens, paramString] = parsePathname(pathname)
 
-  const firstPathToken = pathTokens[0]
-  // console.log('pathname', pathname, firstPathToken)
+  const [View, viewProps] = matchView(routes, pathTokens, paramString)
 
-  const routeDescriptor = firstPathToken ? routesMap[firstPathToken] : null
+  React.useEffect(
+    () => analytics.pageview(pathname)
+  )
 
-  analytics.pageview(pathname)
-
-  const View = routeDescriptor?.view ?? defaultView
-
-  const viewProps = getViewProps(routeDescriptor?.propsDescriptor, pathTokens, paramString)
-
-  // const transitionGroup = useTransitionGroup()
-  // <TransitionGroup>
-  //   <CSSTransition key={pathname} classNames={transitionGroup} timeout={500}>
-  //     <View />
-  //   </CSSTransition>
-  // </TransitionGroup>
   return (
     <React.Suspense fallback={(<Loading />)}>
       <View {...viewProps} />

@@ -1,0 +1,92 @@
+import React from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import cx from 'classnames'
+
+import {makeStyles} from '@material-ui/core/styles'
+
+import * as colors from '../../styling/colors'
+import {actions, selectors} from '../../store'
+import * as consts from '../consts'
+import {addScrollStyle} from '../util'
+import Expander from './Expander'
+import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
+import MyChannels from './MyChannels'
+import MyPodcasts from './MyPodcasts'
+import SearchLozenge from './SearchLozenge'
+import SignInOutButton from './SignInOutButton'
+
+const useStyles = makeStyles(theme => ({
+  clickable: {
+    cursor: 'pointer',
+  },
+  controls: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    padding: '0.5em',
+  },
+  expander: {
+    paddingLeft: '0.5em',
+    paddingRight: '0.5em',
+    paddingTop: '0.5em',
+  },
+  logo: {
+    cursor: ({isHome}) => isHome ? 'default' : 'pointer',
+    flex: 1,
+    minWidth: 0,
+    maxWidth: '8em',
+  },
+  scroller: addScrollStyle(colors.blue)({
+    flex: 1,
+    minHeight: 0,
+    overflowY: 'auto',
+    width: consts.SIDENAV_WIDTH,
+  }),
+  scrollerChild: {
+    minHeight: '100%',
+  },
+  sideNav: {
+    backgroundColor: colors.darkerGray,
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    width: '100%',
+  },
+  signInOutButton: {
+    marginLeft: 'auto',
+  },
+}))
+
+const SideNav = ({className, isHome}) => {
+  const classes = useStyles(({isHome}))
+
+  const dispatch = useDispatch()
+  const goHome = isHome ? null : () => dispatch(actions.pushHistory('/'))
+
+  const user = useSelector(selectors.getUser)
+
+  return (
+    <div className={cx(classes.sideNav, className)}>
+      <div className={classes.controls}>
+        <img className={classes.logo} onClick={goHome} src="/img/logo.png" />
+        <SignInOutButton className={classes.signInOutButton} />
+      </div>
+      <SearchLozenge />
+      <LiveAndUpcomingLozenge className={classes.lozenge} />
+      <div className={classes.scroller}>
+        <div className={classes.scrollerChild}>
+          <Expander className={classes.expander} text="MY CHANNELS" tag="chan">
+            <MyChannels />
+          </Expander>
+          {user && (
+            <Expander className={classes.expander} text="MY PODCASTS" tag="poca">
+              <MyPodcasts />
+            </Expander>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default SideNav

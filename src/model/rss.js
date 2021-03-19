@@ -8,6 +8,9 @@
 // document, that can be used to try to optimistically interpret the RSS
 // doc according to one of the standards.
 
+// note the selectors pattern engenders a mutation-free style.
+// avoid use of any mutators defined here
+
 export const channelSelectors = {
   v2: {
     description: rssDoc => rssDoc?.rss?.channel?.description,
@@ -36,6 +39,31 @@ export const channelSelectors = {
     language: rssDoc => rssDoc?.rss?.channel?.language,
     title: rssDoc => rssDoc?.rss?.channel?.title,
   },
+}
+
+// mutators intended *only* for the "scrub after parse" that might be
+// better done in a backend along with the rss parse itself.
+export const channelMutators = {
+  v2: {
+    imageUrl: (rssDoc, nextImageUrl) => {
+      const channel = rssDoc?.rss?.channel
+      const channelImageUrl = channel?.image?.url
+      const itunesImage = channel?.['itunes:image'] // fallback to itunes:image
+
+      if (channelImageUrl) {
+        channel.image.url = nextImageUrl
+      } else if (itunesImage) {
+        // outstandingly, this may be an array
+        if (Array.isArray(itunesImage)) {
+          channel['itunes:image'][0].attributes.href = nextImageUrl
+        } else {
+          channel['itunes:image'].attributes.href = nextImageUrl
+        }
+      }
+
+      return rssDoc
+    }
+  }
 }
 
 export const itemSelectors = {
