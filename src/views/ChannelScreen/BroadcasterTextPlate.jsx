@@ -12,12 +12,13 @@ const useStyles = makeStyles(theme => ({
   backgrounder: {
     paddingTop: '0.5em',
   },
-  broadcasterTextPlate: { },
+  broadcasterTextPlate: {
+    fontSize: '85%',
+  },
   channelTypename: {
     textTransform: 'uppercase',
   },
   channelTypename2: {
-    fontSize: '150%',
     fontWeight: theme.typography.weight.bold,
     marginLeft: '0.5em',
   },
@@ -35,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: ({color}) => ({
     color,
-    fontSize: '200%',
+    fontSize: '150%',
     fontWeight: theme.typography.weight.bold,
   }),
 }))

@@ -65,14 +65,15 @@ const useStyles = makeStyles({
 
 export const makeIconButton = Icon => {
   const Component = ({ backgroundColor,
+                       className,
                        color,
+                       iconClassName,
                        isTransparent,
                        onClick,
                        shadowColor,
                        size,
                        strokeWidth,
-                       className,
-                       iconClassName}) => {
+                     }) => {
     const classes = useStyles(({backgroundColor, color, isTransparent, shadowColor, size}))
 
     return (

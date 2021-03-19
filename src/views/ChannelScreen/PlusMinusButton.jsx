@@ -1,51 +1,42 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
-import cx from 'classnames'
+import Color from 'color'
 
-import {makeStyles} from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
-
+import * as colors from '../../styling/colors'
 import {selectors} from '../../store'
 import useMyList from '../../api/useMyList'
+import {makeIconButton} from '../IconButton'
+import {IcoMinus, IcoPlus} from '../icons'
 
-const useStyles = makeStyles(theme => ({
-  plusMinusButton: {
-    "&:hover": {
-      backgroundColor: theme.palette.primary.active,
-    },
-  }
-}))
+const MinusButton = makeIconButton(IcoMinus)
+const PlusButton = makeIconButton(IcoPlus)
 
-const PlusMinusButton = ({channelTag, channelTitle, className}) => {
-  const classes = useStyles()
-
+const PlusMinusButton = ({channelTag, className}) => {
   const user = useSelector(selectors.getUser)
   const isAuthenticated = !!user
 
   const [getIsOnMyList, addToMyList, removeFromMyList] = useMyList(user?.token?.access_token)
   const isOnMyList = getIsOnMyList('channel', channelTag)
 
-  const [onClick, text] =
+  const [onClick, Button] =
     isOnMyList
       ? [
         () => removeFromMyList('channel', channelTag),
-        `Remove ${channelTitle} from My Channels`
+        MinusButton
       ] : [
         () => addToMyList('channel', channelTag),
-        `Add ${channelTitle} to My Channels`
+        PlusButton
       ]
 
-  return (
-    <Button
-      className={cx(classes.plusMinusButton, className)}
-      color="primary"
-      onClick={onClick}
-      size="small"
-      variant="contained"
-    >
-      {text}
-    </Button>
-  )
+  return isAuthenticated ? (
+    <Button backgroundColor={colors.brandBlack}
+            className={className}
+            color={colors.magenta}
+            onClick={onClick}
+            shadowColor={Color(colors.magenta).darken(0.75).string()}
+            size="1em"
+    />
+  ) : null
 }
 
 export default PlusMinusButton

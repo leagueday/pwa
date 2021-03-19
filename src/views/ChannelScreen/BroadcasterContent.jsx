@@ -7,7 +7,6 @@ import useFacets from '../../api/useFacets'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
-import Square from '../Square'
 
 import BroadcasterTextPlate from './BroadcasterTextPlate'
 import ChannelChildren from './ChannelChildren'
@@ -25,12 +24,6 @@ const useStyles = makeStyles({
     maxHeight: '100%',
     minHeight: 0,
   },
-  image: {
-    width: '100%',
-  },
-  imageSquare: {
-    width: '7em',
-  },
   imageTitleGrid: {
     flex: 0,
     paddingTop: '1em',
@@ -43,6 +36,20 @@ const useStyles = makeStyles({
   },
   livenessGridItem: {
     padding: '1em',
+  },
+  logoImage: {
+    width: '100%',
+  },
+  logoImageContainer: {
+    paddingTop: '0.5em',
+    position: 'relative',
+    width: '7em',
+  },
+  plusMinusButton: {
+    bottom: '0.25em',
+    fontSize: '150%',
+    position: 'absolute',
+    right: '0.25em',
   },
   replayBroadcasts: {
     marginBottom: '1em',
@@ -57,6 +64,9 @@ const useStyles = makeStyles({
     marginBottom: '1em',
   },
   topLeftGridItem: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
     paddingRight: '1em',
   },
   topRightGrid: {
@@ -69,14 +79,14 @@ const useStyles = makeStyles({
 
 const TopSection = ({classes, channel}) => (
   <Grid className={classes.imageTitleGrid} container>
-    <Grid className={classes.topLeftGridItem} item xs={6} sm={4} lg={2}>
-      <Square className={classes.imageSquare}>
-        <img className={classes.image} src={channel.imageUrl} />
-      </Square>
+    <Grid className={classes.topLeftGridItem} item xs={6} sm={4} md={4} lg={2}>
+      <div className={classes.logoImageContainer}>
+        <img className={classes.logoImage} src={channel.imageUrl} />
+        <PlusMinusButton channelTag={channel.tag} className={classes.plusMinusButton} />
+      </div>
     </Grid>
-    <Grid className={classes.topRightGridItem} item xs={12} sm={8} md={6} lg={10}>
+    <Grid className={classes.topRightGridItem} item xs={12} sm={8} md={8} lg={10}>
       <BroadcasterTextPlate channel={channel} className={classes.textPlate}/>
-      <PlusMinusButton channelTag={channel.tag} channelTitle={channel.title} />
       <ChannelChildren className={classes.children} childTags={channel.children} />
     </Grid>
   </Grid>

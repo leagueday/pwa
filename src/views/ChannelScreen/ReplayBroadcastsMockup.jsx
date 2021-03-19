@@ -289,7 +289,7 @@ const ReplayBroadcastsMockup = ({className, channel}) => {
       {
         filterMockupData(channel.tag).map(
           sectionData => (
-            <div key={sectionData.name} className={classes.section}>
+            <div key={sectionData.name+sectionData.event} className={classes.section}>
               <SectionLeft sectionData={sectionData} channelColor={channel.color} />
               <SectionRight sectionData={sectionData} channelColor={channel.color} />
             </div>

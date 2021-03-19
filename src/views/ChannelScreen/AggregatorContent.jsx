@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import useFacets from '../../api/useFacets'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
-import Square from '../Square'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import LiveBroadcastsMockup, {mockupGetHasBroadcasts as hasLiveMockupData} from './LiveBroadcastsMockup'
 import PlusMinusButton from './PlusMinusButton'
@@ -42,14 +41,23 @@ const useStyles = makeStyles(theme => ({
   },
   logoImageContainer: {
     paddingTop: '0.5em',
+    position: 'relative',
     width: '7em',
+  },
+  plusMinusButton: {
+    bottom: '0.5em',
+    position: 'absolute',
+    right: '0.5em',
   },
 }))
 
 const Logo = ({channel, classes}) => (
-  <Square className={classes.logoImageContainer}>
+  <div className={classes.logoImageContainer}>
     <img className={classes.logoImage} src={channel?.imageUrl} />
-  </Square>
+    <div className={classes.headlineTitleRow}>
+      <PlusMinusButton className={classes.plusMinusButton} channelTag={channel.tag} />
+    </div>
+  </div>
 )
 
 const Headline = ({channel, classes, hasBroadcasts}) => (
@@ -64,9 +72,6 @@ const Headline = ({channel, classes, hasBroadcasts}) => (
       {
         hasBroadcasts ? 'Podcasts and Live Events AudioCasts' : 'Podcasts'
       }
-    </div>
-    <div className={classes.headlineTitleRow}>
-      <PlusMinusButton channelTag={channel.tag} channelTitle={channel.title} />
     </div>
   </div>
 )
