@@ -107,38 +107,26 @@ const SetupMyChannelsSeed = ({className}) => {
   const [seedList, setSeedlist] = React.useState([])
   console.log(seedList)
 
-  const getIsOnSeedList = tag => seedList.indexOf(tag) >= 0
-
   React.useEffect(
     // null bearer token -> anon user data
-    () => fetchUserData().then(
-      maybeData => {
-        if (NODE_ENV === 'development') console.log('user data', maybeData)
-        if (typeof(maybeData) === 'object') {
-          setSeedlist(maybeData.my)
-        }
-      }
-    ),
-    []
-  )
-
-  React.useEffect(
     () => {
-      if (!seedList && list.length > 0)
-        setSeedlist(
-          list.filter(
-            ({tag}) => getIsOnSeedList('channel', tag)
-          ).map(({tag}) => tag)
-        )
+      if (list && seedList.length === 0) fetchUserData().then(
+        maybeData => {
+          if (NODE_ENV === 'development') console.log('user data', maybeData)
+          if (typeof(maybeData) === 'object') {
+            setSeedlist(maybeData.my)
+          }
+        }
+      )
     },
-    [seedList, list, getIsOnSeedList]
+    [list, seedList]
   )
 
   const add = (destinationIndex, tagMoving, nextList) => {
     if (!nextList) nextList = seedList
 
     setSeedlist(
-      nextList.slice(0, destinationIndex).concat([tagMoving]).concat(nextList.slice(destinationIndex))
+      nextList.slice(0, destinationIndex).concat([{id:tagMoving,kind:'channel'}]).concat(nextList.slice(destinationIndex))
     )
   }
 
@@ -175,7 +163,7 @@ const SetupMyChannelsSeed = ({className}) => {
     }
   }
 
-  const getIsOnDraftList = tag => seedList && seedList.indexOf(tag) >= 0
+  const getIsOnDraftList = tag => seedList && seedList.findIndex(({id}) => id === tag) >= 0
 
   const onSave = () => {
     console.log('onSave')
@@ -204,8 +192,8 @@ const SetupMyChannelsSeed = ({className}) => {
               >
               {
                 seedList && seedList.map(
-                  (tag, index) => (
-                    <Draggable key={tag} draggableId={tag} index={index}>
+                  ({kind, id}, index) => (
+                    <Draggable key={id} draggableId={id} index={index}>
                       {(provided, snapshot) => (
                         <div
                           ref={provided.innerRef}
@@ -217,7 +205,7 @@ const SetupMyChannelsSeed = ({className}) => {
                           )}
                         >
                           <Card className={cx(classes.listItem, classes.listedItem)}>
-                            {tag}
+                            {id}
                           </Card>
                         </div>
                       )}
