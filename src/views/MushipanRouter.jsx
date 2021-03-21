@@ -1,8 +1,10 @@
 import React from 'react'
+import {useSelector} from 'react-redux'
 
 import * as analytics from '../analytics'
 import {useLocationPathname} from '../store'
 
+import {selectors} from '../store'
 import Loading from './Loading'
 
 // MushipanRouter - obtain location from Redux, then pick a view to render
@@ -24,9 +26,9 @@ const parsePathname = pathname => {
   return [s.split('/'), p]
 }
 
-const matchView = (routes, pathTokens, paramString) => {
-  for (let [testRoute, View, getViewProps] of routes) {
-    if (testRoute(pathTokens, paramString)) {
+const matchView = (routes, userData, pathTokens, paramString) => {
+  for (let [testRoute, testPermission, View, getViewProps] of routes) {
+    if (testRoute(pathTokens, paramString) && testPermission(userData)) {
       return [View, getViewProps(pathTokens, paramString)]
     }
   }
@@ -38,7 +40,9 @@ const MushipanRouter = ({
   const pathname = useLocationPathname()
   const [pathTokens, paramString] = parsePathname(pathname)
 
-  const [View, viewProps] = matchView(routes, pathTokens, paramString)
+  const userData = useSelector(selectors.getUserData)
+
+  const [View, viewProps] = matchView(routes, userData, pathTokens, paramString)
 
   React.useEffect(
     () => analytics.pageview(pathname)
