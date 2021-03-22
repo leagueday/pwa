@@ -139,11 +139,11 @@ const SetupMyChannelsSeed = ({className}) => {
   const reorder = (destinationIndex, sourceIndex) => {
     if (destinationIndex === sourceIndex) return
 
-    const tagMoving = seedList[sourceIndex]
+    const {id} = seedList[sourceIndex]
 
     const trimmedList = seedList.slice(0, sourceIndex).concat(seedList.slice(sourceIndex + 1))
 
-    add(destinationIndex, tagMoving, trimmedList)
+    add(destinationIndex, id, trimmedList)
   }
 
   const onDragEnd = result => {
