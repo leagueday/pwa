@@ -21,19 +21,19 @@ const useStyles = makeStyles(theme => ({
   channelCategories: {
     marginTop: '0.5em',
   },
-  homeContent: {
+  homeContent: addScrollStyle(colors.magenta)({
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
     height: '100%',
+    overflow: 'auto',
     paddingTop: '0.5em',
     width: '100%',
-  },
-  podcastTiles: addScrollStyle(colors.magenta)({
+  }),
+  podcastTiles: {
     height: '100%',
     minHeight: 0,
-    overflow: 'auto',
-  }),
+  },
   primaryStripe: {
     backgroundColor: PRIMARY_COLOR,
     height: '0.25em',
