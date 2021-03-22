@@ -1,0 +1,15 @@
+{
+  "name": "fauna-alter-user",
+  "version": "1.0.0",
+  "description": "query db to alter a user",
+  "main": "fauna-alter-user.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Collin Monahan <llaenowyd@gmail.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "faunadb": "^4.1.1"
+  }
+}
