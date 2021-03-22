@@ -27,18 +27,29 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    height: '25em',
+    maxHeight: '25%',
+    overflow: 'hidden',
+    position: 'relative',
     width: '100%',
   },
   element: {
     cursor: 'pointer',
-    height: '20em',
-    overflow: 'hidden',
+    height: '100%',
+    overflow: 'clip',
     position: 'relative',
-    right: 0,
+    width: '100%',
   },
   image: {
+    display: 'block',
     width: '100%',
-    minHeight: '100%',
+  },
+  imageContainer: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
   },
   text: {
     fontSize: '90%',
@@ -108,7 +119,9 @@ const useSlideTransitionGroup = makeStyles({
 
 const Element = ({classes, imageUrl, text, title, onClick}) => (
   <div className={classes.element} onClick={onClick}>
-    <img className={classes.image} src={imageUrl} draggable="false" />
+    <div className={classes.imageContainer}>
+      <img className={classes.image} src={imageUrl} draggable="false" />
+    </div>
     <div className={classes.textGroup}>
       <div className={classes.title}>{title}</div>
       <div className={classes.text} onClick={onClick}>{text}</div>
@@ -161,9 +174,14 @@ const Banner = ({primaryColor}) => {
 
   const setCurrentIndexDebounced = db500(setCurrentIndex)
 
-  const [onLeftClick, onRightClick] = [
+  const [onLeftClick, onRightClick] = numElements === 0 ? [
+    () => {},
+    () => {},
+  ] : [
     (
-      prevIndex => () => setCurrentIndexDebounced(prevIndex)
+      prevIndex => {
+        return () => setCurrentIndexDebounced(prevIndex)
+      }
     )(
       currentIndex === 0 ? numElements - 1 : currentIndex - 1
     ),
@@ -184,7 +202,7 @@ const Banner = ({primaryColor}) => {
             onLeftClick={onLeftClick}
             onRightClick={onRightClick}
             primaryColor={accentColor}>
-              <TransitionGroup>
+              <TransitionGroup component={null}>
                 <CSSTransition key={`${prevIndex} ${currentIndex}`}
                                classNames={slideTransition}
                                timeout={500}>

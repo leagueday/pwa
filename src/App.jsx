@@ -38,7 +38,6 @@ const useStyles = makeStyles(theme => ({
     minHeight: viewportHeightStyleProp,
     maxWidth: '100vw',
     minWidth: '100vw',
-    overflow: 'hidden',
   },
   appCanvas: {
     alignItems: 'stretch',
@@ -47,13 +46,13 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   pseudoContainer: {
-      alignItems: 'stretch',
-      display: 'flex',
-      flexDirection: 'column',
-      flex: 1,
-      maxHeight: '100%',
-      minHeight: '100%',
-      width: '100%',
+    alignItems: 'stretch',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    maxHeight: '100%',
+    minHeight: '100%',
+    width: '100%',
   },
 }))
 

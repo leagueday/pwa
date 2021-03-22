@@ -27,7 +27,20 @@ const fetcher = (base, table, view='Grid view') => () => new Promise(
       (records, fetchNextPage) => {
         console.log(`retrieved ${records.length} records`)
 
-        data = data.concat(records)
+        // remove empty row because the Airtable UI lets the user put in an empty row
+        // and the user puts in an empty row
+        const filteredRecords = records ? records.filter(
+            record => {
+              const fields = record?.fields
+              if (!fields) return false
+
+              const fieldKeys = Object.keys(fields)
+
+              return fieldKeys.length > 0
+            }
+          ) : []
+
+        data = data.concat(filteredRecords)
 
         fetchNextPage()
       },
