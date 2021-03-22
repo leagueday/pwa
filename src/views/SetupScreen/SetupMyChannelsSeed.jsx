@@ -10,7 +10,7 @@ import Card from '@material-ui/core/Card'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 import * as colors from '../../styling/colors'
-import {actions, selectors} from '../../store'
+import {selectors} from '../../store'
 import alterUser from '../../api/alterUser.js'
 import useChannels from '../../api/useChannels'
 import fetchUserData from '../../api/fetchUserData'
@@ -82,17 +82,17 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   userSelect: "none",
   // padding: grid * 2,
   // margin: `0 0 ${grid}px 0`,
-  backgroundColor: isDragging ? colors.lime : null,
+  // backgroundColor: isDragging ? colors.lime : null,
   ...draggableStyle
 })
 
 const getLeftListStyle = isDraggingOver => ({
-  backgroundColor: isDraggingOver ? colors.brandBlack : colors.darkerGray,
+  backgroundColor: colors.darkerGray,
   padding: '2.25em 0.25em 2.25em 0.25em',
 })
 
 const getRightListStyle = isDraggingOver => ({
-  backgroundColor: isDraggingOver ? colors.brandBlack : colors.darkerGray,
+  backgroundColor: colors.darkerGray,
   padding: '0.25em',
 })
 
