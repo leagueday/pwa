@@ -15,6 +15,8 @@ import MyPodcasts from './MyPodcasts'
 import SearchLozenge from './SearchLozenge'
 import SignInOutButton from './SignInOutButton'
 
+const SIDENAV_WIDTH = '17%'
+
 const useStyles = makeStyles(theme => ({
   clickable: {
     cursor: 'pointer',
@@ -23,7 +25,10 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
+    flexWrap: 'none',
+    justifyContent: 'space-between',
     padding: '0.5em',
+    width: '100%',
   },
   expander: {
     paddingLeft: '0.5em',
@@ -32,28 +37,39 @@ const useStyles = makeStyles(theme => ({
   },
   logo: {
     cursor: ({isHome}) => isHome ? 'default' : 'pointer',
-    flex: 1,
-    minWidth: 0,
-    maxWidth: '8em',
+    display: 'block',
+    width: '100%',
+  },
+  logoContainer: {
+    flex: 2,
+    paddingRight: '5%',
   },
   scroller: addScrollStyle(colors.blue)({
     flex: 1,
     minHeight: 0,
     overflowY: 'auto',
-    width: consts.SIDENAV_WIDTH,
+    width: '100%',
   }),
   scrollerChild: {
     minHeight: '100%',
+    width: '100%',
   },
   sideNav: {
     backgroundColor: colors.darkerGray,
     display: 'flex',
     flexDirection: 'column',
+    fontSize: '1.2vw',
     height: '100%',
-    width: '100%',
+    width: SIDENAV_WIDTH,
   },
   signInOutButton: {
+    fontSize: '80%',
+    width: '100%',
+  },
+  signInOutButtonContainer: {
+    flex: 1.5,
     marginLeft: 'auto',
+    paddingBottom: '0.25vw',
   },
 }))
 
@@ -68,8 +84,12 @@ const SideNav = ({className, isHome}) => {
   return (
     <div className={cx(classes.sideNav, className)}>
       <div className={classes.controls}>
-        <img className={classes.logo} onClick={goHome} src="/img/logo.png" />
-        <SignInOutButton className={classes.signInOutButton} />
+        <div className={classes.logoContainer}>
+          <img className={classes.logo} onClick={goHome} src="/img/logo.png" />
+        </div>
+        <div className={classes.signInOutButtonContainer}>
+          <SignInOutButton className={classes.signInOutButton} />
+        </div>
       </div>
       <SearchLozenge />
       <LiveAndUpcomingLozenge className={classes.lozenge} />
