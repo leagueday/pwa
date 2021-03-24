@@ -8,6 +8,7 @@ import { selectors } from '../store'
 import AudioControls from './AudioControls'
 import BrandGradientHorizontalStripe from './BrandGradientHorizontalStripe'
 import SideNav from './SideNav'
+import SkinnySideNav from './SideNav/Skinny'
 
 // BasicLayout
 //
@@ -57,9 +58,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const BasicLayout = props => {
-  const viewportHeight = useSelector(selectors.getViewportHeight)
-
-  const classes = useStyles({viewportHeight})
+  const classes = useStyles()
 
   const audioItemUrl = useSelector(selectors.getAudioUrl)
   const isAudioDisplayed = !!audioItemUrl
@@ -75,9 +74,14 @@ const BasicLayout = props => {
     <div className={classes.basicLayoutCol}>
       <BrandGradientHorizontalStripe />
       <div className={classes.basicLayoutRow}>
-        <Hidden xsDown>
+        <Hidden mdDown>
           { isSidenavVisible && (
             <SideNav className={classes.sideNav} isHome={props.isHome} />
+          ) }
+        </Hidden>
+        <Hidden lgUp>
+          { isSidenavVisible && (
+            <SkinnySideNav className={classes.sideNav} isHome={props.isHome} />
           ) }
         </Hidden>
         <div className={classes.contentFrame}>

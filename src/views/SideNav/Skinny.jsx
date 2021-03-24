@@ -7,23 +7,23 @@ import {makeStyles} from '@material-ui/core/styles'
 import * as colors from '../../styling/colors'
 import {actions, selectors} from '../../store'
 import {addScrollStyle} from '../util'
+import {makeIconButton} from '../IconButton'
 import Expander from './Expander'
 import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
 import MyChannels from './MyChannels'
 import MyPodcasts from './MyPodcasts'
-import SearchLozenge from './SearchLozenge'
 import SignInOutButton from './SignInOutButton'
+
+import {IcoMagnifier} from '../icons'
 
 const useStyles = makeStyles(theme => ({
   clickable: {
     cursor: 'pointer',
   },
-  controls: {
-    alignItems: 'center',
+  control: {
     display: 'flex',
     flexDirection: 'row',
-    flexWrap: 'none',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     padding: '0.5vw',
     width: '100%',
   },
@@ -35,7 +35,8 @@ const useStyles = makeStyles(theme => ({
   logo: {
     cursor: ({isHome}) => isHome ? 'default' : 'pointer',
     display: 'block',
-    width: '100%',
+    margin: '1vw',
+    width: '50%',
   },
   logoContainer: {
     flex: 2,
@@ -51,27 +52,30 @@ const useStyles = makeStyles(theme => ({
     minHeight: '100%',
     width: '100%',
   },
+  searchButton: {
+    backgroundColor: colors.darkGray,
+    margin: '0.5vw',
+  },
   sideNav: {
+    alignItems: 'flex-start',
     backgroundColor: colors.darkerGray,
     display: 'flex',
     flexDirection: 'column',
     fontSize: 'max(min(1.6vw, 14px), 12px)',
     height: '100%',
-    width: 'min(17%, 14em)',
+    width: 'min(8%, 7em)',
   },
   signInOutButton: {
-    fontSize: '80%',
-    whiteSpace: 'nowrap',
-    width: '100%',
+    fontSize: '75%',
   },
   signInOutButtonContainer: {
-    flex: 1.5,
-    marginLeft: 'auto',
     paddingBottom: '0.25vw',
   },
 }))
 
-const SideNav = ({className, isHome}) => {
+const SearchButton = makeIconButton(IcoMagnifier)
+
+const SkinnySideNav = ({className, isHome}) => {
   const classes = useStyles(({isHome}))
 
   const dispatch = useDispatch()
@@ -81,24 +85,26 @@ const SideNav = ({className, isHome}) => {
 
   return (
     <div className={cx(classes.sideNav, className)}>
-      <div className={classes.controls}>
-        <div className={classes.logoContainer}>
-          <img className={classes.logo} onClick={goHome} src="/img/logo.png" />
-        </div>
+      <div className={classes.control}>
+        <img className={classes.logo} onClick={goHome} src="/img/logo_square_transparent.png" />
+      </div>
+      <div className={classes.control}>
         <div className={classes.signInOutButtonContainer}>
           <SignInOutButton className={classes.signInOutButton} />
         </div>
       </div>
-      <SearchLozenge />
-      <LiveAndUpcomingLozenge className={classes.lozenge} />
+      <div className={classes.control}>
+        <SearchButton className={classes.searchButton} />
+      </div>
+      <LiveAndUpcomingLozenge className={classes.lozenge} skinny />
       <div className={classes.scroller}>
         <div className={classes.scrollerChild}>
-          <Expander className={classes.expander} text="MY CHANNELS" tag="chan">
-            <MyChannels />
+          <Expander className={classes.expander} text="MY CHANNELS" tag="chan" skinny>
+            <MyChannels skinny />
           </Expander>
           {user && (
-            <Expander className={classes.expander} text="MY PODCASTS" tag="poca">
-              <MyPodcasts />
+            <Expander className={classes.expander} text="MY PODCASTS" tag="poca" skinny>
+              <MyPodcasts skinny />
             </Expander>
           )}
         </div>
@@ -107,4 +113,4 @@ const SideNav = ({className, isHome}) => {
   )
 }
 
-export default SideNav
+export default SkinnySideNav

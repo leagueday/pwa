@@ -9,17 +9,24 @@ import {actions} from '../../store'
 
 const useStyles = makeStyles(theme => ({
   contentMockImage: {
+    display: 'block',
+    height: '3vw',
+    width: 'auto',
+  },
+  contentMockImageContainer: {
+    paddingBottom: '0.5vw',
   },
   lozenge: {
     backgroundColor: colors.darkGray,
-    borderBottomRightRadius: '2.5em',
-    borderTopRightRadius: '2.5em',
+    borderBottomRightRadius: '3vw',
+    borderTopRightRadius: '3vw',
     cursor: 'pointer',
     flex: 1,
-    height: '5em',
+    height: '6vw',
+    maxHeight: '6vw',
     overflow: 'hidden',
-    padding: '0.5em 0.5em 0 0.5em',
-    maxWidth: '12em',
+    padding: '0.5vw 0.5vw 0 0.5vw',
+    // maxWidth: '12em',
   },
   title: {
     fontWeight: theme.typography.weight.bold,
@@ -33,11 +40,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
-    paddingTop: '0.5em',
+    paddingTop: '0.5vw',
   },
 }))
 
-const LiveAndUpcomingLozenge = ({className}) => {
+const LiveAndUpcomingLozenge = ({className, skinny}) => {
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -48,9 +55,17 @@ const LiveAndUpcomingLozenge = ({className}) => {
     <div className={cx(className, classes.liveAndUpcomingLozenge)}>
       <div className={classes.lozenge} onClick={yourBasicOnclick}>
         <div className={classes.title}>
-          <span className={classes.titleLive}>LIVE</span> & UPCOMING
+          {
+            skinny ? (
+              <span className={classes.titleLive}>LIVE</span>
+            ) : (
+              <span><span className={classes.titleLive}>LIVE</span> & UPCOMING</span>
+            )
+          }
         </div>
-        <img className={classes.contentMockImage} src="/img/restyle_demo/live_and_upcoming_lozenge_content.png" />
+        <div className={classes.contentMockImageContainer}>
+          <img className={classes.contentMockImage} src="/img/restyle_demo/live_and_upcoming_lozenge_content.png" />
+        </div>
       </div>
     </div>
   )

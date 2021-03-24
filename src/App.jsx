@@ -34,8 +34,8 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     fontFamily: theme.typography.family.primary,
     justifyContent: 'center',
-    maxHeight: viewportHeightStyleProp,
-    minHeight: viewportHeightStyleProp,
+    maxHeight: '100vh',
+    minHeight: '100vh',
     maxWidth: '100vw',
     minWidth: '100vw',
   },
@@ -58,21 +58,21 @@ const useStyles = makeStyles(theme => ({
 
 const ThemedAppContent = () => {
   const viewportHeight = useSelector(selectors.getViewportHeight)
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
-  React.useEffect(
-    () => {
-      if (window) {
-        const dispatchViewportHeight = () => {
-          dispatch(actions.setViewportHeight(`${window.innerHeight}px`))
-        }
-
-        window.addEventListener('resize', dispatchViewportHeight)
-        dispatchViewportHeight()
-      }
-    },
-    [window]
-  )
+  // React.useEffect(
+  //   () => {
+  //     if (window) {
+  //       const dispatchViewportHeight = () => {
+  //         dispatch(actions.setViewportHeight(`${window.innerHeight}px`))
+  //       }
+  //
+  //       window.addEventListener('resize', dispatchViewportHeight)
+  //       dispatchViewportHeight()
+  //     }
+  //   },
+  //   [window]
+  // )
 
   const classes = useStyles({viewportHeight})
 
