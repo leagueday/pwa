@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Hidden from '@material-ui/core/Hidden'
 
 import { selectors } from '../store'
 import AudioControls from './AudioControls'
@@ -74,16 +73,7 @@ const BasicLayout = props => {
     <div className={classes.basicLayoutCol}>
       <BrandGradientHorizontalStripe />
       <div className={classes.basicLayoutRow}>
-        <Hidden mdDown>
-          { isSidenavVisible && (
-            <SideNav className={classes.sideNav} isHome={props.isHome} />
-          ) }
-        </Hidden>
-        <Hidden lgUp>
-          { isSidenavVisible && (
-            <SkinnySideNav className={classes.sideNav} isHome={props.isHome} />
-          ) }
-        </Hidden>
+        <SideNav className={classes.sideNav} home={props.home} visible={isSidenavVisible} />
         <div className={classes.contentFrame}>
           {props.children}
         </div>

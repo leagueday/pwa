@@ -8,8 +8,8 @@ import * as colors from '../../styling/colors'
 const useStyles = makeStyles({
   image: ({skinny}) => ({
     cursor: 'pointer',
-    height: 'min(2vw, 2em)',
-    width: 'min(2vw, 2em)',
+    height: 'auto',
+    width: skinny ? 'max(min(2.8vw, 2.8em), 1.8em)' : 'min(2vw, 2em)',
   }),
   imageBox: ({skinny}) => ({
     alignItems: 'center',
@@ -18,15 +18,15 @@ const useStyles = makeStyles({
     justifyContent: skinny ? 'center' : 'flex-start',
     width: skinny ? '100%' : null,
   }),
-  item: {
+  item: ({skinny}) => ({
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'row',
-    height: 'min(2vw, 2em)',
+    height: skinny ? 'max(min(3vw, 3em), 2em)' : 'min(2vw, 2em)',
     overflow: 'hidden',
     marginBottom: 'min(0.25em, 0.25vw)',
     userSelect: 'none',
-  },
+  }),
   itemSelected: {
     backgroundColor: colors.charcoal,
   },

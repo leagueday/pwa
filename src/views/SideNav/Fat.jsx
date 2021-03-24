@@ -7,23 +7,23 @@ import {makeStyles} from '@material-ui/core/styles'
 import * as colors from '../../styling/colors'
 import {actions, selectors} from '../../store'
 import {addScrollStyle} from '../util'
-import {makeIconButton} from '../IconButton'
 import Expander from './Expander'
 import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
 import MyChannels from './MyChannels'
 import MyPodcasts from './MyPodcasts'
+import SearchLozenge from './SearchLozenge'
 import SignInOutButton from './SignInOutButton'
-
-import {IcoMagnifier} from '../icons'
 
 const useStyles = makeStyles(theme => ({
   clickable: {
     cursor: 'pointer',
   },
-  control: {
+  controls: {
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
+    flexWrap: 'none',
+    justifyContent: 'space-between',
     padding: '0.5vw',
     width: '100%',
   },
@@ -35,8 +35,7 @@ const useStyles = makeStyles(theme => ({
   logo: {
     cursor: ({home}) => home ? 'default' : 'pointer',
     display: 'block',
-    margin: '1vw',
-    width: '50%',
+    width: '100%',
   },
   logoContainer: {
     flex: 2,
@@ -45,7 +44,6 @@ const useStyles = makeStyles(theme => ({
   scroller: addScrollStyle(colors.blue)({
     flex: 1,
     minHeight: 0,
-    overflowX: 'hidden',
     overflowY: 'auto',
     width: '100%',
   }),
@@ -53,31 +51,27 @@ const useStyles = makeStyles(theme => ({
     minHeight: '100%',
     width: '100%',
   },
-  searchButton: {
-    backgroundColor: colors.darkGray,
-    margin: '0.5vw',
-  },
   sideNav: {
-    alignItems: 'flex-start',
     backgroundColor: colors.darkerGray,
     display: 'flex',
     flexDirection: 'column',
     fontSize: 'max(min(1.6vw, 14px), 12px)',
     height: '100%',
-    overflowX: 'hidden',
-    width: 'max(min(8vw, 8em), 5em)',
+    width: 'min(17%, 14em)',
   },
   signInOutButton: {
-    fontSize: '75%',
+    fontSize: '80%',
+    whiteSpace: 'nowrap',
+    width: '100%',
   },
   signInOutButtonContainer: {
+    flex: 1.5,
+    marginLeft: 'auto',
     paddingBottom: '0.25vw',
   },
 }))
 
-const SearchButton = makeIconButton(IcoMagnifier)
-
-const SkinnySideNav = ({className, home}) => {
+const FatSideNav = ({className, home}) => {
   const classes = useStyles(({home}))
 
   const dispatch = useDispatch()
@@ -87,26 +81,24 @@ const SkinnySideNav = ({className, home}) => {
 
   return (
     <div className={cx(classes.sideNav, className)}>
-      <div className={classes.control}>
-        <img className={classes.logo} onClick={goHome} src="/img/logo_square_transparent.png" />
-      </div>
-      <div className={classes.control}>
+      <div className={classes.controls}>
+        <div className={classes.logoContainer}>
+          <img className={classes.logo} onClick={goHome} src="/img/logo.png" />
+        </div>
         <div className={classes.signInOutButtonContainer}>
           <SignInOutButton className={classes.signInOutButton} />
         </div>
       </div>
-      <div className={classes.control}>
-        <SearchButton className={classes.searchButton} />
-      </div>
-      <LiveAndUpcomingLozenge className={classes.lozenge} skinny />
+      <SearchLozenge />
+      <LiveAndUpcomingLozenge className={classes.lozenge} />
       <div className={classes.scroller}>
         <div className={classes.scrollerChild}>
-          <Expander className={classes.expander} text="MY CHANNELS" tag="chan" skinny>
-            <MyChannels skinny />
+          <Expander className={classes.expander} text="MY CHANNELS" tag="chan">
+            <MyChannels />
           </Expander>
           {user && (
-            <Expander className={classes.expander} text="MY PODCASTS" tag="poca" skinny>
-              <MyPodcasts skinny />
+            <Expander className={classes.expander} text="MY PODCASTS" tag="poca">
+              <MyPodcasts />
             </Expander>
           )}
         </div>
@@ -115,4 +107,4 @@ const SkinnySideNav = ({className, home}) => {
   )
 }
 
-export default SkinnySideNav
+export default FatSideNav
