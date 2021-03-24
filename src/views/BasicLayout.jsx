@@ -50,7 +50,6 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     justifyContent: 'flex-start',
     overflowY: 'hidden',
-    paddingLeft: '0.5em',
     width: '100%',
   },
   sideNav: { },

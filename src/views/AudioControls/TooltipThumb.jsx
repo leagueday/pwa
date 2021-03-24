@@ -18,6 +18,13 @@ const useStyles = makeStyles(theme => ({
     fontFamily: theme.typography.family.secondary,
     fontSize: '90%',
     height: '2em',
+    [theme.breakpoints.only('md')]: {
+      borderRadius: '0.6em',
+      fontSize: '60%',
+      height: '1.2em',
+      lineHeight: '0.5em',
+      margin: '0 0.5em',
+    },
   },
 }))
 

@@ -1,22 +1,22 @@
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
+import {makeStyles, useTheme} from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Slider from '@material-ui/core/Slider'
 
+import * as colors from '../../styling/colors'
 import {actions, selectors} from '../../store'
-
 import {
   formatSecondsDuration,
   maybeHmsToSecondsOnly,
   percentageToPosition,
   secondsToHms
 } from '../dateutil'
-
 import TooltipThumb from './TooltipThumb'
-import {makeStyles} from '@material-ui/core/styles'
-import * as colors from '../../styling/colors'
 
 const PROGRESS_HEIGHT = '1.5em'
+const PROGRESS_HEIGHT_MD = '1.2em'
 
 const useStyles = makeStyles(theme => ({
   durationLabel: {
@@ -26,14 +26,20 @@ const useStyles = makeStyles(theme => ({
     fontSize: '75%',
     position: 'absolute',
     right: '0.5em',
+    [theme.breakpoints.only('md')]: {
+      bottom: '-0.7em',
+      fontSize: '70%',
+    },
   },
   progressBox: {
-    // backgroundColor: colors.darkerCharcoal,
-    // borderRadius: theme.spacing(1),
     position: 'relative',
     height: PROGRESS_HEIGHT,
     paddingLeft: '0.33em',
     paddingRight: '0.33em',
+    [theme.breakpoints.only('md')]: {
+      height: PROGRESS_HEIGHT_MD,
+      margin: '0 0.5em 0.5em 0.5em',
+    },
   },
   sliderColor: {
     color: colors.blue,
@@ -44,6 +50,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ProgressBox = () => {
+  const theme = useTheme()
+  const isMd = useMediaQuery(theme.breakpoints.only('md'))
   const classes = useStyles()
 
   const position = useSelector(selectors.getAudioPosition)

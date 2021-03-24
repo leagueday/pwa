@@ -52,7 +52,7 @@ const LiveAndUpcomingLozenge = ({className, skinny}) => {
   const yourBasicOnclick = () => dispatch(actions.pushHistory('/'))
 
   return (
-    <div className={cx(className, classes.liveAndUpcomingLozenge)}>
+    <div className={cx(classes.liveAndUpcomingLozenge, className)}>
       <div className={classes.lozenge} onClick={yourBasicOnclick}>
         <div className={classes.title}>
           {

@@ -2,7 +2,8 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Color from 'color'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import {
   IcoFastFwdStop,
@@ -14,7 +15,6 @@ import {
 
 import * as colors from '../../styling/colors'
 import { actions, constants as storeConstants, selectors, thunks } from '../../store'
-import * as consts from '../consts'
 import useMyList from '../../api/useMyList'
 
 import {makeIconButton} from '../IconButton'
@@ -36,10 +36,14 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 'auto',
-    maxHeight: consts.AUDIO_CONTROLS_HEIGHT,
-    minHeight: consts.AUDIO_CONTROLS_HEIGHT,
+    maxHeight: '6em',
+    minHeight: '6em',
     userSelect: 'none',
     width: '100%',
+    [theme.breakpoints.only('md')]: {
+      maxHeight: '4em',
+      minHeight: '4em',
+    },
   },
   barsideButton: {
     margin: '0.25em',
@@ -55,8 +59,7 @@ const useStyles = makeStyles(theme => ({
   },
   logoButton: {
     marginLeft: '0.5em',
-    maxHeight: consts.AUDIO_CONTROLS_HEIGHT,
-    maxWidth: consts.AUDIO_CONTROLS_HEIGHT,
+    maxHeight: '100%',
     userSelect: 'none',
   },
   logoButtonCenter: {
@@ -90,22 +93,36 @@ const useStyles = makeStyles(theme => ({
   progressBoxFlex: {
     flex: 1,
     marginTop: '0.25em',
+    [theme.breakpoints.only('md')]: {
+      marginTop: 0,
+    },
   },
   progressRow: {
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     paddingLeft: '1em',
     paddingRight: '1em',
+    [theme.breakpoints.only('md')]: {
+      paddingLeft: '2.5em',
+      paddingRight: '2.5em',
+    },
   },
   titleRow: {
     display: 'flex',
     flexDirection: 'row',
-    padding: '0.25em',
+    marginLeft: '0.25em',
+    padding: '0.25em 0.25em 0 0.25em',
+    [theme.breakpoints.only('md')]: {
+      marginLeft: '0.5em',
+    },
   },
 }))
 
 const AudioControls = () => {
+  const theme = useTheme()
+  const isMd = useMediaQuery(theme.breakpoints.only('md'))
   const classes = useStyles()
 
   const user = useSelector(selectors.getUser)
@@ -170,7 +187,7 @@ const AudioControls = () => {
     <div className={classes.audioControlsRow}>
       <div className={classes.logoButtonCenter}>
         <ToggleImageButton className={classes.logoButton}
-                           size="5em"
+                           size={isMd ? '3.5em' : '5em'}
                            on={audioMode === storeConstants.AUDIO_MODE_PLAY}
                            onClick={popOnclick}
                            onImage="/img/logo_pause.png"
@@ -183,12 +200,12 @@ const AudioControls = () => {
                              color={buttonColor}
                              onClick={plusOrMinusOnclick}
                              shadowColor={buttonShadowColor}
-                             size="2em"
+                             size={isMd ? '1.5em' : '2em'}
                              strokeWidth="3" />
           <Title title={itemTitle} onClick={titleOnclick} />
           <ForwardStopButton color={buttonColor}
                              backgroundColor={colors.brandBlack}
-                             size="1.75em"
+                             size={isMd ? '1.5em' : '2em'}
                              onClick={nextButtonOnclick}
                              shadowColor={buttonShadowColor} />
         </div>

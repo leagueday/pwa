@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     height: '100%',
     overflow: 'auto',
-    paddingTop: '0.5em',
+    padding: '0.5em 0.5em 0 0.5em',
     width: '100%',
   }),
   podcastTiles: {
