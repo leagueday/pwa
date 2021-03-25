@@ -155,14 +155,16 @@ const Content = ({podcast}) => {
         <div className={classes.items}>
           {
             (() => {
-              if (!items || !items.map) return null
+              if (!items) return null
+
+              const iterableItems = items.map ? items : [items]
 
               // Here the React key is inadvisably the track offset
               // in the list, it's not great and is strictly as good
               // as the Next-Track feature...
               let itemIndex = 0
 
-              return items.map(
+              return iterableItems.map(
                 item => {
                   const result = (<Item
                       key={itemIndex}
