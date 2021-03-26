@@ -6,7 +6,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import ExtraSmall from './ExtraSmall'
 import SmallUp from './SmallUp'
 
-const AudioControls = props => {
+const BasicLayout = props => {
   const theme = useTheme()
   const smUp = useMediaQuery(theme.breakpoints.up('sm'))
 
@@ -17,4 +17,4 @@ const AudioControls = props => {
   )
 }
 
-export default AudioControls
+export default BasicLayout

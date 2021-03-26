@@ -57,7 +57,7 @@ const MyPodcasts = ({skinny}) => {
   const [getIsOnMyList, addToMyList, removeFromMyList, isMyListEmpty] = useMyList(user?.token?.access_token)
   const {data: podcasts} = usePodcasts()
 
-  const myListPodcasts = isMyListEmpty ? [] : podcasts.filter(podcast => getIsOnMyList('podcast', podcast.id))
+  const myListPodcasts = isMyListEmpty || !podcasts ? [] : podcasts.filter(podcast => getIsOnMyList('podcast', podcast.id))
 
   // tbd add channels
 
