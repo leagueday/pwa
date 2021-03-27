@@ -142,6 +142,7 @@ export const seekAudio = position => ({
 
 export const selectAudio =
   (podcastId,
+   podcastName,
    podcastUrl,
    audioUrl,
    itemIndex,
@@ -154,6 +155,7 @@ export const selectAudio =
       advertisedDuration,
       itemIndex,
       podcastId,
+      podcastName,
       podcastUrl,
       title,
       position,

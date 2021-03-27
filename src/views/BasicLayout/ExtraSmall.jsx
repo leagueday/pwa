@@ -1,10 +1,10 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
-import { selectors } from '../../store'
+import { actions, selectors } from '../../store'
 import AppBar from '../AppBar'
 import AudioControls from '../AudioControls'
 import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe'
@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     flex: 7,
   },
   audioControls: {
-    flex: 21,
+    flex: 16,
   },
   basicLayoutCol: {
     alignItems: 'stretch',
@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   contentFrame: {
     backgroundColor: colors.darkGray,
     display: 'flex',
-    flex: 70,
+    flex: 75,
     flexDirection: 'column',
     flexWrap: 'nowrap',
     height: '100%',
@@ -68,7 +68,7 @@ const XsBasicLayout = props => {
       { isAudioDisplayed && (
         <>
           <BrandGradientHorizontalStripe className={classes.brandStripe}/>
-          <AudioControls className={classes.audioControls}/>
+          <AudioControls className={classes.audioControls} primaryColor={colors.magenta} />
         </>
       ) }
     </div>

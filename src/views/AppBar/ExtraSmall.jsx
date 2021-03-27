@@ -1,9 +1,11 @@
 import React from 'react'
+import {useSelector, useDispatch} from 'react-redux'
 import cx from 'classnames'
 
 import {makeStyles} from '@material-ui/core'
 
 import * as colors from '../../styling/colors'
+import {actions, selectors} from '../../store'
 import {makeIconButton} from '../IconButton'
 
 import {IcoMenu} from '../icons'
@@ -28,6 +30,7 @@ const useStyles = makeStyles(theme => ({
   logoContainer: {
     width: '8vw',
   },
+  menuButton: { },
   menuButtonContainer: {
     marginLeft: 'auto',
   },
@@ -38,18 +41,26 @@ const useStyles = makeStyles(theme => ({
 
 //
 const XsAppBar = ({className, home}) => {
+  const dispatch = useDispatch()
   const classes = useStyles()
+
+  // for xs nav is by default closed
+  const isNavVisible = true === useSelector(selectors.getNavVisibility)
+
+  const toggleNavVisibility = isNavVisible ? () => dispatch(actions.hideNav()) : () => dispatch(actions.showNav())
+
+  const maybeGoHome = home ? null : () => dispatch(actions.pushHistory('/'))
 
   return (
     <div className={cx(classes.appBar, className)}>
-      <div className={classes.logoContainer}>
+      <div className={classes.logoContainer} onClick={maybeGoHome}>
         <img className={classes.logo} src="/img/logo_square_transparent.png" />
       </div>
-      <div className={classes.title}>
+      <div className={classes.title} onClick={maybeGoHome}>
         LeagueDay
       </div>
       <div className={classes.menuButtonContainer}>
-        <MenuButton className={classes.menuButton} strokeWidth={3} />
+        <MenuButton className={classes.menuButton} strokeWidth={3} onClick={toggleNavVisibility}/>
       </div>
     </div>
   )

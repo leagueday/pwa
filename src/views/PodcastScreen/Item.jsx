@@ -85,6 +85,7 @@ const useStyles = makeStyles(theme => ({
 
 const Item = ({ accentColor,
                 podcastId,
+                podcastName,
                 podcastUrl,
                 item,
                 itemIndex,
@@ -134,7 +135,17 @@ const Item = ({ accentColor,
       if (isSelectedAudio)
         dispatch(actions.playAudio())
       else {
-        dispatch(actions.selectAudio(podcastId, podcastUrl, itemAudioUrl, itemIndex, duration, title))
+        dispatch(
+          actions.selectAudio(
+            podcastId,
+            podcastName,
+            podcastUrl,
+            itemAudioUrl,
+            itemIndex,
+            duration,
+            title
+          )
+        )
         dispatch(actions.playAudio())
       }
       ev.stopPropagation()

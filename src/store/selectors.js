@@ -26,6 +26,7 @@ export const getAudioEvents = store => getAudioState(store)?.events
 export const getAudioItemIndex = store => getAudioState(store)?.itemIndex
 export const getAudioMode = store => getAudioState(store)?.mode
 export const getAudioPodcastId = store => getAudioState(store)?.podcastId
+export const getAudioPodcastName = store => getAudioState(store)?.podcastName
 export const getAudioPodcastUrl = store => getAudioState(store)?.podcastUrl
 export const getAudioPosition = store => getAudioState(store)?.position
 export const getAudioSeek = store => getAudioState(store)?.seek

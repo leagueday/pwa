@@ -2,36 +2,29 @@ import React from 'react'
 import {useDispatch} from 'react-redux'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import Color from 'color'
+import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
 import {actions} from '../../store'
+import debounce from '../../api/debounce'
 import useHomeBanner from '../../api/useHomeBanner'
+import usePrevious from '../../api/usePrevious'
 
 import SideButtons from '../SideButtons'
-
-const usePrevious = value => {
-  const ref = React.useRef()
-
-  React.useEffect(() => {
-    ref.current = value
-  }, [value])
-
-  return ref.current
-}
 
 const useStyles = makeStyles(theme => ({
   banner: {
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-start',
-    height: '25em',
-    maxHeight: '25%',
-    overflow: 'hidden',
     position: 'relative',
     width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      height: '25%',
+      overflow: 'hidden',
+    },
   },
   element: {
     cursor: 'pointer',
@@ -54,6 +47,8 @@ const useStyles = makeStyles(theme => ({
   text: {
     fontSize: '90%',
     fontWeight: theme.typography.weight.bold,
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
   textGroup: ({accentColor}) => ({
     alignItems: 'flex-start',
@@ -72,6 +67,8 @@ const useStyles = makeStyles(theme => ({
   title: ({accentColor}) => ({
     color: accentColor,
     fontWeight: theme.typography.weight.bold,
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   }),
 }))
 
@@ -129,25 +126,9 @@ const Element = ({classes, imageUrl, text, title, onClick}) => (
   </div>
 )
 
-const debounce = minIntervalMs => {
-  let wait = false
-
-  return f => (...args) => {
-      if (wait) return
-
-      wait = true
-      setTimeout(
-        () => { wait = false },
-        minIntervalMs
-      )
-
-      f(...args)
-    }
-  }
-
 const db500 = debounce(500)
 
-const Banner = ({primaryColor}) => {
+const SmUpBanner = ({className, primaryColor}) => {
   const {data} = useHomeBanner()
 
   const numElements = data ? data.length : 0
@@ -193,8 +174,10 @@ const Banner = ({primaryColor}) => {
   ]
 
   return (
-    <div className={classes.banner}>
-      { imageUrl && (
+    <div className={cx(classes.banner, className)}>
+      stuff
+      {
+        imageUrl && (
           <SideButtons
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndexDebounced}
@@ -216,4 +199,4 @@ const Banner = ({primaryColor}) => {
   )
 }
 
-export default Banner
+export default SmUpBanner

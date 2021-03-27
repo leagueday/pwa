@@ -7,21 +7,21 @@ import * as colors from '../../styling/colors'
 import {selectors} from '../../store'
 import useFacets from '../../api/useFacets'
 import { addScrollStyle } from '../util'
-import Banner from './Banner'
+import SmUpBanner from './SmUpBanner'
 import BasicLayout from '../BasicLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import Loading from '../Loading'
-import ContentTitleBar from './TitleBar'
+import TitleBar from './TitleBar'
 
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 
-const PRIMARY_COLOR = colors.magenta
+const primaryColor = colors.magenta
 
 const useStyles = makeStyles(theme => ({
   channelCategories: {
     marginTop: '0.5em',
   },
-  homeContent: addScrollStyle(colors.magenta)({
+  homeContent: ({primaryColor}) => addScrollStyle(primaryColor, theme)({
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
@@ -34,20 +34,20 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     minHeight: 0,
   },
-  primaryStripe: {
-    backgroundColor: PRIMARY_COLOR,
+  primaryStripe: ({primaryColor}) => ({
+    backgroundColor: primaryColor,
     height: '0.25em',
     width: '100%',
-  },
-  titleSeparator: {
-    height: '0.25em',
+  }),
+  titleBar: {
+    marginBottom: '0.25em',
   },
 }))
 
 const SmUpHomeScreen = () => {
   const facetedPodcasts = useFacets('Home')
 
-  const classes = useStyles()
+  const classes = useStyles({primaryColor})
 
   const user = useSelector(selectors.getUser)
   const userName = user?.user_metadata?.full_name
@@ -55,9 +55,12 @@ const SmUpHomeScreen = () => {
   return (
     <BasicLayout home>
       <div className={classes.homeContent}>
-        <ContentTitleBar text={userName ? `Welcome back, ${userName}!` : 'Home'} primaryColor={PRIMARY_COLOR} />
-        <div className={classes.titleSeparator} />
-        <Banner primaryColor={PRIMARY_COLOR} />
+        <TitleBar
+          className={classes.titleBar}
+          primaryColor={primaryColor}
+          text={userName ? `Welcome back, ${userName}!` : 'Home'}
+        />
+        <SmUpBanner primaryColor={primaryColor} />
         <div className={classes.primaryStripe} />
         <div className={classes.podcastTiles}>
           <FacetedPodcastTiles data={facetedPodcasts} />

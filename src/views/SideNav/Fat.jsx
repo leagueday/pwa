@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     flex: 2,
     paddingRight: '5%',
   },
-  scroller: addScrollStyle(colors.blue)({
+  scroller: addScrollStyle(colors.blue, theme)({
     flex: 1,
     minHeight: 0,
     overflowY: 'auto',

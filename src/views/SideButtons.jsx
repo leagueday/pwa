@@ -27,6 +27,7 @@ const useStyles = makeStyles({
   },
   sideButtons: {
     height: '100%',
+    minHeight: '100%',
     overflow: 'hidden',
     position: 'relative',
   },

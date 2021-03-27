@@ -8,8 +8,8 @@ import {addScrollStyle} from './util'
 
 // Top-Left/Right and Bottom-Scroller
 
-const useStyles = makeStyles({
-  bottomSection: ({accentColor}) => addScrollStyle(accentColor)({
+const useStyles = makeStyles(theme => ({
+  bottomSection: ({accentColor}) => addScrollStyle(accentColor, theme)({
     flexGrow: 1,
     flexShrink: 1,
     overflow: 'auto',
@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'center',
   },
-})
+}))
 
 const ContentLayout = ({accentColor, children, renderTop, renderTopLeft, renderTopRight}) => {
   const classes = useStyles({accentColor})

@@ -170,6 +170,7 @@ const Content = ({podcast}) => {
                       key={itemIndex}
                       accentColor={podcastColor}
                       podcastId={podcast?.id}
+                      podcastName={podcast?.name}
                       podcastUrl={podcast?.url}
                       item={item}
                       itemIndex={itemIndex}

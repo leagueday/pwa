@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: '75%',
     position: 'absolute',
     right: '0.5em',
-    [theme.breakpoints.only('md')]: {
+    [theme.breakpoints.down('md')]: {
       bottom: '-0.7em',
       fontSize: '70%',
     },
@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     height: PROGRESS_HEIGHT,
     paddingLeft: '0.33em',
     paddingRight: '0.33em',
-    [theme.breakpoints.only('md')]: {
+    [theme.breakpoints.down('md')]: {
       height: PROGRESS_HEIGHT_MD,
       margin: '0 0.5em 0.5em 0.5em',
     },
@@ -50,8 +50,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ProgressBox = () => {
-  const theme = useTheme()
-  const isMd = useMediaQuery(theme.breakpoints.only('md'))
   const classes = useStyles()
 
   const position = useSelector(selectors.getAudioPosition)
