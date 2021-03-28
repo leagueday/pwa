@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     flexShrink: 1,
     overflow: 'auto',
-    paddingRight: '0.25em',
     width: '100%',
   }),
   content: {
@@ -21,7 +20,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    paddingLeft: '0.25em',
+    marginLeft: '0.25em',
+    overflowX: 'hidden',
   },
   topSection: {
     flexShrink: 0,

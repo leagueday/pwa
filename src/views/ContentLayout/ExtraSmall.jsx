@@ -12,7 +12,6 @@ const useStyles = makeStyles(theme => ({
   bottomSection: {
     flexGrow: 1,
     flexShrink: 1,
-    paddingRight: '0.25em',
     width: '100%',
   },
   content: ({accentColor}) => addScrollStyle(accentColor, theme)({
