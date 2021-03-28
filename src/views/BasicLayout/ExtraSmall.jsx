@@ -55,9 +55,6 @@ const XsBasicLayout = props => {
 
   const navVisibility = useSelector(selectors.getNavVisibility)
 
-  // xs nav is by default closed
-  const isNavVisible = navVisibility !== true
-
   return (
     <div className={classes.basicLayoutCol}>
       <AppBar className={classes.appBar} home={props.home} />

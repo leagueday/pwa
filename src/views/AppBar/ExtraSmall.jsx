@@ -6,6 +6,7 @@ import {makeStyles} from '@material-ui/core'
 
 import * as colors from '../../styling/colors'
 import {actions, selectors} from '../../store'
+import MenuNav from '../SideNav/MenuNav'
 import {makeIconButton} from '../IconButton'
 
 import {IcoMenu} from '../icons'
@@ -44,10 +45,20 @@ const XsAppBar = ({className, home}) => {
   const dispatch = useDispatch()
   const classes = useStyles()
 
+  const [anchorRef, setAnchorRef] = React.useState()
+  const navButtonRef = React.useRef()
   // for xs nav is by default closed
-  const isNavVisible = true === useSelector(selectors.getNavVisibility)
-
-  const toggleNavVisibility = isNavVisible ? () => dispatch(actions.hideNav()) : () => dispatch(actions.showNav())
+  const isMenuNavVisible = true === useSelector(selectors.getNavVisibility)
+  const hideMenuNav = () => dispatch(actions.hideNav())
+  const showMenuNav = () => dispatch(actions.showNav())
+  const toggleMenuNavVisibility = () => {
+    if (isMenuNavVisible) {
+      hideMenuNav()
+    } else {
+      setAnchorRef(navButtonRef.current)
+      showMenuNav()
+    }
+  }
 
   const maybeGoHome = home ? null : () => dispatch(actions.pushHistory('/'))
 
@@ -60,7 +71,10 @@ const XsAppBar = ({className, home}) => {
         LeagueDay
       </div>
       <div className={classes.menuButtonContainer}>
-        <MenuButton className={classes.menuButton} strokeWidth={3} onClick={toggleNavVisibility}/>
+        <span ref={navButtonRef}>
+          <MenuButton className={classes.menuButton} strokeWidth={3} onClick={toggleMenuNavVisibility}/>
+        </span>
+        <MenuNav anchor={anchorRef} isVisible={isMenuNavVisible} hide={hideMenuNav} />
       </div>
     </div>
   )

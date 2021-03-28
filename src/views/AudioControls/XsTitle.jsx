@@ -1,9 +1,12 @@
 import React from 'react'
+import {useSelector} from 'react-redux'
 import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
+import {selectors} from '../../store'
+import {formatSecondsDuration, maybeHmsToSecondsOnly} from '../dateutil'
 
 const useStyles = makeStyles(theme => ({
   childrenContainer: {
@@ -63,6 +66,26 @@ const XsTitle = ({ children,
 }) => {
   const classes = useStyles({halfHeight, height, primaryColor})
 
+  const itemIndex = useSelector(selectors.getAudioItemIndex)
+  const duration = maybeHmsToSecondsOnly(
+    useSelector(selectors.getAudioDuration)
+  )
+
+  const durationLabel = React.useMemo(
+      () => {
+        let formattedDuration = formatSecondsDuration(duration)
+
+        if (formattedDuration.startsWith('0:'))
+          formattedDuration = formattedDuration.substr(2)
+
+        if (formattedDuration.startsWith('0'))
+          formattedDuration = formattedDuration.substr(1)
+
+        return formattedDuration
+      },
+    [duration]
+  )
+
   return (
     <div className={cx(classes.titleFlex, className)}>
       <div className={classes.childrenContainer}>
@@ -74,6 +97,9 @@ const XsTitle = ({ children,
         </div>
         <div className={classes.podcastName}>
           {podcastName}&nbsp;
+        </div>
+        <div className={classes.titleText}>
+          Episode {itemIndex+1} | Run length {durationLabel}&nbsp;
         </div>
       </div>
     </div>

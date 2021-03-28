@@ -104,9 +104,11 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     paddingLeft: '1em',
     paddingRight: '1em',
+    paddingTop: '1em',
     [theme.breakpoints.only('md')]: {
       paddingLeft: '2.5em',
       paddingRight: '2.5em',
+      paddingTop: 0,
     },
   },
   titleRow: {

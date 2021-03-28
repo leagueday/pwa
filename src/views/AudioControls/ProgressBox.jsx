@@ -30,6 +30,9 @@ const useStyles = makeStyles(theme => ({
       bottom: '-0.7em',
       fontSize: '70%',
     },
+    [theme.breakpoints.only('xs')]: {
+      display: 'none',
+    },
   },
   progressBox: {
     position: 'relative',
@@ -39,6 +42,11 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('md')]: {
       height: PROGRESS_HEIGHT_MD,
       margin: '0 0.5em 0.5em 0.5em',
+      paddingBottom: '0.5em',
+    },
+    [theme.breakpoints.only('xs')]: {
+      margin: 0,
+      paddingBottom: 0,
     },
   },
   sliderColor: {
