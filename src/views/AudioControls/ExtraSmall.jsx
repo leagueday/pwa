@@ -27,27 +27,36 @@ const PlusButton = makeIconButton(IcoPlus)
 const RewindStopButton = makeIconButton(IcoRewindStop)
 
 const useStyles = makeStyles(theme => ({
-  buttonRow: {
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'space-between',
-    maxWidth: '100%',
-    width: '100%',
-  },
   childButtonCol: {
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
     justifyContent: 'space-between',
+    padding: '1vw 0',
   },
   logoButton: { },
   progressBoxFlex: {
     flex: 1,
     padding: '2vw',
   },
+  progressRow: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'space-between',
+    maxWidth: '100%',
+    padding: '1vw 3vw 0 3vw',
+    width: '100%',
+  },
   title: {
     margin: '0 2vw 0 1vw',
+  },
+  titleRow: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'space-between',
+    maxWidth: '100%',
+    width: '100%',
   },
   xsAudioControls: {
     backgroundColor: colors.brandBlack,
@@ -81,7 +90,7 @@ const XsAudioControls = ({className, primaryColor}) => {
          titleOnclick,
        }) => ((PlusOrMinusButton, buttonColor) => (
       <div className={cx(classes.xsAudioControls, className)}>
-        <div className={classes.buttonRow}>
+        <div className={classes.titleRow}>
           <XsTitle className={classes.title}
                    halfHeight="10vw"
                    height="20vw"
@@ -111,7 +120,7 @@ const XsAudioControls = ({className, primaryColor}) => {
                                shadowColor={buttonShadowColor} />
           </div>
         </div>
-        <div className={classes.buttonRow}>
+        <div className={classes.progressRow}>
           <RewindStopButton className={classes.barsideButton}
                             iconClassName={classes.barsideButtonIcon}
                             color={buttonColor}
