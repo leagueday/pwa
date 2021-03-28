@@ -29,10 +29,6 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.weight.bold,
     userSelect: 'none',
   },
-  headlineTypename: {
-    textTransform: 'uppercase',
-    userSelect: 'none',
-  },
   liveBroadcasts: {
     marginTop: '1.5em',
   },
@@ -62,9 +58,6 @@ const Logo = ({channel, classes}) => (
 
 const Headline = ({channel, classes, hasBroadcasts}) => (
   <div className={classes.headline}>
-    <div className={classes.headlineTypename}>
-      Audio Content Aggregator
-    </div>
     <div className={cx(classes.headlineTitleRow, classes.channelColor)}>
       {channel.title}
     </div>
