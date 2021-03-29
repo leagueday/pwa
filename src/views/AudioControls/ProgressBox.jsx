@@ -46,11 +46,17 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.only('xs')]: {
       margin: 0,
-      paddingBottom: 0,
+      padding: 0,
     },
   },
   sliderColor: {
     color: colors.blue,
+  },
+  sliderRoot: {
+    padding: '0 0 2vw 0',
+    ['@media(pointer: coarse)']: {
+      padding: '0 0 2vw 0',
+    },
   },
   sliderThumbColor: {
     backgroundColor: colors.violet,
@@ -131,6 +137,7 @@ const ProgressBox = () => {
       <Slider
         classes={{
           colorPrimary: classes.sliderColor,
+          root: classes.sliderRoot,
           thumbColorPrimary: classes.sliderThumbColor,
         }}
         ValueLabelComponent={TooltipThumb}

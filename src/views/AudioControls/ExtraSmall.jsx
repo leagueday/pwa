@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   logoButton: { },
   progressBoxFlex: {
     flex: 1,
-    padding: '2vw',
+    padding: '0 2vw',
   },
   progressRow: {
     alignItems: 'center',
