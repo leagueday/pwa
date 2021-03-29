@@ -26,6 +26,9 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '50%',
     height: '100%',
     width: '100%',
+    [theme.breakpoints.only('xs')]: {
+      border: `0.5vw solid ${textColor ?? colors.white80}`,
+    }
   }),
   imageSquare: {
     width: '80%',

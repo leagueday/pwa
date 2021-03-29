@@ -11,6 +11,9 @@ const useStyles = makeStyles(theme => ({
     color,
     cursor: 'pointer',
     paddingLeft: '0.5em',
+    [theme.breakpoints.only('xs')]: {
+      paddingLeft: '2vw',
+    },
   }),
 }))
 

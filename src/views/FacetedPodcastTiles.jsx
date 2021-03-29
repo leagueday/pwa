@@ -15,10 +15,17 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     maxWidth: '100%',
     paddingTop: '0.75em',
+    [theme.breakpoints.only('xs')]: {
+      paddingTop: '3vw',
+    },
   },
   title: {
     fontSize: '125%',
     fontWeight: theme.typography.weight.bold,
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '90%',
+      fontWeight: theme.typography.weight.normal,
+    },
   },
 }))
 

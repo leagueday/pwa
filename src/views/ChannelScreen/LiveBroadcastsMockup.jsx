@@ -18,17 +18,26 @@ const useStyles = makeStyles(theme => ({
     fontFamily: theme.typography.family.secondary,
     padding: '0 0.5em',
     width: '6vw',
+    [theme.breakpoints.only('xs')]: {
+      padding: '0 2vw',
+    },
   },
   episodeDuration: {
     color: colors.white80,
     fontFamily: theme.typography.family.secondary,
     padding: '0 0.5em',
     width: '6vw',
+    [theme.breakpoints.only('xs')]: {
+      padding: '0 2vw',
+    },
   },
   episodeNumber: {
     color: colors.white30,
     padding: '0 1em',
     fontFamily: theme.typography.family.secondary,
+    [theme.breakpoints.only('xs')]: {
+      padding: '0 2vw',
+    },
   },
   episodePlus: ({channelColor}) => ({
     color: theme.palette.text.primary,
@@ -88,20 +97,33 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     marginLeft: '1em',
     marginTop: '3em',
+    [theme.breakpoints.only('xs')]: {
+      marginLeft: '2vw',
+      marginTop: '4vw',
+    },
   },
   sectionText: {
     display: 'flex',
     flexDirection: 'column',
     marginLeft: '0.5em',
+    [theme.breakpoints.only('xs')]: {
+      marginLeft: '2vw',
+    },
   },
   sectionTitle: ({channelColor}) => ({
     color: channelColor,
     fontSize: '125%',
     textTransform: 'uppercase',
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '85%',
+    },
   }),
   sectionVariety: {
     fontSize: '125%',
     fontWeight: theme.typography.weight.bold,
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '85%',
+    },
   },
 }))
 

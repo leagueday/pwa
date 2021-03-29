@@ -74,7 +74,7 @@ const XsAppBar = ({className, home}) => {
         <span ref={navButtonRef}>
           <MenuButton className={classes.menuButton} strokeWidth={3} onClick={toggleMenuNavVisibility}/>
         </span>
-        <MenuNav anchor={anchorRef} isVisible={isMenuNavVisible} hide={hideMenuNav} />
+        <MenuNav anchor={anchorRef} isVisible={isMenuNavVisible} hide={hideMenuNav} home={home} />
       </div>
     </div>
   )

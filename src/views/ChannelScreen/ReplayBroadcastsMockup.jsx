@@ -22,17 +22,35 @@ const useStyles = makeStyles(theme => ({
     fontFamily: theme.typography.family.secondary,
     padding: '0 0.5em',
     width: '5vw',
+    [theme.breakpoints.only('xs')]: {
+      padding: '0 2vw',
+    },
+  },
+  episodeDateAndDuration: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginLeft: 'auto',
   },
   episodeDuration: {
     color: colors.white80,
     fontFamily: theme.typography.family.secondary,
     padding: '0 0.5em',
     width: '5vw',
+    [theme.breakpoints.only('xs')]: {
+      padding: '0 2vw',
+    },
+  },
+  episodeNumberAndTitle: {
+    display: 'flex',
+    flexDirection: 'row',
   },
   episodeNumber: {
     color: colors.white30,
     padding: '0 1em',
     fontFamily: theme.typography.family.secondary,
+    [theme.breakpoints.only('xs')]: {
+      padding: '0 2vw',
+    },
   },
   episodePlus: ({canPlay, channelColor}) => ({
     color: theme.palette.text.primary,
@@ -40,12 +58,21 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       color: channelColor,
     },
+    [theme.breakpoints.only('xs')]: {
+      height: '5vw',
+      width: '5vw',
+    },
   }),
   episodePOP: ({canPlay, channelColor}) => ({
     color: canPlay ? theme.palette.text.primary : colors.lightGray,
     cursor: canPlay ? 'pointer' : 'default',
     '&:hover': {
       color: canPlay ? channelColor : colors.lightGray,
+    },
+    [theme.breakpoints.only('xs')]: {
+      height: '5vw',
+      width: '5vw',
+      marginRight: '2vw',
     },
   }),
   episodePOPCell: {
@@ -56,16 +83,24 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     userSelect: 'none',
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '80%',
+    },
   }),
   episodeTitle: {
     color: colors.white80,
     flex: 1,
     minWidth: '12vw',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
-  flushRight: {
+  episodeTitleAndData: {
     display: 'flex',
     flexDirection: 'row',
-    marginLeft: 'auto',
+    width: '100%',
+    [theme.breakpoints.only('xs')]: {
+      flexDirection: 'column',
+    },
   },
   previousBroadcasts: {
     alignItems: 'stretch',
@@ -92,20 +127,33 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     marginLeft: '1em',
     marginTop: '3em',
+    [theme.breakpoints.only('xs')]: {
+      marginLeft: '2vw',
+      marginTop: '4vw',
+    },
   },
   sectionText: {
     display: 'flex',
     flexDirection: 'column',
     marginLeft: '0.5em',
+    [theme.breakpoints.only('xs')]: {
+      marginLeft: '2vw',
+    },
   },
   sectionTitle: ({channelColor}) => ({
     color: channelColor,
     fontSize: '125%',
     textTransform: 'uppercase',
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '85%',
+    },
   }),
   sectionVariety: {
     fontSize: '125%',
     fontWeight: theme.typography.weight.bold,
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '85%',
+    },
   },
 }))
 
@@ -199,18 +247,22 @@ const Episode = ({episodeData, backgroundColor, counter, channelColor}) => {
         <PlayOrPauseIcon classes={{inner: classes.episodePOP, outer: classes.episodePOPCell}}/>
         <IcoPlus classes={{inner: classes.episodePlus, outer: classes.episodePOPCell}}/>
       </div>
-      <div className={classes.episodeNumber}>
-        {counter < 10 ? `0${counter}` : counter}
-      </div>
-      <div className={classes.episodeTitle}>
-        {title}
-      </div>
-      <div className={classes.flushRight}>
-        <div className={classes.episodeDate}>
-          {fakeDateLabel}
+      <div className={classes.episodeTitleAndData}>
+        <div className={classes.episodeNumberAndTitle}>
+          <div className={classes.episodeNumber}>
+            {counter < 10 ? `0${counter}` : counter}
+          </div>
+          <div className={classes.episodeTitle}>
+            {title}
+          </div>
         </div>
-        <div className={classes.episodeDuration}>
-          {fakeDurationLabel}
+        <div className={classes.episodeDateAndDuration}>
+          <div className={classes.episodeDate}>
+            {fakeDateLabel}
+          </div>
+          <div className={classes.episodeDuration}>
+            {fakeDurationLabel}
+          </div>
         </div>
       </div>
     </div>
