@@ -14,14 +14,14 @@ const useStyles = makeStyles(theme => ({
   },
   podcastName: ({primaryColor}) => ({
     color: primaryColor,
-    fontSize: '60%',
+    fontSize: '3.5vw',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   }),
   titleText: {
     color: theme.palette.text.secondary,
-    fontSize: '60%',
+    fontSize: '3.5vw',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',

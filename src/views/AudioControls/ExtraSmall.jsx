@@ -32,8 +32,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    justifyContent: 'space-between',
-    padding: '1vw 0',
+    justifyContent: 'space-evenly',
   },
   logoButton: { },
   progressBoxFlex: {
@@ -43,6 +42,7 @@ const useStyles = makeStyles(theme => ({
   progressRow: {
     alignItems: 'center',
     display: 'flex',
+    flex: 2,
     justifyContent: 'space-between',
     maxWidth: '100%',
     padding: '1vw 3vw 0 3vw',
@@ -54,6 +54,7 @@ const useStyles = makeStyles(theme => ({
   titleRow: {
     alignItems: 'center',
     display: 'flex',
+    flex: 3,
     justifyContent: 'space-between',
     maxWidth: '100%',
     width: '100%',
