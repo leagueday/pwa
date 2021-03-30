@@ -1,71 +1,33 @@
 import React from 'react'
 import cx from 'classnames'
+import Color from 'color'
 
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
-import { IcoPause, IcoPlay, IcoPlus } from '../icons'
-import Liveness from './Liveness'
+import ToggleImageButton from '../ToggleImageButton'
 
 const useStyles = makeStyles(theme => ({
-  episodeControls: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  episodeDate: {
-    color: colors.white80,
-    fontFamily: theme.typography.family.secondary,
-    padding: '0 0.5em',
+  eventImage: {
+    height: '6vw',
     width: '6vw',
-    [theme.breakpoints.only('xs')]: {
-      padding: '0 2vw',
-    },
   },
-  episodeDuration: {
-    color: colors.white80,
-    fontFamily: theme.typography.family.secondary,
-    padding: '0 0.5em',
-    width: '6vw',
-    [theme.breakpoints.only('xs')]: {
-      padding: '0 2vw',
-    },
-  },
-  episodeNumber: {
-    color: colors.white30,
-    padding: '0 1em',
-    fontFamily: theme.typography.family.secondary,
-    [theme.breakpoints.only('xs')]: {
-      padding: '0 2vw',
-    },
-  },
-  episodePlus: ({channelColor}) => ({
-    color: theme.palette.text.primary,
-    cursor: 'pointer',
-    '&:hover': {
-      color: channelColor,
-    },
-  }),
-  episodePOP: ({canPlay, channelColor}) => ({
-    color: canPlay ? theme.palette.text.primary : colors.lightGray,
-    cursor: canPlay ? 'pointer' : 'default',
-    '&:hover': {
-      color: canPlay ? channelColor : colors.lightGray,
-    },
-  }),
-  episodePOPCell: {
-    height: '60%',
-  },
-  episodeRow: ({backgroundColor}) => ({
-    backgroundColor,
+  eventImageAndText: {
     display: 'flex',
-    flexDirection: 'row',
-    userSelect: 'none',
-  }),
-  episodeTitle: {
-    color: colors.white80,
-    flex: 1,
-    width: '12vw',
+    width: '100%',
+  },
+  eventTextplate: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginLeft: '0.5em',
+    minWidth: 0,
+    [theme.breakpoints.only('xs')]: {
+      marginLeft: '2vw',
+    },
+  },
+  liveBroadcast: {
+    display: 'flex',
+    flexDirection: 'column',
   },
   liveBroadcasts: {
     alignItems: 'stretch',
@@ -74,56 +36,56 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   liveness: {
-  },
-  section: {
     display: 'flex',
-    flexDirection: 'row',
+    width: '100%',
   },
-  sectionImage: {
-    height: '6vw',
-    width: '6vw',
-  },
-  sectionLeftRow: {
+  livenessContent: {
+    backgroundColor: '#070709',
     display: 'flex',
-    flex: 1,
-    flexDirection: 'row',
-  },
-  sectionNameLive: {
-    color: colors.lime,
-    fontWeight: theme.typography.weight.bold,
-  },
-  sectionRightCol: {
-    display: 'flex',
+    flex: 2,
     flexDirection: 'column',
-    marginLeft: '1em',
-    marginTop: '3em',
+    padding: '1em 0 1em 1em',
     [theme.breakpoints.only('xs')]: {
-      marginLeft: '2vw',
-      marginTop: '4vw',
+      padding: '2vw 0 2vw 2vw',
     },
   },
-  sectionText: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: '0.5em',
-    [theme.breakpoints.only('xs')]: {
-      marginLeft: '2vw',
-    },
+  livenessLeftPad: {
+    flex: 0.5,
   },
   sectionTitle: ({channelColor}) => ({
     color: channelColor,
+    display: 'flex',
     fontSize: '125%',
+    overflowX: 'hidden',
     textTransform: 'uppercase',
     [theme.breakpoints.only('xs')]: {
       fontSize: '85%',
     },
   }),
   sectionVariety: {
+    display: 'flex',
     fontSize: '125%',
+    overflowX: 'hidden',
     fontWeight: theme.typography.weight.bold,
     [theme.breakpoints.only('xs')]: {
       fontSize: '85%',
     },
+  },
+  textEllipsisOverflow: {
+    overflowX: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  track: {
+    display: 'flex',
+  },
+  trackText: {
+    color: colors.white80,
+    flex: 1,
+    minWidth: '12vw',
+    paddingLeft: '2vw',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
 }))
 
@@ -142,60 +104,27 @@ const filterMockupData = tag => mockupData.filter(
 )
 
 const transparent = 'rgba(0,0,0,1)'
-const episodeBackgroundColors = ['#070709', transparent, '#0E0E11', transparent]
 
-const Episode = ({episodeData, backgroundColor, counter, channelColor}) => {
-  const {
-    title,
-    isPlaying,
-    canPlay,
-    fakeDateLabel,
-    fakeDurationLabel
-  } = episodeData
+const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
 
-  const classes = useStyles({backgroundColor, canPlay, channelColor})
+const EventImage = ({classes, imageUrl}) => (
+  <img className={cx(classes.eventImage)} src={imageUrl} />
+)
 
-  const PlayOrPauseIcon = isPlaying ? IcoPause : IcoPlay
-
-  return (
-    <div className={classes.episodeRow}>
-      <div className={classes.episodeControls}>
-        <PlayOrPauseIcon classes={{inner: classes.episodePOP, outer: classes.episodePOPCell}}/>
-        <IcoPlus classes={{inner: classes.episodePlus, outer: classes.episodePOPCell}}/>
-      </div>
-      <div className={classes.episodeNumber}>
-        {counter < 10 ? `0${counter}` : counter}
-      </div>
-      <div className={classes.episodeTitle}>
-        {title}
-      </div>
-      <div className={classes.episodeDate}>
-        {fakeDateLabel}
-      </div>
-      <div className={classes.episodeDuration}>
-        {fakeDurationLabel}
-      </div>
-    </div>
-  )
-}
-
-const SectionLeft = ({sectionData, channelColor}) => {
-  const {
-    imageUrl,
-    name,
-    variety,
-  } = sectionData
+const EventTextplate = ({channelColor, sectionData}) => {
+  const { name, variety, } = sectionData
 
   const classes = useStyles({channelColor})
 
   return (
-    <div className={classes.sectionLeftRow}>
-      <img className={classes.sectionImage} src={imageUrl} />
-      <div className={classes.sectionText}>
-        <div className={classes.sectionTitle}>
-          {name}&nbsp;<span className={classes.sectionNameLive}>Live</span>
+    <div className={classes.eventTextplate}>
+      <div className={cx(classes.sectionTitle)}>
+        <div className={classes.textEllipsisOverflow}>
+          {name}
         </div>
-        <div className={classes.sectionVariety}>
+      </div>
+      <div className={cx(classes.sectionVariety)}>
+        <div className={classes.textEllipsisOverflow}>
           {variety}
         </div>
       </div>
@@ -203,30 +132,23 @@ const SectionLeft = ({sectionData, channelColor}) => {
   )
 }
 
-const SectionRight = ({sectionData, channelColor}) => {
-  const {episodes} = sectionData
+const Track = ({classes}) => {
+  const [isPlaying, setIsPlaying] = React.useState(false)
 
-  const classes = useStyles({channelColor})
+  const onClick = isPlaying ? () => setIsPlaying(false) : () => setIsPlaying(true)
 
   return (
-    <div className={classes.sectionRightCol}>
-      {
-        (
-          counter =>
-            episodes.map(episode => {
-              const bgC = episodeBackgroundColors[counter % episodeBackgroundColors.length]
-              counter = counter + 1
-              return (
-                <Episode key={counter}
-                         episodeData={episode}
-                         backgroundColor={bgC}
-                         counter={counter}
-                         channelColor={channelColor}
-                />
-              )
-            })
-        )(0)
-      }
+    <div className={classes.track}>
+      <ToggleImageButton className={classes.logoButton}
+                         size="8vw"
+                         on={isPlaying}
+                         onClick={onClick}
+                         onImage="/img/logo_live_pause.png"
+                         offImage="/img/logo_live_play.png"
+                         shadowColor={buttonShadowColor} />
+      <div className={classes.trackText}>
+        Live
+      </div>
     </div>
   )
 }
@@ -234,15 +156,24 @@ const SectionRight = ({sectionData, channelColor}) => {
 const LiveBroadcastsMockup = ({className, channel}) => {
   const classes = useStyles()
 
-  // <SectionRight sectionData={sectionData} channelColor={channel.color} />
   return (
     <div className={cx(classes.liveBroadcasts, className)}>
       {
         filterMockupData(channel.tag).map(
           sectionData => (
-            <div key={sectionData.name} className={classes.section}>
-              <SectionLeft sectionData={sectionData} channelColor={channel.color} />
-              <Liveness className={classes.liveness} />
+            <div key={sectionData.name} className={classes.liveBroadcast}>
+              <div className={classes.eventImageAndText}>
+                <EventImage classes={classes}
+                            imageUrl={sectionData.imageUrl} />
+                <EventTextplate channelColor={channel.color}
+                                sectionData={sectionData} />
+              </div>
+              <div className={classes.liveness}>
+                <div className={classes.livenessLeftPad}>&nbsp;</div>
+                <div className={classes.livenessContent}>
+                  <Track classes={classes} />
+                </div>
+              </div>
             </div>
           )
         )
