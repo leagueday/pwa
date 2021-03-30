@@ -24,11 +24,18 @@ const useStyles = makeStyles(theme => ({
     border: `0.15em solid ${accentColor}`,
     display: 'block',
     width: '100%',
+    [theme.breakpoints.only('xs')]: {
+      border: `0.25vw solid ${accentColor}`
+    },
   }),
   logoImageContainer: {
     fontSize: '150%',
     margin: '1em',
     width: '100%',
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '90%',
+      margin: '1vw',
+    },
   },
   logoImageContainer2: {
     position: 'relative',
@@ -38,6 +45,10 @@ const useStyles = makeStyles(theme => ({
     bottom: '0.25em',
     position: 'absolute',
     right: '0.25em',
+    [theme.breakpoints.only('xs')]: {
+      bottom: '2vw',
+      right: '2vw',
+    },
   },
   textplate: {
     marginLeft: '1em',
@@ -45,6 +56,10 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     overflow: 'hidden',
     userSelect: 'none',
+    [theme.breakpoints.only('xs')]: {
+      marginLeft: '2vw',
+      padding: '2vw',
+    },
   },
   textplateTitleRow: {
     overflow: 'hidden',
@@ -53,13 +68,20 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     fontSize: '150%',
     fontWeight: theme.typography.weight.bold,
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '90%',
+    },
   },
   textplateDescription: {
     paddingTop: '0.5em',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.only('xs')]: {
+      paddingTop: '1vw',
       width: '100%',
     },
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.only('sm')]: {
+      width: '100%',
+    },
+    [theme.breakpoints.only('md')]: {
       width: '85%',
     },
     [theme.breakpoints.up('lg')]: {
@@ -170,6 +192,7 @@ const Content = ({podcast}) => {
                       key={itemIndex}
                       accentColor={podcastColor}
                       podcastId={podcast?.id}
+                      podcastName={podcast?.name}
                       podcastUrl={podcast?.url}
                       item={item}
                       itemIndex={itemIndex}

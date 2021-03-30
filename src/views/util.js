@@ -2,23 +2,40 @@ import Color from 'color'
 import stringStripHtml from 'string-strip-html'
 import * as colors from '../styling/colors'
 
-export const addScrollStyle = scrollbarColor => styleClassInitializer => ({
+export const addScrollStyle = (scrollbarColor, theme) => styleClassInitializer => ({
   ...styleClassInitializer,
-  '&::-webkit-scrollbar': {
-    height: '0.5em',
-    width: '0.5em',
+  [theme.breakpoints.up('sm')]: {
+    '&::-webkit-scrollbar': {
+      height: '0.5em',
+      width: '0.5em',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: scrollbarColor,
+      borderRadius: '0.25em',
+    },
+    '&::-webkit-scrollbar-track': {
+      background: Color(scrollbarColor).darken(0.8).toString(),
+      boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+    },
+  },
+  [theme.breakpoints.only('xs')]: {
+    '&::-webkit-scrollbar': {
+      height: '0.5vw',
+      width: '0.5vw',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: scrollbarColor,
+      borderRadius: '0.25vw',
+    },
+    '&::-webkit-scrollbar-track': {
+      background: Color(scrollbarColor).darken(0.8).toString(),
+      boxShadow: 'inset 0 0 2vw rgba(0,0,0,0.00)',
+      webkitBoxShadow: 'inset 0 0 2vw rgba(0,0,0,0.00)'
+    },
   },
   '&::-webkit-scrollbar-corner': {
     background: Color(scrollbarColor).darken(0.8).toString(),
-  },
-  '&::-webkit-scrollbar-thumb': {
-    backgroundColor: scrollbarColor,
-    borderRadius: '0.25em',
-  },
-  '&::-webkit-scrollbar-track': {
-    background: Color(scrollbarColor).darken(0.8).toString(),
-    boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
-    webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
   },
 })
 

@@ -13,6 +13,11 @@ const useStyles = makeStyles(theme => ({
   clickable: {
     cursor: 'pointer',
   },
+  col: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+  },
   content: {
     marginTop: '0.5em',
   },
@@ -31,16 +36,18 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
   },
-  text: {
+  text: ({skinny}) => ({
     flex: 1,
+    fontSize: skinny ? '60%' : null,
     fontWeight: theme.typography.weight.bold,
     marginLeft: '0.25em',
     userSelect: 'none',
-  },
+    whiteSpace: 'nowrap',
+  }),
 }))
 
-const Expander = ({children, className, defaultOpen, text, tag}) => {
-  const classes = useStyles()
+const Expander = ({children, className, defaultOpen, skinny, text, tag}) => {
+  const classes = useStyles({skinny})
 
   const dispatch = useDispatch()
 
@@ -54,21 +61,35 @@ const Expander = ({children, className, defaultOpen, text, tag}) => {
 
   const Icon = open ? IcoSolidArrowDown : IcoSolidArrowUp
 
-  return (
-    <div className={cx(className, classes.expander)}>
-      <div className={cx(classes.row, classes.clickable)} onClick={toggleOpen} >
-        <Icon classes={{inner:classes.icon, outer:classes.iconContainer}} />
-        <div className={classes.text}>
-          {text}
+  return skinny ? (
+      <div className={cx(className, classes.expander)}>
+        <div className={cx(classes.col, classes.clickable)} onClick={toggleOpen} >
+          <div className={classes.text}>
+            {text}
+          </div>
+          <Icon classes={{inner:classes.icon, outer:classes.iconContainer}} />
         </div>
+        <Collapse in={open} timeout={'auto'}>
+          <div className={classes.content}>
+            {children}
+          </div>
+        </Collapse>
       </div>
-      <Collapse in={open} timeout={'auto'}>
-        <div className={classes.content}>
-          {children}
+    ) : (
+      <div className={cx(className, classes.expander)}>
+        <div className={cx(classes.row, classes.clickable)} onClick={toggleOpen} >
+          <Icon classes={{inner:classes.icon, outer:classes.iconContainer}} />
+          <div className={classes.text}>
+            {text}
+          </div>
         </div>
-      </Collapse>
-    </div>
-  )
+        <Collapse in={open} timeout={'auto'}>
+          <div className={classes.content}>
+            {children}
+          </div>
+        </Collapse>
+      </div>
+    )
 }
 
 Expander.defaultProps = {

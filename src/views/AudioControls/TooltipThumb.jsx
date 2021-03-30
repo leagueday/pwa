@@ -11,13 +11,20 @@ import {secondsToHms} from '../dateutil'
 
 const useStyles = makeStyles(theme => ({
   sliderThumbTooltip: {
-    background: Color(colors.brandBlack).fade(0.6).toString(),
+    background: Color(colors.brandBlack).fade(0.4).toString(),
     border: `1px solid ${colors.cyan}`,
     borderRadius: '1em',
     color: colors.cyan,
     fontFamily: theme.typography.family.secondary,
     fontSize: '90%',
     height: '2em',
+    [theme.breakpoints.down('md')]: {
+      borderRadius: '0.6em',
+      fontSize: '60%',
+      height: '1.2em',
+      lineHeight: '0.5em',
+      margin: '0 0.5em',
+    },
   },
 }))
 

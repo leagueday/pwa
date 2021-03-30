@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux'
 
 import {makeStyles} from '@material-ui/core/styles'
 
-import * as colors from '../styling/colors'
-import {actions} from '../store'
-import PlusMinusButton from './PlusMinusButton'
-import Square from './Square'
+import * as colors from '../../styling/colors'
+import {actions} from '../../store'
+import PlusMinusButton from '../PlusMinusButton'
+import Square from '../Square'
 
 const useStyles = makeStyles(theme => ({
   channelTile: {
@@ -26,6 +26,9 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '50%',
     height: '100%',
     width: '100%',
+    [theme.breakpoints.only('xs')]: {
+      border: `0.5vw solid ${textColor ?? colors.white80}`,
+    }
   }),
   imageSquare: {
     width: '80%',

@@ -19,7 +19,7 @@ import {addScrollStyle} from '../util'
 const darkMagenta = Color(colors.magenta).darken(0.33).string()
 
 const useStyles = makeStyles(theme => ({
-  allChannels: addScrollStyle(darkMagenta)({
+  allChannels: addScrollStyle(darkMagenta, theme)({
     display: 'flex',
     flexDirection: 'column',
     marginLeft: '1em',

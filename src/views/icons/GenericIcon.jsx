@@ -5,10 +5,10 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
   centerFill: {
-    alignItems: 'stretch',
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'stretch',
+    justifyContent: 'center',
   }
 })
 

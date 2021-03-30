@@ -3,26 +3,26 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 
-import * as colors from '../styling/colors'
-import {addScrollStyle} from './util'
+import * as colors from '../../styling/colors'
+import {addScrollStyle} from '../util'
 
 // Top-Left/Right and Bottom-Scroller
 
-const useStyles = makeStyles({
-  bottomSection: ({accentColor}) => addScrollStyle(accentColor)({
+const useStyles = makeStyles(theme => ({
+  bottomSection: {
     flexGrow: 1,
     flexShrink: 1,
-    overflow: 'auto',
-    paddingRight: '0.25em',
     width: '100%',
-  }),
-  content: {
+  },
+  content: ({accentColor}) => addScrollStyle(accentColor, theme)({
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+    overflowX: 'hidden',
+    overflowY: 'auto',
     paddingLeft: '0.25em',
-  },
+  }),
   topSection: {
     flexShrink: 0,
     width: '100%',
@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'center',
   },
-})
+}))
 
 const ContentLayout = ({accentColor, children, renderTop, renderTopLeft, renderTopRight}) => {
   const classes = useStyles({accentColor})

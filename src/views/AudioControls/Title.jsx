@@ -7,6 +7,9 @@ import * as colors from '../../styling/colors'
 const TITLE_HEIGHT = '2em'
 const HALF_HEIGHT = '1em'
 
+const TITLE_HEIGHT_MD = '1.4em'
+const HALF_HEIGHT_MD = '0.7em'
+
 const useStyles = makeStyles(theme => ({
   title: {
     backgroundColor: colors.darkGray,
@@ -21,8 +24,14 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+    width: '95%',
     '&:hover': {
       color: theme.palette.text.primary,
+    },
+    [theme.breakpoints.only('md')]: {
+      borderRadius: HALF_HEIGHT_MD,
+      paddingLeft: HALF_HEIGHT_MD,
+      paddingRight: HALF_HEIGHT_MD,
     },
   },
   titleFlex: {
@@ -33,10 +42,13 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     height: TITLE_HEIGHT,
     minWidth: 0,
+    [theme.breakpoints.only('md')]: {
+      height: TITLE_HEIGHT_MD,
+    },
   },
 }))
 
-const Title = ({title, onClick}) => {
+const Title = ({onClick, title}) => {
   const classes = useStyles()
 
   return (

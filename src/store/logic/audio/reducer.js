@@ -16,6 +16,7 @@ const initialState = {
   itemIndex: null,
   mode: constants.AUDIO_MODE_PAUSE,
   podcastId: null,
+  podcastName: null,
   podcastUrl: null,
   position: null,
   seek: {
@@ -185,6 +186,7 @@ const reducer = (state = initialState, action) => {
         duration: action.payload.advertisedDuration,
         itemIndex: action.payload.itemIndex,
         podcastId: action.payload.podcastId,
+        podcastName: action.payload.podcastName,
         podcastUrl: action.payload.podcastUrl,
         seek: {
           position: action.payload.position ?? null

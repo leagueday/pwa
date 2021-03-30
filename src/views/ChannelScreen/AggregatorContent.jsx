@@ -19,6 +19,9 @@ const useStyles = makeStyles(theme => ({
     padding: '1em',
     width: '100%',
     overflow: 'hidden',
+    [theme.breakpoints.only('xs')]: {
+      padding: '2vw',
+    },
   },
   headlineTitleRow: {
     overflow: 'hidden',
@@ -28,13 +31,15 @@ const useStyles = makeStyles(theme => ({
     fontSize: '150%',
     fontWeight: theme.typography.weight.bold,
     userSelect: 'none',
-  },
-  headlineTypename: {
-    textTransform: 'uppercase',
-    userSelect: 'none',
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '90%',
+    },
   },
   liveBroadcasts: {
     marginTop: '1.5em',
+    [theme.breakpoints.only('xs')]: {
+      marginTop: '3vw',
+    },
   },
   logoImage: {
     width: '100%',
@@ -43,11 +48,19 @@ const useStyles = makeStyles(theme => ({
     paddingTop: '0.5em',
     position: 'relative',
     width: '10.5em',
+    [theme.breakpoints.only('xs')]: {
+      paddingTop: '2vw',
+      width: '20vw',
+    },
   },
   plusMinusButton: {
     bottom: '0.5em',
     position: 'absolute',
     right: '0.5em',
+    [theme.breakpoints.only('xs')]: {
+      bottom: '2vw',
+      right: '2vw',
+    },
   },
 }))
 
@@ -62,9 +75,6 @@ const Logo = ({channel, classes}) => (
 
 const Headline = ({channel, classes, hasBroadcasts}) => (
   <div className={classes.headline}>
-    <div className={classes.headlineTypename}>
-      Audio Content Aggregator
-    </div>
     <div className={cx(classes.headlineTitleRow, classes.channelColor)}>
       {channel.title}
     </div>

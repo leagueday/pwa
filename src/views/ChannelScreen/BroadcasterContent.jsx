@@ -14,11 +14,14 @@ import ChannelChildren from './ChannelChildren'
 import LiveBroadcastsMockup from './LiveBroadcastsMockup'
 import ReplayBroadcastsMockup from './ReplayBroadcastsMockup'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   bottomBlockItem: { },
   bottomGrid: { },
   children: {
     padding: '1em',
+    [theme.breakpoints.only('xs')]: {
+      padding: '2vw',
+    },
   },
   childrenGridItem: {
     maxHeight: '100%',
@@ -27,15 +30,27 @@ const useStyles = makeStyles({
   imageTitleGrid: {
     flex: 0,
     paddingTop: '1em',
+    [theme.breakpoints.only('xs')]: {
+      paddingTop: '2vw',
+    },
   },
   liveBroadcasts: {
     marginBottom: '1em',
+    [theme.breakpoints.only('xs')]: {
+      marginBottom: '2vw',
+    },
   },
   liveness: {
     marginBottom: '1em',
+    [theme.breakpoints.only('xs')]: {
+      marginBottom: '2vw',
+    },
   },
   livenessGridItem: {
     padding: '1em',
+    [theme.breakpoints.only('xs')]: {
+      padding: '2vw',
+    },
   },
   logoImage: {
     width: '100%',
@@ -44,38 +59,65 @@ const useStyles = makeStyles({
     paddingTop: '0.5em',
     position: 'relative',
     width: '10.5em',
+    [theme.breakpoints.only('xs')]: {
+      paddingTop: '2vw',
+      width: '25vw',
+    },
   },
   plusMinusButton: {
     bottom: '0.5em',
     position: 'absolute',
     fontSize: '150%',
     right: '0.5em',
+    [theme.breakpoints.only('xs')]: {
+      bottom: '2vw',
+      fontSize: '80%',
+      right: '2vw',
+    },
   },
   replayBroadcasts: {
     marginBottom: '1em',
+    [theme.breakpoints.only('xs')]: {
+      marginBottom: '2vw',
+    },
   },
   textPlate: {
     width: '100%',
   },
   titleBioGridItem: {
     paddingLeft: '1em',
+    [theme.breakpoints.only('xs')]: {
+      paddingLeft: '2vw',
+    },
   },
   topLeftGrid: {
     marginBottom: '1em',
+    [theme.breakpoints.only('xs')]: {
+      marginBottom: '2vw',
+    },
   },
   topLeftGridItem: {
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
     paddingRight: '1em',
+    [theme.breakpoints.only('xs')]: {
+      paddingRight: '2vw',
+    },
   },
   topRightGrid: {
     marginBottom: '1em',
+    [theme.breakpoints.only('xs')]: {
+      marginBottom: '2vw',
+    },
   },
   topRightGridItem: {
     marginBottom: '1em',
+    [theme.breakpoints.only('xs')]: {
+      marginBottom: '2vw',
+    },
   },
-})
+}))
 
 const TopSection = ({classes, channel}) => (
   <Grid className={classes.imageTitleGrid} container>

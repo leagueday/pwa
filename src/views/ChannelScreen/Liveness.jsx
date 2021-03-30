@@ -16,6 +16,10 @@ const useStyles = makeStyles(theme => ({
   image: {
     height: '6em',
     width: '6em',
+    [theme.breakpoints.only('xs')]: {
+      height: '8vw',
+      width: '8vw',
+    },
   },
   imageContainer: {
   },
@@ -23,7 +27,10 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
-    width: '6em'
+    width: '6em',
+    [theme.breakpoints.only('xs')]: {
+      width: '8vw',
+    },
   },
   livenessCell: {
     display: 'flex',

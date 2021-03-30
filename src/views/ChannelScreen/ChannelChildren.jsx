@@ -9,16 +9,6 @@ import * as colors from '../../styling/colors'
 import useChannels from '../../api/useChannels'
 import {actions} from '../../store'
 
-/*
-.image-container{
-    width:100px;
-}
-.image-container img {
-    width:100%;
-    height:100px;
-    object-fit:cover;
-}
- */
 const useStyles = makeStyles(theme => ({
   channelChildren: {
     alignItems: 'flex-start',
@@ -28,58 +18,64 @@ const useStyles = makeStyles(theme => ({
     minHeight: 0,
     overflow: 'hidden',
   },
-  // child: {
-  //   minWidth: 0,
-  //   width: '100%',
-  // },
-  image: ({circleSize, borderRadius}) => ({
+  image: {
     cursor: 'pointer',
-    // marginRight: '1em',
-    // width: 'auto',
-    // height: 'auto',
-    // height: '100%',
-    // width: '100%',
     marginLeft: '0.5em',
-    width: circleSize,
-    height: circleSize,
-    borderRadius: borderRadius,
+    width: '7em',
+    height: '7em',
+    borderRadius: '3.5em',
     objectFit: 'cover',
-  }),
+    [theme.breakpoints.only('xl')]: {
+      borderRadius: '4em',
+      height: '8em',
+      width: '8em',
+    },
+    [theme.breakpoints.only('sm')]: {
+      borderRadius: '3em',
+      height: '6em',
+      width: '6em',
+    },
+    [theme.breakpoints.only('xs')]: {
+      borderRadius: '4.5vw',
+      height: '9vw',
+      marginLeft: '2vw',
+      width: '9vw',
+    },
+  },
   imageBorderLive: {
     border: `0.33em solid ${colors.lime}`,
+    [theme.breakpoints.only('xs')]: {
+      border: `0.5vw solid ${colors.lime}`,
+    },
   },
   imageBorderDefault: {
     border: `0.33em solid ${colors.white80}`,
+    [theme.breakpoints.only('xs')]: {
+      border: `0.5vw solid ${colors.white80}`,
+    },
   },
-  imageContainer: ({circleSize}) => ({
-    width: circleSize,
-    height: circleSize,
-  }),
+  imageContainer: {
+    width: '7em',
+    height: '7em',
+    [theme.breakpoints.only('xl')]: {
+      height: '8em',
+      width: '8em',
+    },
+    [theme.breakpoints.only('sm')]: {
+      height: '6em',
+      width: '6em',
+    },
+    [theme.breakpoints.only('xs')]: {
+      height: '9vw',
+      width: '9vw',
+    },
+  },
 }))
 
 const ChannelChildren = ({childTags, className}) => {
   const theme = useTheme()
 
-  const smDown = useMediaQuery(theme.breakpoints.down('sm'))
-  const xlUp = useMediaQuery(theme.breakpoints.up('xl'))
-
-  let borderRadius
-  let circleSize
-
-  if (xlUp) {
-    borderRadius = '4em'
-    circleSize = '8em'
-  } else if (smDown) {
-    borderRadius = '3em'
-    circleSize = '6em'
-  } else {
-    borderRadius = '3.5em'
-    circleSize = '7em'
-    // borderRadius = '5vw'
-    // circleSize = '10vw'
-  }
-
-  const classes = useStyles({borderRadius, circleSize})
+  const classes = useStyles()
 
   const dispatch = useDispatch()
 

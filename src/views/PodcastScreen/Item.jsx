@@ -18,31 +18,41 @@ const PlayButton = makeIconButton(IcoPlay)
 
 const useStyles = makeStyles(theme => ({
   attribute: {
-    padding: '0em 1em',
+    padding: '0 1em',
     whiteSpace: 'nowrap',
+    [theme.breakpoints.only('xs')]: {
+      padding: '0 1vw',
+    },
   },
   item: ({backgroundColor}) => ({
     backgroundColor,
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '4vw',
+    },
   }),
   itemDescription: {
     alignItems: 'center',
     marginBottom: '0.25em',
+    padding: '0 4em',
     width: '100%',
     userSelect: 'none',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.only('sm')]: {
       padding: '0 0.5em',
     },
-    [theme.breakpoints.up('md')]: {
-      padding: '0 4em',
+    [theme.breakpoints.only('xs')]: {
+      padding: '0 2vw',
     },
   },
   itemNumber: {
     color: colors.white30,
     padding: '0 1em',
     fontFamily: theme.typography.family.secondary,
+    [theme.breakpoints.only('xs')]: {
+      padding: '0 2vw',
+    },
   },
   itemRow: ({accentColor}) => ({
     alignItems: 'center',
@@ -51,6 +61,9 @@ const useStyles = makeStyles(theme => ({
     height: '2.5em',
     width: '100%',
     userSelect: 'none',
+    [theme.breakpoints.only('xs')]: {
+      height: '8vw',
+    },
     '&:hover': {
       color: accentColor,
     },
@@ -58,6 +71,11 @@ const useStyles = makeStyles(theme => ({
   popButton: ({accentColor}) => ({
     backgroundColor: colors.darkGray,
     width: '2em',
+    [theme.breakpoints.only('xs')]: {
+      height: '6vw',
+      marginLeft: '1vw',
+      width: '6vw',
+    },
     '& *': {
       color: colors.white,
     },
@@ -85,6 +103,7 @@ const useStyles = makeStyles(theme => ({
 
 const Item = ({ accentColor,
                 podcastId,
+                podcastName,
                 podcastUrl,
                 item,
                 itemIndex,
@@ -134,7 +153,17 @@ const Item = ({ accentColor,
       if (isSelectedAudio)
         dispatch(actions.playAudio())
       else {
-        dispatch(actions.selectAudio(podcastId, podcastUrl, itemAudioUrl, itemIndex, duration, title))
+        dispatch(
+          actions.selectAudio(
+            podcastId,
+            podcastName,
+            podcastUrl,
+            itemAudioUrl,
+            itemIndex,
+            duration,
+            title
+          )
+        )
         dispatch(actions.playAudio())
       }
       ev.stopPropagation()

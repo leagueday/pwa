@@ -31,7 +31,7 @@ const isPodcastSelected = (locationPathname, podcastId) => {
   }
 }
 
-const MyPodcastItem = ({podcast, isSelected, onClick, imageClass}) => {
+const MyPodcastItem = ({podcast, isSelected, onClick, imageClass, skinny}) => {
   const {rss} = usePodcast(podcast)
 
   const title = channelSelectors.v2.title(rss)
@@ -44,11 +44,12 @@ const MyPodcastItem = ({podcast, isSelected, onClick, imageClass}) => {
       title={title}
       isSelected={isSelected}
       onClick={onClick}
+      skinny={skinny}
     />
   )
 }
 
-const MyPodcasts = () => {
+const MyPodcasts = ({skinny}) => {
   const classes = useStyles()
 
   const user = useSelector(selectors.getUser)
@@ -56,7 +57,7 @@ const MyPodcasts = () => {
   const [getIsOnMyList, addToMyList, removeFromMyList, isMyListEmpty] = useMyList(user?.token?.access_token)
   const {data: podcasts} = usePodcasts()
 
-  const myListPodcasts = isMyListEmpty ? [] : podcasts.filter(podcast => getIsOnMyList('podcast', podcast.id))
+  const myListPodcasts = isMyListEmpty || !podcasts ? [] : podcasts.filter(podcast => getIsOnMyList('podcast', podcast.id))
 
   // tbd add channels
 
@@ -76,6 +77,7 @@ const MyPodcasts = () => {
               onClick={makeGotoThisPodcast(podcast.id)}
               isSelected={isPodcastSelected(locationPathname, podcast.id)}
               imageClass={classes.image}
+              skinny={skinny}
             />
           )
         )

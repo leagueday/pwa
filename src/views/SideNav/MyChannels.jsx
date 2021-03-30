@@ -26,7 +26,7 @@ const isChannelSelected = (locationPathname, channelTag) => {
   }
 }
 
-const MyChannels = () => {
+const MyChannels = ({skinny}) => {
   const classes = useStyles()
 
   const myChannels = useChannels().myList
@@ -48,6 +48,7 @@ const MyChannels = () => {
               imageUrl={imageUrl}
               isSelected={isChannelSelected(locationPathname, tag)}
               onClick={makeGotoThisChannel(tag)}
+              skinny={skinny}
             />
           )
         })

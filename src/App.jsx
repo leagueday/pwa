@@ -1,28 +1,22 @@
 import React from 'react'
 import { hot } from 'react-hot-loader/root'
-import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Paper from '@material-ui/core/Paper'
 
-import { Provider as StoreProvider, actions, selectors } from './store'
+import { Provider as StoreProvider } from './store'
 
 import ThemeProvider from './styling/ThemeProvider'
 
-import usePodcasts from './api/usePodcasts'
 import useChronicle from './api/useChronicle'
 
 import Audio from './views/Audio'
 import Auth from './views/Auth'
-import Error from './views/Error'
-import Loading from './views/Loading'
 import Mushipan from './views/MushipanRouter'
 import UserData from './views/UserData'
 
 import { routesConfig } from './routes'
-
-const viewportHeightStyleProp = ({viewportHeight}) => viewportHeight
 
 const useStyles = makeStyles(theme => ({
   app: {
@@ -30,12 +24,10 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.primary,
     alignItems: 'stretch',
     display: 'flex',
-    flexDirection: 'row',
-    flexGrow: 1,
     fontFamily: theme.typography.family.primary,
     justifyContent: 'center',
-    maxHeight: viewportHeightStyleProp,
-    minHeight: viewportHeightStyleProp,
+    maxHeight: '100vh',
+    minHeight: '100vh',
     maxWidth: '100vw',
     minWidth: '100vw',
   },
@@ -56,39 +48,14 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ThemedAppContent = () => {
-  const viewportHeight = useSelector(selectors.getViewportHeight)
-  const dispatch = useDispatch()
-
-  React.useEffect(
-    () => {
-      if (window) {
-        const dispatchViewportHeight = () => {
-          dispatch(actions.setViewportHeight(`${window.innerHeight}px`))
-        }
-
-        window.addEventListener('resize', dispatchViewportHeight)
-        dispatchViewportHeight()
-      }
-    },
-    [window]
-  )
-
-  const classes = useStyles({viewportHeight})
-
-  const {data, error} = usePodcasts()
+const StyledAppContent = () => {
+  const classes = useStyles()
 
   return (
     <div className={classes.app}>
       <div className={classes.pseudoContainer}>
         <Paper className={classes.appCanvas}>
-          {
-            data
-              ? (<Mushipan routes={routesConfig} />)
-              : error
-              ? (<Error e={error} />)
-              : (<Loading />)
-          }
+          <Mushipan routes={routesConfig} />
         </Paper>
       </div>
     </div>
@@ -107,7 +74,7 @@ const App = () => (
     <Chronicle />
     <CssBaseline />
     <ThemeProvider>
-      <ThemedAppContent />
+      <StyledAppContent />
     </ThemeProvider>
     <UserData />
   </StoreProvider>

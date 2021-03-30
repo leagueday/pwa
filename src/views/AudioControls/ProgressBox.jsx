@@ -1,22 +1,22 @@
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
+import {makeStyles, useTheme} from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Slider from '@material-ui/core/Slider'
 
+import * as colors from '../../styling/colors'
 import {actions, selectors} from '../../store'
-
 import {
   formatSecondsDuration,
   maybeHmsToSecondsOnly,
   percentageToPosition,
   secondsToHms
 } from '../dateutil'
-
 import TooltipThumb from './TooltipThumb'
-import {makeStyles} from '@material-ui/core/styles'
-import * as colors from '../../styling/colors'
 
 const PROGRESS_HEIGHT = '1.5em'
+const PROGRESS_HEIGHT_MD = '1.2em'
 
 const useStyles = makeStyles(theme => ({
   durationLabel: {
@@ -26,17 +26,37 @@ const useStyles = makeStyles(theme => ({
     fontSize: '75%',
     position: 'absolute',
     right: '0.5em',
+    [theme.breakpoints.down('md')]: {
+      bottom: '-0.7em',
+      fontSize: '70%',
+    },
+    [theme.breakpoints.only('xs')]: {
+      display: 'none',
+    },
   },
   progressBox: {
-    // backgroundColor: colors.darkerCharcoal,
-    // borderRadius: theme.spacing(1),
     position: 'relative',
     height: PROGRESS_HEIGHT,
     paddingLeft: '0.33em',
     paddingRight: '0.33em',
+    [theme.breakpoints.down('md')]: {
+      height: PROGRESS_HEIGHT_MD,
+      margin: '0 0.5em 0.5em 0.5em',
+      paddingBottom: '0.5em',
+    },
+    [theme.breakpoints.only('xs')]: {
+      margin: 0,
+      padding: 0,
+    },
   },
   sliderColor: {
     color: colors.blue,
+  },
+  sliderRoot: {
+    padding: '0 0 2vw 0',
+    ['@media(pointer: coarse)']: {
+      padding: '0 0 2vw 0',
+    },
   },
   sliderThumbColor: {
     backgroundColor: colors.violet,
@@ -117,6 +137,7 @@ const ProgressBox = () => {
       <Slider
         classes={{
           colorPrimary: classes.sliderColor,
+          root: classes.sliderRoot,
           thumbColorPrimary: classes.sliderThumbColor,
         }}
         ValueLabelComponent={TooltipThumb}

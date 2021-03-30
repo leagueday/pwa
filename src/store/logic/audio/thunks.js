@@ -10,6 +10,7 @@ export const maybeUseLatestListen =
       getLatestListen().then(
         maybeLatestListen => {
           const podcastId = maybeLatestListen?.podcastId
+          const podcastName = maybeLatestListen?.podcastName
           const audioUrl = maybeLatestListen?.audioUrl
           const audioPosition = maybeLatestListen?.audioPosition
 
@@ -27,6 +28,7 @@ export const maybeUseLatestListen =
 
           dispatch(actions.selectAudio(
             podcastId,
+            podcastName,
             podcastUrl,
             audioUrl,
             itemIndex,
@@ -42,6 +44,7 @@ export const playNextTrack =
   () =>
     (dispatch, getState) => {
       const podcastId = selectors.getAudioPodcastId(getState())
+      const podcastName = selectors.getAudioPodcastName(getState())
       const podcastUrl = selectors.getAudioPodcastUrl(getState())
       const itemIndex = selectors.getAudioItemIndex(getState())
 
@@ -65,7 +68,17 @@ export const playNextTrack =
           const nextItemDuration = itemSelectors.v2.duration(nextItem)
           const nextItemTitle = itemSelectors.v2.title(nextItem)
 
-          dispatch(actions.selectAudio(podcastId, podcastUrl, nextItemUrl, nextItemIndex, nextItemDuration, nextItemTitle))
+          dispatch(
+            actions.selectAudio(
+              podcastId,
+              podcastName,
+              podcastUrl,
+              nextItemUrl,
+              nextItemIndex,
+              nextItemDuration,
+              nextItemTitle
+            )
+          )
         }
       )
     }

@@ -11,6 +11,9 @@ import SchedulePopper from './SchedulePopper'
 const useStyles = makeStyles(theme => ({
   backgrounder: {
     paddingTop: '0.5em',
+    [theme.breakpoints.only('xs')]: {
+      paddingTop: '2vw',
+    },
   },
   broadcasterTextPlate: {
     fontSize: '85%',
@@ -21,6 +24,9 @@ const useStyles = makeStyles(theme => ({
   channelTypename2: {
     fontWeight: theme.typography.weight.bold,
     marginLeft: '0.5em',
+    [theme.breakpoints.only('xs')]: {
+      marginLeft: '2vw',
+    },
   },
   heterogeneousTitleLine: {
     alignItems: 'baseline',
@@ -30,14 +36,24 @@ const useStyles = makeStyles(theme => ({
   locationNote: {
     fontWeight: theme.typography.weight.bold,
     paddingTop: '0.5em',
+    [theme.breakpoints.only('xs')]: {
+      paddingTop: '2vw',
+    },
   },
   schedulePopper: {
     paddingTop: '0.5em',
+    [theme.breakpoints.only('xs')]: {
+      paddingTop: '2vw',
+    },
   },
   title: ({color}) => ({
     color,
     fontSize: '150%',
     fontWeight: theme.typography.weight.bold,
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '80%',
+      fontWeight: theme.typography.weight.normal,
+    },
   }),
 }))
 

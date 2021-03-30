@@ -5,27 +5,12 @@ import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
 import {constants as storeConstants, selectors, thunks} from '../store'
+import debounce from '../api/debounce'
 
 import * as constants from './consts'
 import { IdbKvMap } from './idb'
 
 const idbStore = new IdbKvMap('chronicle')
-
-const debounce = minIntervalMs => f => {
-  let wait = false
-
-  return (...args) => {
-    if (wait) return
-
-    wait = true
-    setTimeout(
-      () => { wait = false },
-      minIntervalMs
-    )
-
-    f(...args)
-  }
-}
 
 const debounce10s = debounce(10000)
 
@@ -33,6 +18,7 @@ const getLatestListen = async () => idbStore.get(constants.CHRONICLE_LATEST_LIST
 
 const storeLatestListen =
   async (podcastId,
+         podcastName,
          audioUrl,
          audioPosition,
          podcastUrl,
@@ -41,6 +27,7 @@ const storeLatestListen =
          title) =>
     idbStore.set(constants.CHRONICLE_LATEST_LISTEN_ID, {
       podcastId,
+      podcastName,
       audioUrl,
       audioPosition,
       podcastUrl,
@@ -52,6 +39,7 @@ const storeLatestListen =
 const useChronicleWriter = () => {
   const audioMode = useSelector(selectors.getAudioMode)
   const podcastId = useSelector(selectors.getAudioPodcastId)
+  const podcastName = useSelector(selectors.getAudioPodcastName)
   const audioUrl = useSelector(selectors.getAudioUrl)
   const audioPosition = useSelector(selectors.getAudioPosition)
 
@@ -66,6 +54,7 @@ const useChronicleWriter = () => {
         if (audioMode === storeConstants.AUDIO_MODE_PLAY)
           storeLatestListen(
             podcastId,
+            podcastName,
             audioUrl,
             audioPosition,
             podcastUrl,

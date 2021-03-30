@@ -32,11 +32,9 @@ const useStyles = makeStyles(theme => ({
 const SchedulePopper = ({className, text, link, color}) => {
   const classes = useStyles({color})
 
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
+  // const gotoSchedule = link ? () => dispatch(actions.pushHistory(link)) : null
 
-  const gotoSchedule = link ? () => dispatch(actions.pushHistory(link)) : null
-
-  // <a className={classes.link} href={link}>See full schedule.</a>
   return (
     <div className={cx(classes.schedulePopper, className)}>
       <div className={classes.text}>{text}</div>

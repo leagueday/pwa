@@ -134,7 +134,7 @@ const Headline = ({classes, subTitle, title}) => (
 const EventScreen = ({tag}) => {
   const dispatch = useDispatch()
 
-  const data = mockData[tag]
+  const data = mockData[tag] ?? mockData['lcs']
 
   const classes = useStyles({color: data?.color})
 

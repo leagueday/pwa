@@ -11,9 +11,15 @@ const useStyles = makeStyles(theme => ({
   },
   children: {
     marginBottom: '0.5em',
+    [theme.breakpoints.only('xs')]: {
+      marginBottom: '2vw',
+    }
   },
   pinStripe: ({accentColor}) => ({
     borderBottom: `0.2em solid ${accentColor ?? colors.white80}`,
+    [theme.breakpoints.only('xs')]: {
+      borderBottom: `0.25vw solid ${accentColor ?? colors.white80}`,
+    }
   }),
   rhsCell: {
     height: '50%',
@@ -36,6 +42,10 @@ const useStyles = makeStyles(theme => ({
     paddingRight: '1em',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '95%',
+      paddingRight: '2vw',
+    }
   },
   titleRow: {
     alignItems: 'center',
@@ -44,6 +54,9 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '1em',
     maxWidth: '100%',
     width: '100%',
+    [theme.breakpoints.only('xs')]: {
+      marginBottom: '2vw',
+    }
   },
   titleStart: ({accentColor}) => ({
     color: accentColor
