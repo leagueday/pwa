@@ -4,12 +4,12 @@ import { useDispatch } from 'react-redux'
 
 import {makeStyles} from '@material-ui/core/styles'
 
-import * as colors from '../styling/colors'
-import usePodcast from '../api/usePodcast'
-import { channelSelectors } from '../model/rss'
-import { actions } from '../store'
-import PlusMinusButton from './PlusMinusButton'
-import Square from './Square'
+import * as colors from '../../styling/colors'
+import usePodcast from '../../api/usePodcast'
+import { channelSelectors } from '../../model/rss'
+import { actions } from '../../store'
+import PlusMinusButton from '../PlusMinusButton'
+import Square from '../Square'
 
 const BACKGROUND_COLOR = colors.black
 

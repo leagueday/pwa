@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux'
 
 import {makeStyles} from '@material-ui/core/styles'
 
-import * as colors from '../styling/colors'
-import {actions} from '../store'
-import PlusMinusButton from './PlusMinusButton'
-import Square from './Square'
+import * as colors from '../../styling/colors'
+import {actions} from '../../store'
+import PlusMinusButton from '../PlusMinusButton'
+import Square from '../Square'
 
 const useStyles = makeStyles(theme => ({
   channelTile: {

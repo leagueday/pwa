@@ -175,7 +175,6 @@ const SmUpBanner = ({className, primaryColor}) => {
 
   return (
     <div className={cx(classes.banner, className)}>
-      stuff
       {
         imageUrl && (
           <SideButtons

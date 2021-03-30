@@ -2,7 +2,7 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import PagedPodcastTiles from './PagedPodcastTiles'
+import PodcastTilesRow from './PodcastTilesRow'
 
 const useStyles = makeStyles(theme => ({
   facetedPodcastTiles: {
@@ -45,7 +45,7 @@ const FacetedPodcastTiles = ({data}) => {
               <div className={classes.title}>
                 {title}
               </div>
-              <PagedPodcastTiles id={title} podcasts={podcasts} />
+              <PodcastTilesRow id={title} podcasts={podcasts} />
             </div>
           )
         )
