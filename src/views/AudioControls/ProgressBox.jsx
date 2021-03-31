@@ -20,14 +20,13 @@ const PROGRESS_HEIGHT_MD = '1.2em'
 
 const useStyles = makeStyles(theme => ({
   durationLabel: {
-    bottom: '-1em',
+    bottom: 0,
     color: theme.palette.text.secondary,
     fontFamily: theme.typography.family.secondary,
     fontSize: '75%',
     position: 'absolute',
     right: '0.5em',
     [theme.breakpoints.down('md')]: {
-      bottom: '-0.7em',
       fontSize: '70%',
     },
     [theme.breakpoints.only('xs')]: {
@@ -35,14 +34,14 @@ const useStyles = makeStyles(theme => ({
     },
   },
   progressBox: {
-    position: 'relative',
     height: PROGRESS_HEIGHT,
+    marginTop: '1em',
     paddingLeft: '0.33em',
     paddingRight: '0.33em',
+    position: 'relative',
     [theme.breakpoints.down('md')]: {
       height: PROGRESS_HEIGHT_MD,
-      margin: '0 0.5em 0.5em 0.5em',
-      paddingBottom: '0.5em',
+      marginTop: '0.75em',
     },
     [theme.breakpoints.only('xs')]: {
       margin: 0,

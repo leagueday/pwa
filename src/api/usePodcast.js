@@ -40,8 +40,6 @@ const scrubRssData = rssData => {
 const fetchRssDocViaProxyThenParseThenUpdateIdb = (url, isCanceled=()=>false) =>
   fetchRssDocViaProxy(url).then(
     rssData => {
-      if (isCanceled()) return {}
-
       const t0 = Date.now()
 
       const rssJson = scrubRssData(laminate(parseXml(rssData)))
@@ -51,9 +49,7 @@ const fetchRssDocViaProxyThenParseThenUpdateIdb = (url, isCanceled=()=>false) =>
       return rssJson
     }).then(
       rssJson => {
-        if (!isCanceled()) {
-          idbStore.set(url, rssJson)
-        }
+        idbStore.set(url, rssJson)
         return rssJson
       }
     )

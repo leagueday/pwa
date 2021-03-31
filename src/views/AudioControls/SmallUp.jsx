@@ -72,7 +72,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    overflowX: 'hidden',
+    overflow: 'hidden',
     [theme.breakpoints.up('sm')]: {
       maxWidth: '75%',
     },
@@ -93,9 +93,6 @@ const useStyles = makeStyles(theme => ({
   progressBoxFlex: {
     flex: 1,
     marginTop: '0.25em',
-    [theme.breakpoints.only('md')]: {
-      marginTop: 0,
-    },
   },
   progressRow: {
     alignItems: 'center',
@@ -104,7 +101,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     paddingLeft: '1em',
     paddingRight: '1em',
-    paddingTop: '1em',
     [theme.breakpoints.only('md')]: {
       paddingLeft: '2.5em',
       paddingRight: '2.5em',
