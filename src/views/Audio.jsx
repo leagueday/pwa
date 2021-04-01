@@ -164,6 +164,8 @@ const Audio = () => {
 
   // console.log('events', events)
   // console.log('taps', taps)
+  // console.log('seekPosition', seekPosition)
+  // console.log('position', position)
 
   const {
     forward: forwardTaps,
@@ -202,19 +204,29 @@ const Audio = () => {
       audioDomNode.play()
       if (seekPosition) audioDomNode.currentTime = seekPosition
     }
-  }, [audioMode])
+  }, [audioMode, scrubbedAudioUrl])
 
   //////////////////////////////////////////////////////////////////////////////
   // forward, replay - consequence of button tap
-  // seek - consequence of slider interaction
   React.useEffect(() => {
-    if (!forwardTaps) return
+    if (!forwardTaps && !replayTaps) return
 
     const audioDomNode = getAudioRef()
     if (!audioDomNode) return
 
     audioDomNode.currentTime = position
-  }, [forwardTaps, replayTaps, seekPosition])
+  }, [forwardTaps, replayTaps])
+
+  //////////////////////////////////////////////////////////////////////////////
+  // seek - consequence of slider interaction
+  React.useEffect(() => {
+    if (!seekPosition) return
+
+    const audioDomNode = getAudioRef()
+    if (!audioDomNode) return
+
+    audioDomNode.currentTime = seekPosition
+  }, [seekPosition])
 
   return audioUrl ? (
     <span>
