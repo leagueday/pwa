@@ -5,36 +5,49 @@ import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
 import {constants as storeConstants, selectors, thunks} from '../store'
-import debounce from '../api/debounce'
 
 import * as constants from './consts'
+import alterUser from './alterUser'
+import debounce from './debounce'
 import { IdbKvMap } from './idb'
 
 const idbStore = new IdbKvMap('chronicle')
 
-const debounce10s = debounce(10000)
-
-const getLatestListen = async () => idbStore.get(constants.CHRONICLE_LATEST_LISTEN_ID)
+const getLatestListen = userData => async () =>
+    userData?.latestListen
+      ? Promise.resolve(userData?.latestListen)
+      : idbStore.get(constants.CHRONICLE_LATEST_LISTEN_ID)
 
 const storeLatestListen =
-  async (podcastId,
+  async (user,
+         podcastId,
          podcastName,
          audioUrl,
          audioPosition,
          podcastUrl,
          itemIndex,
          duration,
-         title) =>
-    idbStore.set(constants.CHRONICLE_LATEST_LISTEN_ID, {
-      podcastId,
-      podcastName,
-      audioUrl,
-      audioPosition,
-      podcastUrl,
-      itemIndex,
-      duration,
-      title,
-    })
+         title) => (
+    ((bearerToken, latestListen) =>
+        bearerToken
+          ? alterUser(bearerToken, user.email, { latestListen })
+          : idbStore.set(constants.CHRONICLE_LATEST_LISTEN_ID, latestListen)
+    )(
+      user?.token?.access_token,
+      {
+        podcastId,
+        podcastName,
+        audioUrl,
+        audioPosition,
+        podcastUrl,
+        itemIndex,
+        duration,
+        title,
+      }
+    )
+  )
+
+const db10StoreLatestListen = debounce(10000)(storeLatestListen)
 
 const useChronicleWriter = () => {
   const audioMode = useSelector(selectors.getAudioMode)
@@ -48,21 +61,22 @@ const useChronicleWriter = () => {
   const duration = useSelector(selectors.getAudioDuration)
   const title = useSelector(selectors.getAudioTitle)
 
+  const user = useSelector(selectors.getUser)
+
   React.useEffect(
-    debounce10s(
-      () => {
-        if (audioMode === storeConstants.AUDIO_MODE_PLAY)
-          storeLatestListen(
-            podcastId,
-            podcastName,
-            audioUrl,
-            audioPosition,
-            podcastUrl,
-            itemIndex,
-            duration,
-            title)
-      }
-    ),
+    () => {
+      if (audioMode === storeConstants.AUDIO_MODE_PLAY)
+        db10StoreLatestListen(
+          user,
+          podcastId,
+          podcastName,
+          audioUrl,
+          audioPosition,
+          podcastUrl,
+          itemIndex,
+          duration,
+          title)
+    },
     [audioMode, audioPosition, audioUrl, podcastId]
   )
 }
@@ -70,13 +84,15 @@ const useChronicleWriter = () => {
 const useChronicleReader = () => {
   const dispatch = useDispatch()
 
+  const userData = useSelector(selectors.getUserData)
+
   React.useEffect(
     // on mount, check if the "latest listen" might be useful wrt current redux
     // i.e. if no audio is already selected, then autoload..
     () => {
-      dispatch(thunks.audio.maybeUseLatestListen(getLatestListen))
+      dispatch(thunks.audio.maybeUseLatestListen(getLatestListen(userData)))
     },
-    []
+    [userData]
   )
 }
 
