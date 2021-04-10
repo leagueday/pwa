@@ -14,8 +14,6 @@ Pre-requisites
 Setup
 
 1. `$ npm install`
-2. `$ cd functions/node-fetch/ && npm install`
-3. (repeat step 2 for any other `functions/*/` added in the future)
 
 ### "Full Stack" Netlify Dev With HMR
 
