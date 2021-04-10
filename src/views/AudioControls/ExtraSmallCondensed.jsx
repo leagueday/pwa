@@ -134,8 +134,7 @@ const XsCondensedAudioControls = ({className, primaryColor}) => {
           </div>
         </div>
         <div className={classes.progressRow}>
-          <RewindStopButton className={classes.barsideButton}
-                            iconClassName={classes.barsideButtonIcon}
+          <RewindStopButton iconClassName={classes.barsideButtonIcon}
                             color={buttonColor}
                             backgroundColor={colors.brandBlack}
                             size="8vw"
@@ -144,8 +143,7 @@ const XsCondensedAudioControls = ({className, primaryColor}) => {
           <div className={classes.progressBoxFlex}>
             <ProgressBox />
           </div>
-          <FastFwdStopButton className={classes.barsideButton}
-                             iconClassName={classes.barsideButtonIcon}
+          <FastFwdStopButton iconClassName={classes.barsideButtonIcon}
                              color={buttonColor}
                              backgroundColor={colors.brandBlack}
                              size="8vw"

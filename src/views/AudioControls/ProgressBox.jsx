@@ -1,8 +1,8 @@
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+import cx from 'classnames'
 
 import {makeStyles, useTheme} from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Slider from '@material-ui/core/Slider'
 
 import * as colors from '../../styling/colors'
@@ -19,7 +19,7 @@ const PROGRESS_HEIGHT = '1.5em'
 const PROGRESS_HEIGHT_MD = '1.2em'
 
 const useStyles = makeStyles(theme => ({
-  durationLabel: {
+  durationLabel: ({isExpanded}) => ({
     bottom: 0,
     color: theme.palette.text.secondary,
     fontFamily: theme.typography.family.secondary,
@@ -30,9 +30,9 @@ const useStyles = makeStyles(theme => ({
       fontSize: '70%',
     },
     [theme.breakpoints.only('xs')]: {
-      display: 'none',
+      display: isExpanded ? 'initial' : 'none',
     },
-  },
+  }),
   progressBox: {
     height: PROGRESS_HEIGHT,
     marginTop: '1em',
@@ -62,8 +62,8 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ProgressBox = () => {
-  const classes = useStyles()
+const ProgressBox = ({className, isExpanded}) => {
+  const classes = useStyles({isExpanded})
 
   const position = useSelector(selectors.getAudioPosition)
   const seeked = useSelector(selectors.getAudioSeeked)
@@ -132,7 +132,7 @@ const ProgressBox = () => {
   // console.log('duration', duration, 'position', position, 'value', value, 'ephValue', ephemeralValue)
 
   return (
-    <div className={classes.progressBox}>
+    <div className={cx(classes.progressBox, className)}>
       <Slider
         classes={{
           colorPrimary: classes.sliderColor,
@@ -149,6 +149,10 @@ const ProgressBox = () => {
       <div className={classes.durationLabel}>{durationLabel}</div>
     </div>
   )
+}
+
+ProgressBox.defaultProps = {
+  isExpanded: false,
 }
 
 export default ProgressBox
