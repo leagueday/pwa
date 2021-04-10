@@ -81,6 +81,12 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
   },
   podcastName: {
+    overflowX: 'hidden',
+    padding: '0 10vw',
+    textAlign: 'center',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    width: '100%',
   },
   progressBox: {
     height: '10vw',
@@ -89,7 +95,12 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     padding: '0 2vw',
   },
-  showTitle: { },
+  showTitle: {
+    overflowX: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    width: '100%',
+  },
   topSection: {
     alignItems: 'center',
     display: 'flex',

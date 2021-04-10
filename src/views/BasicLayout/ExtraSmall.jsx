@@ -11,7 +11,7 @@ import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe'
 
 const useStyles = makeStyles(theme => ({
   appBar: {
-    flex: 7,
+    flex: 5,
   },
   audioControls: {
     flex: 16,
