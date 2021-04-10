@@ -73,3 +73,39 @@ Many other files don't need `jsx` and should be named with `js` suffix.
 
 Avoid introducing `css` files, that can pollute the global styles space. The project build
 doesn't include css modules - use JSS instead.
+
+### React components
+
+Use functional components rather than `React.Component` and `React.PureComponent`.
+
+### APIs and Logic
+
+Use hooks. A custom hook might be introduced if and only if it uses at least one existing
+hook in its implementation.
+
+### Syntactical pedantry
+
+Semicolons introduce unrequired noise, they can be almost entirely eliminated.
+
+### Functional-programming libraries
+
+I personally *love* [`ramda`](https://ramdajs.com/), which is a competitor of the more
+widely-used [`lodash`](https://lodash.com/). However point-free functional code could
+be much more difficult for newcomers to understand. In order to avoid the potential of
+complicating the logic, neither are used. The babel settings enable up-to-date
+ECMAScript, which should provide enough algorithms to write this application without
+either of these libraries.
+
+Either library would be a help to a developer accustomed to using it, and a hindrance
+to a developer not accustomed to it. The choice here (neither) is intended to create a
+more approachable neutral ground.
+
+### Functional-programming techniques
+
+React, especially using functional components as done here, is a very functional
+environment. Additionally, Redux, at the heart of this application, is a very
+functional solution. The style of this project is largely functional. In some
+cases IIFEs (immediately-invoked function expressions) can be found, and the
+functional nature of Javascript is exploited. Even so, legibility of the code
+and clarity about the application runtime behavior should be preferred whenever
+possible.
