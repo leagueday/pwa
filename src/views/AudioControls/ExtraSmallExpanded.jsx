@@ -51,7 +51,17 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
   },
   logoImage: {
-    marginTop: '6vw',
+    display: 'block',
+    height: '100%',
+    width: 'auto',
+  },
+  logoImageContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    height: '95vw',
+    justifyContent: 'center',
+    maxHeight: '45vh',
+    paddingTop: '6vw',
     width: '100%',
   },
   mainButton: {
@@ -171,7 +181,9 @@ const ExtraSmallExpanded = () => {
               <div className={classes.podcastName}>{podcastName}</div>
             </div>
             <div className={classes.imageAndBottomSection}>
-              <img className={classes.logoImage} src={imageUrl} />
+              <div className={classes.logoImageContainer}>
+                <img className={classes.logoImage} src={imageUrl} />
+              </div>
               <div className={classes.bottomSection}>
                 <div className={classes.episodeTitle} onClick={titleOnclick}>
                   {itemTitle}

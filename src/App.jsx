@@ -5,12 +5,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Paper from '@material-ui/core/Paper'
 
-import { Provider as StoreProvider } from './store'
-
-import ThemeProvider from './styling/ThemeProvider'
-
 import useChronicle from './api/useChronicle'
-
+import { Provider as StoreProvider } from './store'
+import ThemeProvider from './styling/ThemeProvider'
 import Audio from './views/Audio'
 import Auth from './views/Auth'
 import Mushipan from './views/MushipanRouter'
@@ -18,19 +15,18 @@ import UserData from './views/UserData'
 
 import { routesConfig } from './routes'
 
+// const userAgent = navigator.userAgent
+// const isChrome = userAgent.indexOf('Chrome') >= 0
+
 const useStyles = makeStyles(theme => ({
   app: {
     backgroundColor: theme.palette.background.default,
+    bottom: 0,
     color: theme.palette.text.primary,
     alignItems: 'stretch',
     display: 'flex',
     fontFamily: theme.typography.family.primary,
     justifyContent: 'center',
-    // maxHeight: '100%',
-    // minHeight: '100%',
-    // maxWidth: '100vw',
-    // minWidth: '100vw',
-    bottom: 0,
     left: 0,
     position: 'absolute',
     right: 0,
