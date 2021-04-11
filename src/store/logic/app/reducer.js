@@ -4,6 +4,7 @@ import * as ActionType from '../../actionTypes'
 import {nextCounters} from '../util'
 
 const initialState = {
+  audioControlsExpanded: false,
   filter: {kind: constants.FILTER_KIND_FEATURED},
   navExpanders: {},
   navVisibility: null,
@@ -52,6 +53,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         userData: addToMyList(state.userData, id, kind)
+      }
+    }
+    case ActionType.CONDENSE_AUDIO_CONTROLS: {
+      return {
+        ...state,
+        audioControlsExpanded: false,
+      }
+    }
+    case ActionType.EXPAND_AUDIO_CONTROLS: {
+      return {
+        ...state,
+        audioControlsExpanded: true,
       }
     }
     case ActionType.HIDE_NAV: {

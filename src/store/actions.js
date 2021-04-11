@@ -12,10 +12,19 @@ export const addToMyList = (kind, id) => ({
   }
 })
 
+export const condenseAudioControls = () => ({
+  type: ActionType.CONDENSE_AUDIO_CONTROLS,
+  payload: {},
+})
+
+export const expandAudioControls = () => ({
+  type: ActionType.EXPAND_AUDIO_CONTROLS,
+  payload: {},
+})
+
 export const hideNav = () => ({
   type: ActionType.HIDE_NAV,
-  payload: {
-  }
+  payload: {},
 })
 
 export const login = () => ({

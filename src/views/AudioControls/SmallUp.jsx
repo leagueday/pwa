@@ -86,10 +86,6 @@ const useStyles = makeStyles(theme => ({
       maxWidth: '35%',
     },
   },
-  nextButton: {
-    height: '2.25em',
-    width: '2.25em',
-  },
   progressBoxFlex: {
     flex: 1,
     marginTop: '0.25em',

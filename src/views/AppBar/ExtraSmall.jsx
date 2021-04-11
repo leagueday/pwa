@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    padding: '0 2vw',
+    padding: '2vw',
   },
   logo: {
     display: 'block',

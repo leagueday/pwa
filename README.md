@@ -73,3 +73,64 @@ Many other files don't need `jsx` and should be named with `js` suffix.
 
 Avoid introducing `css` files, that can pollute the global styles space. The project build
 doesn't include css modules - use JSS instead.
+
+### React components
+
+Use functional components rather than `React.Component` and `React.PureComponent`.
+
+### APIs and Logic
+
+Use hooks. A custom hook might be introduced if and only if it uses at least one existing
+hook in its implementation.
+
+### Syntactical pedantry
+
+Semicolons introduce unrequired noise, they can be almost entirely eliminated.
+
+Lines of code that introduce non-interdependent things, i.e. that can be written in
+any order, should be written in alphabetical order. For example, this applies to
+import statements, the entries of style classes, and entries of object literals in
+general.
+
+Import statements are also arranged into 3 sections, stated in this order:
+
+1. General-purpose, external libraries. `React` should be the first import, if
+   `jsx` syntax is in the file or if a React component is exported. `Redux` should
+   be the second import if used in the file.  Then other general-purpose libraries
+   follow in alphabetical order.
+2. Material-UI imports, in alphabetical order.  Utility functions imported before
+   widget components.
+3. Imports provided in this application code.  Higher-level (in terms of directory
+   structure) imported first (e.g. `../../styling`) and imports from the current
+   subpackage (e.g. `./SomeComponent`) last. Within each hierarchical level, imports
+   are written in alphabetical order.
+
+Each section of imports is separated by a single empty line.
+
+### Functional-programming libraries
+
+I personally *love* [`ramda`](https://ramdajs.com/), which is a competitor of the more
+widely-used [`lodash`](https://lodash.com/). However point-free functional code could
+be much more difficult for newcomers to understand. In order to avoid the potential of
+complicating the logic, neither are used. The babel settings enable up-to-date
+ECMAScript, which should provide enough algorithms to write this application without
+either of these libraries.
+
+Either library would be a help to a developer accustomed to using it, and a hindrance
+to a developer not accustomed to it. The choice here (neither) is intended to create a
+more approachable neutral ground.
+
+### Functional-programming techniques
+
+React, especially using functional components as done here, is a very functional
+environment. Additionally, Redux, at the heart of this application, is a very
+functional solution. The style of this project is largely functional. In some
+cases IIFEs (immediately-invoked function expressions) can be found, and the
+functional nature of Javascript is exploited. Even so, legibility of the code
+and clarity about the application runtime behavior should be preferred whenever
+possible.
+
+### Additional guidance
+
+Some subpackages (i.e. subdirectories) may contain additional `README.md` files
+with details specific to those subpackages.
