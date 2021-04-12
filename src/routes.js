@@ -31,7 +31,6 @@ export const routesConfig = [
     pathTokens => ({
       tag: takeNextToken(pathTokens)
     }),
-    false,
   ],
   [
     matchFirstToken('icons'),
@@ -60,6 +59,5 @@ export const routesConfig = [
     () => true,
     HomeScreen,
     () => ({}),
-    false,
   ],
 ]

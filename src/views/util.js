@@ -44,10 +44,10 @@ export const computeZebraBackgroundColor = rowIndex =>
   (rowIndex & 1)
     ? null
     : Color(colors.lightGray).fade(
-    Math.max(
-      0,
-      (100 - 10 * rowIndex / 2) / 100
-    )
+      Math.max(
+        0,
+        (100 - 10 * rowIndex / 2) / 100
+      )
     ).rgb().string()
 
 export const cycleColorSequence = [
@@ -68,14 +68,14 @@ export const makeNextColor = () => (
   )(0)
 
 export const stripHtml =
-    maybeHtmlString => {
-      if (!maybeHtmlString) return maybeHtmlString
+  maybeHtmlString => {
+    if (!maybeHtmlString) return maybeHtmlString
 
-      const t = typeof maybeHtmlString
+    const t = typeof maybeHtmlString
 
-      if (t === 'string') return stringStripHtml(maybeHtmlString)?.result
+    if (t === 'string') return stringStripHtml(maybeHtmlString)?.result
 
-      if (t === 'object') return Object.values(maybeHtmlString).join(' ')
+    if (t === 'object') return Object.values(maybeHtmlString).join(' ')
 
-      return maybeHtmlString
-    }
+    return maybeHtmlString
+  }

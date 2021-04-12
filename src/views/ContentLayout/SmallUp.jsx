@@ -6,23 +6,24 @@ import Grid from '@material-ui/core/Grid'
 import * as colors from '../../styling/colors'
 import {addScrollStyle} from '../util'
 
-// Top-Left/Right and Bottom-Scroller
+// Top-Left/Right and Bottom-Section
+//   altogether in scroller
 
 const useStyles = makeStyles(theme => ({
-  bottomSection: ({accentColor}) => addScrollStyle(accentColor, theme)({
+  bottomSection: {
     flexGrow: 1,
     flexShrink: 1,
-    overflow: 'auto',
     width: '100%',
-  }),
-  content: {
+  },
+  content: ({accentColor}) => addScrollStyle(accentColor, theme)({
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
     marginLeft: '0.25em',
     overflowX: 'hidden',
-  },
+    overflowY: 'auto',
+  }),
   topSection: {
     flexShrink: 0,
     width: '100%',
