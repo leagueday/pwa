@@ -17,7 +17,6 @@ const initialState = {
   theme: constants.UI_THEME_SPEC,
   user: null,
   userData: null,
-  viewportHeight: '100vh',
 }
 
 const addToMyList = (userData, id, kind) => {
@@ -132,12 +131,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         userData: action.payload.userData,
-      }
-    }
-    case ActionType.SET_VIEWPORT_HEIGHT: {
-      return {
-        ...state,
-        viewportHeight: action.payload.viewportHeight,
       }
     }
     case ActionType.SHOW_NAV: {

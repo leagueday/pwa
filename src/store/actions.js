@@ -84,13 +84,6 @@ export const setUserData = userData => ({
   }
 })
 
-export const setViewportHeight = viewportHeight => ({
-  type: ActionType.SET_VIEWPORT_HEIGHT,
-  payload: {
-    viewportHeight,
-  }
-})
-
 export const showNav = () => ({
   type: ActionType.SHOW_NAV,
   payload: {
