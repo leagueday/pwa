@@ -9,12 +9,14 @@ import {formatDate} from '../dateutil'
 const useStyles = makeStyles(theme => ({
   datetime: ({primaryColor}) => ({
     color: Color(primaryColor).fade(0.25).toString(),
+    fontSize: '95%',
     marginLeft: 'auto',
     overflowX: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   }),
   text: {
+    fontSize: '125%',
     overflowX: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -23,7 +25,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'baseline',
     display: 'flex',
     flexDirection: 'row',
-    fontSize: '125%',
     fontWeight: theme.typography.weight.bold,
     justifyContent: 'flex-start',
     userSelect: 'none',
@@ -42,7 +43,7 @@ const TitleBar = ({className, primaryColor, text}) => {
         {text}
       </div>
       <div className={classes.datetime}>
-        {formatDate('2021-06-04T12:00:00Z')}
+        {formatDate()}
       </div>
     </div>
   )
