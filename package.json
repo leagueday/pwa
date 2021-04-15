@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "description": "LeagueDay v.2 webapp",
   "scripts": {
-    "build": "webpack --config webpack-prod.config.js",
+    "build-prod-webpack": "webpack --config webpack-prod.config.js",
+    "build": "run-s install-functions build-prod-webpack",
     "build-dev": "cross-env NODE_ENV=development webpack --config webpack-dev.config.js",
-    "postinstall": "node scripts/install-functions.mjs",
+    "install-functions": "node scripts/install-functions.mjs",
     "start": "http-server -p 8888 --proxy http://localhost:8888? dist",
     "start-dev": "cross-env NODE_ENV=development webpack serve --config webpack-dev.config.js --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -46,6 +47,7 @@
     "http-server": "^0.12.3",
     "idb-keyval": "^3.2.0",
     "netlify-identity-widget": "^1.9.1",
+    "npm-run-all": "^4.1.5",
     "react": "^17.0.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^17.0.1",
