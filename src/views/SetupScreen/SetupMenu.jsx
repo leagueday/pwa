@@ -77,6 +77,7 @@ const SetupMenu = ({subject}) => {
         <div className={classes.title}>Setup Menu</div>
       </div>
       <SubjectButtonRow classes={classes} focusedSubject={subject} subject="seed-mylist" subjectText="Seed MyList" />
+      <SubjectButtonRow classes={classes} focusedSubject={subject} subject="parse-podcast" subjectText="Parse Podcast" />
     </Card>
   )
 }

@@ -1,0 +1,20 @@
+{
+  "name": "parse-podcast",
+  "version": "1.0.0",
+  "description": "Fetch podcast RSS and parse, store in Fauna",
+  "main": "parse-podcast.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "netlify",
+    "serverless",
+    "js"
+  ],
+  "author": "LeagueDay",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "rss-parser": "^3.12.0"
+  }
+}
