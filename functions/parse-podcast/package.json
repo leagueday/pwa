@@ -15,6 +15,7 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "faunadb": "^4.2.0",
     "rss-parser": "^3.12.0"
   }
 }

@@ -10,6 +10,6 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "faunadb": "^4.1.1"
+    "faunadb": "^4.2.0"
   }
 }
