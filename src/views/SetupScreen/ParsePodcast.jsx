@@ -6,6 +6,7 @@ import cx from 'classnames'
 import {makeStyles} from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
+import Snackbar from '@material-ui/core/Snackbar'
 
 import parsePodcast from '../../api/parsePodcast'
 import usePodcasts from '../../api/usePodcasts'
@@ -70,8 +71,44 @@ const ParsePodcast = ({className}) => {
 
   const isPodcastSelected = id => selectedPodcast.id === id
 
+  const [snackState, setSnackState] = React.useState({
+    open: false,
+    message: null,
+    error: null,
+  })
+
+  const closeSnack = () => {
+    setSnackState({
+      open: false,
+      message: null,
+      error: null,
+    })
+  }
+
+  const snackSuccessfulParse = podcastUrl => () => {
+    setSnackState({
+      open: true,
+      message: `completed ${podcastUrl}`,
+      error: null,
+    })
+  }
+
+  const snackFailedParse = err => {
+    console.error('err', err)
+    setSnackState({
+      open: true,
+      message: null,
+      error: String(err),
+    })
+  }
+
+  const xarsePodcast = () => Promise.reject('mock error local')
+
   const onParseClick = () => {
-    parsePodcast(bearerToken, selectedPodcast.id, selectedPodcast.url)
+    parsePodcast(bearerToken, selectedPodcast.id, selectedPodcast.url).then(
+      snackSuccessfulParse(selectedPodcast.url),
+      snackFailedParse
+    )
   }
 
   return (
@@ -105,6 +142,13 @@ const ParsePodcast = ({className}) => {
           )
         }
       </div>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        autoHideDuration={1500}
+        open={snackState.open}
+        onClose={closeSnack}
+        message={snackState.error ? snackState.error : snackState.message}
+      />
     </Card>
   )
 }
