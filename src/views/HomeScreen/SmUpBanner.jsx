@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       height: '25%',
-      minHeight: '17em',
+      minHeight: '13.5em',
       overflow: 'hidden',
     },
   },
