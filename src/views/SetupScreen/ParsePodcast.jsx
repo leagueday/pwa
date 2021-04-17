@@ -9,6 +9,7 @@ import Card from '@material-ui/core/Card'
 import Snackbar from '@material-ui/core/Snackbar'
 
 import parsePodcast from '../../api/parsePodcast'
+import queryPodcast from '../../api/queryPodcast'
 import usePodcasts from '../../api/usePodcasts'
 import {selectors} from '../../store'
 import * as colors from '../../styling/colors'
@@ -45,6 +46,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '2em',
     overflowY: 'auto',
   }),
+  queryButton: { },
   selectedPodcast: {
     color: colors.magenta,
     display: 'flex',
@@ -111,6 +113,10 @@ const ParsePodcast = ({className}) => {
     )
   }
 
+  const onQueryClick = () => queryPodcast(bearerToken, selectedPodcast.id).then(
+    response => console.log(response)
+  )
+
   return (
     <Card className={cx(classes.parsePodcast, className)}>
       <div className={classes.buttonCol}>
@@ -121,6 +127,14 @@ const ParsePodcast = ({className}) => {
           size="small"
           variant="contained">
           Parse
+        </Button>
+        <Button
+          className={classes.queryButton}
+          color="primary"
+          onClick={onQueryClick}
+          size="small"
+          variant="contained">
+          Fetch
         </Button>
       </div>
       <div className={classes.podcastsCol}>
