@@ -5,9 +5,13 @@ import Color from 'color'
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
+import ComingSoon from '../ComingSoon'
 import ToggleImageButton from '../ToggleImageButton'
 
 const useStyles = makeStyles(theme => ({
+  comingSoon: {
+    margin: '0 2vw 2vw 2vw',
+  },
   eventImage: {
     height: '6vw',
     width: '6vw',
@@ -158,6 +162,7 @@ const LiveBroadcastsMockup = ({className, channel}) => {
 
   return (
     <div className={cx(classes.liveBroadcasts, className)}>
+      <ComingSoon className={classes.comingSoon} />
       {
         filterMockupData(channel.tag).map(
           sectionData => (

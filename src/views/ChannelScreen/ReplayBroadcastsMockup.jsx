@@ -7,10 +7,14 @@ import { makeStyles } from '@material-ui/core/styles'
 import * as colors from '../../styling/colors'
 import {actions} from '../../store'
 import { IcoPause, IcoPlay, IcoPlus } from '../icons'
+import ComingSoon from '../ComingSoon'
 
 const useStyles = makeStyles(theme => ({
   clickable: {
     cursor: 'pointer',
+  },
+  comingSoon: {
+    margin: '0 2vw 2vw 2vw',
   },
   episodeControls: {
     alignItems: 'center',
@@ -354,6 +358,7 @@ const ReplayBroadcastsMockup = ({className, channel}) => {
 
   return (
     <div className={cx(classes.replayBroadcasts, className)}>
+      <ComingSoon className={classes.comingSoon} />
       {
         filterMockupData(channel.tag).map(
           sectionData => (
