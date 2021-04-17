@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: '1em',
   },
   magnifierIcon: {
+    color: colors.white30,
     height: '1em',
     width: '1em',
   },
@@ -36,7 +37,7 @@ const SearchLozenge = ({className}) => {
 
   return (
     <div className={cx(className, classes.searchLozenge)}>
-      <IcoMagnifier classes={{inner: classes.magnifierIcon, outer: classes.magnifierIconContainer}} />
+      <IcoMagnifier classes={{inner: classes.magnifierIcon, outer: classes.magnifierIconContainer}} strokeWidth={3} />
       <div className={classes.entryContainer} />
     </div>
   )
