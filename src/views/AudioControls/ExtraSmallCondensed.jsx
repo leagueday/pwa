@@ -120,12 +120,12 @@ const XsCondensedAudioControls = ({className, primaryColor}) => {
        }) => ((PlusOrMinusButton, buttonColor) => (
       <div className={cx(classes.xsAudioControls, className)} {...swipeHandlers}>
         <DownButton className={classes.hideButton}
-                  color={colors.magenta}
-                  onClick={onHide}
-                  backgroundColor={colors.brandBlack}
-                  shadowColor={buttonShadowColor}
-                  size="6vw"
-                  strokeWidth="3"/>
+                    color={colors.magenta}
+                    onClick={onHide}
+                    backgroundColor={colors.brandBlack}
+                    shadowColor={buttonShadowColor}
+                    size="6vw"
+                    strokeWidth="3"/>
         <div className={classes.titleRow}>
           <XsTitle className={classes.title}
                    halfHeight="10vw"
