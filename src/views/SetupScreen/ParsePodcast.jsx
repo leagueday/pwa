@@ -90,31 +90,34 @@ const PodcastQueryModal = ({isOpen, onClose, podcastData}) => {
 
   console.log(podcastData)
 
+  const leaguedayParseTimestamp = podcastData ? podcastData.t : '?'
+
+  const [title, itemsLength, latestPubDate, channelImageUrl] = podcastData?.feed ? [
+    podcastData.feed.title,
+    podcastData.feed.items.length,
+    podcastData.feed.items?.[0].isoDate,
+    podcastData.feed.image.url,
+  ] : [ '?', -1, '?', '?' ]
+
   return (
     <Modal open={isOpen} onClose={onClose}>
       <div className={classes.podcastQueryModal}>
         <Card className={classes.podcastQueryModalCard}>
-          {
-            podcastData?.feed && (
-              <>
-                <div className={classes.podcastQueryModalLine}>
-                  Title: {podcastData.feed.title}
-                </div>
-                <div className={classes.podcastQueryModalLine}>
-                  Item Count: {podcastData.feed.items.length}
-                </div>
-                <div className={classes.podcastQueryModalLine}>
-                  Latest Item Pub Date: {podcastData.feed.items?.[0].isoDate}
-                </div>
-                <div className={classes.podcastQueryModalLine}>
-                  LeagueDay parse timestamp: {podcastData.t}
-                </div>
-                <div className={classes.podcastQueryModalLine}>
-                  Channel Image URL: {podcastData.feed.image.url}
-                </div>
-              </>
-            )
-          }
+          <div className={classes.podcastQueryModalLine}>
+            Title: {title}
+          </div>
+          <div className={classes.podcastQueryModalLine}>
+            Item Count: {itemsLength}
+          </div>
+          <div className={classes.podcastQueryModalLine}>
+            Latest Item Pub Date: {latestPubDate}
+          </div>
+          <div className={classes.podcastQueryModalLine}>
+            LeagueDay parse timestamp: {leaguedayParseTimestamp}
+          </div>
+          <div className={classes.podcastQueryModalLine}>
+            Channel Image URL: {channelImageUrl}
+          </div>
           <div className={classes.podcastQueryModalButtonRow}>
             <Button className={classes.podcastQueryModalButton}
                     color="primary"

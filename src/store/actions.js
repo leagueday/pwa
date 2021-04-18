@@ -22,6 +22,11 @@ export const expandAudioControls = () => ({
   payload: {},
 })
 
+export const hideAudioControls = () => ({
+  type: ActionType.HIDE_AUDIO_CONTROLS,
+  payload: {},
+})
+
 export const hideNav = () => ({
   type: ActionType.HIDE_NAV,
   payload: {},
@@ -82,6 +87,11 @@ export const setUserData = userData => ({
   payload: {
     userData
   }
+})
+
+export const showAudioControls = () => ({
+  type: ActionType.SHOW_AUDIO_CONTROLS,
+  payload: {},
 })
 
 export const showNav = () => ({
