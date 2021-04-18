@@ -9,6 +9,7 @@ import {makeStyles} from '@material-ui/core'
 import * as colors from '../../styling/colors'
 import {actions, selectors} from '../../store'
 import {
+  IcoDown,
   IcoFastFwdStop,
   IcoForwardStop,
   IcoMinus,
@@ -17,10 +18,12 @@ import {
 } from '../icons'
 import {makeIconButton} from '../IconButton'
 import Connector from './Connector'
+import ExtraSmallHidden from './ExtraSmallHidden'
 import ProgressBox from './ProgressBox'
 import ToggleImageButton from '../ToggleImageButton'
 import XsTitle from './XsTitle'
 
+const DownButton = makeIconButton(IcoDown)
 const FastFwdStopButton = makeIconButton(IcoFastFwdStop)
 const ForwardStopButton = makeIconButton(IcoForwardStop)
 const MinusButton = makeIconButton(IcoMinus)
@@ -34,6 +37,11 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     height: '100%',
     justifyContent: 'space-evenly',
+  },
+  hideButton: {
+    position: 'absolute',
+    top: '-4vw',
+    left: '2vw',
   },
   logoButton: { },
   progressBoxFlex: {
@@ -68,6 +76,7 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     justifyContent: 'space-between',
     padding: '2vw',
+    position: 'relative',
   },
 }))
 
@@ -77,6 +86,7 @@ const XsCondensedAudioControls = ({className, primaryColor}) => {
   const classes = useStyles({primaryColor})
 
   const dispatch = useDispatch()
+  const hidden = useSelector(selectors.getAudioControlsHidden)
   const itemTitle = useSelector(selectors.getAudioTitle)
   const podcastName = useSelector(selectors.getAudioPodcastName)
 
@@ -86,11 +96,17 @@ const XsCondensedAudioControls = ({className, primaryColor}) => {
 
       if (dir === 'Up') {
         dispatch(actions.expandAudioControls())
+      } else if (dir === 'Down') {
+        dispatch(actions.hideAudioControls())
       }
     },
   })
 
-  return (
+  const onHide = () => dispatch(actions.hideAudioControls())
+
+  return hidden ? (
+    <ExtraSmallHidden />
+  ) : (
     <Connector>{
       ({ forwardButtonOnclick,
          isDisabled,
@@ -103,6 +119,13 @@ const XsCondensedAudioControls = ({className, primaryColor}) => {
          titleOnclick,
        }) => ((PlusOrMinusButton, buttonColor) => (
       <div className={cx(classes.xsAudioControls, className)} {...swipeHandlers}>
+        <DownButton className={classes.hideButton}
+                  color={colors.magenta}
+                  onClick={onHide}
+                  backgroundColor={colors.brandBlack}
+                  shadowColor={buttonShadowColor}
+                  size="6vw"
+                  strokeWidth="3"/>
         <div className={classes.titleRow}>
           <XsTitle className={classes.title}
                    halfHeight="10vw"
