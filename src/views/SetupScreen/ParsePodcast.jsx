@@ -6,8 +6,11 @@ import cx from 'classnames'
 import {makeStyles} from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
+import Modal from '@material-ui/core/Modal'
+import Snackbar from '@material-ui/core/Snackbar'
 
 import parsePodcast from '../../api/parsePodcast'
+import queryPodcast from '../../api/queryPodcast'
 import usePodcasts from '../../api/usePodcasts'
 import {selectors} from '../../store'
 import * as colors from '../../styling/colors'
@@ -20,7 +23,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  parseButton: { },
+  parseButton: {
+    marginBottom: '0.5em',
+  },
   parsePodcast: {
     display: 'flex',
     flexDirection: 'row',
@@ -44,12 +49,87 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '2em',
     overflowY: 'auto',
   }),
+  podcastQueryModal: {
+    alignItems: 'center',
+    display: 'flex',
+    height: '100%',
+    justifyContent: 'center',
+  },
+  podcastQueryModalButton: {
+    marginLeft: 'auto',
+  },
+  podcastQueryModalButtonRow: {
+    display: 'flex',
+    width: '100%',
+  },
+  podcastQueryModalCard: {
+    backgroundColor: colors.brandBlack,
+    color: colors.white80,
+    display: 'flex',
+    flexDirection: 'column',
+    width: '75%',
+    padding: '0.5em',
+  },
+  podcastQueryModalLine: {
+    marginBottom: '0.5em',
+    maxWidth: '100%',
+    overflowX: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  queryButton: { },
   selectedPodcast: {
     color: colors.magenta,
     display: 'flex',
     flexDirection: 'row',
   },
 }))
+
+const PodcastQueryModal = ({isOpen, onClose, podcastData}) => {
+  const classes = useStyles()
+
+  console.log(podcastData)
+
+  return (
+    <Modal open={isOpen} onClose={onClose}>
+      <div className={classes.podcastQueryModal}>
+        <Card className={classes.podcastQueryModalCard}>
+          {
+            podcastData?.feed && (
+              <>
+                <div className={classes.podcastQueryModalLine}>
+                  Title: {podcastData.feed.title}
+                </div>
+                <div className={classes.podcastQueryModalLine}>
+                  Item Count: {podcastData.feed.items.length}
+                </div>
+                <div className={classes.podcastQueryModalLine}>
+                  Latest Item Pub Date: {podcastData.feed.items?.[0].isoDate}
+                </div>
+                <div className={classes.podcastQueryModalLine}>
+                  LeagueDay parse timestamp: {podcastData.t}
+                </div>
+                <div className={classes.podcastQueryModalLine}>
+                  Channel Image URL: {podcastData.feed.image.url}
+                </div>
+              </>
+            )
+          }
+          <div className={classes.podcastQueryModalButtonRow}>
+            <Button className={classes.podcastQueryModalButton}
+                    color="primary"
+                    onClick={onClose}
+                    size="small"
+                    variant="contained"
+            >
+              Close
+            </Button>
+          </div>
+        </Card>
+      </div>
+    </Modal>
+  )
+}
 
 const ParsePodcast = ({className}) => {
   const classes = useStyles()
@@ -70,9 +150,65 @@ const ParsePodcast = ({className}) => {
 
   const isPodcastSelected = id => selectedPodcast.id === id
 
-  const onParseClick = () => {
-    parsePodcast(bearerToken, selectedPodcast.id, selectedPodcast.url)
+  const [snackState, setSnackState] = React.useState({
+    open: false,
+    message: null,
+    error: null,
+  })
+
+  const [queryModalState, setQueryModalState] = React.useState({isOpen: false, podcastData: null })
+
+  const closeSnack = () => {
+    setSnackState({
+      open: false,
+      message: null,
+      error: null,
+    })
   }
+
+  const snackSuccessfulParse = podcastUrl => () => {
+    setSnackState({
+      open: true,
+      message: `completed ${podcastUrl}`,
+      error: null,
+    })
+  }
+
+  const snackFailedParse = err => {
+    console.error('err', err)
+    setSnackState({
+      open: true,
+      message: null,
+      error: String(err),
+    })
+  }
+
+  const snackFailedFetch = err => {
+    console.error('err', err)
+    setSnackState({
+      open: true,
+      message: null,
+      error: String(err),
+    })
+  }
+
+  const modalSuccessfulFetch = podcastData => {
+    setQueryModalState({isOpen: true, podcastData})
+  }
+
+  const onParseClick = () => {
+    parsePodcast(bearerToken, selectedPodcast.id, selectedPodcast.url).then(
+      snackSuccessfulParse(selectedPodcast.url),
+      snackFailedParse
+    )
+  }
+
+  const onQueryClick = () => queryPodcast(bearerToken, selectedPodcast.id).then(
+    modalSuccessfulFetch,
+    snackFailedFetch
+  )
+
+  const closePodcastQueryModal = () => setQueryModalState({isOpen: false, podcastData: null})
 
   return (
     <Card className={cx(classes.parsePodcast, className)}>
@@ -84,6 +220,14 @@ const ParsePodcast = ({className}) => {
           size="small"
           variant="contained">
           Parse
+        </Button>
+        <Button
+          className={classes.queryButton}
+          color="primary"
+          onClick={onQueryClick}
+          size="small"
+          variant="contained">
+          Fetch
         </Button>
       </div>
       <div className={classes.podcastsCol}>
@@ -105,6 +249,16 @@ const ParsePodcast = ({className}) => {
           )
         }
       </div>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        autoHideDuration={1500}
+        open={snackState.open}
+        onClose={closeSnack}
+        message={snackState.error ? snackState.error : snackState.message}
+      />
+      <PodcastQueryModal isOpen={queryModalState.isOpen}
+                         onClose={closePodcastQueryModal}
+                         podcastData={queryModalState.podcastData} />
     </Card>
   )
 }

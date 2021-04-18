@@ -1,5 +1,3 @@
-// -*-*-*-*- WIP -*-*-*-*-
-
 const {Client, query: q} = require('faunadb')
 
 const STATUS_OK = 0
