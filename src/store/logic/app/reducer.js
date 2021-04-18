@@ -5,6 +5,7 @@ import {nextCounters} from '../util'
 
 const initialState = {
   audioControlsExpanded: false,
+  audioControlsHidden: false,
   filter: {kind: constants.FILTER_KIND_FEATURED},
   navExpanders: {},
   navVisibility: null,
@@ -66,16 +67,22 @@ const reducer = (state = initialState, action) => {
         audioControlsExpanded: true,
       }
     }
+    case ActionType.HIDE_AUDIO_CONTROLS: {
+      return {
+        ...state,
+        audioControlsHidden: true,
+      }
+    }
     case ActionType.HIDE_NAV: {
       return {
         ...state,
-        navVisibility: false
+        navVisibility: false,
       }
     }
     case ActionType.LOGIN_ACTION: {
       return {
         ...state,
-        taps: nextCounters('login', state.taps)
+        taps: nextCounters('login', state.taps),
       }
     }
     case ActionType.LOGOUT_ACTION: {
@@ -131,6 +138,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         userData: action.payload.userData,
+      }
+    }
+    case ActionType.SHOW_AUDIO_CONTROLS: {
+      return {
+        ...state,
+        audioControlsHidden: false,
       }
     }
     case ActionType.SHOW_NAV: {
