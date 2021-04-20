@@ -4,8 +4,8 @@ import cx from 'classnames'
 
 import {makeStyles} from '@material-ui/core'
 
-import * as colors from '../../styling/colors'
 import {actions, selectors} from '../../store'
+import {colors} from '../../styling'
 import MenuNav from '../SideNav/MenuNav'
 import {makeIconButton} from '../IconButton'
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 
-import * as colors from '../../styling/colors'
+import {colors} from '../../styling'
 import {addScrollStyle} from '../util'
 
 // Top-Left/Right and Bottom-Scroller

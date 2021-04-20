@@ -9,11 +9,11 @@ import Card from '@material-ui/core/Card'
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
-import * as colors from '../../styling/colors'
-import {selectors} from '../../store'
 import alterUser from '../../api/alterUser.js'
-import useChannels from '../../api/useChannels'
 import fetchUserData from '../../api/fetchUserData'
+import useChannels from '../../api/useChannels'
+import {selectors} from '../../store'
+import {colors} from '../../styling'
 import {addScrollStyle} from '../util'
 
 const darkMagenta = Color(colors.magenta).darken(0.33).string()

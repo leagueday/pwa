@@ -3,15 +3,15 @@ import {useSelector} from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import * as colors from '../../styling/colors'
-import {selectors} from '../../store'
 import useFacets from '../../api/useFacets'
+import {selectors} from '../../store'
+import {colors} from '../../styling'
 import { addScrollStyle } from '../util'
-import XsBanner from './XsBanner'
 import BasicLayout from '../BasicLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import Loading from '../Loading'
 import TitleBar from './TitleBar'
+import XsBanner from './XsBanner'
 
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 

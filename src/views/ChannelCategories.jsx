@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import useChannels from '../api/useChannels'
 import useChannelCategories from '../api/useChannelCategories'
-import BottomBlock from './BottomBlock'
 import ChannelTilesRow from './ChannelTilesRow'
 
 const useStyles = makeStyles({
@@ -39,9 +38,7 @@ const ChannelCategories = ({className}) => {
       {
         channelsByCat.map(
           ([title, channels]) => (
-            <BottomBlock key={title} titleRest={title}>
-              <ChannelTilesRow id={`chan.${title}`} channels={channels} />
-            </BottomBlock>
+            <ChannelTilesRow id={`chan.${title}`} channels={channels} key={title} title={title} />
           )
         )
       }

@@ -1,18 +1,19 @@
 import React from 'react'
 import {useDispatch} from 'react-redux'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import Color from 'color'
 import cx from 'classnames'
+import Color from 'color'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import * as colors from '../../styling/colors'
-import {actions} from '../../store'
 import debounce from '../../api/debounce'
 import useHomeBanner from '../../api/useHomeBanner'
 import usePrevious from '../../api/usePrevious'
+import {actions} from '../../store'
+import {colors} from '../../styling'
 
 import SideButtons from '../SideButtons'
+import {slideTransitionGroup} from '../util'
 
 const useStyles = makeStyles(theme => ({
   banner: {
@@ -73,47 +74,7 @@ const useStyles = makeStyles(theme => ({
   }),
 }))
 
-const useSlideTransitionGroup = makeStyles({
-  enter: ({isSlidingLeft}) => isSlidingLeft ? {
-    position: 'absolute',
-    overflow: 'hidden',
-    transform: 'translateX(100%)',
-  } : {
-    position: 'absolute',
-    overflow: 'hidden',
-    transform: 'translateX(-100%)',
-  },
-  enterActive: ({isSlidingLeft}) => isSlidingLeft ? {
-    position: 'absolute',
-    overflow: 'hidden',
-    transform: 'translateX(0%)',
-    transition: 'transform 500ms ease-in-out',
-    width: '100%',
-  } : {
-    position: 'absolute',
-    overflow: 'hidden',
-    transform: 'translateX(0%)',
-    transition: 'transform 500ms ease-in-out',
-    width: '100%',
-  },
-  enterDone: {
-  },
-  exit: {
-    overflow: 'hidden',
-    transform: 'translateX(0%)',
-  },
-  exitActive: ({isSlidingLeft}) => isSlidingLeft ? {
-    overflow: 'hidden',
-    transform: 'translateX(-100%)',
-    transition: 'transform 500ms ease-in-out',
-  } : {
-    overflow: 'hidden',
-    transform: 'translateX(100%)',
-    transition: 'transform 500ms ease-in-out',
-  },
-  exitDone: {
-  }
-})
+const useSlideTransitionGroup = makeStyles(slideTransitionGroup)
 
 const Element = ({classes, imageUrl, text, title, onClick}) => (
   <div className={classes.element} onClick={onClick}>

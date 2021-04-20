@@ -1,16 +1,16 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
 
-import { makeStyles } from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 
-import * as colors from '../../styling/colors'
-import {selectors} from '../../store'
 import useFacets from '../../api/useFacets'
-import { addScrollStyle } from '../util'
-import SmUpBanner from './SmUpBanner'
+import {selectors} from '../../store'
+import {colors} from '../../styling'
 import BasicLayout from '../BasicLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import Loading from '../Loading'
+import {addScrollStyle} from '../util'
+import SmUpBanner from './SmUpBanner'
 import TitleBar from './TitleBar'
 
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))

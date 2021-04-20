@@ -8,7 +8,7 @@ import {makeStyles} from '@material-ui/core'
 import usePodcast from '../../api/usePodcast'
 import {channelSelectors} from '../../model/rss'
 import {actions, selectors} from '../../store'
-import * as colors from '../../styling/colors'
+import {colors} from '../../styling'
 import {
   IcoDown,
   IcoFastFwdStop,
@@ -153,6 +153,7 @@ const ExtraSmallExpanded = () => {
         dispatch(actions.condenseAudioControls())
       }
     },
+    preventDefaultTouchmoveEvent: true,
   })
 
   return (
