@@ -9,24 +9,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  tilesRowContainer: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-    maxWidth: '100%',
-    paddingTop: '0.75em',
-    [theme.breakpoints.only('xs')]: {
-      paddingTop: '3vw',
-    },
-  },
-  title: {
-    fontSize: '125%',
-    fontWeight: theme.typography.weight.bold,
-    [theme.breakpoints.only('xs')]: {
-      fontSize: '90%',
-      fontWeight: theme.typography.weight.normal,
-    },
-  },
 }))
 
 const FacetedPodcastTiles = ({data}) => {
@@ -41,12 +23,7 @@ const FacetedPodcastTiles = ({data}) => {
       {
         entries.map(
           ([title, podcasts]) => (
-            <div key={index++} className={classes.tilesRowContainer}>
-              <div className={classes.title}>
-                {title}
-              </div>
-              <PodcastTilesRow id={title} podcasts={podcasts} />
-            </div>
+            <PodcastTilesRow key={index++} id={title} podcasts={podcasts} title={title} />
           )
         )
       }

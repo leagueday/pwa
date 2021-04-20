@@ -25,6 +25,24 @@ const useStyles = makeStyles(theme => ({
       marginRight: 0,
     },
   },
+  tilesRowContainer: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    maxWidth: '100%',
+    paddingTop: '0.75em',
+    [theme.breakpoints.only('xs')]: {
+      paddingTop: '3vw',
+    },
+  },
+  title: {
+    fontSize: '125%',
+    fontWeight: theme.typography.weight.bold,
+    [theme.breakpoints.only('xs')]: {
+      fontSize: '90%',
+      fontWeight: theme.typography.weight.normal,
+    },
+  },
 }))
 
 const EmptyTile = () => {
@@ -33,7 +51,7 @@ const EmptyTile = () => {
   )
 }
 
-const SwipePodcastTilesRow = ({id, podcasts}) => {
+const SwipePodcastTilesRow = ({id, podcasts, title}) => {
   const classes = useStyles()
 
   return (
@@ -55,32 +73,37 @@ const SwipePodcastTilesRow = ({id, podcasts}) => {
         let baseIndex = 0
 
         return (
-          <div className={classes.swipePodcastTilesRow} {...swipeHandlers}>
-            {[
-              ...displayPodcasts.map(
-                podcast => podcast ? (
-                  <div key={baseIndex++} className={classes.tile}>
-                    <PodcastTile
-                      podcast={podcast}
-                      textColor={nextColor()}
-                    />
-                  </div>
-                ) : null
-              ),
-              ...(
-                () => {
-                  const result = []
-                  for (let i = displayPodcasts.length; i < PAGE_LENGTH; i++) {
-                    result.push(
-                      <div key={baseIndex++} className={classes.tile}>
-                        <EmptyTile/>
-                      </div>
-                    )
+          <div className={classes.tilesRowContainer}>
+            <div className={classes.title}>
+              {title}
+            </div>
+            <div className={classes.swipePodcastTilesRow} {...swipeHandlers}>
+              {[
+                ...displayPodcasts.map(
+                  podcast => podcast ? (
+                    <div key={baseIndex++} className={classes.tile}>
+                      <PodcastTile
+                        podcast={podcast}
+                        textColor={nextColor()}
+                      />
+                    </div>
+                  ) : null
+                ),
+                ...(
+                  () => {
+                    const result = []
+                    for (let i = displayPodcasts.length; i < PAGE_LENGTH; i++) {
+                      result.push(
+                        <div key={baseIndex++} className={classes.tile}>
+                          <EmptyTile/>
+                        </div>
+                      )
+                    }
+                    return result
                   }
-                  return result
-                }
-              )()
-            ]}
+                )()
+              ]}
+            </div>
           </div>
         )
       }

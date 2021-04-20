@@ -2,6 +2,7 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 
+import BottomBlock from '../BottomBlock'
 import SideButtons from '../SideButtons'
 import ChannelTile from './ChannelTile'
 import Connector from './Connector'
@@ -31,7 +32,7 @@ const EmptyTile = () => {
   )
 }
 
-const ButtonChannelTilesRow = ({id, channels}) => {
+const ButtonChannelTilesRow = ({id, channels, title}) => {
   const classes = useStyles()
 
   let baseIndex = 0
@@ -39,35 +40,37 @@ const ButtonChannelTilesRow = ({id, channels}) => {
   return (
     <Connector channels={channels} id={id} pageSize={PAGE_LENGTH}>{
       ({displayChannels, goNextPage, goPrevPage}) => (
-        <SideButtons
-          accentColor="magenta"
-          onLeftClick={goPrevPage}
-          onRightClick={goNextPage}>
-          <div className={classes.buttonChannelTilesRow}>
-            {[
-              ...displayChannels.map(
-                channel => (
-                  <div key={baseIndex++} className={classes.tile}>
-                    <ChannelTile channel={channel}/>
-                  </div>
-                )
-              ),
-              ...(
-                () => {
-                  const result = []
-                  for (let i = displayChannels.length; i < PAGE_LENGTH; i++) {
-                    result.push(
-                      <div key={baseIndex++} className={classes.tile}>
-                        <EmptyTile/>
-                      </div>
-                    )
+        <BottomBlock titleRest={title}>
+          <SideButtons
+            accentColor="magenta"
+            onLeftClick={goPrevPage}
+            onRightClick={goNextPage}>
+            <div className={classes.buttonChannelTilesRow}>
+              {[
+                ...displayChannels.map(
+                  channel => (
+                    <div key={baseIndex++} className={classes.tile}>
+                      <ChannelTile channel={channel}/>
+                    </div>
+                  )
+                ),
+                ...(
+                  () => {
+                    const result = []
+                    for (let i = displayChannels.length; i < PAGE_LENGTH; i++) {
+                      result.push(
+                        <div key={baseIndex++} className={classes.tile}>
+                          <EmptyTile/>
+                        </div>
+                      )
+                    }
+                    return result
                   }
-                  return result
-                }
-              )()
-            ]}
-          </div>
-        </SideButtons>
+                )()
+              ]}
+            </div>
+          </SideButtons>
+        </BottomBlock>
       )
     }</Connector>
   )
