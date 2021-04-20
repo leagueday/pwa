@@ -3,6 +3,7 @@ import {useSwipeable} from 'react-swipeable'
 
 import {makeStyles} from '@material-ui/core'
 
+import SliderDots from '../SliderDots'
 import {makeNextColor} from '../util'
 import Connector from './Connector'
 import PodcastTile from './PodcastTile'
@@ -10,6 +11,9 @@ import PodcastTile from './PodcastTile'
 const PAGE_LENGTH = 3
 
 const useStyles = makeStyles(theme => ({
+  sliderDots: {
+    marginLeft: 'auto',
+  },
   swipePodcastTilesRow: {
     display: 'flex',
     flex: 1,
@@ -43,6 +47,11 @@ const useStyles = makeStyles(theme => ({
       fontWeight: theme.typography.weight.normal,
     },
   },
+  titleAndDots: {
+    alignItems: 'center',
+    display: 'flex',
+    width: '100%',
+  },
 }))
 
 const EmptyTile = () => {
@@ -74,8 +83,13 @@ const SwipePodcastTilesRow = ({id, podcasts, title}) => {
 
         return (
           <div className={classes.tilesRowContainer}>
-            <div className={classes.title}>
-              {title}
+            <div className={classes.titleAndDots}>
+              <div className={classes.title}>
+                {title}
+              </div>
+              { numPages > 1 && (
+                <SliderDots className={classes.sliderDots} numPages={numPages} pageNum={pageNum} />
+              )}
             </div>
             <div className={classes.swipePodcastTilesRow} {...swipeHandlers}>
               {[

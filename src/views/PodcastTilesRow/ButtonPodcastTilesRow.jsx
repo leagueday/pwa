@@ -1,8 +1,9 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 
-import { makeNextColor } from '../util'
+import {makeNextColor} from '../util'
+import SliderDots from '../SliderDots'
 import SideButtons from '../SideButtons'
 import Connector from './Connector'
 import PodcastTile from './PodcastTile'
@@ -15,6 +16,9 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  sliderDots: {
+    marginLeft: 'auto',
   },
   tile: {
     flex: 1,
@@ -42,6 +46,11 @@ const useStyles = makeStyles(theme => ({
       fontWeight: theme.typography.weight.normal,
     },
   },
+  titleAndDots: {
+    alignItems: 'center',
+    display: 'flex',
+    width: '100%',
+  },
 }))
 
 const EmptyTile = () => {
@@ -61,8 +70,13 @@ const ButtonPodcastTilesRow = ({id, podcasts, title}) => {
     <Connector id={id} pageSize={PAGE_LENGTH} podcasts={podcasts}>{
       ({displayPodcasts, goNextPage, goPrevPage, numPages, pageNum}) => (
         <div className={classes.tilesRowContainer}>
-          <div className={classes.title}>
-            {title}
+          <div className={classes.titleAndDots}>
+            <div className={classes.title}>
+              {title}
+            </div>
+            { numPages > 1 && (
+              <SliderDots className={classes.sliderDots} numPages={numPages} pageNum={pageNum} />
+            )}
           </div>
           <SideButtons
             accentColor="magenta"
