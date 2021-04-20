@@ -1,16 +1,22 @@
 import React from 'react'
 import {useSwipeable} from 'react-swipeable'
+import {CSSTransition, TransitionGroup} from 'react-transition-group'
 
 import {makeStyles} from '@material-ui/core'
 
+import debounce from '../../api/debounce'
+import usePrevious from '../../api/usePrevious'
 import SliderDots from '../SliderDots'
-import {makeNextColor} from '../util'
+import {makeNextColor, slideTransitionGroup} from '../util'
 import Connector from './Connector'
 import PodcastTile from './PodcastTile'
 
 const PAGE_LENGTH = 3
 
 const useStyles = makeStyles(theme => ({
+  slideContainer: {
+    width: '100%',
+  },
   sliderDots: {
     marginLeft: 'auto',
   },
@@ -33,7 +39,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    maxWidth: '100%',
+    width: '100%',
     paddingTop: '0.75em',
     [theme.breakpoints.only('xs')]: {
       paddingTop: '3vw',
@@ -54,6 +60,10 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const useSlideTransitionGroup = makeStyles(slideTransitionGroup)
+
+const db500 = debounce(500)
+
 const EmptyTile = () => {
   return (
     <div />
@@ -67,7 +77,7 @@ const SwipePodcastTilesRow = ({id, podcasts, title}) => {
     <Connector id={id} pageSize={PAGE_LENGTH} podcasts={podcasts}>{
       ({displayPodcasts, goNextPage, goPrevPage, numPages, pageNum}) => {
         const swipeHandlers = useSwipeable({
-          onSwiped: eventData => {
+          onSwiped: db500(eventData => {
             const dir = eventData?.dir
 
             if (dir === 'Left') {
@@ -75,8 +85,12 @@ const SwipePodcastTilesRow = ({id, podcasts, title}) => {
             } else if (dir === 'Right') {
               goPrevPage()
             }
-          },
+          }),
         })
+
+        const prevPageNum = usePrevious(pageNum)
+        const isSlidingLeft = pageNum > prevPageNum
+        const slideTransition = useSlideTransitionGroup({isSlidingLeft})
 
         const nextColor = makeNextColor()
         let baseIndex = 0
@@ -91,32 +105,40 @@ const SwipePodcastTilesRow = ({id, podcasts, title}) => {
                 <SliderDots className={classes.sliderDots} numPages={numPages} pageNum={pageNum} />
               )}
             </div>
-            <div className={classes.swipePodcastTilesRow} {...swipeHandlers}>
-              {[
-                ...displayPodcasts.map(
-                  podcast => podcast ? (
-                    <div key={baseIndex++} className={classes.tile}>
-                      <PodcastTile
-                        podcast={podcast}
-                        textColor={nextColor()}
-                      />
-                    </div>
-                  ) : null
-                ),
-                ...(
-                  () => {
-                    const result = []
-                    for (let i = displayPodcasts.length; i < PAGE_LENGTH; i++) {
-                      result.push(
-                        <div key={baseIndex++} className={classes.tile}>
-                          <EmptyTile/>
-                        </div>
-                      )
-                    }
-                    return result
-                  }
-                )()
-              ]}
+            <div className={classes.slideContainer}>
+              <TransitionGroup component={null}>
+                <CSSTransition key={`${prevPageNum} ${pageNum}`}
+                               classNames={slideTransition}
+                               timeout={500}>
+                  <div className={classes.swipePodcastTilesRow} {...swipeHandlers}>
+                    {[
+                      ...displayPodcasts.map(
+                        podcast => podcast ? (
+                          <div key={baseIndex++} className={classes.tile}>
+                            <PodcastTile
+                              podcast={podcast}
+                              textColor={nextColor()}
+                            />
+                          </div>
+                        ) : null
+                      ),
+                      ...(
+                        () => {
+                          const result = []
+                          for (let i = displayPodcasts.length; i < PAGE_LENGTH; i++) {
+                            result.push(
+                              <div key={baseIndex++} className={classes.tile}>
+                                <EmptyTile/>
+                              </div>
+                            )
+                          }
+                          return result
+                        }
+                      )()
+                    ]}
+                  </div>
+                </CSSTransition>
+              </TransitionGroup>
             </div>
           </div>
         )

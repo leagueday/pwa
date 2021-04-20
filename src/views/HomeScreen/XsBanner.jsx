@@ -1,8 +1,8 @@
 import React from 'react'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import {useSwipeable} from 'react-swipeable'
-import Color from 'color'
+import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import cx from 'classnames'
+import Color from 'color'
 
 import {makeStyles} from '@material-ui/core'
 
@@ -11,6 +11,7 @@ import useHomeBanner from '../../api/useHomeBanner'
 import usePrevious from '../../api/usePrevious'
 import {actions} from '../../store'
 import {colors} from '../../styling'
+import {slideTransitionGroup} from '../util'
 
 const useStyles = makeStyles(theme => ({
   slider: {
@@ -50,47 +51,7 @@ const useElementStyles = makeStyles(theme => ({
   }),
 }))
 
-const useSlideTransitionGroup = makeStyles({
-  enter: ({isSlidingLeft}) => isSlidingLeft ? {
-    position: 'absolute',
-    overflow: 'hidden',
-    transform: 'translateX(100%)',
-  } : {
-    position: 'absolute',
-    overflow: 'hidden',
-    transform: 'translateX(-100%)',
-  },
-  enterActive: ({isSlidingLeft}) => isSlidingLeft ? {
-    position: 'absolute',
-    overflow: 'hidden',
-    transform: 'translateX(0%)',
-    transition: 'transform 500ms ease-in-out',
-    width: '100%',
-  } : {
-    position: 'absolute',
-    overflow: 'hidden',
-    transform: 'translateX(0%)',
-    transition: 'transform 500ms ease-in-out',
-    width: '100%',
-  },
-  enterDone: {
-  },
-  exit: {
-    overflow: 'hidden',
-    transform: 'translateX(0%)',
-  },
-  exitActive: ({isSlidingLeft}) => isSlidingLeft ? {
-    overflow: 'hidden',
-    transform: 'translateX(-100%)',
-    transition: 'transform 500ms ease-in-out',
-  } : {
-    overflow: 'hidden',
-    transform: 'translateX(100%)',
-    transition: 'transform 500ms ease-in-out',
-  },
-  exitDone: {
-  }
-})
+const useSlideTransitionGroup = makeStyles(slideTransitionGroup)
 
 const db500 = debounce(500)
 
