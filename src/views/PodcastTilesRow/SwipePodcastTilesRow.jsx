@@ -86,6 +86,7 @@ const SwipePodcastTilesRow = ({id, podcasts, title}) => {
               goPrevPage()
             }
           }),
+          preventDefaultTouchmoveEvent: true,
         })
 
         const prevPageNum = usePrevious(pageNum)

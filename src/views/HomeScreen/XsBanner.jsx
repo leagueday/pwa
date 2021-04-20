@@ -114,6 +114,7 @@ const XsBanner = ({className, primaryColor}) => {
         onRightSwipe()
       }
     },
+    preventDefaultTouchmoveEvent: true,
   })
 
   // slides left when the index is increasing, wraparound notwithstanding

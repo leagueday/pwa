@@ -153,6 +153,7 @@ const ExtraSmallExpanded = () => {
         dispatch(actions.condenseAudioControls())
       }
     },
+    preventDefaultTouchmoveEvent: true,
   })
 
   return (

@@ -100,6 +100,7 @@ const XsCondensedAudioControls = ({className, primaryColor}) => {
         dispatch(actions.hideAudioControls())
       }
     },
+    preventDefaultTouchmoveEvent: true,
   })
 
   const onHide = () => dispatch(actions.hideAudioControls())

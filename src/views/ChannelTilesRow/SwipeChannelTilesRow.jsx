@@ -59,6 +59,7 @@ const SwipeChannelTilesRow = ({id, channels, title}) => {
               goPrevPage()
             }
           }),
+          preventDefaultTouchmoveEvent: true,
         })
 
         const prevPageNum = usePrevious(pageNum)
