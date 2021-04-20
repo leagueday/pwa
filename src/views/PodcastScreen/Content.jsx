@@ -3,14 +3,13 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import * as colors from '../../styling/colors'
-import * as rssSelectors from '../../model/rss'
 import usePodcast from '../../api/usePodcast'
-
-import { cycleColorSequence, stripHtml } from '../util'
+import * as rssSelectors from '../../model/rss'
+import {colors} from '../../styling'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import PlusMinusButton from '../PlusMinusButton'
+import { cycleColorSequence, stripHtml } from '../util'
 import Item from './Item'
 
 const useStyles = makeStyles(theme => ({

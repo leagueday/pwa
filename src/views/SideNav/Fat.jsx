@@ -4,8 +4,8 @@ import cx from 'classnames'
 
 import {makeStyles} from '@material-ui/core/styles'
 
-import * as colors from '../../styling/colors'
 import {actions, selectors} from '../../store'
+import {colors} from '../../styling'
 import {addScrollStyle} from '../util'
 import Expander from './Expander'
 import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'

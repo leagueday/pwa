@@ -53,7 +53,7 @@ const SwipeChannelTilesRow = ({id, channels, title}) => {
         let baseIndex = 0
 
         return (
-          <BottomBlock titleRest={title}>
+          <BottomBlock numPages={numPages} pageNum={pageNum} titleRest={title}>
             <div className={classes.swipeChannelTilesRow} {...swipeHandlers}>
               {[
                 ...displayChannels.map(

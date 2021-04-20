@@ -3,7 +3,7 @@ import React from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 
-import * as colors from '../../styling/colors'
+import {colors} from '../../styling'
 import ParsePodcast from './ParsePodcast'
 import SetupMenu from './SetupMenu'
 import SetupMyChannelsSeed from './SetupMyChannelsSeed'

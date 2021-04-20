@@ -5,8 +5,8 @@ import Color from 'color'
 import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 
-import * as colors from '../../styling/colors'
 import {selectors} from '../../store'
+import {colors} from '../../styling'
 import {secondsToHms} from '../dateutil'
 
 const useStyles = makeStyles(theme => ({

@@ -3,7 +3,8 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import * as colors from '../styling/colors'
+import {colors} from '../styling'
+import SliderDots from './SliderDots'
 
 const useStyles = makeStyles(theme => ({
   bottomBlock: {
@@ -33,6 +34,12 @@ const useStyles = makeStyles(theme => ({
     flexShrink: 1,
     height: '100%',
   },
+  sliderDots: {
+    marginBottom: '1em',
+    [theme.breakpoints.only('xs')]: {
+      marginBottom: '2vw',
+    },
+  },
   title: {
     flexGrow: 0,
     flexShrink: 1,
@@ -47,6 +54,11 @@ const useStyles = makeStyles(theme => ({
       paddingRight: '2vw',
     }
   },
+  titleAndDotsRow: {
+    alignItems: 'center',
+    display: 'flex',
+    width: '100%',
+  },
   titleRow: {
     alignItems: 'center',
     display: 'flex',
@@ -56,7 +68,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     [theme.breakpoints.only('xs')]: {
       marginBottom: '2vw',
-    }
+    },
   },
   titleStart: ({accentColor}) => ({
     color: accentColor
@@ -66,20 +78,25 @@ const useStyles = makeStyles(theme => ({
 const BottomBlock = props => {
   const classes = useStyles(props)
 
-  const {className, titleRest, titleStart} = props
+  const {className, numPages, pageNum, titleRest, titleStart} = props
 
   return (
     <div className={cx(classes.bottomBlock, className)}>
-      <div className={classes.titleRow}>
-        {(titleStart || titleRest) && (
-          <div className={classes.title}>
-            <span className={classes.titleStart}>{titleStart}</span> {titleRest}
+      <div className={classes.titleAndDotsRow}>
+        <div className={classes.titleRow}>
+          {(titleStart || titleRest) && (
+            <div className={classes.title}>
+              <span className={classes.titleStart}>{titleStart}</span> {titleRest}
+            </div>
+          )}
+          <div className={classes.rhsCol}>
+            <div className={cx(classes.rhsCell, classes.pinStripe)} />
+            <div className={classes.rhsCell} />
           </div>
-        )}
-        <div className={classes.rhsCol}>
-          <div className={cx(classes.rhsCell, classes.pinStripe)} />
-          <div className={classes.rhsCell} />
         </div>
+        { numPages > 1 && (
+          <SliderDots className={classes.sliderDots} numPages={numPages} pageNum={pageNum} />
+        )}
       </div>
       <div className={classes.children}>
         {props.children}

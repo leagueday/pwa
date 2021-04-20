@@ -39,8 +39,8 @@ const ButtonChannelTilesRow = ({id, channels, title}) => {
 
   return (
     <Connector channels={channels} id={id} pageSize={PAGE_LENGTH}>{
-      ({displayChannels, goNextPage, goPrevPage}) => (
-        <BottomBlock titleRest={title}>
+      ({displayChannels, goNextPage, goPrevPage, numPages, pageNum}) => (
+        <BottomBlock numPages={numPages} pageNum={pageNum} titleRest={title}>
           <SideButtons
             accentColor="magenta"
             onLeftClick={goPrevPage}

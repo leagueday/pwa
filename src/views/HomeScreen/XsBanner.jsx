@@ -6,11 +6,11 @@ import cx from 'classnames'
 
 import {makeStyles} from '@material-ui/core'
 
-import * as colors from '../../styling/colors'
 import debounce from '../../api/debounce'
 import useHomeBanner from '../../api/useHomeBanner'
 import usePrevious from '../../api/usePrevious'
 import {actions} from '../../store'
+import {colors} from '../../styling'
 
 const useStyles = makeStyles(theme => ({
   slider: {

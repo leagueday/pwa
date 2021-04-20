@@ -2,9 +2,9 @@ import React from 'react'
 import Color from 'color'
 import cx from 'classnames'
 
-import { makeStyles } from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 
-import * as colors from '../styling/colors'
+import {colors} from '../styling'
 
 const useStyles = makeStyles({
   icon: ({isTransparent}) => ({

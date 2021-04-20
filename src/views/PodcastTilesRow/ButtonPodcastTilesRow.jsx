@@ -59,7 +59,7 @@ const ButtonPodcastTilesRow = ({id, podcasts, title}) => {
 
   return (
     <Connector id={id} pageSize={PAGE_LENGTH} podcasts={podcasts}>{
-      ({displayPodcasts, goNextPage, goPrevPage}) => (
+      ({displayPodcasts, goNextPage, goPrevPage, numPages, pageNum}) => (
         <div className={classes.tilesRowContainer}>
           <div className={classes.title}>
             {title}

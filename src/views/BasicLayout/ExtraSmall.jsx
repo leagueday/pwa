@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import * as colors from '../../styling/colors'
 import { actions, selectors } from '../../store'
+import {colors} from '../../styling'
 import AppBar from '../AppBar'
 import AudioControls from '../AudioControls'
 import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe'

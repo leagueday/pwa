@@ -1,6 +1,7 @@
 import Color from 'color'
 import stringStripHtml from 'string-strip-html'
-import * as colors from '../styling/colors'
+
+import {colors} from '../styling'
 
 export const addScrollStyle = (scrollbarColor, theme) => styleClassInitializer => ({
   ...styleClassInitializer,

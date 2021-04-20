@@ -4,7 +4,7 @@ import Color from 'color'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import * as colors from '../../styling/colors'
+import {colors} from '../../styling'
 import ComingSoon from '../ComingSoon'
 import ToggleImageButton from '../ToggleImageButton'
 

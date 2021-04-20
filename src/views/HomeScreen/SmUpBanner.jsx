@@ -6,11 +6,11 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import * as colors from '../../styling/colors'
-import {actions} from '../../store'
 import debounce from '../../api/debounce'
 import useHomeBanner from '../../api/useHomeBanner'
 import usePrevious from '../../api/usePrevious'
+import {actions} from '../../store'
+import {colors} from '../../styling'
 
 import SideButtons from '../SideButtons'
 

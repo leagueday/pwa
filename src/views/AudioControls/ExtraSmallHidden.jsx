@@ -5,7 +5,7 @@ import Color from 'color'
 import {makeStyles} from '@material-ui/core'
 
 import {actions} from '../../store'
-import * as colors from '../../styling/colors'
+import {colors} from '../../styling'
 import {IcoUp} from '../icons'
 import {makeIconButton} from '../IconButton'
 

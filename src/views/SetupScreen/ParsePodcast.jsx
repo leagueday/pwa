@@ -13,7 +13,7 @@ import parsePodcast from '../../api/parsePodcast'
 import queryPodcast from '../../api/queryPodcast'
 import usePodcasts from '../../api/usePodcasts'
 import {selectors} from '../../store'
-import * as colors from '../../styling/colors'
+import {colors} from '../../styling'
 import {addScrollStyle} from '../util'
 
 const darkMagenta = Color(colors.magenta).darken(0.33).string()

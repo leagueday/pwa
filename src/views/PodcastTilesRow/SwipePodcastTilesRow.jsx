@@ -56,7 +56,7 @@ const SwipePodcastTilesRow = ({id, podcasts, title}) => {
 
   return (
     <Connector id={id} pageSize={PAGE_LENGTH} podcasts={podcasts}>{
-      ({displayPodcasts, goNextPage, goPrevPage}) => {
+      ({displayPodcasts, goNextPage, goPrevPage, numPages, pageNum}) => {
         const swipeHandlers = useSwipeable({
           onSwiped: eventData => {
             const dir = eventData?.dir
