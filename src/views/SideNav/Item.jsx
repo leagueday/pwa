@@ -1,24 +1,24 @@
 import React from 'react'
 import cx from 'classnames'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
-import {colors} from '../../styling'
+import { colors } from '../../styling'
 
 const useStyles = makeStyles({
-  image: ({skinny}) => ({
+  image: ({ skinny }) => ({
     cursor: 'pointer',
     height: 'auto',
     width: skinny ? 'max(min(2.8vw, 2.8em), 1.8em)' : 'min(2vw, 2em)',
   }),
-  imageBox: ({skinny}) => ({
+  imageBox: ({ skinny }) => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: skinny ? 'center' : 'flex-start',
     width: skinny ? '100%' : null,
   }),
-  item: ({skinny}) => ({
+  item: ({ skinny }) => ({
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'row',
@@ -50,14 +50,8 @@ const useStyles = makeStyles({
   },
 })
 
-const Item = ({ title,
-                imageClass,
-                imageUrl,
-                isSelected,
-                onClick,
-                skinny,
-              }) => {
-  const classes = useStyles({skinny})
+const Item = ({ title, imageClass, imageUrl, isSelected, onClick, skinny }) => {
+  const classes = useStyles({ skinny })
 
   const fat = !skinny
 
@@ -66,15 +60,15 @@ const Item = ({ title,
       <div className={classes.imageBox}>
         <img className={cx(classes.image, imageClass)} src={imageUrl} />
       </div>
-      {
-        fat && (
-          <div className={cx(classes.titleBox, {[classes.itemSelected]: isSelected})}>
-            <div className={classes.title}>
-              {title}
-            </div>
-          </div>
-        )
-      }
+      {fat && (
+        <div
+          className={cx(classes.titleBox, {
+            [classes.itemSelected]: isSelected,
+          })}
+        >
+          <div className={classes.title}>{title}</div>
+        </div>
+      )}
     </div>
   )
 }

@@ -2,17 +2,23 @@ import React from 'react'
 import Color from 'color'
 import cx from 'classnames'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
-import {colors} from '../styling'
+import { colors } from '../styling'
 
 const useStyles = makeStyles({
-  icon: ({isTransparent}) => ({
+  icon: ({ isTransparent }) => ({
     height: '65%',
     strokeOpacity: isTransparent ? 0.3 : null,
     width: '65%',
   }),
-  iconButton: ({backgroundColor, color, shadowColor, size, isTransparent}) => ({
+  iconButton: ({
+    backgroundColor,
+    color,
+    shadowColor,
+    size,
+    isTransparent,
+  }) => ({
     alignItems: 'center',
     backgroundColor,
     borderRadius: '50%',
@@ -27,12 +33,16 @@ const useStyles = makeStyles({
     padding: '0.15em',
     width: size,
     '&:hover': {
-      backgroundColor: backgroundColor ? Color(backgroundColor).lighten(0.35).string() : null,
+      backgroundColor: backgroundColor
+        ? Color(backgroundColor).lighten(0.35).string()
+        : null,
       color: isTransparent ? color : null,
     },
     '&:active': {
       filter: 'none',
-      backgroundColor: backgroundColor ? Color(backgroundColor).lighten(0.45).string() : null,
+      backgroundColor: backgroundColor
+        ? Color(backgroundColor).lighten(0.45).string()
+        : null,
     },
   }),
   ripple: {
@@ -57,32 +67,40 @@ const useStyles = makeStyles({
     },
     '&:active:after': {
       transform: 'scale(0,0)',
-      opacity: .2,
+      opacity: 0.2,
       transition: '0s',
     },
   },
 })
 
 export const makeIconButton = Icon => {
-  const Component = ({ backgroundColor,
-                       className,
-                       color,
-                       iconClassName,
-                       isTransparent,
-                       onClick,
-                       shadowColor,
-                       size,
-                       strokeWidth,
-                     }) => {
-    const classes = useStyles(({backgroundColor, color, isTransparent, shadowColor, size}))
+  const Component = ({
+    backgroundColor,
+    className,
+    color,
+    iconClassName,
+    isTransparent,
+    onClick,
+    shadowColor,
+    size,
+    strokeWidth,
+  }) => {
+    const classes = useStyles({
+      backgroundColor,
+      color,
+      isTransparent,
+      shadowColor,
+      size,
+    })
 
     return (
-      <Icon classes={{
-                      outer: cx(classes.iconButton, classes.ripple, className),
-                      inner: cx(classes.icon, iconClassName)
-                    }}
-            onClick={onClick}
-            strokeWidth={strokeWidth}
+      <Icon
+        classes={{
+          outer: cx(classes.iconButton, classes.ripple, className),
+          inner: cx(classes.icon, iconClassName),
+        }}
+        onClick={onClick}
+        strokeWidth={strokeWidth}
       />
     )
   }

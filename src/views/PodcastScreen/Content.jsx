@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import usePodcast from '../../api/usePodcast'
 import * as rssSelectors from '../../model/rss'
-import {colors} from '../../styling'
+import { colors } from '../../styling'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import PlusMinusButton from '../PlusMinusButton'
@@ -13,18 +13,18 @@ import { cycleColorSequence, stripHtml } from '../util'
 import Item from './Item'
 
 const useStyles = makeStyles(theme => ({
-  accentColor: ({accentColor}) => ({
+  accentColor: ({ accentColor }) => ({
     color: accentColor,
   }),
   items: {
     paddingTop: '0.25em',
   },
-  logoImage: ({accentColor}) => ({
+  logoImage: ({ accentColor }) => ({
     border: `0.15em solid ${accentColor}`,
     display: 'block',
     width: '100%',
     [theme.breakpoints.only('xs')]: {
-      border: `0.25vw solid ${accentColor}`
+      border: `0.25vw solid ${accentColor}`,
     },
   }),
   logoImageContainer: {
@@ -96,47 +96,45 @@ const useStyles = makeStyles(theme => ({
 const maybeMakeUpColor = (idString, maybeColor) => {
   if (maybeColor) return maybeColor
 
-  const hash = (
-    () => {
-      if (!idString) return 0
+  const hash = (() => {
+    if (!idString) return 0
 
-      let result = 0
-      for (let i = 0; i < idString.length; i++) {
-        const c = idString.charCodeAt(i)
-        result = ((result<<5)-result)+c
-        result = result & result // Convert to 32bit integer
-      }
-      return Math.abs(result)
+    let result = 0
+    for (let i = 0; i < idString.length; i++) {
+      const c = idString.charCodeAt(i)
+      result = (result << 5) - result + c
+      result = result & result // Convert to 32bit integer
     }
-  )()
+    return Math.abs(result)
+  })()
 
   return cycleColorSequence[hash % cycleColorSequence.length]
 }
 
-const PodcastChannelImage = ({classes, imageUrl, podcastId}) => (
+const PodcastChannelImage = ({ classes, imageUrl, podcastId }) => (
   <div className={classes.logoImageContainer}>
     <div className={classes.logoImageContainer2}>
       <img className={classes.logoImage} src={imageUrl} />
-      <PlusMinusButton className={classes.plusMinusButton} subjectId={podcastId} subjectKind="podcast" />
+      <PlusMinusButton
+        className={classes.plusMinusButton}
+        subjectId={podcastId}
+        subjectKind="podcast"
+      />
     </div>
   </div>
 )
 
-const TextPlate = ({classes, title, description}) => (
+const TextPlate = ({ classes, title, description }) => (
   <div className={classes.textplate}>
-    <div className={classes.textplateTypename}>
-      Podcast Listing
-    </div>
+    <div className={classes.textplateTypename}>Podcast Listing</div>
     <div className={cx(classes.textplateTitleRow, classes.accentColor)}>
       {title}
     </div>
-    <div className={classes.textplateDescription}>
-      {description}
-    </div>
+    <div className={classes.textplateDescription}>{description}</div>
   </div>
 )
 
-const Content = ({podcast}) => {
+const Content = ({ podcast }) => {
   const [expandedIndex, setExpandedIndex] = React.useState()
 
   const podcastColor = React.useMemo(
@@ -144,68 +142,78 @@ const Content = ({podcast}) => {
     [podcast?.url, podcast?.color]
   )
 
-  const classes = useStyles({accentColor: podcastColor ?? colors.white80})
+  const classes = useStyles({ accentColor: podcastColor ?? colors.white80 })
 
-  const {rss} = usePodcast(podcast, {forceRevalidate: true})
+  const { rss } = usePodcast(podcast, { forceRevalidate: true })
 
   const imageUrl = rssSelectors.channelSelectors.v2.imageUrl(rss)
   const title = rssSelectors.channelSelectors.v2.title(rss)
   const description = rssSelectors.channelSelectors.v2.description(rss)
   const items = rssSelectors.channelSelectors.v2.items(rss)
 
-  const strippedDescription = React.useMemo(
-    () => stripHtml(description),
-    [description]
-  )
+  const strippedDescription = React.useMemo(() => stripHtml(description), [
+    description,
+  ])
 
   const makeToggleIsExpanded = itemIndex =>
     expandedIndex === itemIndex
-      ? () => { setExpandedIndex(null) }
-      : () => { setExpandedIndex(itemIndex) }
+      ? () => {
+          setExpandedIndex(null)
+        }
+      : () => {
+          setExpandedIndex(itemIndex)
+        }
 
   return (
     <ContentLayout
       accentColor={podcastColor}
-      renderTopLeft={
-        () => (<PodcastChannelImage classes={classes} imageUrl={imageUrl} podcastId={podcast?.id} />)
-      }
-      renderTopRight={
-        () => (<TextPlate classes={classes} title={title} description={strippedDescription} />)
-      }>
+      renderTopLeft={() => (
+        <PodcastChannelImage
+          classes={classes}
+          imageUrl={imageUrl}
+          podcastId={podcast?.id}
+        />
+      )}
+      renderTopRight={() => (
+        <TextPlate
+          classes={classes}
+          title={title}
+          description={strippedDescription}
+        />
+      )}
+    >
       <BottomBlock accentColor={podcastColor}>
         <div className={classes.items}>
-          {
-            (() => {
-              if (!items) return null
+          {(() => {
+            if (!items) return null
 
-              const iterableItems = items.map ? items : [items]
+            const iterableItems = items.map ? items : [items]
 
-              // Here the React key is inadvisably the track offset
-              // in the list, it's not great and is strictly as good
-              // as the Next-Track feature...
-              let itemIndex = 0
+            // Here the React key is inadvisably the track offset
+            // in the list, it's not great and is strictly as good
+            // as the Next-Track feature...
+            let itemIndex = 0
 
-              return iterableItems.map(
-                item => {
-                  const result = (<Item
-                      key={itemIndex}
-                      accentColor={podcastColor}
-                      podcastId={podcast?.id}
-                      podcastName={podcast?.name}
-                      podcastUrl={podcast?.url}
-                      item={item}
-                      itemIndex={itemIndex}
-                      isExpanded={expandedIndex === itemIndex}
-                      toggleIsExpanded={makeToggleIsExpanded(itemIndex)}
-                    />)
-
-                  itemIndex++
-
-                  return result
-                }
+            return iterableItems.map(item => {
+              const result = (
+                <Item
+                  key={itemIndex}
+                  accentColor={podcastColor}
+                  podcastId={podcast?.id}
+                  podcastName={podcast?.name}
+                  podcastUrl={podcast?.url}
+                  item={item}
+                  itemIndex={itemIndex}
+                  isExpanded={expandedIndex === itemIndex}
+                  toggleIsExpanded={makeToggleIsExpanded(itemIndex)}
+                />
               )
-            })()
-          }
+
+              itemIndex++
+
+              return result
+            })
+          })()}
         </div>
       </BottomBlock>
     </ContentLayout>

@@ -4,7 +4,7 @@ import Color from 'color'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {colors} from '../../styling'
+import { colors } from '../../styling'
 import ComingSoon from '../ComingSoon'
 import ToggleImageButton from '../ToggleImageButton'
 
@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
   livenessLeftPad: {
     flex: 0.5,
   },
-  sectionTitle: ({channelColor}) => ({
+  sectionTitle: ({ channelColor }) => ({
     color: channelColor,
     display: 'flex',
     fontSize: '125%',
@@ -95,7 +95,7 @@ const useStyles = makeStyles(theme => ({
 
 const mockupData = [
   {
-    episodes: [ ],
+    episodes: [],
     imageUrl: '/img/restyle_demo/lcs_versus.png',
     name: 'League of Legends',
     tags: ['riot', 'lol'],
@@ -103,86 +103,80 @@ const mockupData = [
   },
 ]
 
-const filterMockupData = tag => mockupData.filter(
-  ({tags}) => tags.find(thisTag => thisTag === tag)
-)
+const filterMockupData = tag =>
+  mockupData.filter(({ tags }) => tags.find(thisTag => thisTag === tag))
 
 const transparent = 'rgba(0,0,0,1)'
 
 const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
 
-const EventImage = ({classes, imageUrl}) => (
+const EventImage = ({ classes, imageUrl }) => (
   <img className={cx(classes.eventImage)} src={imageUrl} />
 )
 
-const EventTextplate = ({channelColor, sectionData}) => {
-  const { name, variety, } = sectionData
+const EventTextplate = ({ channelColor, sectionData }) => {
+  const { name, variety } = sectionData
 
-  const classes = useStyles({channelColor})
+  const classes = useStyles({ channelColor })
 
   return (
     <div className={classes.eventTextplate}>
       <div className={cx(classes.sectionTitle)}>
-        <div className={classes.textEllipsisOverflow}>
-          {name}
-        </div>
+        <div className={classes.textEllipsisOverflow}>{name}</div>
       </div>
       <div className={cx(classes.sectionVariety)}>
-        <div className={classes.textEllipsisOverflow}>
-          {variety}
-        </div>
+        <div className={classes.textEllipsisOverflow}>{variety}</div>
       </div>
     </div>
   )
 }
 
-const Track = ({classes}) => {
+const Track = ({ classes }) => {
   const [isPlaying, setIsPlaying] = React.useState(false)
 
-  const onClick = isPlaying ? () => setIsPlaying(false) : () => setIsPlaying(true)
+  const onClick = isPlaying
+    ? () => setIsPlaying(false)
+    : () => setIsPlaying(true)
 
   return (
     <div className={classes.track}>
-      <ToggleImageButton className={classes.logoButton}
-                         size="8vw"
-                         on={isPlaying}
-                         onClick={onClick}
-                         onImage="/img/logo_live_pause.png"
-                         offImage="/img/logo_live_play.png"
-                         shadowColor={buttonShadowColor} />
-      <div className={classes.trackText}>
-        Live
-      </div>
+      <ToggleImageButton
+        className={classes.logoButton}
+        size="8vw"
+        on={isPlaying}
+        onClick={onClick}
+        onImage="/img/logo_live_pause.png"
+        offImage="/img/logo_live_play.png"
+        shadowColor={buttonShadowColor}
+      />
+      <div className={classes.trackText}>Live</div>
     </div>
   )
 }
 
-const LiveBroadcastsMockup = ({className, channel}) => {
+const LiveBroadcastsMockup = ({ className, channel }) => {
   const classes = useStyles()
 
   return (
     <div className={cx(classes.liveBroadcasts, className)}>
       <ComingSoon className={classes.comingSoon} />
-      {
-        filterMockupData(channel.tag).map(
-          sectionData => (
-            <div key={sectionData.name} className={classes.liveBroadcast}>
-              <div className={classes.eventImageAndText}>
-                <EventImage classes={classes}
-                            imageUrl={sectionData.imageUrl} />
-                <EventTextplate channelColor={channel.color}
-                                sectionData={sectionData} />
-              </div>
-              <div className={classes.liveness}>
-                <div className={classes.livenessLeftPad}>&nbsp;</div>
-                <div className={classes.livenessContent}>
-                  <Track classes={classes} />
-                </div>
-              </div>
+      {filterMockupData(channel.tag).map(sectionData => (
+        <div key={sectionData.name} className={classes.liveBroadcast}>
+          <div className={classes.eventImageAndText}>
+            <EventImage classes={classes} imageUrl={sectionData.imageUrl} />
+            <EventTextplate
+              channelColor={channel.color}
+              sectionData={sectionData}
+            />
+          </div>
+          <div className={classes.liveness}>
+            <div className={classes.livenessLeftPad}>&nbsp;</div>
+            <div className={classes.livenessContent}>
+              <Track classes={classes} />
             </div>
-          )
-        )
-      }
+          </div>
+        </div>
+      ))}
     </div>
   )
 }

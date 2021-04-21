@@ -3,7 +3,7 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core'
 
-import {colors} from '../styling'
+import { colors } from '../styling'
 
 const useStyles = makeStyles(theme => ({
   comingSoon: {
@@ -41,21 +41,22 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.weight.bold,
     margin: '0 0.25em',
     textTransform: 'uppercase',
-  }
+  },
 }))
 
-const ComingSoon = ({className}) => {
+const ComingSoon = ({ className }) => {
   const classes = useStyles()
 
   return (
     <div className={cx(classes.comingSoon, className)}>
       <div className={classes.comingSoonRow}>
         <div className={classes.logoContainer}>
-          <img className={classes.logo} src="/img/logo_square_transparent.png" />
+          <img
+            className={classes.logo}
+            src="/img/logo_square_transparent.png"
+          />
         </div>
-        <div className={classes.text}>
-          Coming Soon
-        </div>
+        <div className={classes.text}>Coming Soon</div>
       </div>
     </div>
   )

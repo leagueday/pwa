@@ -1,10 +1,10 @@
 import React from 'react'
 import cx from 'classnames'
 
-import {makeStyles} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 
-import {colors} from '../styling'
-import {IcoDot} from './icons'
+import { colors } from '../styling'
+import { IcoDot } from './icons'
 
 const useStyles = makeStyles(theme => ({
   dotInner: {
@@ -19,12 +19,12 @@ const useStyles = makeStyles(theme => ({
   dotInnerCurrentPage: {
     color: colors.magenta,
   },
-  dotOuter: { },
+  dotOuter: {},
   sliderDots: {
     alignItems: 'center',
     display: 'flex',
     padding: '0.25em',
-  }
+  },
 }))
 
 const makeRange = length => {
@@ -35,31 +35,25 @@ const makeRange = length => {
   return result
 }
 
-const SliderDots = ({className, numPages, pageNum}) => {
+const SliderDots = ({ className, numPages, pageNum }) => {
   const classes = useStyles()
 
-  const indexes = React.useMemo(
-    () => makeRange(numPages),
-    [numPages]
-  )
+  const indexes = React.useMemo(() => makeRange(numPages), [numPages])
 
   return (
     <div className={cx(classes.sliderDots, className)}>
-      {
-        indexes.map(
-          i => (
-            isCurrentPage => (
-              <IcoDot classes={{
-                  inner: cx(classes.dotInner, {[classes.dotInnerCurrentPage]: isCurrentPage}),
-                  outer: classes.dotOuter,
-                }}
-              />
-            )
-          )(
-            i === pageNum
-          )
-        )
-      }
+      {indexes.map(i =>
+        (isCurrentPage => (
+          <IcoDot
+            classes={{
+              inner: cx(classes.dotInner, {
+                [classes.dotInnerCurrentPage]: isCurrentPage,
+              }),
+              outer: classes.dotOuter,
+            }}
+          />
+        ))(i === pageNum)
+      )}
     </div>
   )
 }

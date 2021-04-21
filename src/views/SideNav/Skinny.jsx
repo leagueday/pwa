@@ -1,20 +1,20 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
-import {actions, selectors} from '../../store'
-import {colors} from '../../styling'
-import {addScrollStyle} from '../util'
-import {makeIconButton} from '../IconButton'
+import { actions, selectors } from '../../store'
+import { colors } from '../../styling'
+import { addScrollStyle } from '../util'
+import { makeIconButton } from '../IconButton'
 import Expander from './Expander'
 import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
 import MyChannels from './MyChannels'
 import MyPodcasts from './MyPodcasts'
 import SignInOutButton from './SignInOutButton'
 
-import {IcoMagnifier} from '../icons'
+import { IcoMagnifier } from '../icons'
 
 const useStyles = makeStyles(theme => ({
   clickable: {
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     paddingTop: '0.5em',
   },
   logo: {
-    cursor: ({home}) => home ? 'default' : 'pointer',
+    cursor: ({ home }) => (home ? 'default' : 'pointer'),
     display: 'block',
     margin: '1vw',
     width: '50%',
@@ -42,7 +42,10 @@ const useStyles = makeStyles(theme => ({
     flex: 2,
     paddingRight: '5%',
   },
-  scroller: addScrollStyle(colors.blue, theme)({
+  scroller: addScrollStyle(
+    colors.blue,
+    theme
+  )({
     flex: 1,
     minHeight: 0,
     overflowX: 'hidden',
@@ -77,8 +80,8 @@ const useStyles = makeStyles(theme => ({
 
 const SearchButton = makeIconButton(IcoMagnifier)
 
-const SkinnySideNav = ({className, home}) => {
-  const classes = useStyles(({home}))
+const SkinnySideNav = ({ className, home }) => {
+  const classes = useStyles({ home })
 
   const dispatch = useDispatch()
   const goHome = home ? null : () => dispatch(actions.pushHistory('/'))
@@ -88,7 +91,11 @@ const SkinnySideNav = ({className, home}) => {
   return (
     <div className={cx(classes.sideNav, className)}>
       <div className={classes.control}>
-        <img className={classes.logo} onClick={goHome} src="/img/logo_square_transparent.png" />
+        <img
+          className={classes.logo}
+          onClick={goHome}
+          src="/img/logo_square_transparent.png"
+        />
       </div>
       <div className={classes.control}>
         <div className={classes.signInOutButtonContainer}>
@@ -101,11 +108,21 @@ const SkinnySideNav = ({className, home}) => {
       <LiveAndUpcomingLozenge className={classes.lozenge} skinny />
       <div className={classes.scroller}>
         <div className={classes.scrollerChild}>
-          <Expander className={classes.expander} text="MY CHANNELS" tag="chan" skinny>
+          <Expander
+            className={classes.expander}
+            text="MY CHANNELS"
+            tag="chan"
+            skinny
+          >
             <MyChannels skinny />
           </Expander>
           {user && (
-            <Expander className={classes.expander} text="MY PODCASTS" tag="poca" skinny>
+            <Expander
+              className={classes.expander}
+              text="MY PODCASTS"
+              tag="poca"
+              skinny
+            >
               <MyPodcasts skinny />
             </Expander>
           )}

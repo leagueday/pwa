@@ -4,10 +4,10 @@ import cx from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
 import Hidden from '@material-ui/core/Hidden'
 
-import {colors} from '../../styling'
-import {computeZebraBackgroundColor} from '../util'
-import {makeIconButton} from '../IconButton'
-import {IcoPlay} from '../icons'
+import { colors } from '../../styling'
+import { computeZebraBackgroundColor } from '../util'
+import { makeIconButton } from '../IconButton'
+import { IcoPlay } from '../icons'
 
 const PlayButton = makeIconButton(IcoPlay)
 
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     padding: '0em 1em',
     whiteSpace: 'nowrap',
   },
-  item: ({backgroundColor}) => ({
+  item: ({ backgroundColor }) => ({
     backgroundColor,
     display: 'flex',
     flexDirection: 'column',
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     padding: '0 1em',
     fontFamily: theme.typography.family.secondary,
   },
-  itemRow: ({accentColor}) => ({
+  itemRow: ({ accentColor }) => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
       color: accentColor,
     },
   }),
-  popButton: ({accentColor}) => ({
+  popButton: ({ accentColor }) => ({
     backgroundColor: colors.darkGray,
     '&:hover': {
       backgroundColor: colors.lightGray,
@@ -72,8 +72,11 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Item = ({accentColor, className, date, duration, itemIndex, title}) => {
-  const classes = useStyles({accentColor, backgroundColor: computeZebraBackgroundColor(itemIndex)})
+const Item = ({ accentColor, className, date, duration, itemIndex, title }) => {
+  const classes = useStyles({
+    accentColor,
+    backgroundColor: computeZebraBackgroundColor(itemIndex),
+  })
 
   return (
     <div className={cx(classes.item, className)}>
@@ -83,21 +86,16 @@ const Item = ({accentColor, className, date, duration, itemIndex, title}) => {
           iconClassName={classes.popButtonIcon}
           size="1.5em"
           color={colors.white}
-          shadowColor={colors.darkGray} />
+          shadowColor={colors.darkGray}
+        />
         <div className={classes.itemNumber}>
-          {itemIndex < 9 ? `0${itemIndex+1}` : String(itemIndex+1)}
+          {itemIndex < 9 ? `0${itemIndex + 1}` : String(itemIndex + 1)}
         </div>
-        <div className={classes.title}>
-          {title}
-        </div>
+        <div className={classes.title}>{title}</div>
         <Hidden smDown>
           <div className={classes.rightJustified}>
-            <div className={classes.attribute}>
-              {date}
-            </div>
-            <div className={classes.attribute}>
-              {duration}
-            </div>
+            <div className={classes.attribute}>{date}</div>
+            <div className={classes.attribute}>{duration}</div>
           </div>
         </Hidden>
       </div>

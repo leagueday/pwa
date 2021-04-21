@@ -1,4 +1,3 @@
-
 // App
 
 export const getAppState = store => store.app
@@ -6,7 +5,8 @@ export const getAudioControlsExpanded = store => store.app.audioControlsExpanded
 export const getAudioControlsHidden = store => store.app.audioControlsHidden
 export const getFilter = store => getAppState(store)?.filter
 export const getMyList = store => getAppState(store)?.userData?.my
-export const getNavExpander = tag => store => getAppState(store)?.navExpanders?.[tag]
+export const getNavExpander = tag => store =>
+  getAppState(store)?.navExpanders?.[tag]
 export const getNavVisibility = store => getAppState(store)?.navVisibility
 export const getPageNum = id => store => getAppState(store)?.pageNums[id]
 export const getTaps = store => getAppState(store)?.taps

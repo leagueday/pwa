@@ -1,11 +1,11 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 
 import useFacets from '../../api/useFacets'
-import {selectors} from '../../store'
-import {colors} from '../../styling'
+import { selectors } from '../../store'
+import { colors } from '../../styling'
 import { addScrollStyle } from '../util'
 import BasicLayout from '../BasicLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
@@ -27,19 +27,23 @@ const useStyles = makeStyles(theme => ({
   continuingContent: {
     flex: 65,
   },
-  homeContent: ({primaryColor}) => addScrollStyle(primaryColor, theme)({
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
-    height: '100%',
-    overflow: 'auto',
-    width: '100%',
-  }),
+  homeContent: ({ primaryColor }) =>
+    addScrollStyle(
+      primaryColor,
+      theme
+    )({
+      display: 'flex',
+      flexDirection: 'column',
+      flex: 1,
+      height: '100%',
+      overflow: 'auto',
+      width: '100%',
+    }),
   podcastTiles: {
     height: '100%',
     minHeight: 0,
   },
-  primaryStripe: ({primaryColor}) => ({
+  primaryStripe: ({ primaryColor }) => ({
     backgroundColor: primaryColor,
     height: '0.5vw',
     width: '100%',
@@ -52,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 const XsHomeScreen = () => {
   const facetedPodcasts = useFacets('Home')
 
-  const classes = useStyles({primaryColor})
+  const classes = useStyles({ primaryColor })
 
   const user = useSelector(selectors.getUser)
   const userName = user?.user_metadata?.full_name
@@ -70,7 +74,7 @@ const XsHomeScreen = () => {
           <div className={classes.primaryStripe} />
           <div className={classes.podcastTiles}>
             <FacetedPodcastTiles data={facetedPodcasts} />
-            <React.Suspense fallback={(<Loading />)}>
+            <React.Suspense fallback={<Loading />}>
               <ChannelCategories className={classes.channelCategories} />
             </React.Suspense>
           </div>

@@ -1,11 +1,11 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import cx from 'classnames'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
-import {actions} from '../../store'
-import {colors} from '../../styling'
+import { actions } from '../../store'
+import { colors } from '../../styling'
 
 const useStyles = makeStyles(theme => ({
   contentMockImage: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const LiveAndUpcomingLozenge = ({className, skinny}) => {
+const LiveAndUpcomingLozenge = ({ className, skinny }) => {
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -55,16 +55,19 @@ const LiveAndUpcomingLozenge = ({className, skinny}) => {
     <div className={cx(classes.liveAndUpcomingLozenge, className)}>
       <div className={classes.lozenge} onClick={yourBasicOnclick}>
         <div className={classes.title}>
-          {
-            skinny ? (
-              <span className={classes.titleLive}>LIVE</span>
-            ) : (
-              <span><span className={classes.titleLive}>LIVE</span> & UPCOMING</span>
-            )
-          }
+          {skinny ? (
+            <span className={classes.titleLive}>LIVE</span>
+          ) : (
+            <span>
+              <span className={classes.titleLive}>LIVE</span> & UPCOMING
+            </span>
+          )}
         </div>
         <div className={classes.contentMockImageContainer}>
-          <img className={classes.contentMockImage} src="/img/restyle_demo/live_and_upcoming_lozenge_content.png" />
+          <img
+            className={classes.contentMockImage}
+            src="/img/restyle_demo/live_and_upcoming_lozenge_content.png"
+          />
         </div>
       </div>
     </div>

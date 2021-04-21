@@ -8,11 +8,15 @@ import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import PlusMinusButton from '../PlusMinusButton'
-import LiveBroadcastsMockup, {mockupGetHasBroadcasts as hasLiveMockupData} from './LiveBroadcastsMockup'
-import ReplayBroadcastsMockup, {mockupGetHasBroadcasts as hasReplayMockupData} from './ReplayBroadcastsMockup'
+import LiveBroadcastsMockup, {
+  mockupGetHasBroadcasts as hasLiveMockupData,
+} from './LiveBroadcastsMockup'
+import ReplayBroadcastsMockup, {
+  mockupGetHasBroadcasts as hasReplayMockupData,
+} from './ReplayBroadcastsMockup'
 
 const useStyles = makeStyles(theme => ({
-  channelColor: ({channelColor}) => ({
+  channelColor: ({ channelColor }) => ({
     color: channelColor,
   }),
   headline: {
@@ -64,30 +68,32 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Logo = ({channel, classes}) => (
+const Logo = ({ channel, classes }) => (
   <div className={classes.logoImageContainer}>
     <img className={classes.logoImage} src={channel?.imageUrl} />
     <div className={classes.headlineTitleRow}>
-      <PlusMinusButton className={classes.plusMinusButton} subjectId={channel.tag} subjectKind="channel" />
+      <PlusMinusButton
+        className={classes.plusMinusButton}
+        subjectId={channel.tag}
+        subjectKind="channel"
+      />
     </div>
   </div>
 )
 
-const Headline = ({channel, classes, hasBroadcasts}) => (
+const Headline = ({ channel, classes, hasBroadcasts }) => (
   <div className={classes.headline}>
     <div className={cx(classes.headlineTitleRow, classes.channelColor)}>
       {channel.title}
     </div>
     <div className={classes.headlineTitleRow}>
-      {
-        hasBroadcasts ? 'Podcasts and Live Events AudioCasts' : 'Podcasts'
-      }
+      {hasBroadcasts ? 'Podcasts and Live Events AudioCasts' : 'Podcasts'}
     </div>
   </div>
 )
 
-const AggregatorContent = ({channel}) => {
-  const classes = useStyles({channelColor: channel.color})
+const AggregatorContent = ({ channel }) => {
+  const classes = useStyles({ channelColor: channel.color })
 
   const facets = useFacets(channel.tag)
 
@@ -97,29 +103,46 @@ const AggregatorContent = ({channel}) => {
   return (
     <ContentLayout
       accentColor={channel.color}
-      renderTopLeft={
-        () => (<Logo channel={channel} classes={classes} />)
-      }
-      renderTopRight={
-        () => (<Headline channel={channel} classes={classes} hasBroadcasts={hasLive || hasReplay}/>)
-      }>
-      { hasLive && (
-        <BottomBlock accentColor={channel.color} titleStart={channel.title} titleRest="Live">
+      renderTopLeft={() => <Logo channel={channel} classes={classes} />}
+      renderTopRight={() => (
+        <Headline
+          channel={channel}
+          classes={classes}
+          hasBroadcasts={hasLive || hasReplay}
+        />
+      )}
+    >
+      {hasLive && (
+        <BottomBlock
+          accentColor={channel.color}
+          titleStart={channel.title}
+          titleRest="Live"
+        >
           <LiveBroadcastsMockup
             className={classes.liveBroadcasts}
             channel={channel}
-            channelColor={channel.color} />
+            channelColor={channel.color}
+          />
         </BottomBlock>
       )}
-      { hasReplay && (
-        <BottomBlock accentColor={channel.color} titleStart={channel.title} titleRest="Replays">
+      {hasReplay && (
+        <BottomBlock
+          accentColor={channel.color}
+          titleStart={channel.title}
+          titleRest="Replays"
+        >
           <ReplayBroadcastsMockup
             className={classes.replayBroadcasts}
             channel={channel}
-            channelColor={channel.color} />
+            channelColor={channel.color}
+          />
         </BottomBlock>
       )}
-      <BottomBlock accentColor={channel.color} titleStart={channel.title} titleRest="Podcasts">
+      <BottomBlock
+        accentColor={channel.color}
+        titleStart={channel.title}
+        titleRest="Podcasts"
+      >
         <FacetedPodcastTiles data={facets} />
       </BottomBlock>
     </ContentLayout>

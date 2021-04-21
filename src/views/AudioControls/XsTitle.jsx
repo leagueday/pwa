@@ -1,18 +1,18 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {selectors} from '../../store'
-import {colors} from '../../styling'
-import {formatSecondsDuration, maybeHmsToSecondsOnly} from '../dateutil'
+import { selectors } from '../../store'
+import { colors } from '../../styling'
+import { formatSecondsDuration, maybeHmsToSecondsOnly } from '../dateutil'
 
 const useStyles = makeStyles(theme => ({
   childrenContainer: {
     maxWidth: '100%',
   },
-  podcastName: ({primaryColor}) => ({
+  podcastName: ({ primaryColor }) => ({
     color: primaryColor,
     fontSize: '3.5vw',
     overflow: 'hidden',
@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
-  titleTextContainer: ({halfHeight}) => ({
+  titleTextContainer: ({ halfHeight }) => ({
     cursor: 'pointer',
     display: 'flex',
     flexDirection: 'column',
@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.text.primary,
     },
   }),
-  titleFlex: ({halfHeight, height}) => ({
+  titleFlex: ({ halfHeight, height }) => ({
     alignItems: 'center',
     backgroundColor: colors.darkGray,
     borderRadius: halfHeight,
@@ -55,51 +55,43 @@ const useStyles = makeStyles(theme => ({
   }),
 }))
 
-const XsTitle = ({ children,
-                   className,
-                   halfHeight,
-                   height,
-                   onClick,
-                   podcastName,
-                   primaryColor,
-                   title,
+const XsTitle = ({
+  children,
+  className,
+  halfHeight,
+  height,
+  onClick,
+  podcastName,
+  primaryColor,
+  title,
 }) => {
-  const classes = useStyles({halfHeight, height, primaryColor})
+  const classes = useStyles({ halfHeight, height, primaryColor })
 
   const itemIndex = useSelector(selectors.getAudioItemIndex)
   const duration = maybeHmsToSecondsOnly(
     useSelector(selectors.getAudioDuration)
   )
 
-  const durationLabel = React.useMemo(
-      () => {
-        let formattedDuration = formatSecondsDuration(duration)
+  const durationLabel = React.useMemo(() => {
+    let formattedDuration = formatSecondsDuration(duration)
 
-        if (formattedDuration.startsWith('0:'))
-          formattedDuration = formattedDuration.substr(2)
+    if (formattedDuration.startsWith('0:'))
+      formattedDuration = formattedDuration.substr(2)
 
-        if (formattedDuration.startsWith('0'))
-          formattedDuration = formattedDuration.substr(1)
+    if (formattedDuration.startsWith('0'))
+      formattedDuration = formattedDuration.substr(1)
 
-        return formattedDuration
-      },
-    [duration]
-  )
+    return formattedDuration
+  }, [duration])
 
   return (
     <div className={cx(classes.titleFlex, className)}>
-      <div className={classes.childrenContainer}>
-        {children}
-      </div>
+      <div className={classes.childrenContainer}>{children}</div>
       <div className={classes.titleTextContainer} onClick={onClick}>
+        <div className={classes.titleText}>{title}</div>
+        <div className={classes.podcastName}>{podcastName}&nbsp;</div>
         <div className={classes.titleText}>
-          {title}
-        </div>
-        <div className={classes.podcastName}>
-          {podcastName}&nbsp;
-        </div>
-        <div className={classes.titleText}>
-          Episode {itemIndex+1} | Run length {durationLabel}&nbsp;
+          Episode {itemIndex + 1} | Run length {durationLabel}&nbsp;
         </div>
       </div>
     </div>

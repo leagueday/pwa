@@ -10,12 +10,12 @@ import {
   IcoForwardStop,
   IcoMinus,
   IcoPlus,
-  IcoRewindStop
+  IcoRewindStop,
 } from '../icons'
 
 import { selectors } from '../../store'
-import {colors} from '../../styling'
-import {makeIconButton} from '../IconButton'
+import { colors } from '../../styling'
+import { makeIconButton } from '../IconButton'
 import ToggleImageButton from '../ToggleImageButton'
 import Connector from './Connector'
 import ProgressBox from './ProgressBox'
@@ -119,74 +119,88 @@ const SmUpAudioControls = () => {
   const classes = useStyles()
 
   const itemTitle = useSelector(selectors.getAudioTitle)
-  const [titleHalfHeight, titleHeight] = isMd ? [ '0.7em', '1.4em' ] : [ '1em', '2em' ]
+  const [titleHalfHeight, titleHeight] = isMd
+    ? ['0.7em', '1.4em']
+    : ['1em', '2em']
 
   const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
 
   return (
-    <Connector>{
-      ({ forwardButtonOnclick,
-         isDisabled,
-         isOnMyList,
-         isPlaying,
-         nextButtonOnclick,
-         plusOrMinusOnclick,
-         popOnclick,
-         replayButtonOnclick,
-         titleOnclick,
-      }) => ((PlusOrMinusButton, buttonColor) => (
-        <div className={classes.audioControlsRow}>
-          <div className={classes.logoButtonCenter}>
-            <ToggleImageButton className={classes.logoButton}
-                               size={isMd ? '3.5em' : '5em'}
-                               on={isPlaying}
-                               onClick={popOnclick}
-                               onImage="/img/logo_pause.png"
-                               offImage="/img/logo_play.png"
-                               shadowColor={buttonShadowColor} />
-          </div>
-          <div className={classes.mainColumn}>
-            <div className={classes.titleRow}>
-              <PlusOrMinusButton backgroundColor={colors.brandBlack}
-                                 color={buttonColor}
-                                 onClick={plusOrMinusOnclick}
-                                 shadowColor={buttonShadowColor}
-                                 size={isMd ? '1.5em' : '2em'}
-                                 strokeWidth="3" />
-              <Title title={itemTitle}
-                     onClick={titleOnclick} />
-              <ForwardStopButton color={buttonColor}
-                                 backgroundColor={colors.brandBlack}
-                                 size={isMd ? '1.5em' : '2em'}
-                                 onClick={nextButtonOnclick}
-                                 shadowColor={buttonShadowColor} />
+    <Connector>
+      {({
+        forwardButtonOnclick,
+        isDisabled,
+        isOnMyList,
+        isPlaying,
+        nextButtonOnclick,
+        plusOrMinusOnclick,
+        popOnclick,
+        replayButtonOnclick,
+        titleOnclick,
+      }) =>
+        ((PlusOrMinusButton, buttonColor) => (
+          <div className={classes.audioControlsRow}>
+            <div className={classes.logoButtonCenter}>
+              <ToggleImageButton
+                className={classes.logoButton}
+                size={isMd ? '3.5em' : '5em'}
+                on={isPlaying}
+                onClick={popOnclick}
+                onImage="/img/logo_pause.png"
+                offImage="/img/logo_play.png"
+                shadowColor={buttonShadowColor}
+              />
             </div>
-            <div className={classes.progressRow}>
-              <RewindStopButton className={classes.barsideButton}
-                                iconClassName={classes.barsideButtonIcon}
-                                color={buttonColor}
-                                backgroundColor={colors.brandBlack}
-                                size="1.5em"
-                                onClick={replayButtonOnclick}
-                                shadowColor={buttonShadowColor} />
-              <div className={classes.progressBoxFlex}>
-                <ProgressBox />
+            <div className={classes.mainColumn}>
+              <div className={classes.titleRow}>
+                <PlusOrMinusButton
+                  backgroundColor={colors.brandBlack}
+                  color={buttonColor}
+                  onClick={plusOrMinusOnclick}
+                  shadowColor={buttonShadowColor}
+                  size={isMd ? '1.5em' : '2em'}
+                  strokeWidth="3"
+                />
+                <Title title={itemTitle} onClick={titleOnclick} />
+                <ForwardStopButton
+                  color={buttonColor}
+                  backgroundColor={colors.brandBlack}
+                  size={isMd ? '1.5em' : '2em'}
+                  onClick={nextButtonOnclick}
+                  shadowColor={buttonShadowColor}
+                />
               </div>
-              <FastFwdStopButton className={classes.barsideButton}
-                                 iconClassName={classes.barsideButtonIcon}
-                                 color={buttonColor}
-                                 backgroundColor={colors.brandBlack}
-                                 size="1.5em"
-                                 onClick={forwardButtonOnclick}
-                                 shadowColor={buttonShadowColor} />
+              <div className={classes.progressRow}>
+                <RewindStopButton
+                  className={classes.barsideButton}
+                  iconClassName={classes.barsideButtonIcon}
+                  color={buttonColor}
+                  backgroundColor={colors.brandBlack}
+                  size="1.5em"
+                  onClick={replayButtonOnclick}
+                  shadowColor={buttonShadowColor}
+                />
+                <div className={classes.progressBoxFlex}>
+                  <ProgressBox />
+                </div>
+                <FastFwdStopButton
+                  className={classes.barsideButton}
+                  iconClassName={classes.barsideButtonIcon}
+                  color={buttonColor}
+                  backgroundColor={colors.brandBlack}
+                  size="1.5em"
+                  onClick={forwardButtonOnclick}
+                  shadowColor={buttonShadowColor}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ))(
-        isOnMyList ? MinusButton : PlusButton,
-        isDisabled ? colors.darkGray : colors.magenta
-      )
-    }</Connector>
+        ))(
+          isOnMyList ? MinusButton : PlusButton,
+          isDisabled ? colors.darkGray : colors.magenta
+        )
+      }
+    </Connector>
   )
 }
 

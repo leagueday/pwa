@@ -4,14 +4,14 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {colors} from '../styling'
+import { colors } from '../styling'
 
 const useStyles = makeStyles({
   image: {
     width: '70%',
     height: '70%',
   },
-  imageButton: ({backgroundColor, shadowColor, size}) => ({
+  imageButton: ({ backgroundColor, shadowColor, size }) => ({
     alignItems: 'center',
     backgroundColor: backgroundColor,
     borderRadius: '50%',
@@ -53,26 +53,31 @@ const useStyles = makeStyles({
     },
     '&:active:after': {
       transform: 'scale(0,0)',
-      opacity: .2,
+      opacity: 0.2,
       transition: '0s',
     },
   },
 })
 
-const ToggleImageButton = ({ className,
-                             backgroundColor,
-                             size,
-                             on,
-                             onClick,
-                             onImage,
-                             offImage,
-                             shadowColor,
-                           }) => {
-  const classes = useStyles(({backgroundColor, shadowColor, size}))
+const ToggleImageButton = ({
+  className,
+  backgroundColor,
+  size,
+  on,
+  onClick,
+  onImage,
+  offImage,
+  shadowColor,
+}) => {
+  const classes = useStyles({ backgroundColor, shadowColor, size })
 
   return (
     <div className={cx(classes.imageButton, className)} onClick={onClick}>
-      <img className={classes.image} src={on ? onImage : offImage} draggable="false" />
+      <img
+        className={classes.image}
+        src={on ? onImage : offImage}
+        draggable="false"
+      />
     </div>
   )
 }

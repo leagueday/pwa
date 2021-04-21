@@ -10,7 +10,9 @@
     "postinstall": "run-s install-functions",
     "start": "http-server -p 8888 --proxy http://localhost:8888? dist",
     "start-dev": "cross-env NODE_ENV=development webpack serve --config webpack-dev.config.js --mode development",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "prettier --write .",
+    "lint-check": "prettier  --check ."
   },
   "repository": {
     "type": "git",
@@ -82,5 +84,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "husky": "^6.0.0",
+    "prettier": "2.2.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint-check"
+    }
   }
 }

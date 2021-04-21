@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { actions, selectors } from '../../store'
-import {colors} from '../../styling'
+import { colors } from '../../styling'
 import AppBar from '../AppBar'
 import AudioControls from '../AudioControls'
 import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe'
@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     overflowY: 'hidden',
     width: '100%',
   },
-  sideNav: { },
+  sideNav: {},
 }))
 
 const XsBasicLayout = props => {
@@ -59,16 +59,17 @@ const XsBasicLayout = props => {
   return (
     <div className={classes.basicLayoutCol}>
       <AppBar className={classes.appBar} home={props.home} />
-      <BrandGradientHorizontalStripe className={classes.brandStripe}/>
-      <div className={classes.contentFrame}>
-        {props.children}
-      </div>
-      { isAudioDisplayed && (
+      <BrandGradientHorizontalStripe className={classes.brandStripe} />
+      <div className={classes.contentFrame}>{props.children}</div>
+      {isAudioDisplayed && (
         <>
-          <BrandGradientHorizontalStripe className={classes.brandStripe}/>
-          <AudioControls className={classes.audioControls} primaryColor={colors.magenta} />
+          <BrandGradientHorizontalStripe className={classes.brandStripe} />
+          <AudioControls
+            className={classes.audioControls}
+            primaryColor={colors.magenta}
+          />
         </>
-      ) }
+      )}
     </div>
   )
 }

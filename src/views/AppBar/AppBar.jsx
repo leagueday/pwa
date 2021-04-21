@@ -9,9 +9,7 @@ const AppBar = props => {
   const theme = useTheme()
   const smUp = useMediaQuery(theme.breakpoints.up('sm'))
 
-  return smUp ? null : (
-    <ExtraSmall {...props} />
-  )
+  return smUp ? null : <ExtraSmall {...props} />
 }
 
 export default AppBar

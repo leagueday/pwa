@@ -10,11 +10,7 @@ const BasicLayout = props => {
   const theme = useTheme()
   const smUp = useMediaQuery(theme.breakpoints.up('sm'))
 
-  return smUp ? (
-    <SmallUp {...props} />
-  ) : (
-    <ExtraSmall {...props} />
-  )
+  return smUp ? <SmallUp {...props} /> : <ExtraSmall {...props} />
 }
 
 export default BasicLayout

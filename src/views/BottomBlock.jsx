@@ -3,7 +3,7 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {colors} from '../styling'
+import { colors } from '../styling'
 import SliderDots from './SliderDots'
 
 const useStyles = makeStyles(theme => ({
@@ -14,13 +14,13 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '0.5em',
     [theme.breakpoints.only('xs')]: {
       marginBottom: '2vw',
-    }
+    },
   },
-  pinStripe: ({accentColor}) => ({
+  pinStripe: ({ accentColor }) => ({
     borderBottom: `0.2em solid ${accentColor ?? colors.white80}`,
     [theme.breakpoints.only('xs')]: {
       borderBottom: `0.25vw solid ${accentColor ?? colors.white80}`,
-    }
+    },
   }),
   rhsCell: {
     height: '50%',
@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.only('xs')]: {
       fontSize: '95%',
       paddingRight: '2vw',
-    }
+    },
   },
   titleAndDotsRow: {
     alignItems: 'center',
@@ -70,15 +70,15 @@ const useStyles = makeStyles(theme => ({
       marginBottom: '2vw',
     },
   },
-  titleStart: ({accentColor}) => ({
-    color: accentColor
+  titleStart: ({ accentColor }) => ({
+    color: accentColor,
   }),
 }))
 
 const BottomBlock = props => {
   const classes = useStyles(props)
 
-  const {className, numPages, pageNum, titleRest, titleStart} = props
+  const { className, numPages, pageNum, titleRest, titleStart } = props
 
   return (
     <div className={cx(classes.bottomBlock, className)}>
@@ -86,7 +86,8 @@ const BottomBlock = props => {
         <div className={classes.titleRow}>
           {(titleStart || titleRest) && (
             <div className={classes.title}>
-              <span className={classes.titleStart}>{titleStart}</span> {titleRest}
+              <span className={classes.titleStart}>{titleStart}</span>{' '}
+              {titleRest}
             </div>
           )}
           <div className={classes.rhsCol}>
@@ -94,13 +95,15 @@ const BottomBlock = props => {
             <div className={classes.rhsCell} />
           </div>
         </div>
-        { numPages > 1 && (
-          <SliderDots className={classes.sliderDots} numPages={numPages} pageNum={pageNum} />
+        {numPages > 1 && (
+          <SliderDots
+            className={classes.sliderDots}
+            numPages={numPages}
+            pageNum={pageNum}
+          />
         )}
       </div>
-      <div className={classes.children}>
-        {props.children}
-      </div>
+      <div className={classes.children}>{props.children}</div>
     </div>
   )
 }

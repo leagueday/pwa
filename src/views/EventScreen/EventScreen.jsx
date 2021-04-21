@@ -1,10 +1,10 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {actions} from '../../store'
+import { actions } from '../../store'
 import BasicLayout from '../BasicLayout'
 import ContentLayout from '../ContentLayout'
 import Square from '../Square'
@@ -48,7 +48,7 @@ const mockData = {
     ],
     subTitle: 'LCS Spring Split 2021',
     title: 'LCS Replays',
-  }
+  },
 }
 
 // this is just for the data hardcoded in this component
@@ -57,19 +57,19 @@ const reformatExcelDate = dateString => {
 
   const yy = yyyy.substr(2, 2)
 
-  return `${1*mm}/${1*dd}/${yy}`
+  return `${1 * mm}/${1 * dd}/${yy}`
 }
 
 // this is just for the data hardcoded in this component
 const reformatExcelDuration = hmsString => {
   const [hh, mm, ss] = hmsString.split(':')
 
-  const maybeHh = hh === '00' ? '' : `${1*hh}:`
+  const maybeHh = hh === '00' ? '' : `${1 * hh}:`
   return `${maybeHh}${mm}:${ss}`
 }
 
 const useStyles = makeStyles(theme => ({
-  accentColor: ({color}) => ({
+  accentColor: ({ color }) => ({
     color,
   }),
   headline: {
@@ -97,7 +97,7 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
     whiteSpace: 'nowrap',
   },
-  item: { },
+  item: {},
   logoImage: {
     width: '100%',
   },
@@ -109,7 +109,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Logo = ({imageUrl, classes}) => (
+const Logo = ({ imageUrl, classes }) => (
   <div className={classes.logoImageContainer}>
     <Square className={classes.logoImageSquare}>
       <img className={classes.logoImage} src={imageUrl} />
@@ -117,35 +117,28 @@ const Logo = ({imageUrl, classes}) => (
   </div>
 )
 
-const Headline = ({classes, subTitle, title}) => (
+const Headline = ({ classes, subTitle, title }) => (
   <div className={classes.headline}>
-    <div className={classes.headlineTypename}>
-      Event Archive
-    </div>
+    <div className={classes.headlineTypename}>Event Archive</div>
     <div className={cx(classes.headlineTitleRow, classes.accentColor)}>
       {title}
     </div>
-    <div className={classes.headlineTitleRow}>
-      {subTitle}
-    </div>
+    <div className={classes.headlineTitleRow}>{subTitle}</div>
   </div>
 )
 
-const EventScreen = ({tag}) => {
+const EventScreen = ({ tag }) => {
   const dispatch = useDispatch()
 
   const data = mockData[tag] ?? mockData['lcs']
 
-  const classes = useStyles({color: data?.color})
+  const classes = useStyles({ color: data?.color })
 
-  React.useEffect(
-    () => {
-      if (!data) {
-        dispatch(actions.pushHistory('/'))
-      }
-    },
-    [data]
-  )
+  React.useEffect(() => {
+    if (!data) {
+      dispatch(actions.pushHistory('/'))
+    }
+  }, [data])
 
   const color = data?.color
   const imageUrl = data?.imageUrl
@@ -163,29 +156,29 @@ const EventScreen = ({tag}) => {
     <BasicLayout>
       <ContentLayout
         accentColor={color}
-        renderTopLeft={
-          () => (<Logo imageUrl={imageUrl} classes={classes} />)
-        }
-        renderTopRight={
-          () => (<Headline color={color} classes={classes} subTitle={subTitle} title={title} />)
-        }>
+        renderTopLeft={() => <Logo imageUrl={imageUrl} classes={classes} />}
+        renderTopRight={() => (
+          <Headline
+            color={color}
+            classes={classes}
+            subTitle={subTitle}
+            title={title}
+          />
+        )}
+      >
         <>
-          {data.items.map(
-            ([title, date, duration]) => (
-              itemIndex => (
-                <Item
-                  accentColor={color}
-                  className={classes.item}
-                  date={reformatExcelDate(date)}
-                  duration={reformatExcelDuration(duration)}
-                  itemIndex={itemIndex}
-                  key={itemIndex}
-                  title={title}
-                />
-              )
-            )(
-              nextIndex()
-            )
+          {data.items.map(([title, date, duration]) =>
+            (itemIndex => (
+              <Item
+                accentColor={color}
+                className={classes.item}
+                date={reformatExcelDate(date)}
+                duration={reformatExcelDuration(duration)}
+                itemIndex={itemIndex}
+                key={itemIndex}
+                title={title}
+              />
+            ))(nextIndex())
           )}
         </>
       </ContentLayout>

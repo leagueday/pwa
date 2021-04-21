@@ -5,10 +5,9 @@ const debounce = minIntervalMs => f => {
     if (wait) return
 
     wait = true
-    setTimeout(
-      () => { wait = false },
-      minIntervalMs
-    )
+    setTimeout(() => {
+      wait = false
+    }, minIntervalMs)
 
     f(...args)
   }

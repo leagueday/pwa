@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
-import {colors} from '../styling'
-import {IcoLeftSolid, IcoRightSolid} from './icons'
-import {makeIconButton} from './IconButton'
+import { colors } from '../styling'
+import { IcoLeftSolid, IcoRightSolid } from './icons'
+import { makeIconButton } from './IconButton'
 
 const useStyles = makeStyles({
   button: {
@@ -36,36 +36,39 @@ const useStyles = makeStyles({
 const LeftButton = makeIconButton(IcoLeftSolid)
 const RightButton = makeIconButton(IcoRightSolid)
 
-const SideButtons = ({ children,
-                       accentColor,
-                       onLeftClick,
-                       onRightClick }) => {
+const SideButtons = ({ children, accentColor, onLeftClick, onRightClick }) => {
   const classes = useStyles()
 
   return (
     <div className={classes.sideButtons}>
       {children}
       <div className={classes.overlay}>
-        {onLeftClick
-          ? (<LeftButton className={classes.button}
-                         color={accentColor}
-                         onClick={onLeftClick}
-                         backgroundColor={colors.darkerGray}
-                         shadowColor={null}
-                         strokeWidth="3"
-                         isTransparent/>)
-          : (<div/>)
-        }
-        {onRightClick
-          ? (<RightButton className={classes.button}
-                          color={accentColor}
-                          onClick={onRightClick}
-                          backgroundColor={colors.darkerGray}
-                          shadowColor={null}
-                          strokeWidth="3"
-                          isTransparent/>)
-          : (<div/>)
-        }
+        {onLeftClick ? (
+          <LeftButton
+            className={classes.button}
+            color={accentColor}
+            onClick={onLeftClick}
+            backgroundColor={colors.darkerGray}
+            shadowColor={null}
+            strokeWidth="3"
+            isTransparent
+          />
+        ) : (
+          <div />
+        )}
+        {onRightClick ? (
+          <RightButton
+            className={classes.button}
+            color={accentColor}
+            onClick={onRightClick}
+            backgroundColor={colors.darkerGray}
+            shadowColor={null}
+            strokeWidth="3"
+            isTransparent
+          />
+        ) : (
+          <div />
+        )}
       </div>
     </div>
   )

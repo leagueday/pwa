@@ -1,17 +1,17 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
 
-import {makeStyles, useTheme} from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Slider from '@material-ui/core/Slider'
 
-import {actions, selectors} from '../../store'
-import {colors} from '../../styling'
+import { actions, selectors } from '../../store'
+import { colors } from '../../styling'
 import {
   formatSecondsDuration,
   maybeHmsToSecondsOnly,
   percentageToPosition,
-  secondsToHms
+  secondsToHms,
 } from '../dateutil'
 import TooltipThumb from './TooltipThumb'
 
@@ -19,7 +19,7 @@ const PROGRESS_HEIGHT = '1.5em'
 const PROGRESS_HEIGHT_MD = '1.2em'
 
 const useStyles = makeStyles(theme => ({
-  durationLabel: ({isExpanded}) => ({
+  durationLabel: ({ isExpanded }) => ({
     bottom: 0,
     color: theme.palette.text.secondary,
     fontFamily: theme.typography.family.secondary,
@@ -62,8 +62,8 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ProgressBox = ({className, isExpanded}) => {
-  const classes = useStyles({isExpanded})
+const ProgressBox = ({ className, isExpanded }) => {
+  const classes = useStyles({ isExpanded })
 
   const position = useSelector(selectors.getAudioPosition)
   const seeked = useSelector(selectors.getAudioSeeked)
@@ -71,10 +71,9 @@ const ProgressBox = ({className, isExpanded}) => {
     useSelector(selectors.getAudioDuration)
   )
 
-  const durationLabel = React.useMemo(
-    () => formatSecondsDuration(duration),
-    [duration]
-  )
+  const durationLabel = React.useMemo(() => formatSecondsDuration(duration), [
+    duration,
+  ])
 
   const dispatch = useDispatch()
 
@@ -106,7 +105,7 @@ const ProgressBox = ({className, isExpanded}) => {
     [duration]
   )
 
-  const valueFromAudioEvent = Math.floor(position / duration * 100)
+  const valueFromAudioEvent = Math.floor((position / duration) * 100)
 
   const onChange = (event, value) => {
     // called while dragging
@@ -120,14 +119,11 @@ const ProgressBox = ({className, isExpanded}) => {
   }
 
   // on seek-completed
-  React.useEffect(
-    () => {
-      if (seeked) {
-        setEphemeralValue(null)
-      }
-    },
-    [seeked]
-  )
+  React.useEffect(() => {
+    if (seeked) {
+      setEphemeralValue(null)
+    }
+  }, [seeked])
 
   // console.log('duration', duration, 'position', position, 'value', value, 'ephValue', ephemeralValue)
 

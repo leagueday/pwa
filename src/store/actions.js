@@ -9,7 +9,7 @@ export const addToMyList = (kind, id) => ({
   payload: {
     id,
     kind,
-  }
+  },
 })
 
 export const condenseAudioControls = () => ({
@@ -47,7 +47,7 @@ export const removeFromMyList = (kind, id) => ({
   payload: {
     id,
     kind,
-  }
+  },
 })
 
 export const setFilter = (kind, cat, subcat) => ({
@@ -56,7 +56,7 @@ export const setFilter = (kind, cat, subcat) => ({
     cat,
     kind,
     subcat,
-  }
+  },
 })
 
 export const setNavExpander = (open, tag) => ({
@@ -64,7 +64,7 @@ export const setNavExpander = (open, tag) => ({
   payload: {
     open,
     tag,
-  }
+  },
 })
 
 export const setPageNum = (id, pageNum) => ({
@@ -72,21 +72,21 @@ export const setPageNum = (id, pageNum) => ({
   payload: {
     id,
     pageNum,
-  }
+  },
 })
 
 export const setUser = user => ({
   type: ActionType.SET_USER,
   payload: {
-    user
-  }
+    user,
+  },
 })
 
 export const setUserData = userData => ({
   type: ActionType.SET_USERDATA,
   payload: {
-    userData
-  }
+    userData,
+  },
 })
 
 export const showAudioControls = () => ({
@@ -96,8 +96,7 @@ export const showAudioControls = () => ({
 
 export const showNav = () => ({
   type: ActionType.SHOW_NAV,
-  payload: {
-  }
+  payload: {},
 })
 
 // Audio
@@ -105,85 +104,80 @@ export const showNav = () => ({
 export const audioSeeked = position => ({
   type: ActionType.AUDIO_SEEKED,
   payload: {
-    position
-  }
+    position,
+  },
 })
 
 export const forwardAudio = () => ({
   type: ActionType.FORWARD_AUDIO,
-  payload: {
-  }
+  payload: {},
 })
 
 export const pauseAudio = () => ({
   type: ActionType.PAUSE_ACTION,
-  payload: {
-  }
+  payload: {},
 })
 
 export const pauseAudioEvent = () => ({
   type: ActionType.PAUSE_EVENT,
-  payload: {
-  },
+  payload: {},
 })
 
 export const playAudio = () => ({
   type: ActionType.PLAY_ACTION,
-  payload: {
-  },
+  payload: {},
 })
 
 export const playAudioEvent = () => ({
   type: ActionType.PLAY_EVENT,
-  payload: {
-  },
+  payload: {},
 })
 
 export const replayAudio = () => ({
   type: ActionType.REPLAY_AUDIO,
-  payload: {
-  }
+  payload: {},
 })
 
 export const seekAudio = position => ({
   type: ActionType.SEEK_AUDIO,
   payload: {
-    position
-  }
+    position,
+  },
 })
 
-export const selectAudio =
-  (podcastId,
-   podcastName,
-   podcastUrl,
-   audioUrl,
-   itemIndex,
-   advertisedDuration,
-   title,
-   position) => ({
-    type: ActionType.SELECT_AUDIO,
-    payload: {
-      audioUrl,
-      advertisedDuration,
-      itemIndex,
-      podcastId,
-      podcastName,
-      podcastUrl,
-      title,
-      position,
-    }
-  })
+export const selectAudio = (
+  podcastId,
+  podcastName,
+  podcastUrl,
+  audioUrl,
+  itemIndex,
+  advertisedDuration,
+  title,
+  position
+) => ({
+  type: ActionType.SELECT_AUDIO,
+  payload: {
+    audioUrl,
+    advertisedDuration,
+    itemIndex,
+    podcastId,
+    podcastName,
+    podcastUrl,
+    title,
+    position,
+  },
+})
 
 export const setAudioDuration = duration => ({
   type: ActionType.SET_AUDIO_DURATION,
   payload: {
     duration,
-  }
+  },
 })
 
 export const setAudioPosition = position => ({
   type: ActionType.SET_AUDIO_POSITION,
   payload: {
     position,
-  }
+  },
 })

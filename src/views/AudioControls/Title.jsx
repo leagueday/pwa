@@ -2,7 +2,7 @@ import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {colors} from '../../styling'
+import { colors } from '../../styling'
 
 const TITLE_HEIGHT = '2em'
 const HALF_HEIGHT = '1em'
@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Title = ({onClick, title}) => {
+const Title = ({ onClick, title }) => {
   const classes = useStyles()
 
   return (

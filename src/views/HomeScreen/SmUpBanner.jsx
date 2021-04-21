@@ -1,5 +1,5 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import cx from 'classnames'
 import Color from 'color'
@@ -9,11 +9,11 @@ import { makeStyles } from '@material-ui/core/styles'
 import debounce from '../../api/debounce'
 import useHomeBanner from '../../api/useHomeBanner'
 import usePrevious from '../../api/usePrevious'
-import {actions} from '../../store'
-import {colors} from '../../styling'
+import { actions } from '../../store'
+import { colors } from '../../styling'
 
 import SideButtons from '../SideButtons'
-import {slideTransitionGroup} from '../util'
+import { slideTransitionGroup } from '../util'
 
 const useStyles = makeStyles(theme => ({
   banner: {
@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
-  textGroup: ({accentColor}) => ({
+  textGroup: ({ accentColor }) => ({
     alignItems: 'flex-start',
     background: `${Color(accentColor).fade(0.1).darken(0.65).toString()}`,
     bottom: 0,
@@ -66,7 +66,7 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
     width: '100%',
   }),
-  title: ({accentColor}) => ({
+  title: ({ accentColor }) => ({
     color: accentColor,
     fontWeight: theme.typography.weight.bold,
     textOverflow: 'ellipsis',
@@ -76,22 +76,24 @@ const useStyles = makeStyles(theme => ({
 
 const useSlideTransitionGroup = makeStyles(slideTransitionGroup)
 
-const Element = ({classes, imageUrl, text, title, onClick}) => (
+const Element = ({ classes, imageUrl, text, title, onClick }) => (
   <div className={classes.element} onClick={onClick}>
     <div className={classes.imageContainer}>
       <img className={classes.image} src={imageUrl} draggable="false" />
     </div>
     <div className={classes.textGroup}>
       <div className={classes.title}>{title}</div>
-      <div className={classes.text} onClick={onClick}>{text}</div>
+      <div className={classes.text} onClick={onClick}>
+        {text}
+      </div>
     </div>
   </div>
 )
 
 const db500 = debounce(500)
 
-const SmUpBanner = ({className, primaryColor}) => {
-  const {data} = useHomeBanner()
+const SmUpBanner = ({ className, primaryColor }) => {
+  const { data } = useHomeBanner()
 
   const numElements = data ? data.length : 0
 
@@ -99,63 +101,66 @@ const SmUpBanner = ({className, primaryColor}) => {
 
   const prevIndex = usePrevious(currentIndex)
 
-  const [imageUrl, title, text, rawAccentColor, link] = currentIndex < numElements ? data[currentIndex] : []
+  const [imageUrl, title, text, rawAccentColor, link] =
+    currentIndex < numElements ? data[currentIndex] : []
 
   const accentColor = colors[rawAccentColor] ?? rawAccentColor
 
-  const classes = useStyles({accentColor, primaryColor})
+  const classes = useStyles({ accentColor, primaryColor })
 
   // slides left when the index is increasing, wraparound notwithstanding
   const isSlidingLeft =
-    (currentIndex === 0 && prevIndex === numElements - 1)
-    || (currentIndex > prevIndex && (currentIndex !== numElements - 1 || prevIndex !== 0))
+    (currentIndex === 0 && prevIndex === numElements - 1) ||
+    (currentIndex > prevIndex &&
+      (currentIndex !== numElements - 1 || prevIndex !== 0))
 
-  const slideTransition = useSlideTransitionGroup({isSlidingLeft})
+  const slideTransition = useSlideTransitionGroup({ isSlidingLeft })
 
   const dispatch = useDispatch()
   const onClick = () => dispatch(actions.pushHistory(link))
 
   const setCurrentIndexDebounced = db500(setCurrentIndex)
 
-  const [onLeftClick, onRightClick] = numElements === 0 ? [
-    () => {},
-    () => {},
-  ] : [
-    (
-      prevIndex => {
-        return () => setCurrentIndexDebounced(prevIndex)
-      }
-    )(
-      currentIndex === 0 ? numElements - 1 : currentIndex - 1
-    ),
-    (
-      nextIndex => () => setCurrentIndexDebounced(nextIndex)
-    )(
-      (currentIndex + 1) % numElements
-    ),
-  ]
+  const [onLeftClick, onRightClick] =
+    numElements === 0
+      ? [() => {}, () => {}]
+      : [
+          (prevIndex => {
+            return () => setCurrentIndexDebounced(prevIndex)
+          })(currentIndex === 0 ? numElements - 1 : currentIndex - 1),
+          (nextIndex => () => setCurrentIndexDebounced(nextIndex))(
+            (currentIndex + 1) % numElements
+          ),
+        ]
 
   return (
     <div className={cx(classes.banner, className)}>
-      {
-        imageUrl && (
-          <SideButtons
-            currentIndex={currentIndex}
-            setCurrentIndex={setCurrentIndexDebounced}
-            numElements={data.length}
-            onLeftClick={onLeftClick}
-            onRightClick={onRightClick}
-            primaryColor={accentColor}>
-              <TransitionGroup component={null}>
-                <CSSTransition key={`${prevIndex} ${currentIndex}`}
-                               classNames={slideTransition}
-                               timeout={500}>
-                  <Element classes={classes} text={text} title={title} imageUrl={imageUrl} onClick={onClick} />
-                </CSSTransition>
-              </TransitionGroup>
-          </SideButtons>
-        )
-      }
+      {imageUrl && (
+        <SideButtons
+          currentIndex={currentIndex}
+          setCurrentIndex={setCurrentIndexDebounced}
+          numElements={data.length}
+          onLeftClick={onLeftClick}
+          onRightClick={onRightClick}
+          primaryColor={accentColor}
+        >
+          <TransitionGroup component={null}>
+            <CSSTransition
+              key={`${prevIndex} ${currentIndex}`}
+              classNames={slideTransition}
+              timeout={500}
+            >
+              <Element
+                classes={classes}
+                text={text}
+                title={title}
+                imageUrl={imageUrl}
+                onClick={onClick}
+              />
+            </CSSTransition>
+          </TransitionGroup>
+        </SideButtons>
+      )}
     </div>
   )
 }

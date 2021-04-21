@@ -1,13 +1,13 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 import Color from 'color'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 
-import {selectors} from '../../store'
-import {colors} from '../../styling'
-import {secondsToHms} from '../dateutil'
+import { selectors } from '../../store'
+import { colors } from '../../styling'
+import { secondsToHms } from '../dateutil'
 
 const useStyles = makeStyles(theme => ({
   sliderThumbTooltip: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const TooltipThumb = ({children, open, value}) => {
+const TooltipThumb = ({ children, open, value }) => {
   const classes = useStyles()
 
   const position = useSelector(selectors.getAudioPosition)
@@ -37,11 +37,11 @@ const TooltipThumb = ({children, open, value}) => {
   // know if it's preformatted (ephemeral value during
   // drag), it would be a string, else it's a number 1-100
   // representing the Slider position
-  const hms = typeof(value) === 'string' ? value : secondsToHms(position)
+  const hms = typeof value === 'string' ? value : secondsToHms(position)
 
   return (
     <Tooltip
-      classes={{tooltip: classes.sliderThumbTooltip}}
+      classes={{ tooltip: classes.sliderThumbTooltip }}
       open={open}
       enterTouchDelay={0}
       placement="right"

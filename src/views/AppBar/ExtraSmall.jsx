@@ -1,15 +1,15 @@
 import React from 'react'
-import {useSelector, useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import cx from 'classnames'
 
-import {makeStyles} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 
-import {actions, selectors} from '../../store'
-import {colors} from '../../styling'
+import { actions, selectors } from '../../store'
+import { colors } from '../../styling'
 import MenuNav from '../SideNav/MenuNav'
-import {makeIconButton} from '../IconButton'
+import { makeIconButton } from '../IconButton'
 
-import {IcoMenu} from '../icons'
+import { IcoMenu } from '../icons'
 
 const MenuButton = makeIconButton(IcoMenu)
 
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   logoContainer: {
     width: '8vw',
   },
-  menuButton: { },
+  menuButton: {},
   menuButtonContainer: {
     marginLeft: 'auto',
   },
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 //
-const XsAppBar = ({className, home}) => {
+const XsAppBar = ({ className, home }) => {
   const dispatch = useDispatch()
   const classes = useStyles()
 
@@ -72,9 +72,18 @@ const XsAppBar = ({className, home}) => {
       </div>
       <div className={classes.menuButtonContainer}>
         <span ref={navButtonRef}>
-          <MenuButton className={classes.menuButton} strokeWidth={3} onClick={toggleMenuNavVisibility}/>
+          <MenuButton
+            className={classes.menuButton}
+            strokeWidth={3}
+            onClick={toggleMenuNavVisibility}
+          />
         </span>
-        <MenuNav anchor={anchorRef} isVisible={isMenuNavVisible} hide={hideMenuNav} home={home} />
+        <MenuNav
+          anchor={anchorRef}
+          isVisible={isMenuNavVisible}
+          hide={hideMenuNav}
+          home={home}
+        />
       </div>
     </div>
   )

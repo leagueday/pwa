@@ -7,7 +7,7 @@ const useStyles = makeStyles(theme => ({
   backgrounder: {
     userSelect: 'none',
   },
-  clicker: ({color}) => ({
+  clicker: ({ color }) => ({
     color,
     cursor: 'pointer',
     paddingLeft: '0.5em',
@@ -17,27 +17,31 @@ const useStyles = makeStyles(theme => ({
   }),
 }))
 
-const Backgrounder = ({className, text, textMore, color}) => {
-  const classes = useStyles({color})
+const Backgrounder = ({ className, text, textMore, color }) => {
+  const classes = useStyles({ color })
 
   const [isExpanded, setIsExpanded] = React.useState(false)
 
-  const onClick = isExpanded ? () => setIsExpanded(false) : () => setIsExpanded(true)
+  const onClick = isExpanded
+    ? () => setIsExpanded(false)
+    : () => setIsExpanded(true)
 
   return (
     <div className={cx(classes.backgrounder, className)}>
       <div className={classes.text}>
         <span>{text}</span>
-        {
-          isExpanded ? (
-            <>
-              <span>{textMore}</span>
-              <span className={classes.clicker} onClick={onClick}>less</span>
-            </>
-          ) : (
-            <span className={classes.clicker} onClick={onClick}>more...</span>
-          )
-        }
+        {isExpanded ? (
+          <>
+            <span>{textMore}</span>
+            <span className={classes.clicker} onClick={onClick}>
+              less
+            </span>
+          </>
+        ) : (
+          <span className={classes.clicker} onClick={onClick}>
+            more...
+          </span>
+        )}
       </div>
     </div>
   )

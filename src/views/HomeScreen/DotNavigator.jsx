@@ -3,14 +3,14 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {colors} from '../../styling'
+import { colors } from '../../styling'
 import IcoDot from '../icons/IcoDot'
 
 const useStyles = makeStyles(theme => ({
   dotInner: {
     color: colors.white80,
   },
-  dotInnerSelected: ({primaryColor}) => ({
+  dotInnerSelected: ({ primaryColor }) => ({
     color: primaryColor,
   }),
   dotNav: {
@@ -33,35 +33,40 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const DotNavigator = ({currentIndex, numElements, primaryColor, setCurrentIndex}) => {
-  const classes = useStyles({primaryColor})
+const DotNavigator = ({
+  currentIndex,
+  numElements,
+  primaryColor,
+  setCurrentIndex,
+}) => {
+  const classes = useStyles({ primaryColor })
 
   return (
     <div className={classes.dotNav}>
-      {
-        (
-          () => {
-            const dots = []
+      {(() => {
+        const dots = []
 
-            for (let i = 0; i < numElements; i++) {
-              const isSelected = i === currentIndex
+        for (let i = 0; i < numElements; i++) {
+          const isSelected = i === currentIndex
 
-              dots.push(
-                <IcoDot
-                  key={i}
-                  classes={{
-                    inner: cx(classes.dotInner, {[classes.dotInnerSelected]: isSelected}),
-                    outer: cx(classes.dotOuter, {[classes.dotOuterSelected]: isSelected}),
-                  }}
-                  onClick={isSelected ? null : () => setCurrentIndex(i)}
-                />
-              )
-            }
+          dots.push(
+            <IcoDot
+              key={i}
+              classes={{
+                inner: cx(classes.dotInner, {
+                  [classes.dotInnerSelected]: isSelected,
+                }),
+                outer: cx(classes.dotOuter, {
+                  [classes.dotOuterSelected]: isSelected,
+                }),
+              }}
+              onClick={isSelected ? null : () => setCurrentIndex(i)}
+            />
+          )
+        }
 
-            return dots
-          }
-        )()
-      }
+        return dots
+      })()}
     </div>
   )
 }

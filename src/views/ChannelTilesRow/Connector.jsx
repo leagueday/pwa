@@ -1,9 +1,9 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-import {actions, selectors} from '../../store'
+import { actions, selectors } from '../../store'
 
-const Connector = ({channels, children, id, pageSize}) => {
+const Connector = ({ channels, children, id, pageSize }) => {
   const maybePageNum = useSelector(selectors.getPageNum(id))
   const dispatch = useDispatch()
 
@@ -12,7 +12,8 @@ const Connector = ({channels, children, id, pageSize}) => {
 
   const numPages = Math.ceil((channels?.length ?? 0) / pageSize)
 
-  const goNextPage = pageNum + 1 < numPages ? () => setPageNum(pageNum + 1) : null
+  const goNextPage =
+    pageNum + 1 < numPages ? () => setPageNum(pageNum + 1) : null
   const goPrevPage = pageNum > 0 ? () => setPageNum(pageNum - 1) : null
 
   const displayChannels =
@@ -21,7 +22,9 @@ const Connector = ({channels, children, id, pageSize}) => {
       : []
 
   return (
-    <>{children({displayChannels, goNextPage, goPrevPage, numPages, pageNum})}</>
+    <>
+      {children({ displayChannels, goNextPage, goPrevPage, numPages, pageNum })}
+    </>
   )
 }
 
