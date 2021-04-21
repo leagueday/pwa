@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Tooltip from '@material-ui/core/Tooltip'
 
-import * as colors from '../styling/colors'
+import {colors} from '../styling'
 
 import {
   IcoDot,

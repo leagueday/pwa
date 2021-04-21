@@ -4,8 +4,8 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import * as colors from '../../styling/colors'
-import { actions } from '../../store'
+import {actions} from '../../store'
+import {colors} from '../../styling'
 
 const useStyles = makeStyles(theme => ({
   contentMockImage: {

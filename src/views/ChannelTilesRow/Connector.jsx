@@ -21,7 +21,9 @@ const Connector = ({ channels, children, id, pageSize }) => {
       ? channels.slice(pageNum * pageSize, (pageNum + 1) * pageSize)
       : []
 
-  return <>{children({ displayChannels, goNextPage, goPrevPage })}</>
+  return (
+    <>{children({displayChannels, goNextPage, goPrevPage, numPages, pageNum})}</>
+  )
 }
 
 export default Connector

@@ -6,8 +6,8 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core'
 
-import * as colors from '../../styling/colors'
-import { actions, selectors } from '../../store'
+import {actions, selectors} from '../../store'
+import {colors} from '../../styling'
 import {
   IcoDown,
   IcoFastFwdStop,
@@ -100,6 +100,7 @@ const XsCondensedAudioControls = ({ className, primaryColor }) => {
         dispatch(actions.hideAudioControls())
       }
     },
+    preventDefaultTouchmoveEvent: true,
   })
 
   const onHide = () => dispatch(actions.hideAudioControls())

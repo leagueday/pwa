@@ -13,10 +13,9 @@ import {
   IcoRewindStop,
 } from '../icons'
 
-import * as colors from '../../styling/colors'
 import { selectors } from '../../store'
-
-import { makeIconButton } from '../IconButton'
+import {colors} from '../../styling'
+import {makeIconButton} from '../IconButton'
 import ToggleImageButton from '../ToggleImageButton'
 import Connector from './Connector'
 import ProgressBox from './ProgressBox'

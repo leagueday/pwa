@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import * as colors from '../../styling/colors'
-import { channelSelectors } from '../../model/rss'
 import useMyList from '../../api/useMyList'
 import usePodcast from '../../api/usePodcast'
 import usePodcasts from '../../api/usePodcasts'
-import { actions, selectors, useLocationPathname } from '../../store'
+import {channelSelectors} from '../../model/rss'
+import {actions, selectors, useLocationPathname} from '../../store'
+import {colors} from '../../styling'
 
 import Item from './Item'
 

@@ -5,8 +5,8 @@ import cx from 'classnames'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Slider from '@material-ui/core/Slider'
 
-import * as colors from '../../styling/colors'
-import { actions, selectors } from '../../store'
+import {actions, selectors} from '../../store'
+import {colors} from '../../styling'
 import {
   formatSecondsDuration,
   maybeHmsToSecondsOnly,

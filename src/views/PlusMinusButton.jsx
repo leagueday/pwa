@@ -2,11 +2,11 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import Color from 'color'
 
-import * as colors from '../styling/colors'
-import { selectors } from '../store'
 import useMyList from '../api/useMyList'
-import { makeIconButton } from './IconButton'
-import { IcoMinus, IcoPlus } from './icons'
+import {selectors} from '../store'
+import {colors} from '../styling'
+import {makeIconButton} from './IconButton'
+import {IcoMinus, IcoPlus} from './icons'
 
 const MinusButton = makeIconButton(IcoMinus)
 const PlusButton = makeIconButton(IcoPlus)
