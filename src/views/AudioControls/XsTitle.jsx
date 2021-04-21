@@ -4,9 +4,9 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {selectors} from '../../store'
-import {colors} from '../../styling'
-import {formatSecondsDuration, maybeHmsToSecondsOnly} from '../dateutil'
+import { selectors } from '../../store'
+import { colors } from '../../styling'
+import { formatSecondsDuration, maybeHmsToSecondsOnly } from '../dateutil'
 
 const useStyles = makeStyles(theme => ({
   childrenContainer: {

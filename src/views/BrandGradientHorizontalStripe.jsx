@@ -3,7 +3,7 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {colors} from '../styling'
+import { colors } from '../styling'
 
 const useStyles = makeStyles(theme => ({
   brandGradientHorizontalStripe: {

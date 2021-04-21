@@ -1,7 +1,7 @@
 import Color from 'color'
 import stringStripHtml from 'string-strip-html'
 
-import {colors} from '../styling'
+import { colors } from '../styling'
 
 export const addScrollStyle = (
   scrollbarColor,
@@ -69,50 +69,56 @@ export const makeNextColor = () =>
   })(0)
 
 export const slideTransitionGroup = {
-  enter: ({isSlidingLeft}) => isSlidingLeft ? {
-    position: 'absolute',
-    overflow: 'hidden',
-    transform: 'translateX(100%)',
-  } : {
-    position: 'absolute',
-    overflow: 'hidden',
-    transform: 'translateX(-100%)',
-  },
-  enterActive: ({isSlidingLeft}) => isSlidingLeft ? {
-    position: 'absolute',
-    overflow: 'hidden',
-    transform: 'translateX(0%)',
-    transition: 'transform 500ms ease-in-out',
-    width: '100%',
-  } : {
-    position: 'absolute',
-    overflow: 'hidden',
-    transform: 'translateX(0%)',
-    transition: 'transform 500ms ease-in-out',
-    width: '100%',
-  },
-  enterDone: {
-  },
+  enter: ({ isSlidingLeft }) =>
+    isSlidingLeft
+      ? {
+          position: 'absolute',
+          overflow: 'hidden',
+          transform: 'translateX(100%)',
+        }
+      : {
+          position: 'absolute',
+          overflow: 'hidden',
+          transform: 'translateX(-100%)',
+        },
+  enterActive: ({ isSlidingLeft }) =>
+    isSlidingLeft
+      ? {
+          position: 'absolute',
+          overflow: 'hidden',
+          transform: 'translateX(0%)',
+          transition: 'transform 500ms ease-in-out',
+          width: '100%',
+        }
+      : {
+          position: 'absolute',
+          overflow: 'hidden',
+          transform: 'translateX(0%)',
+          transition: 'transform 500ms ease-in-out',
+          width: '100%',
+        },
+  enterDone: {},
   exit: {
     overflow: 'hidden',
     transform: 'translateX(0%)',
   },
-  exitActive: ({isSlidingLeft}) => isSlidingLeft ? {
-    overflow: 'hidden',
-    transform: 'translateX(-100%)',
-    transition: 'transform 500ms ease-in-out',
-  } : {
-    overflow: 'hidden',
-    transform: 'translateX(100%)',
-    transition: 'transform 500ms ease-in-out',
-  },
-  exitDone: {
-  }
+  exitActive: ({ isSlidingLeft }) =>
+    isSlidingLeft
+      ? {
+          overflow: 'hidden',
+          transform: 'translateX(-100%)',
+          transition: 'transform 500ms ease-in-out',
+        }
+      : {
+          overflow: 'hidden',
+          transform: 'translateX(100%)',
+          transition: 'transform 500ms ease-in-out',
+        },
+  exitDone: {},
 }
 
-export const stripHtml =
-  maybeHtmlString => {
-    if (!maybeHtmlString) return maybeHtmlString
+export const stripHtml = maybeHtmlString => {
+  if (!maybeHtmlString) return maybeHtmlString
 
   const t = typeof maybeHtmlString
 

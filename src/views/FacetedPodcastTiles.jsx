@@ -20,13 +20,14 @@ const FacetedPodcastTiles = ({ data }) => {
 
   return (
     <div className={classes.facetedPodcastTiles}>
-      {
-        entries.map(
-          ([title, podcasts]) => (
-            <PodcastTilesRow key={index++} id={title} podcasts={podcasts} title={title} />
-          )
-        )
-      }
+      {entries.map(([title, podcasts]) => (
+        <PodcastTilesRow
+          key={index++}
+          id={title}
+          podcasts={podcasts}
+          title={title}
+        />
+      ))}
     </div>
   )
 }

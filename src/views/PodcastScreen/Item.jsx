@@ -6,12 +6,12 @@ import Collapse from '@material-ui/core/Collapse'
 import Hidden from '@material-ui/core/Hidden'
 
 import { itemSelectors } from '../../model/rss'
-import {actions, constants as storeConstants, selectors} from '../../store'
-import {colors} from '../../styling'
-import {formatDatetime, secondsToHms} from '../dateutil'
-import {makeIconButton} from '../IconButton'
-import {IcoPause, IcoPlay} from '../icons'
-import {stripHtml, computeZebraBackgroundColor} from '../util'
+import { actions, constants as storeConstants, selectors } from '../../store'
+import { colors } from '../../styling'
+import { formatDatetime, secondsToHms } from '../dateutil'
+import { makeIconButton } from '../IconButton'
+import { IcoPause, IcoPlay } from '../icons'
+import { stripHtml, computeZebraBackgroundColor } from '../util'
 
 const PauseButton = makeIconButton(IcoPause)
 const PlayButton = makeIconButton(IcoPlay)

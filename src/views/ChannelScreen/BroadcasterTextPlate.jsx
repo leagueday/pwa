@@ -4,7 +4,7 @@ import cx from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
 import Hidden from '@material-ui/core/Hidden'
 
-import {colors} from '../../styling'
+import { colors } from '../../styling'
 import Backgrounder from './Backgrounder'
 import SchedulePopper from './SchedulePopper'
 

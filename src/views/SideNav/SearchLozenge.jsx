@@ -3,8 +3,8 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {colors} from '../../styling'
-import {IcoMagnifier} from '../icons'
+import { colors } from '../../styling'
+import { IcoMagnifier } from '../icons'
 
 const useStyles = makeStyles(theme => ({
   entryContainer: {

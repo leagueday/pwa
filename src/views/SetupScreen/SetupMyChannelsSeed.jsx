@@ -12,9 +12,9 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import alterUser from '../../api/alterUser.js'
 import fetchUserData from '../../api/fetchUserData'
 import useChannels from '../../api/useChannels'
-import {selectors} from '../../store'
-import {colors} from '../../styling'
-import {addScrollStyle} from '../util'
+import { selectors } from '../../store'
+import { colors } from '../../styling'
+import { addScrollStyle } from '../util'
 
 const darkMagenta = Color(colors.magenta).darken(0.33).string()
 

@@ -14,8 +14,8 @@ import {
 } from '../icons'
 
 import { selectors } from '../../store'
-import {colors} from '../../styling'
-import {makeIconButton} from '../IconButton'
+import { colors } from '../../styling'
+import { makeIconButton } from '../IconButton'
 import ToggleImageButton from '../ToggleImageButton'
 import Connector from './Connector'
 import ProgressBox from './ProgressBox'

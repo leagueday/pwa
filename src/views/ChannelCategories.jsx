@@ -35,13 +35,14 @@ const ChannelCategories = ({ className }) => {
 
   return (
     <div className={cx(className, classes.channelCategories)}>
-      {
-        channelsByCat.map(
-          ([title, channels]) => (
-            <ChannelTilesRow id={`chan.${title}`} channels={channels} key={title} title={title} />
-          )
-        )
-      }
+      {channelsByCat.map(([title, channels]) => (
+        <ChannelTilesRow
+          id={`chan.${title}`}
+          channels={channels}
+          key={title}
+          title={title}
+        />
+      ))}
     </div>
   )
 }

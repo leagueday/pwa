@@ -6,8 +6,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import useChannels from '../../api/useChannels'
-import {actions} from '../../store'
-import {colors} from '../../styling'
+import { actions } from '../../store'
+import { colors } from '../../styling'
 
 const useStyles = makeStyles(theme => ({
   channelChildren: {

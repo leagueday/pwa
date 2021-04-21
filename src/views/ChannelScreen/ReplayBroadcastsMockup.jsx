@@ -4,8 +4,8 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {actions} from '../../store'
-import {colors} from '../../styling'
+import { actions } from '../../store'
+import { colors } from '../../styling'
 import { IcoPause, IcoPlay, IcoPlus } from '../icons'
 import ComingSoon from '../ComingSoon'
 

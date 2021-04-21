@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {actions} from '../../store'
-import {colors} from '../../styling'
+import { actions } from '../../store'
+import { colors } from '../../styling'
 import PlusMinusButton from '../PlusMinusButton'
 import Square from '../Square'
 

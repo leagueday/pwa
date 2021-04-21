@@ -1,13 +1,13 @@
 import React from 'react'
-import {CSSTransition, TransitionGroup} from 'react-transition-group'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 import debounce from '../../api/debounce'
 import usePrevious from '../../api/usePrevious'
 import SliderDots from '../SliderDots'
 import SideButtons from '../SideButtons'
-import {makeNextColor, slideTransitionGroup} from '../util'
+import { makeNextColor, slideTransitionGroup } from '../util'
 import Connector from './Connector'
 import PodcastTile from './PodcastTile'
 
@@ -64,7 +64,7 @@ const EmptyTile = () => {
   return <div />
 }
 
-const ButtonPodcastTilesRow = ({id, podcasts, title}) => {
+const ButtonPodcastTilesRow = ({ id, podcasts, title }) => {
   const classes = useStyles()
 
   const nextColor = makeNextColor()
@@ -72,41 +72,50 @@ const ButtonPodcastTilesRow = ({id, podcasts, title}) => {
   let baseIndex = 0
 
   return (
-    <Connector id={id} pageSize={PAGE_LENGTH} podcasts={podcasts}>{
-      ({displayPodcasts, goNextPage, goPrevPage, numPages, pageNum}) => {
+    <Connector id={id} pageSize={PAGE_LENGTH} podcasts={podcasts}>
+      {({ displayPodcasts, goNextPage, goPrevPage, numPages, pageNum }) => {
         const prevPageNum = usePrevious(pageNum)
         const isSlidingLeft = pageNum > prevPageNum
-        const slideTransition = useSlideTransitionGroup({isSlidingLeft})
+        const slideTransition = useSlideTransitionGroup({ isSlidingLeft })
 
-        const debouncedPage = db500(
-          direction => direction === 'L' ? goPrevPage && goPrevPage() : goNextPage && goNextPage()
+        const debouncedPage = db500(direction =>
+          direction === 'L'
+            ? goPrevPage && goPrevPage()
+            : goNextPage && goNextPage()
         )
 
-        const maybeDebouncedPageLeft = pageNum > 0 ? () => debouncedPage('L') : null
-        const maybeDebouncedPageRight = pageNum < numPages - 1 ? () => debouncedPage('R') : null
+        const maybeDebouncedPageLeft =
+          pageNum > 0 ? () => debouncedPage('L') : null
+        const maybeDebouncedPageRight =
+          pageNum < numPages - 1 ? () => debouncedPage('R') : null
 
         return (
           <div className={classes.tilesRowContainer}>
             <div className={classes.titleAndDots}>
-              <div className={classes.title}>
-                {title}
-              </div>
-              { numPages > 1 && (
-                <SliderDots className={classes.sliderDots} numPages={numPages} pageNum={pageNum} />
+              <div className={classes.title}>{title}</div>
+              {numPages > 1 && (
+                <SliderDots
+                  className={classes.sliderDots}
+                  numPages={numPages}
+                  pageNum={pageNum}
+                />
               )}
             </div>
             <SideButtons
               accentColor="magenta"
               onLeftClick={maybeDebouncedPageLeft}
-              onRightClick={maybeDebouncedPageRight}>
+              onRightClick={maybeDebouncedPageRight}
+            >
               <TransitionGroup component={null}>
-                <CSSTransition key={`${prevPageNum} ${pageNum}`}
-                               classNames={slideTransition}
-                               timeout={500}>
+                <CSSTransition
+                  key={`${prevPageNum} ${pageNum}`}
+                  classNames={slideTransition}
+                  timeout={500}
+                >
                   <div className={classes.buttonPodcastTilesRow}>
                     {[
-                      ...displayPodcasts.map(
-                        podcast => podcast ? (
+                      ...displayPodcasts.map(podcast =>
+                        podcast ? (
                           <div key={baseIndex++} className={classes.tile}>
                             <PodcastTile
                               podcast={podcast}
@@ -115,19 +124,21 @@ const ButtonPodcastTilesRow = ({id, podcasts, title}) => {
                           </div>
                         ) : null
                       ),
-                      ...(
-                        () => {
-                          const result = []
-                          for (let i = displayPodcasts.length; i < PAGE_LENGTH; i++) {
-                            result.push(
-                              <div key={baseIndex++} className={classes.tile}>
-                                <EmptyTile/>
-                              </div>
-                            )
-                          }
-                          return result
+                      ...(() => {
+                        const result = []
+                        for (
+                          let i = displayPodcasts.length;
+                          i < PAGE_LENGTH;
+                          i++
+                        ) {
+                          result.push(
+                            <div key={baseIndex++} className={classes.tile}>
+                              <EmptyTile />
+                            </div>
+                          )
                         }
-                      )()
+                        return result
+                      })(),
                     ]}
                   </div>
                 </CSSTransition>
@@ -135,8 +146,8 @@ const ButtonPodcastTilesRow = ({id, podcasts, title}) => {
             </SideButtons>
           </div>
         )
-      }
-    }</Connector>
+      }}
+    </Connector>
   )
 }
 

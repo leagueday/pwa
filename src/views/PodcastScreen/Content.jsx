@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import usePodcast from '../../api/usePodcast'
 import * as rssSelectors from '../../model/rss'
-import {colors} from '../../styling'
+import { colors } from '../../styling'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import PlusMinusButton from '../PlusMinusButton'

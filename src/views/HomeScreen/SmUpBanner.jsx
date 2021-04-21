@@ -9,11 +9,11 @@ import { makeStyles } from '@material-ui/core/styles'
 import debounce from '../../api/debounce'
 import useHomeBanner from '../../api/useHomeBanner'
 import usePrevious from '../../api/usePrevious'
-import {actions} from '../../store'
-import {colors} from '../../styling'
+import { actions } from '../../store'
+import { colors } from '../../styling'
 
 import SideButtons from '../SideButtons'
-import {slideTransitionGroup} from '../util'
+import { slideTransitionGroup } from '../util'
 
 const useStyles = makeStyles(theme => ({
   banner: {

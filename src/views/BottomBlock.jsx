@@ -3,7 +3,7 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {colors} from '../styling'
+import { colors } from '../styling'
 import SliderDots from './SliderDots'
 
 const useStyles = makeStyles(theme => ({
@@ -78,7 +78,7 @@ const useStyles = makeStyles(theme => ({
 const BottomBlock = props => {
   const classes = useStyles(props)
 
-  const {className, numPages, pageNum, titleRest, titleStart} = props
+  const { className, numPages, pageNum, titleRest, titleStart } = props
 
   return (
     <div className={cx(classes.bottomBlock, className)}>
@@ -86,7 +86,8 @@ const BottomBlock = props => {
         <div className={classes.titleRow}>
           {(titleStart || titleRest) && (
             <div className={classes.title}>
-              <span className={classes.titleStart}>{titleStart}</span> {titleRest}
+              <span className={classes.titleStart}>{titleStart}</span>{' '}
+              {titleRest}
             </div>
           )}
           <div className={classes.rhsCol}>
@@ -94,8 +95,12 @@ const BottomBlock = props => {
             <div className={classes.rhsCell} />
           </div>
         </div>
-        { numPages > 1 && (
-          <SliderDots className={classes.sliderDots} numPages={numPages} pageNum={pageNum} />
+        {numPages > 1 && (
+          <SliderDots
+            className={classes.sliderDots}
+            numPages={numPages}
+            pageNum={pageNum}
+          />
         )}
       </div>
       <div className={classes.children}>{props.children}</div>

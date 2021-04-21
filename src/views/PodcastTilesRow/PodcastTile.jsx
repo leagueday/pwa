@@ -5,9 +5,9 @@ import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 
 import usePodcast from '../../api/usePodcast'
-import {channelSelectors} from '../../model/rss'
-import {actions} from '../../store'
-import {colors} from '../../styling'
+import { channelSelectors } from '../../model/rss'
+import { actions } from '../../store'
+import { colors } from '../../styling'
 import PlusMinusButton from '../PlusMinusButton'
 import Square from '../Square'
 

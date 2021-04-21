@@ -1,3 +1,3 @@
 import * as colors from './colors'
 
-export {colors}
+export { colors }

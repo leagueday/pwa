@@ -22,7 +22,9 @@ const Connector = ({ channels, children, id, pageSize }) => {
       : []
 
   return (
-    <>{children({displayChannels, goNextPage, goPrevPage, numPages, pageNum})}</>
+    <>
+      {children({ displayChannels, goNextPage, goPrevPage, numPages, pageNum })}
+    </>
   )
 }
 

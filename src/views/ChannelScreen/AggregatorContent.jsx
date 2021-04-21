@@ -138,7 +138,11 @@ const AggregatorContent = ({ channel }) => {
           />
         </BottomBlock>
       )}
-      <BottomBlock accentColor={channel.color} titleStart={channel.title} titleRest="Podcasts">
+      <BottomBlock
+        accentColor={channel.color}
+        titleStart={channel.title}
+        titleRest="Podcasts"
+      >
         <FacetedPodcastTiles data={facets} />
       </BottomBlock>
     </ContentLayout>

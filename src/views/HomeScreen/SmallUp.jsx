@@ -1,15 +1,15 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 import useFacets from '../../api/useFacets'
-import {selectors} from '../../store'
-import {colors} from '../../styling'
+import { selectors } from '../../store'
+import { colors } from '../../styling'
 import BasicLayout from '../BasicLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import Loading from '../Loading'
-import {addScrollStyle} from '../util'
+import { addScrollStyle } from '../util'
 import SmUpBanner from './SmUpBanner'
 import TitleBar from './TitleBar'
 

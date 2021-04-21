@@ -1,6 +1,6 @@
 import React from 'react'
-import {useSwipeable} from 'react-swipeable'
-import {CSSTransition, TransitionGroup} from 'react-transition-group'
+import { useSwipeable } from 'react-swipeable'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import cx from 'classnames'
 import Color from 'color'
 
@@ -9,9 +9,9 @@ import { makeStyles } from '@material-ui/core'
 import debounce from '../../api/debounce'
 import useHomeBanner from '../../api/useHomeBanner'
 import usePrevious from '../../api/usePrevious'
-import {actions} from '../../store'
-import {colors} from '../../styling'
-import {slideTransitionGroup} from '../util'
+import { actions } from '../../store'
+import { colors } from '../../styling'
+import { slideTransitionGroup } from '../util'
 
 const useStyles = makeStyles(theme => ({
   slider: {

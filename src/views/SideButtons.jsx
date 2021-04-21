@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
-import {colors} from '../styling'
-import {IcoLeftSolid, IcoRightSolid} from './icons'
-import {makeIconButton} from './IconButton'
+import { colors } from '../styling'
+import { IcoLeftSolid, IcoRightSolid } from './icons'
+import { makeIconButton } from './IconButton'
 
 const useStyles = makeStyles({
   button: {

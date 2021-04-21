@@ -20,7 +20,11 @@ const Connector = ({ children, id, pageSize, podcasts }) => {
       ? podcasts.slice(pageNum * pageSize, (pageNum + 1) * pageSize)
       : []
 
-  return (<>{children({displayPodcasts, goNextPage, goPrevPage, numPages, pageNum})}</>)
+  return (
+    <>
+      {children({ displayPodcasts, goNextPage, goPrevPage, numPages, pageNum })}
+    </>
+  )
 }
 
 export default Connector
