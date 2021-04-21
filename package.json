@@ -11,7 +11,8 @@
     "start": "http-server -p 8888 --proxy http://localhost:8888? dist",
     "start-dev": "cross-env NODE_ENV=development webpack serve --config webpack-dev.config.js --mode development",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "prettier --write ."
+    "lint": "prettier --write .",
+    "lint-check": "prettier  --check ."
   },
   "repository": {
     "type": "git",
@@ -90,7 +91,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint"
+      "pre-commit": "npm run lint-check"
     }
   }
 }
