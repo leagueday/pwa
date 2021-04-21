@@ -1,4 +1,4 @@
-import {makeRequestHeaders} from './util'
+import { makeRequestHeaders } from './util'
 
 const QUERY_PODCAST_ENDPOINT = `/.netlify/functions/fauna-query-podcast`
 
@@ -7,13 +7,12 @@ const queryPodcast = async (bearerToken, podcastId) => {
     id: podcastId,
   })
 
-  return fetch(
-    `${QUERY_PODCAST_ENDPOINT}?${params}`,
-    {
-      headers: makeRequestHeaders(bearerToken)
-    }
-  ).then(
-    res => res.headers.get('Content-Type') === 'application/json' ? res.json() : res.text()
+  return fetch(`${QUERY_PODCAST_ENDPOINT}?${params}`, {
+    headers: makeRequestHeaders(bearerToken),
+  }).then(res =>
+    res.headers.get('Content-Type') === 'application/json'
+      ? res.json()
+      : res.text()
   )
 }
 

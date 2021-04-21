@@ -21,8 +21,7 @@ const useStyles = makeStyles(theme => ({
       width: '8vw',
     },
   },
-  imageContainer: {
-  },
+  imageContainer: {},
   liveness: {
     alignItems: 'center',
     display: 'flex',
@@ -39,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     fontWeight: theme.typography.weight.bold,
-  }
+  },
 }))
 
 const Liveness = () => {
@@ -49,7 +48,10 @@ const Liveness = () => {
   return (
     <div className={classes.livenessCell}>
       <div className={classes.liveness}>
-        <img className={classes.image} src="/img/logo_gray_circle_live_play.png" />
+        <img
+          className={classes.image}
+          src="/img/logo_gray_circle_live_play.png"
+        />
         <div className={classes.text}>Stream</div>
       </div>
     </div>

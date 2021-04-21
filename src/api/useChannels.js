@@ -1,7 +1,7 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 
-import {selectors} from '../store'
+import { selectors } from '../store'
 import useAirtable from './useAirtable'
 import useMyList from './useMyList'
 
@@ -10,19 +10,22 @@ const channelsTablename = 'Channels'
 const channelChildrenTablename = 'ChannelChildren'
 
 const useChannels = () => {
-  const {data: channelsData} = useAirtable(base, channelsTablename)
-  const {data: channelChildrenData} = useAirtable(base, channelChildrenTablename)
+  const { data: channelsData } = useAirtable(base, channelsTablename)
+  const { data: channelChildrenData } = useAirtable(
+    base,
+    channelChildrenTablename
+  )
 
   const user = useSelector(selectors.getUser)
 
   const [getIsOnMyList] = useMyList(user?.token?.access_token)
 
-  const channelChildren = React.useMemo(
-    () => {
-      const map = new Map()
+  const channelChildren = React.useMemo(() => {
+    const map = new Map()
 
-      if (channelChildrenData) channelChildrenData.forEach(
-        ({fields: {channelTag, childChannelTag}}) => {
+    if (channelChildrenData)
+      channelChildrenData.forEach(
+        ({ fields: { channelTag, childChannelTag } }) => {
           const childChannels = map.get(channelTag)
 
           if (childChannels) {
@@ -33,26 +36,22 @@ const useChannels = () => {
         }
       )
 
-      return map
-    },
-    [channelChildrenData]
-  )
+    return map
+  }, [channelChildrenData])
 
   const spreadChannelsData = React.useMemo(
-    () => (channelsData || []).map(({fields}) => ({...fields})),
+    () => (channelsData || []).map(({ fields }) => ({ ...fields })),
     [channelsData]
   )
 
   return React.useMemo(
     () => ({
-      list: spreadChannelsData.map(
-        fields => ({
-          ...fields,
-          children: channelChildren.get(fields.tag) || []
-        }),
-      ),
-      myList: spreadChannelsData.filter(
-        ({tag}) => getIsOnMyList('channel', tag)
+      list: spreadChannelsData.map(fields => ({
+        ...fields,
+        children: channelChildren.get(fields.tag) || [],
+      })),
+      myList: spreadChannelsData.filter(({ tag }) =>
+        getIsOnMyList('channel', tag)
       ),
     }),
     [channelChildren, spreadChannelsData, getIsOnMyList]

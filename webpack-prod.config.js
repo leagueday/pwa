@@ -6,27 +6,25 @@ const path = require('path')
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
-  entry:  [
-    './index.js'
-  ],
+  entry: ['./index.js'],
   mode: 'production',
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: ['babel-loader'],
       },
       {
         test: /\.svg$/,
         exclude: /node_modules/,
         use: ['svg-react-loader'],
       },
-    ]
+    ],
   },
   output: {
     filename: '[name]-[contenthash].js',
@@ -39,9 +37,9 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
-        {from: 'public/img', to: 'img'},
+        { from: 'public/img', to: 'img' },
         'public/manifest.json',
-        'public/img/favicon.ico'
+        'public/img/favicon.ico',
       ],
     }),
     new webpack.DefinePlugin({
@@ -54,10 +52,14 @@ module.exports = {
       // and not allow any straggling "old" SWs to hang around
       clientsClaim: true,
       skipWaiting: true,
-    })
+    }),
   ],
   resolve: {
     extensions: ['*', '.js', '.jsx'],
-    modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules'), 'node_modules'],
+    modules: [
+      path.resolve(__dirname, 'src'),
+      path.resolve(__dirname, 'node_modules'),
+      'node_modules',
+    ],
   },
 }

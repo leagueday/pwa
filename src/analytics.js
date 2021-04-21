@@ -6,7 +6,7 @@ ReactGA.initialize('UA-180940239-4')
 
 export const pageview = pathname => ReactGA.pageview(pathname)
 
-export const timing = (category, metric, duration, label=null) => {
+export const timing = (category, metric, duration, label = null) => {
   if (logTiming) {
     console.log(`timing ${category}.${metric} ${duration}ms`, label ?? '')
   }

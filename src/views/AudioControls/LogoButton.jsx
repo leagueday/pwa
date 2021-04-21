@@ -1,10 +1,10 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import {actions} from '../../store'
+import { actions } from '../../store'
 
 const useStyles = makeStyles({
   image: {
@@ -22,18 +22,13 @@ const useStyles = makeStyles({
   },
 })
 
-const LogoButton = ({className, playing}) => {
+const LogoButton = ({ className, playing }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const [ imageUrl, onClick, ] =
-    playing ? [
-      '/img/logo_gray_circle_pause.png',
-      () => dispatch(actions.pauseAudio())
-    ] : [
-      '/img/logo_gray_circle_play.png',
-      () => dispatch(actions.playAudio())
-    ]
+  const [imageUrl, onClick] = playing
+    ? ['/img/logo_gray_circle_pause.png', () => dispatch(actions.pauseAudio())]
+    : ['/img/logo_gray_circle_play.png', () => dispatch(actions.playAudio())]
 
   return (
     <div className={cx(classes.logoButton, className)}>

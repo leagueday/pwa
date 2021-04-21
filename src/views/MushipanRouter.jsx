@@ -1,10 +1,10 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import * as analytics from '../analytics'
-import {useLocationPathname} from '../store'
+import { useLocationPathname } from '../store'
 
-import {selectors} from '../store'
+import { selectors } from '../store'
 import Loading from './Loading'
 
 // MushipanRouter - obtain location from Redux, then pick a view to render
@@ -34,9 +34,7 @@ const matchView = (routes, userData, pathTokens, paramString) => {
   }
 }
 
-const MushipanRouter = ({
-  routes,
-}) => {
+const MushipanRouter = ({ routes }) => {
   const pathname = useLocationPathname()
   const [pathTokens, paramString] = parsePathname(pathname)
 
@@ -44,12 +42,10 @@ const MushipanRouter = ({
 
   const [View, viewProps] = matchView(routes, userData, pathTokens, paramString)
 
-  React.useEffect(
-    () => analytics.pageview(pathname)
-  )
+  React.useEffect(() => analytics.pageview(pathname))
 
   return (
-    <React.Suspense fallback={(<Loading />)}>
+    <React.Suspense fallback={<Loading />}>
       <View {...viewProps} />
     </React.Suspense>
   )

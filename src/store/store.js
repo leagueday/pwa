@@ -11,9 +11,7 @@ const store = createStore(
   createRootReducer({
     router: routerReducer,
   }),
-  composeWithDevTools(
-    applyMiddleware(routerMiddleware, thunkMiddleware)
-  )
+  composeWithDevTools(applyMiddleware(routerMiddleware, thunkMiddleware))
 )
 
 prepareHistory(store)

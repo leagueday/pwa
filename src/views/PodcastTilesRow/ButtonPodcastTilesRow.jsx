@@ -27,12 +27,10 @@ const useStyles = makeStyles({
 })
 
 const EmptyTile = () => {
-  return (
-    <div />
-  )
+  return <div />
 }
 
-const ButtonPodcastTilesRow = ({id, podcasts}) => {
+const ButtonPodcastTilesRow = ({ id, podcasts }) => {
   const classes = useStyles()
 
   const nextColor = makeNextColor()
@@ -40,42 +38,38 @@ const ButtonPodcastTilesRow = ({id, podcasts}) => {
   let baseIndex = 0
 
   return (
-    <Connector id={id} pageSize={PAGE_LENGTH} podcasts={podcasts}>{
-      ({displayPodcasts, goNextPage, goPrevPage}) => (
+    <Connector id={id} pageSize={PAGE_LENGTH} podcasts={podcasts}>
+      {({ displayPodcasts, goNextPage, goPrevPage }) => (
         <SideButtons
           accentColor="magenta"
           onLeftClick={goPrevPage}
-          onRightClick={goNextPage}>
+          onRightClick={goNextPage}
+        >
           <div className={classes.buttonPodcastTilesRow}>
             {[
-              ...displayPodcasts.map(
-                podcast => podcast ? (
+              ...displayPodcasts.map(podcast =>
+                podcast ? (
                   <div key={baseIndex++} className={classes.tile}>
-                    <PodcastTile
-                      podcast={podcast}
-                      textColor={nextColor()}
-                    />
+                    <PodcastTile podcast={podcast} textColor={nextColor()} />
                   </div>
                 ) : null
               ),
-              ...(
-                () => {
-                  const result = []
-                  for (let i = displayPodcasts.length; i < PAGE_LENGTH; i++) {
-                    result.push(
-                      <div key={baseIndex++} className={classes.tile}>
-                        <EmptyTile/>
-                      </div>
-                    )
-                  }
-                  return result
+              ...(() => {
+                const result = []
+                for (let i = displayPodcasts.length; i < PAGE_LENGTH; i++) {
+                  result.push(
+                    <div key={baseIndex++} className={classes.tile}>
+                      <EmptyTile />
+                    </div>
+                  )
                 }
-              )()
+                return result
+              })(),
             ]}
           </div>
         </SideButtons>
-      )
-    }</Connector>
+      )}
+    </Connector>
   )
 }
 

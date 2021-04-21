@@ -20,14 +20,12 @@ const useStyles = makeStyles({
   },
 })
 
-const Square = ({children, className}) => {
+const Square = ({ children, className }) => {
   const classes = useStyles()
 
   return (
     <div className={cx(classes.square, className)}>
-      <div className={classes.content}>
-        {children}
-      </div>
+      <div className={classes.content}>{children}</div>
     </div>
   )
 }

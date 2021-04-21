@@ -26,7 +26,7 @@ fs.readdirSync(functionsPath).forEach(functionSubdir => {
     child_process.spawn(npmCmd, ['i'], {
       env: process.env,
       cwd: functionPath,
-      stdio: 'inherit'
+      stdio: 'inherit',
     })
   }
 })

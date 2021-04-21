@@ -7,9 +7,11 @@ const HomeScreen = React.lazy(() => import('./views/HomeScreen'))
 const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'))
 const SetupScreen = React.lazy(() => import('./views/SetupScreen'))
 
-const matchFirstToken = match => pathTokens => pathTokens?.length > 0 && pathTokens[0] === match
-const takeNextToken = pathTokens => pathTokens.length > 1 ? pathTokens[1] : null
-const isAdminUser = userData => userData?.isAdmin ? true : false
+const matchFirstToken = match => pathTokens =>
+  pathTokens?.length > 0 && pathTokens[0] === match
+const takeNextToken = pathTokens =>
+  pathTokens.length > 1 ? pathTokens[1] : null
+const isAdminUser = userData => (userData?.isAdmin ? true : false)
 
 //
 // routesConfig: Array<[testRoute, checkPermission, View, getViewProps]>
@@ -21,7 +23,7 @@ export const routesConfig = [
     () => true,
     ChannelScreen,
     pathTokens => ({
-      channelTag: takeNextToken(pathTokens)
+      channelTag: takeNextToken(pathTokens),
     }),
   ],
   [
@@ -29,21 +31,16 @@ export const routesConfig = [
     () => true,
     EventScreen,
     pathTokens => ({
-      tag: takeNextToken(pathTokens)
+      tag: takeNextToken(pathTokens),
     }),
   ],
-  [
-    matchFirstToken('icons'),
-    isAdminUser,
-    IconDump,
-    () => ({}),
-  ],
+  [matchFirstToken('icons'), isAdminUser, IconDump, () => ({})],
   [
     matchFirstToken('podcast'),
     () => true,
     PodcastScreen,
     pathTokens => ({
-      podcastId: takeNextToken(pathTokens)
+      podcastId: takeNextToken(pathTokens),
     }),
   ],
   [
@@ -51,13 +48,8 @@ export const routesConfig = [
     isAdminUser,
     SetupScreen,
     pathTokens => ({
-      subject: takeNextToken(pathTokens)
+      subject: takeNextToken(pathTokens),
     }),
   ],
-  [
-    () => true,
-    () => true,
-    HomeScreen,
-    () => ({}),
-  ],
+  [() => true, () => true, HomeScreen, () => ({})],
 ]

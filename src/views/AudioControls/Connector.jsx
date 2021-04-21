@@ -2,9 +2,14 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import useMyList from '../../api/useMyList'
-import { actions, constants as storeConstants, selectors, thunks } from '../../store'
+import {
+  actions,
+  constants as storeConstants,
+  selectors,
+  thunks,
+} from '../../store'
 
-const Connector = ({children}) => {
+const Connector = ({ children }) => {
   const dispatch = useDispatch()
 
   const user = useSelector(selectors.getUser)
@@ -12,15 +17,18 @@ const Connector = ({children}) => {
   const podcastId = useSelector(selectors.getAudioPodcastId)
   const itemUrl = useSelector(selectors.getAudioUrl)
 
-  const [getIsOnMyList, addToMyList, removeFromMyList] = useMyList(user?.token?.access_token)
+  const [getIsOnMyList, addToMyList, removeFromMyList] = useMyList(
+    user?.token?.access_token
+  )
   const isOnMyList = getIsOnMyList('podcast', podcastId)
 
   const isDisabled = !itemUrl
   const isPlaying = audioMode === storeConstants.AUDIO_MODE_PLAY
 
-  const popOnclick = audioMode === storeConstants.AUDIO_MODE_PLAY
-    ? () => dispatch(actions.pauseAudio())
-    : () => dispatch(actions.playAudio())
+  const popOnclick =
+    audioMode === storeConstants.AUDIO_MODE_PLAY
+      ? () => dispatch(actions.pauseAudio())
+      : () => dispatch(actions.playAudio())
 
   const forwardButtonOnclick = () => {
     dispatch(actions.forwardAudio())
@@ -48,17 +56,21 @@ const Connector = ({children}) => {
 
   const plusOrMinusOnclick = isOnMyList ? minusButtonOnclick : plusButtonOnclick
 
-  return (<>{children({
-    forwardButtonOnclick,
-    isDisabled,
-    isOnMyList,
-    isPlaying,
-    nextButtonOnclick,
-    plusOrMinusOnclick,
-    popOnclick,
-    replayButtonOnclick,
-    titleOnclick,
-  })}</>)
+  return (
+    <>
+      {children({
+        forwardButtonOnclick,
+        isDisabled,
+        isOnMyList,
+        isPlaying,
+        nextButtonOnclick,
+        plusOrMinusOnclick,
+        popOnclick,
+        replayButtonOnclick,
+        titleOnclick,
+      })}
+    </>
+  )
 }
 
 export default Connector

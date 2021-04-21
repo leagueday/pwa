@@ -17,30 +17,30 @@ module.exports = {
     writeToDisk: true,
   },
   devtool: 'inline-cheap-module-source-map',
-  entry:  [
+  entry: [
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './index.js'
+    './index.js',
   ],
   mode: 'development',
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: ['babel-loader'],
       },
       {
         test: /\.svg$/,
         exclude: /node_modules/,
         use: ['svg-react-loader'],
       },
-    ]
+    ],
   },
   output: {
     filename: '[name].bundle.js',
@@ -48,16 +48,12 @@ module.exports = {
     publicPath: '/',
   },
   plugins: [
-    new CleanWebpackPlugin({
-    }),
+    new CleanWebpackPlugin({}),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'src', 'public', 'index.html')
+      template: path.resolve(__dirname, 'src', 'public', 'index.html'),
     }),
     new CopyPlugin({
-      patterns: [
-        {from: 'public/img', to: 'img'},
-        'public/manifest.json'
-      ],
+      patterns: [{ from: 'public/img', to: 'img' }, 'public/manifest.json'],
     }),
     new webpack.DefinePlugin({
       AIRTABLE_API_KEY: JSON.stringify(process.env.AIRTABLE_API_KEY),

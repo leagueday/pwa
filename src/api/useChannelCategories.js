@@ -6,27 +6,26 @@ const base = 'appXoertP1WJjd4TQ'
 const tablename = 'ChannelCategories'
 
 const useChannelCategories = () => {
-  const {data} = useAirtable(base, tablename)
+  const { data } = useAirtable(base, tablename)
 
-  return React.useMemo(
-    () => {
-      const result = new Map()
+  return React.useMemo(() => {
+    const result = new Map()
 
-      if (data)
-        for (let {fields: { title, channel_tag: channelTag }} of data) {
-          const set = result.get(title)
+    if (data)
+      for (let {
+        fields: { title, channel_tag: channelTag },
+      } of data) {
+        const set = result.get(title)
 
-          if (set) {
-            set.add(channelTag)
-          } else {
-            result.set(title, new Set([channelTag]))
-          }
+        if (set) {
+          set.add(channelTag)
+        } else {
+          result.set(title, new Set([channelTag]))
         }
+      }
 
-      return result
-    },
-    [data]
-  )
+    return result
+  }, [data])
 }
 
 export default useChannelCategories

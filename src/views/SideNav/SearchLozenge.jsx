@@ -1,7 +1,7 @@
 import React from 'react'
 import cx from 'classnames'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
 import { IcoMagnifier } from '../icons'
@@ -32,12 +32,18 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const SearchLozenge = ({className}) => {
+const SearchLozenge = ({ className }) => {
   const classes = useStyles()
 
   return (
     <div className={cx(className, classes.searchLozenge)}>
-      <IcoMagnifier classes={{inner: classes.magnifierIcon, outer: classes.magnifierIconContainer}} strokeWidth={3} />
+      <IcoMagnifier
+        classes={{
+          inner: classes.magnifierIcon,
+          outer: classes.magnifierIconContainer,
+        }}
+        strokeWidth={3}
+      />
       <div className={classes.entryContainer} />
     </div>
   )

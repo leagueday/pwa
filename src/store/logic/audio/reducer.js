@@ -1,7 +1,7 @@
 import * as constants from '../../constants'
 import * as ActionType from '../../actionTypes'
 
-import {nextCounters} from '../util'
+import { nextCounters } from '../util'
 
 const TAP_INTERVAL = 15
 
@@ -31,13 +31,11 @@ const initialState = {
   title: null,
 }
 
-const setCounter = (keyword, nextCount, counters) => Object.entries(counters).reduce(
-  (acc, [tag, count]) => {
+const setCounter = (keyword, nextCount, counters) =>
+  Object.entries(counters).reduce((acc, [tag, count]) => {
     acc[tag] = tag === keyword ? nextCount : count
     return acc
-  },
-  { }
-)
+  }, {})
 
 // this is used like a post-action middleware, I'm not sure how to set that up in
 // redux-thunk or other, tbd
@@ -102,9 +100,10 @@ const evaluatePosition = actionType => intermediateState => {
 
       return nextTime < tooLate
         ? {
-          ...intermediateState,
-          position: nextTime,
-        } : intermediateState
+            ...intermediateState,
+            position: nextTime,
+          }
+        : intermediateState
     }
     case ActionType.REPLAY_AUDIO: {
       const { duration, position: intermPosition } = intermediateState
@@ -115,9 +114,10 @@ const evaluatePosition = actionType => intermediateState => {
 
       return nextTime < duration && nextTime > TAP_INTERVAL
         ? {
-          ...intermediateState,
-          position: nextTime,
-        } : intermediateState
+            ...intermediateState,
+            position: nextTime,
+          }
+        : intermediateState
     }
     default:
       return intermediateState
@@ -139,37 +139,37 @@ const reducer = (state = initialState, action) => {
     case ActionType.FORWARD_AUDIO: {
       return evaluatePosition(ActionType.FORWARD_AUDIO)({
         ...state,
-        taps: nextCounters('forward', state.taps)
+        taps: nextCounters('forward', state.taps),
       })
     }
     case ActionType.PAUSE_ACTION: {
       return evaluateMode(ActionType.PAUSE_ACTION)({
         ...state,
-        taps: nextCounters('pause', state.taps)
+        taps: nextCounters('pause', state.taps),
       })
     }
     case ActionType.PAUSE_EVENT: {
       return evaluateMode(ActionType.PAUSE_EVENT)({
         ...state,
-        events: nextCounters('pause', state.events)
+        events: nextCounters('pause', state.events),
       })
     }
     case ActionType.PLAY_ACTION: {
       return evaluateMode(ActionType.PLAY_ACTION)({
         ...state,
-        taps: nextCounters('play', state.taps)
+        taps: nextCounters('play', state.taps),
       })
     }
     case ActionType.PLAY_EVENT: {
       return evaluateMode(ActionType.PLAY_EVENT)({
         ...state,
-        events: nextCounters('play', state.events)
+        events: nextCounters('play', state.events),
       })
     }
     case ActionType.REPLAY_AUDIO: {
       return evaluatePosition(ActionType.REPLAY_AUDIO)({
         ...state,
-        taps: nextCounters('replay', state.taps)
+        taps: nextCounters('replay', state.taps),
       })
     }
     case ActionType.SEEK_AUDIO: {
@@ -177,7 +177,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         seek: {
           position: action.payload.position,
-        }
+        },
       }
     }
     case ActionType.SELECT_AUDIO: {
@@ -189,7 +189,7 @@ const reducer = (state = initialState, action) => {
         podcastName: action.payload.podcastName,
         podcastUrl: action.payload.podcastUrl,
         seek: {
-          position: action.payload.position ?? null
+          position: action.payload.position ?? null,
         },
         position: action.payload.position ?? 0,
         audioUrl: action.payload.audioUrl,

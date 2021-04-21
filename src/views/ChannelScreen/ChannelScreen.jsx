@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 })
 
-const ChannelScreen = ({channelTag}) => {
+const ChannelScreen = ({ channelTag }) => {
   const classes = useStyles()
 
   const channels = useChannels().list
@@ -29,21 +29,25 @@ const ChannelScreen = ({channelTag}) => {
 
   return (
     <BasicLayout>
-      {
-        channel ? (
-          isBroadcaster ? (
-            <React.Suspense fallback={(<Loading />)}>
-              <BroadcasterContent className={classes.channelContent} channel={channel} />
-            </React.Suspense>
-          ) : (
-            <React.Suspense fallback={(<Loading />)}>
-              <AggregatorContent className={classes.channelContent} channel={channel} />
-            </React.Suspense>
-          )
+      {channel ? (
+        isBroadcaster ? (
+          <React.Suspense fallback={<Loading />}>
+            <BroadcasterContent
+              className={classes.channelContent}
+              channel={channel}
+            />
+          </React.Suspense>
         ) : (
-          <Loading />
+          <React.Suspense fallback={<Loading />}>
+            <AggregatorContent
+              className={classes.channelContent}
+              channel={channel}
+            />
+          </React.Suspense>
         )
-      }
+      ) : (
+        <Loading />
+      )}
     </BasicLayout>
   )
 }

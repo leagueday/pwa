@@ -9,15 +9,18 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-  }
+  },
 })
 
 const makeGenericIcon = Svg => {
-  const Icon = ({classes, onClick, size, strokeWidth}) => {
+  const Icon = ({ classes, onClick, size, strokeWidth }) => {
     const classes2 = useStyles()
 
     return (
-      <div className={cx(classes2.centerFill, classes?.outer)} onClick={onClick}>
+      <div
+        className={cx(classes2.centerFill, classes?.outer)}
+        onClick={onClick}
+      >
         <Svg className={classes?.inner} size={size} strokeWidth={strokeWidth} />
       </div>
     )

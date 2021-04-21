@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 
 import * as colors from '../../styling/colors'
@@ -30,9 +30,9 @@ const useStyles = makeStyles({
   },
 })
 
-const NoContent = ({className}) => (<Card className={className} />)
+const NoContent = ({ className }) => <Card className={className} />
 
-const SetupScreen = ({subject}) => {
+const SetupScreen = ({ subject }) => {
   const classes = useStyles()
 
   const Content = contentBySubject[subject] ?? NoContent

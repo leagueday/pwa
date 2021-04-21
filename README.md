@@ -27,11 +27,11 @@ Setup
 In my version Chrome, with the devtools open, a long press of the refresh button
 in the toolbar reveals a small menu, with options
 
-* Normal Reload
-* Hard Reload
-* Empty Cache and Hard Reload
+- Normal Reload
+- Hard Reload
+- Empty Cache and Hard Reload
 
-I'm not sure what cache is emptied by the 3rd menu action, but it *isn't* the
+I'm not sure what cache is emptied by the 3rd menu action, but it _isn't_ the
 IndexDB. The `LeagueDay_*` tables can be found in the devtools under
 `Application / Storage / IndexedDB`, and these tables can be deleted or cleared
 to reset this cache.
@@ -96,11 +96,11 @@ Import statements are also arranged into 3 sections, stated in this order:
 
 1. General-purpose, external libraries. `React` should be the first import, if
    `jsx` syntax is in the file or if a React component is exported. `Redux` should
-   be the second import if used in the file.  Then other general-purpose libraries
+   be the second import if used in the file. Then other general-purpose libraries
    follow in alphabetical order.
-2. Material-UI imports, in alphabetical order.  Utility functions imported before
+2. Material-UI imports, in alphabetical order. Utility functions imported before
    widget components.
-3. Imports provided in this application code.  Higher-level (in terms of directory
+3. Imports provided in this application code. Higher-level (in terms of directory
    structure) imported first (e.g. `../../styling`) and imports from the current
    subpackage (e.g. `./SomeComponent`) last. Within each hierarchical level, imports
    are written in alphabetical order.
@@ -109,7 +109,7 @@ Each section of imports is separated by a single empty line.
 
 ### Functional-programming libraries
 
-I personally *love* [`ramda`](https://ramdajs.com/), which is a competitor of the more
+I personally _love_ [`ramda`](https://ramdajs.com/), which is a competitor of the more
 widely-used [`lodash`](https://lodash.com/). However point-free functional code could
 be much more difficult for newcomers to understand. In order to avoid the potential of
 complicating the logic, neither are used. The babel settings enable up-to-date

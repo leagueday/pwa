@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     overflowY: 'hidden',
     width: '100%',
   },
-  sideNav: { },
+  sideNav: {},
 }))
 
 const SmUpBasicLayout = props => {
@@ -51,17 +51,19 @@ const SmUpBasicLayout = props => {
     <div className={classes.basicLayoutCol}>
       <BrandGradientHorizontalStripe />
       <div className={classes.basicLayoutRow}>
-        <SideNav className={classes.sideNav} home={props.home} visible={isNavVisible} />
-        <div className={classes.contentFrame}>
-          {props.children}
-        </div>
+        <SideNav
+          className={classes.sideNav}
+          home={props.home}
+          visible={isNavVisible}
+        />
+        <div className={classes.contentFrame}>{props.children}</div>
       </div>
-      { isAudioDisplayed && (
+      {isAudioDisplayed && (
         <>
           <BrandGradientHorizontalStripe />
           <AudioControls />
         </>
-      ) }
+      )}
     </div>
   )
 }

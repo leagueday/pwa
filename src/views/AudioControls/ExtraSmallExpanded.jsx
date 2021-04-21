@@ -1,13 +1,13 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import {useSwipeable} from 'react-swipeable'
+import { useDispatch, useSelector } from 'react-redux'
+import { useSwipeable } from 'react-swipeable'
 import Color from 'color'
 
-import {makeStyles} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 
 import usePodcast from '../../api/usePodcast'
-import {channelSelectors} from '../../model/rss'
-import {actions, selectors} from '../../store'
+import { channelSelectors } from '../../model/rss'
+import { actions, selectors } from '../../store'
 import * as colors from '../../styling/colors'
 import {
   IcoDown,
@@ -15,9 +15,9 @@ import {
   IcoForwardStop,
   IcoMinus,
   IcoPlus,
-  IcoRewindStop
+  IcoRewindStop,
 } from '../icons'
-import {makeIconButton} from '../IconButton'
+import { makeIconButton } from '../IconButton'
 import ToggleImageButton from '../ToggleImageButton'
 import Connector from './Connector'
 import ProgressBox from './ProgressBox'
@@ -30,9 +30,9 @@ const PlusButton = makeIconButton(IcoPlus)
 const RewindStopButton = makeIconButton(IcoRewindStop)
 
 const useStyles = makeStyles(theme => ({
-  bottomSection: { },
-  bottomSectionText : { },
-  button: { },
+  bottomSection: {},
+  bottomSectionText: {},
+  button: {},
   downButton: {
     left: '2vw',
     position: 'absolute',
@@ -75,14 +75,14 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
   },
-  mainButtonIcon: { },
+  mainButtonIcon: {},
   mainButtonRow: {
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  myListRow: { },
+  myListRow: {},
   nextButtonContainer: {
     marginLeft: 'auto',
   },
@@ -139,7 +139,7 @@ const ExtraSmallExpanded = () => {
   const itemTitle = useSelector(selectors.getAudioTitle)
   const podcastName = useSelector(selectors.getAudioPodcastName)
 
-  const {rss} = usePodcast({url: podcastUrl})
+  const { rss } = usePodcast({ url: podcastUrl })
 
   const imageUrl = channelSelectors.v2.imageUrl(rss)
 
@@ -156,27 +156,32 @@ const ExtraSmallExpanded = () => {
   })
 
   return (
-    <Connector>{
-      ({
-         forwardButtonOnclick,
-         isDisabled,
-         isOnMyList,
-         isPlaying,
-         nextButtonOnclick,
-         plusOrMinusOnclick,
-         popOnclick,
-         replayButtonOnclick,
-         titleOnclick,
-       }) => (
+    <Connector>
+      {({
+        forwardButtonOnclick,
+        isDisabled,
+        isOnMyList,
+        isPlaying,
+        nextButtonOnclick,
+        plusOrMinusOnclick,
+        popOnclick,
+        replayButtonOnclick,
+        titleOnclick,
+      }) =>
         (PlusOrMinusButton => (
-          <div className={classes.xsSmallExpandedAudioControls} {...swipeHandlers}>
-            <DownButton className={classes.downButton}
-                        color={colors.magenta}
-                        onClick={onDownClick}
-                        backgroundColor={colors.brandBlack}
-                        shadowColor={buttonShadowColor}
-                        size="8vw"
-                        strokeWidth="3"/>
+          <div
+            className={classes.xsSmallExpandedAudioControls}
+            {...swipeHandlers}
+          >
+            <DownButton
+              className={classes.downButton}
+              color={colors.magenta}
+              onClick={onDownClick}
+              backgroundColor={colors.brandBlack}
+              shadowColor={buttonShadowColor}
+              size="8vw"
+              strokeWidth="3"
+            />
             <div className={classes.topSection}>
               <div className={classes.podcastName}>{podcastName}</div>
             </div>
@@ -188,16 +193,16 @@ const ExtraSmallExpanded = () => {
                 <div className={classes.episodeTitle} onClick={titleOnclick}>
                   {itemTitle}
                 </div>
-                <div className={classes.showTitle}>
-                  {podcastName}
-                </div>
+                <div className={classes.showTitle}>{podcastName}</div>
                 <div className={classes.nextButtonRow}>
                   <div className={classes.nextButtonContainer}>
-                    <ForwardStopButton color={colors.magenta}
-                                       backgroundColor={colors.brandBlack}
-                                       size="8vw"
-                                       onClick={nextButtonOnclick}
-                                       shadowColor={buttonShadowColor} />
+                    <ForwardStopButton
+                      color={colors.magenta}
+                      backgroundColor={colors.brandBlack}
+                      size="8vw"
+                      onClick={nextButtonOnclick}
+                      shadowColor={buttonShadowColor}
+                    />
                   </div>
                 </div>
                 <div className={classes.progressBoxFlex}>
@@ -205,45 +210,51 @@ const ExtraSmallExpanded = () => {
                 </div>
                 <div className={classes.mainButtonRow}>
                   <div className={classes.mainButtonCluster}>
-                    <RewindStopButton className={classes.mainButton}
-                                      iconClassName={classes.mainButtonIcon}
-                                      color={colors.magenta}
-                                      backgroundColor={colors.brandBlack}
-                                      size="8vw"
-                                      onClick={replayButtonOnclick}
-                                      shadowColor={buttonShadowColor} />
-                    <ToggleImageButton className={classes.mainButton}
-                                       size="15vw"
-                                       on={isPlaying}
-                                       onClick={popOnclick}
-                                       onImage="/img/logo_pause.png"
-                                       offImage="/img/logo_play.png"
-                                       shadowColor={buttonShadowColor} />
-                    <FastFwdStopButton className={classes.mainButton}
-                                       iconClassName={classes.mainButtonIcon}
-                                       color={colors.magenta}
-                                       backgroundColor={colors.brandBlack}
-                                       size="8vw"
-                                       onClick={forwardButtonOnclick}
-                                       shadowColor={buttonShadowColor} />
+                    <RewindStopButton
+                      className={classes.mainButton}
+                      iconClassName={classes.mainButtonIcon}
+                      color={colors.magenta}
+                      backgroundColor={colors.brandBlack}
+                      size="8vw"
+                      onClick={replayButtonOnclick}
+                      shadowColor={buttonShadowColor}
+                    />
+                    <ToggleImageButton
+                      className={classes.mainButton}
+                      size="15vw"
+                      on={isPlaying}
+                      onClick={popOnclick}
+                      onImage="/img/logo_pause.png"
+                      offImage="/img/logo_play.png"
+                      shadowColor={buttonShadowColor}
+                    />
+                    <FastFwdStopButton
+                      className={classes.mainButton}
+                      iconClassName={classes.mainButtonIcon}
+                      color={colors.magenta}
+                      backgroundColor={colors.brandBlack}
+                      size="8vw"
+                      onClick={forwardButtonOnclick}
+                      shadowColor={buttonShadowColor}
+                    />
                   </div>
                 </div>
                 <div className={classes.myListRow}>
-                  <PlusOrMinusButton backgroundColor={colors.brandBlack}
-                                     color={colors.magenta}
-                                     onClick={plusOrMinusOnclick}
-                                     shadowColor={buttonShadowColor}
-                                     size="8vw"
-                                     strokeWidth="3" />
+                  <PlusOrMinusButton
+                    backgroundColor={colors.brandBlack}
+                    color={colors.magenta}
+                    onClick={plusOrMinusOnclick}
+                    shadowColor={buttonShadowColor}
+                    size="8vw"
+                    strokeWidth="3"
+                  />
                 </div>
               </div>
             </div>
           </div>
-        ))(
-          isOnMyList ? MinusButton : PlusButton
-        )
-      )
-    }</Connector>
+        ))(isOnMyList ? MinusButton : PlusButton)
+      }
+    </Connector>
   )
 }
 

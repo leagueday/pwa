@@ -2,7 +2,7 @@ import React from 'react'
 import Color from 'color'
 import { useDispatch } from 'react-redux'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
 import usePodcast from '../../api/usePodcast'
@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
   imageSquare: {
     width: '100%',
   },
-  text: ({textColor}) => ({
+  text: ({ textColor }) => ({
     color: textColor,
     fontSize: '75%',
     fontWeight: theme.typography.weight.bold,
@@ -73,31 +73,34 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     paddingLeft: '0.25em',
     paddingRight: '0.25em',
-  }
+  },
 }))
 
-const PodcastTile = ({podcast, textColor}) => {
-  const {rss} = usePodcast(podcast)
+const PodcastTile = ({ podcast, textColor }) => {
+  const { rss } = usePodcast(podcast)
 
   const title = rss ? channelSelectors.v2.title(rss) : podcast.title
   const imageUrl = channelSelectors.v2.imageUrl(rss)
 
-  const classes = useStyles({textColor})
+  const classes = useStyles({ textColor })
 
   const dispatch = useDispatch()
-  const gotoThisPodcast = () => dispatch(actions.pushHistory(`/podcast/${podcast.id}`))
+  const gotoThisPodcast = () =>
+    dispatch(actions.pushHistory(`/podcast/${podcast.id}`))
 
   return (
     <div className={classes.podcastTile} onClick={gotoThisPodcast}>
       <Square className={classes.imageSquare}>
         <img className={classes.image} src={imageUrl} />
         <div className={classes.imageOpacityRamp} />
-        <PlusMinusButton className={classes.plusMinusButton} subjectId={podcast.id} subjectKind="podcast" />
+        <PlusMinusButton
+          className={classes.plusMinusButton}
+          subjectId={podcast.id}
+          subjectKind="podcast"
+        />
       </Square>
       <div className={classes.textBox}>
-        <div className={classes.text}>
-          {title}
-        </div>
+        <div className={classes.text}>{title}</div>
       </div>
     </div>
   )

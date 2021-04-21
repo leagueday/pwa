@@ -1,4 +1,4 @@
-const {Client, query: q} = require('faunadb')
+const { Client, query: q } = require('faunadb')
 
 const STATUS_OK = 0
 const STATUS_NOT_FOUND = 1
@@ -12,10 +12,7 @@ const errorToStatus = err =>
 const queryPodcastById = async (client, id) => {
   try {
     const clientResponse = await client.query(
-      q.Get(
-        q.Match(
-          q.Index('parsed_podcast_rss_id'), id)
-      )
+      q.Get(q.Match(q.Index('parsed_podcast_rss_id'), id))
     )
 
     return [STATUS_OK, clientResponse.data]
@@ -26,7 +23,7 @@ const queryPodcastById = async (client, id) => {
 
 const handler = async (event, context) => {
   const queryStringParameters = event.queryStringParameters
-  const {user} = context.clientContext
+  const { user } = context.clientContext
 
   if (!user) {
     return {
@@ -45,7 +42,7 @@ const handler = async (event, context) => {
   }
 
   const client = new Client({
-    secret: process.env.FAUNADB_SECRET
+    secret: process.env.FAUNADB_SECRET,
   })
 
   const [status, data] = await queryPodcastById(client, podcastId)

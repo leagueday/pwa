@@ -2,7 +2,10 @@ import Color from 'color'
 import stringStripHtml from 'string-strip-html'
 import * as colors from '../styling/colors'
 
-export const addScrollStyle = (scrollbarColor, theme) => styleClassInitializer => ({
+export const addScrollStyle = (
+  scrollbarColor,
+  theme
+) => styleClassInitializer => ({
   ...styleClassInitializer,
   [theme.breakpoints.up('sm')]: {
     '&::-webkit-scrollbar': {
@@ -16,7 +19,7 @@ export const addScrollStyle = (scrollbarColor, theme) => styleClassInitializer =
     '&::-webkit-scrollbar-track': {
       background: Color(scrollbarColor).darken(0.8).toString(),
       boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
-      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
     },
   },
   [theme.breakpoints.only('xs')]: {
@@ -31,7 +34,7 @@ export const addScrollStyle = (scrollbarColor, theme) => styleClassInitializer =
     '&::-webkit-scrollbar-track': {
       background: Color(scrollbarColor).darken(0.8).toString(),
       boxShadow: 'inset 0 0 2vw rgba(0,0,0,0.00)',
-      webkitBoxShadow: 'inset 0 0 2vw rgba(0,0,0,0.00)'
+      webkitBoxShadow: 'inset 0 0 2vw rgba(0,0,0,0.00)',
     },
   },
   '&::-webkit-scrollbar-corner': {
@@ -41,14 +44,12 @@ export const addScrollStyle = (scrollbarColor, theme) => styleClassInitializer =
 
 // fade to gray ramp, only on even rows
 export const computeZebraBackgroundColor = rowIndex =>
-  (rowIndex & 1)
+  rowIndex & 1
     ? null
-    : Color(colors.lightGray).fade(
-      Math.max(
-        0,
-        (100 - 10 * rowIndex / 2) / 100
-      )
-    ).rgb().string()
+    : Color(colors.lightGray)
+        .fade(Math.max(0, (100 - (10 * rowIndex) / 2) / 100))
+        .rgb()
+        .string()
 
 export const cycleColorSequence = [
   colors.cyan,
@@ -56,26 +57,24 @@ export const cycleColorSequence = [
   colors.violet,
   colors.magenta,
   colors.orange,
-  colors.yellow
+  colors.yellow,
 ]
 
-export const makeNextColor = () => (
-    offset => () => {
-      const result = cycleColorSequence[offset]
-      offset = offset + 1 === cycleColorSequence.length ? 0 : offset + 1
-      return result
-    }
-  )(0)
+export const makeNextColor = () =>
+  (offset => () => {
+    const result = cycleColorSequence[offset]
+    offset = offset + 1 === cycleColorSequence.length ? 0 : offset + 1
+    return result
+  })(0)
 
-export const stripHtml =
-  maybeHtmlString => {
-    if (!maybeHtmlString) return maybeHtmlString
+export const stripHtml = maybeHtmlString => {
+  if (!maybeHtmlString) return maybeHtmlString
 
-    const t = typeof maybeHtmlString
+  const t = typeof maybeHtmlString
 
-    if (t === 'string') return stringStripHtml(maybeHtmlString)?.result
+  if (t === 'string') return stringStripHtml(maybeHtmlString)?.result
 
-    if (t === 'object') return Object.values(maybeHtmlString).join(' ')
+  if (t === 'object') return Object.values(maybeHtmlString).join(' ')
 
-    return maybeHtmlString
-  }
+  return maybeHtmlString
+}

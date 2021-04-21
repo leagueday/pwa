@@ -1,20 +1,19 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
-import {channelSelectors} from '../../model/rss'
+import { channelSelectors } from '../../model/rss'
 import useMyList from '../../api/useMyList'
 import usePodcast from '../../api/usePodcast'
 import usePodcasts from '../../api/usePodcasts'
-import {actions, selectors, useLocationPathname} from '../../store'
+import { actions, selectors, useLocationPathname } from '../../store'
 
 import Item from './Item'
 
 const useStyles = makeStyles({
-  myPodcasts: {
-  },
+  myPodcasts: {},
   image: {
     border: `2px solid ${colors.white80}`,
   },
@@ -25,14 +24,19 @@ const isPodcastSelected = (locationPathname, podcastId) => {
 
   if (path.substr(0, 9) !== '/podcast/') {
     return false
-  }
-  else {
+  } else {
     return path.substr(9) === podcastId
   }
 }
 
-const MyPodcastItem = ({podcast, isSelected, onClick, imageClass, skinny}) => {
-  const {rss} = usePodcast(podcast)
+const MyPodcastItem = ({
+  podcast,
+  isSelected,
+  onClick,
+  imageClass,
+  skinny,
+}) => {
+  const { rss } = usePodcast(podcast)
 
   const title = channelSelectors.v2.title(rss)
   const imageUrl = channelSelectors.v2.imageUrl(rss)
@@ -49,39 +53,44 @@ const MyPodcastItem = ({podcast, isSelected, onClick, imageClass, skinny}) => {
   )
 }
 
-const MyPodcasts = ({skinny}) => {
+const MyPodcasts = ({ skinny }) => {
   const classes = useStyles()
 
   const user = useSelector(selectors.getUser)
 
-  const [getIsOnMyList, addToMyList, removeFromMyList, isMyListEmpty] = useMyList(user?.token?.access_token)
-  const {data: podcasts} = usePodcasts()
+  const [
+    getIsOnMyList,
+    addToMyList,
+    removeFromMyList,
+    isMyListEmpty,
+  ] = useMyList(user?.token?.access_token)
+  const { data: podcasts } = usePodcasts()
 
-  const myListPodcasts = isMyListEmpty || !podcasts ? [] : podcasts.filter(podcast => getIsOnMyList('podcast', podcast.id))
+  const myListPodcasts =
+    isMyListEmpty || !podcasts
+      ? []
+      : podcasts.filter(podcast => getIsOnMyList('podcast', podcast.id))
 
   // tbd add channels
 
   const dispatch = useDispatch()
-  const makeGotoThisPodcast = podcastId => () => dispatch(actions.pushHistory(`/podcast/${podcastId}`))
+  const makeGotoThisPodcast = podcastId => () =>
+    dispatch(actions.pushHistory(`/podcast/${podcastId}`))
 
   const locationPathname = useLocationPathname()
 
   return (
     <div className={classes.myPodcasts}>
-      {
-        myListPodcasts.map(
-          podcast => (
-            <MyPodcastItem
-              key={podcast.id}
-              podcast={podcast}
-              onClick={makeGotoThisPodcast(podcast.id)}
-              isSelected={isPodcastSelected(locationPathname, podcast.id)}
-              imageClass={classes.image}
-              skinny={skinny}
-            />
-          )
-        )
-      }
+      {myListPodcasts.map(podcast => (
+        <MyPodcastItem
+          key={podcast.id}
+          podcast={podcast}
+          onClick={makeGotoThisPodcast(podcast.id)}
+          isSelected={isPodcastSelected(locationPathname, podcast.id)}
+          imageClass={classes.image}
+          skinny={skinny}
+        />
+      ))}
     </div>
   )
 }

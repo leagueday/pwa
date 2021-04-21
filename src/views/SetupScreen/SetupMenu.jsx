@@ -1,11 +1,11 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import {makeStyles} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 
-import {actions} from '../../store'
+import { actions } from '../../store'
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -38,9 +38,10 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const SubjectButton = ({classes, focusedSubject, subject, subjectText}) => {
+const SubjectButton = ({ classes, focusedSubject, subject, subjectText }) => {
   const dispatch = useDispatch()
-  const focusOnSubject = () => dispatch(actions.pushHistory(`/setup/${subject}`))
+  const focusOnSubject = () =>
+    dispatch(actions.pushHistory(`/setup/${subject}`))
 
   const isFocused = focusedSubject === subject
 
@@ -64,7 +65,7 @@ const SubjectButtonRow = props => (
   </div>
 )
 
-const SetupMenu = ({subject}) => {
+const SetupMenu = ({ subject }) => {
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -76,8 +77,18 @@ const SetupMenu = ({subject}) => {
         <img className={classes.logo} onClick={goHome} src="/img/logo.png" />
         <div className={classes.title}>Setup Menu</div>
       </div>
-      <SubjectButtonRow classes={classes} focusedSubject={subject} subject="seed-mylist" subjectText="Seed MyList" />
-      <SubjectButtonRow classes={classes} focusedSubject={subject} subject="parse-podcast" subjectText="Parse Podcast" />
+      <SubjectButtonRow
+        classes={classes}
+        focusedSubject={subject}
+        subject="seed-mylist"
+        subjectText="Seed MyList"
+      />
+      <SubjectButtonRow
+        classes={classes}
+        focusedSubject={subject}
+        subject="parse-podcast"
+        subjectText="Parse Podcast"
+      />
     </Card>
   )
 }

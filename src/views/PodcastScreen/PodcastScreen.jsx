@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 import usePodcasts from '../../api/usePodcasts'
 import BasicLayout from '../BasicLayout'
@@ -27,31 +27,24 @@ const useStyles = makeStyles({
   },
 })
 
-const PodcastScreen = ({podcastId}) => {
+const PodcastScreen = ({ podcastId }) => {
   const classes = useStyles()
 
-  const {data} = usePodcasts()
+  const { data } = usePodcasts()
 
-  const podcast = React.useMemo(
-    () => {
-      if (!data || !podcastId) return null
+  const podcast = React.useMemo(() => {
+    if (!data || !podcastId) return null
 
-      return data.find(
-        ({id}) => id === podcastId
-      )
-    },
-    [data, podcastId]
-  )
+    return data.find(({ id }) => id === podcastId)
+  }, [data, podcastId])
 
   return (
     <BasicLayout>
-      {
-        podcast && (
-          <React.Suspense fallback={(<Loading />)}>
-            <Content className={classes.podcastScreenContent} podcast={podcast} />
-          </React.Suspense>
-        )
-      }
+      {podcast && (
+        <React.Suspense fallback={<Loading />}>
+          <Content className={classes.podcastScreenContent} podcast={podcast} />
+        </React.Suspense>
+      )}
     </BasicLayout>
   )
 }
