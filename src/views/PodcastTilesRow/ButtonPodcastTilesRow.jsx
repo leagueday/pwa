@@ -84,6 +84,9 @@ const ButtonPodcastTilesRow = ({id, podcasts, title}) => {
           direction => direction === 'L' ? goPrevPage && goPrevPage() : goNextPage && goNextPage()
         )
 
+        const maybeDebouncedPageLeft = pageNum > 0 ? () => debouncedPage('L') : null
+        const maybeDebouncedPageRight = pageNum < numPages - 1 ? () => debouncedPage('R') : null
+
         return (
           <div className={classes.tilesRowContainer}>
             <div className={classes.titleAndDots}>
@@ -96,8 +99,8 @@ const ButtonPodcastTilesRow = ({id, podcasts, title}) => {
             </div>
             <SideButtons
               accentColor="magenta"
-              onLeftClick={() => debouncedPage('L')}
-              onRightClick={() => debouncedPage('R')}>
+              onLeftClick={maybeDebouncedPageLeft}
+              onRightClick={maybeDebouncedPageRight}>
               <TransitionGroup component={null}>
                 <CSSTransition key={`${prevPageNum} ${pageNum}`}
                                classNames={slideTransition}
