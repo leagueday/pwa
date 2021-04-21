@@ -13,7 +13,7 @@ const PlusButton = makeIconButton(IcoPlus)
 
 const stopEventPropagation = handler => event => {
   handler(event)
-  event.stopPropagation();
+  event.stopPropagation()
 }
 
 const PlusMinusButton = ({ className, size, subjectId, subjectKind }) => {
