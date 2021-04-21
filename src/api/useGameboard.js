@@ -5,13 +5,13 @@ import useAirtable from './useAirtable'
 const base = 'appXoertP1WJjd4TQ'
 const table = 'Gameboard'
 
-const reformat = (picks=[], renames={}) => data => {
+const reformat = (picks = [], renames = {}) => data => {
   if (!data) return data
 
-  return data.map(({fields, id}) => {
+  return data.map(({ fields, id }) => {
     if (picks.length === 0) {
       if (Object.keys(renames).length === 0) {
-        return {id, ...fields}
+        return { id, ...fields }
       }
 
       return Object.entries(fields).reduce(
@@ -20,7 +20,7 @@ const reformat = (picks=[], renames={}) => data => {
           acc[k2] = v
           return acc
         },
-        {id}
+        { id }
       )
     }
 
@@ -34,15 +34,15 @@ const reformat = (picks=[], renames={}) => data => {
         }
         return acc
       },
-      {id}
+      { id }
     )
   })
 }
 
 const useGameboard = () => {
-  const {data, error} = useAirtable(base, table)
+  const { data, error } = useAirtable(base, table)
 
-  return {data: reformat()(data), error}
+  return { data: reformat()(data), error }
 }
 
 export default useGameboard

@@ -1,4 +1,4 @@
-import {makeRequestHeaders} from './util'
+import { makeRequestHeaders } from './util'
 
 const PARSE_PODCAST_ENDPOINT = `/.netlify/functions/parse-podcast`
 
@@ -8,20 +8,15 @@ const parsePodcast = (bearerToken, podcastId, podcastUrl) => {
     podcastUrl,
   })
 
-  return fetch(
-    `${PARSE_PODCAST_ENDPOINT}?${params}`,
-    {
-      headers: makeRequestHeaders(bearerToken)
+  return fetch(`${PARSE_PODCAST_ENDPOINT}?${params}`, {
+    headers: makeRequestHeaders(bearerToken),
+  }).then(response => {
+    if (!response.ok) {
+      throw new Error(response.statusText)
     }
-  ).then(
-    response => {
-      if (!response.ok) {
-        throw new Error(response.statusText)
-      }
 
-      return response
-    }
-  )
+    return response
+  })
 }
 
 export default parsePodcast

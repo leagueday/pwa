@@ -12,7 +12,11 @@ const _history = {
 }
 
 export const createHistory = () => {
-  const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
+  const {
+    createReduxHistory,
+    routerMiddleware,
+    routerReducer,
+  } = createReduxHistoryContext({
     history: createBrowserHistory(),
     savePreviousLocations: 2,
     //other options if needed

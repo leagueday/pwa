@@ -14,56 +14,60 @@ import { actions, constants as storeConsts, selectors, thunks } from '../store'
 
 const debugAudio = false
 
-const addDebugEventListeners = debugAudio ?
-  audioDomNode => {
-    for (let [event, description] of [
-      [ 'audioprocess',
-        'The input buffer of a ScriptProcessorNode is ready to be processed.'
-      ], [ 'canplay',
-        'The browser can play the media, but estimates that not enough data has been loaded to play the media up to its end without having to stop for further buffering of content.'
-      ], [ 'canplaythrough',
-        'The browser estimates it can play the media up to its end without stopping for content buffering.'
-      ], [ 'complete',
-        'The rendering of an OfflineAudioContext is terminated.'
-      ], [ 'durationchange',
-        'The duration attribute has been updated.'
-      ], [ 'emptied',
-        'The media has become empty; for example, this event is sent if the media has already been loaded (or partially loaded), and the load() method is called to reload it.'
-      ], [ 'ended',
-        'Playback has stopped because the end of the media was reached.'
-      ], [ 'loadeddata',
-        'The first frame of the media has finished loading.'
-      ], [ 'loadedmetadata',
-        'The metadata has been loaded.'
-      ], [ 'pause',
-        'Playback has been paused.'
-      ], [ 'play',
-        'Playback has begun.'
-      ], [ 'playing',
-        'Playback is ready to start after having been paused or delayed due to lack of data.'
-      ], [ 'ratechange',
-        'The playback rate has changed.'
-      ], [ 'seeked',
-        'A seek operation completed.'
-      ], [ 'seeking',
-        'A seek operation began.'
-      ], [ 'stalled',
-        'The user agent is trying to fetch media data, but data is unexpectedly not forthcoming.'
-      ], [ 'suspend',
-        'Media data loading has been suspended.'
-      ], [ 'timeupdate',
-        'The time indicated by the currentTime attribute has been updated.'
-      ], [ 'volumechange',
-        'The volume has changed.'
-      ], [ 'waiting',
-        'Playback has stopped because of a temporary lack of data'
-      ],
-    ]) {
-      audioDomNode.addEventListener(event, () => {
-        console.log(`Audio Event: ${event} (${description})`)
-      })
+const addDebugEventListeners = debugAudio
+  ? audioDomNode => {
+      for (let [event, description] of [
+        [
+          'audioprocess',
+          'The input buffer of a ScriptProcessorNode is ready to be processed.',
+        ],
+        [
+          'canplay',
+          'The browser can play the media, but estimates that not enough data has been loaded to play the media up to its end without having to stop for further buffering of content.',
+        ],
+        [
+          'canplaythrough',
+          'The browser estimates it can play the media up to its end without stopping for content buffering.',
+        ],
+        ['complete', 'The rendering of an OfflineAudioContext is terminated.'],
+        ['durationchange', 'The duration attribute has been updated.'],
+        [
+          'emptied',
+          'The media has become empty; for example, this event is sent if the media has already been loaded (or partially loaded), and the load() method is called to reload it.',
+        ],
+        [
+          'ended',
+          'Playback has stopped because the end of the media was reached.',
+        ],
+        ['loadeddata', 'The first frame of the media has finished loading.'],
+        ['loadedmetadata', 'The metadata has been loaded.'],
+        ['pause', 'Playback has been paused.'],
+        ['play', 'Playback has begun.'],
+        [
+          'playing',
+          'Playback is ready to start after having been paused or delayed due to lack of data.',
+        ],
+        ['ratechange', 'The playback rate has changed.'],
+        ['seeked', 'A seek operation completed.'],
+        ['seeking', 'A seek operation began.'],
+        [
+          'stalled',
+          'The user agent is trying to fetch media data, but data is unexpectedly not forthcoming.',
+        ],
+        ['suspend', 'Media data loading has been suspended.'],
+        [
+          'timeupdate',
+          'The time indicated by the currentTime attribute has been updated.',
+        ],
+        ['volumechange', 'The volume has changed.'],
+        ['waiting', 'Playback has stopped because of a temporary lack of data'],
+      ]) {
+        audioDomNode.addEventListener(event, () => {
+          console.log(`Audio Event: ${event} (${description})`)
+        })
+      }
     }
-  } : () => {}
+  : () => {}
 
 // Set a bunch of event listeners on the <audio /> element.
 //
@@ -175,20 +179,20 @@ const Audio = () => {
     replay: replayTaps,
   } = taps
 
-  const scrubbedAudioUrl = React.useMemo(
-    () => {
-      if (audioUrl && audioUrl.startsWith(nonsecBlubrryPrefix)) {
-        const embeddedUrlOffset = audioUrl.indexOf('http', nonsecBlubrryPrefix.length)
+  const scrubbedAudioUrl = React.useMemo(() => {
+    if (audioUrl && audioUrl.startsWith(nonsecBlubrryPrefix)) {
+      const embeddedUrlOffset = audioUrl.indexOf(
+        'http',
+        nonsecBlubrryPrefix.length
+      )
 
-        if (embeddedUrlOffset > 0) {
-          return audioUrl.substr(embeddedUrlOffset)
-        }
+      if (embeddedUrlOffset > 0) {
+        return audioUrl.substr(embeddedUrlOffset)
       }
+    }
 
-      return audioUrl
-    },
-    [audioUrl]
-  )
+    return audioUrl
+  }, [audioUrl])
 
   //////////////////////////////////////////////////////////////////////////////
   // play/pause - consequence of button tap, or an event after-effect

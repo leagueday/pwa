@@ -1,7 +1,7 @@
 import React from 'react'
-import {useSwipeable} from 'react-swipeable'
+import { useSwipeable } from 'react-swipeable'
 
-import {makeStyles} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 
 import ChannelTile from './ChannelTile'
 import Connector from './Connector'
@@ -26,17 +26,15 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const EmptyTile = () => {
-  return (
-    <div />
-  )
+  return <div />
 }
 
-const SwipeChannelTilesRow = ({id, channels}) => {
+const SwipeChannelTilesRow = ({ id, channels }) => {
   const classes = useStyles()
 
   return (
-    <Connector channels={channels} id={id} pageSize={PAGE_LENGTH}>{
-      ({displayChannels, goNextPage, goPrevPage}) => {
+    <Connector channels={channels} id={id} pageSize={PAGE_LENGTH}>
+      {({ displayChannels, goNextPage, goPrevPage }) => {
         const swipeHandlers = useSwipeable({
           onSwiped: eventData => {
             const dir = eventData?.dir
@@ -54,31 +52,27 @@ const SwipeChannelTilesRow = ({id, channels}) => {
         return (
           <div className={classes.swipeChannelTilesRow} {...swipeHandlers}>
             {[
-              ...displayChannels.map(
-                channel => (
-                  <div key={baseIndex++} className={classes.tile}>
-                    <ChannelTile channel={channel}/>
-                  </div>
-                )
-              ),
-              ...(
-                () => {
-                  const result = []
-                  for (let i = displayChannels.length; i < PAGE_LENGTH; i++) {
-                    result.push(
-                      <div key={baseIndex++} className={classes.tile}>
-                        <EmptyTile/>
-                      </div>
-                    )
-                  }
-                  return result
+              ...displayChannels.map(channel => (
+                <div key={baseIndex++} className={classes.tile}>
+                  <ChannelTile channel={channel} />
+                </div>
+              )),
+              ...(() => {
+                const result = []
+                for (let i = displayChannels.length; i < PAGE_LENGTH; i++) {
+                  result.push(
+                    <div key={baseIndex++} className={classes.tile}>
+                      <EmptyTile />
+                    </div>
+                  )
                 }
-              )()
+                return result
+              })(),
             ]}
           </div>
         )
-      }
-    }</Connector>
+      }}
+    </Connector>
   )
 }
 

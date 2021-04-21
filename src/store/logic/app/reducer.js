@@ -1,12 +1,12 @@
 import * as constants from '../../constants'
 import * as ActionType from '../../actionTypes'
 
-import {nextCounters} from '../util'
+import { nextCounters } from '../util'
 
 const initialState = {
   audioControlsExpanded: false,
   audioControlsHidden: false,
-  filter: {kind: constants.FILTER_KIND_FEATURED},
+  filter: { kind: constants.FILTER_KIND_FEATURED },
   navExpanders: {},
   navVisibility: null,
   pageNums: {},
@@ -22,11 +22,11 @@ const initialState = {
 
 const addToMyList = (userData, id, kind) => {
   const myList = userData?.my ?? []
-  const nextMyList = [...myList, {id, kind}]
+  const nextMyList = [...myList, { id, kind }]
 
   return {
     ...userData,
-    my: nextMyList
+    my: nextMyList,
   }
 }
 
@@ -35,24 +35,26 @@ const removeFromMyList = (userData, id, kind) => {
 
   const myList = userData.my
 
-  const nextMyList = myList ? myList.filter(
-    ({id: liId, kind: liKind}) => liId !== id || liKind !== kind
-  ) : []
+  const nextMyList = myList
+    ? myList.filter(
+        ({ id: liId, kind: liKind }) => liId !== id || liKind !== kind
+      )
+    : []
 
   return {
     ...userData,
-    my: nextMyList
+    my: nextMyList,
   }
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.ADD_TO_MYLIST: {
-      const {id, kind} = action.payload
+      const { id, kind } = action.payload
 
       return {
         ...state,
-        userData: addToMyList(state.userData, id, kind)
+        userData: addToMyList(state.userData, id, kind),
       }
     }
     case ActionType.CONDENSE_AUDIO_CONTROLS: {
@@ -94,21 +96,21 @@ const reducer = (state = initialState, action) => {
       }
     }
     case ActionType.REMOVE_FROM_MYLIST: {
-      const {id, kind} = action.payload
+      const { id, kind } = action.payload
 
       return {
         ...state,
-        userData: removeFromMyList(state.userData, id, kind)
+        userData: removeFromMyList(state.userData, id, kind),
       }
     }
     case ActionType.SET_FILTER: {
       return {
         ...state,
-        filter: action.payload
+        filter: action.payload,
       }
     }
     case ActionType.SET_NAV_EXPANDER: {
-      const {open, tag} = action.payload
+      const { open, tag } = action.payload
 
       const navExpanders = {
         ...state.navExpanders,
@@ -121,11 +123,11 @@ const reducer = (state = initialState, action) => {
       }
     }
     case ActionType.SET_PAGENUM: {
-      const {id, pageNum} = action.payload
+      const { id, pageNum } = action.payload
 
       return {
         ...state,
-        pageNums: {...state.pageNums, [id]: pageNum},
+        pageNums: { ...state.pageNums, [id]: pageNum },
       }
     }
     case ActionType.SET_USER: {

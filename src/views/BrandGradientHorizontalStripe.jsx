@@ -13,10 +13,12 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const BrandGradientHorizontalStripe = ({className}) => {
+const BrandGradientHorizontalStripe = ({ className }) => {
   const classes = useStyles()
 
-  return (<div className={cx(classes.brandGradientHorizontalStripe, className)} />)
+  return (
+    <div className={cx(classes.brandGradientHorizontalStripe, className)} />
+  )
 }
 
 export default BrandGradientHorizontalStripe

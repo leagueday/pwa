@@ -24,7 +24,10 @@ export const maybeHmsToSecondsOnly = maybeDurationString => {
   //
   // The 'itunes:Duration' value is discarded in Redux in favor of the <audio />
   // media duration which seems more dependable.
-  if ('string' !== typeof(maybeDurationString) || !hmsRegex.test(maybeDurationString)) {
+  if (
+    'string' !== typeof maybeDurationString ||
+    !hmsRegex.test(maybeDurationString)
+  ) {
     return maybeDurationString
   }
 
@@ -40,13 +43,11 @@ export const maybeHmsToSecondsOnly = maybeDurationString => {
   return s
 }
 
-export const percentageToPosition = duration => percentage => percentage / 100 * duration
+export const percentageToPosition = duration => percentage =>
+  (percentage / 100) * duration
 
-export const secondsToHms = s => dayjs.duration(s * 1000).format(
-  s >= 3600
-    ? 'H:mm:ss'
-    : 'mm:ss'
-)
+export const secondsToHms = s =>
+  dayjs.duration(s * 1000).format(s >= 3600 ? 'H:mm:ss' : 'mm:ss')
 
 export const formatDatetime = dt => {
   const yearAgo = dayjs().subtract(1, 'year')

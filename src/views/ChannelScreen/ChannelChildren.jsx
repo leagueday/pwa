@@ -1,5 +1,5 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import cx from 'classnames'
 
 import { makeStyles, useTheme } from '@material-ui/core/styles'
@@ -7,7 +7,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import * as colors from '../../styling/colors'
 import useChannels from '../../api/useChannels'
-import {actions} from '../../store'
+import { actions } from '../../store'
 
 const useStyles = makeStyles(theme => ({
   channelChildren: {
@@ -72,36 +72,35 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ChannelChildren = ({childTags, className}) => {
+const ChannelChildren = ({ childTags, className }) => {
   const theme = useTheme()
 
   const classes = useStyles()
 
   const dispatch = useDispatch()
 
-  const makeOnclick = channelTag => () => dispatch(actions.pushHistory(`/channel/${channelTag}`))
+  const makeOnclick = channelTag => () =>
+    dispatch(actions.pushHistory(`/channel/${channelTag}`))
 
   const tagset = new Set(childTags)
 
   const channels = useChannels().list
 
-  const childChannels = channels.filter(({tag}) => tagset.has(tag))
+  const childChannels = channels.filter(({ tag }) => tagset.has(tag))
 
   return (
     <div className={cx(classes.channelChildren, className)}>
-      {
-        childChannels.map(
-          ({imageUrl, tag, title}) => (
-            <img key={tag}
-                 className={cx(
-                   classes.image,
-                   tag === 'lol' ? classes.imageBorderLive : classes.imageBorderDefault
-                 )}
-                 onClick={makeOnclick(tag)}
-                 src={imageUrl} />
-          )
-        )
-      }
+      {childChannels.map(({ imageUrl, tag, title }) => (
+        <img
+          key={tag}
+          className={cx(
+            classes.image,
+            tag === 'lol' ? classes.imageBorderLive : classes.imageBorderDefault
+          )}
+          onClick={makeOnclick(tag)}
+          src={imageUrl}
+        />
+      ))}
     </div>
   )
 }

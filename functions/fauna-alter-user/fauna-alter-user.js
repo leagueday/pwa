@@ -1,4 +1,4 @@
-const {Client, query: q} = require('faunadb')
+const { Client, query: q } = require('faunadb')
 
 const STATUS_OK = 0
 const STATUS_NOT_FOUND = 1
@@ -46,7 +46,7 @@ const alterUser = async (client, userEmail, data) => {
 
 const handler = async (event, context) => {
   const queryStringParameters = event.queryStringParameters
-  const {user} = context.clientContext
+  const { user } = context.clientContext
 
   if (process.env.NODE_ENV === 'development')
     console.log('fauna-alter-user', user, queryStringParameters)
@@ -54,26 +54,33 @@ const handler = async (event, context) => {
   // obtain the user email from the context, depends on netlify identity
   const userEmail = user ? user.email : null
 
-  if (!userEmail) return {
-    body: 'Unauthorized',
-    statusCode: 401,
-  }
+  if (!userEmail)
+    return {
+      body: 'Unauthorized',
+      statusCode: 401,
+    }
 
-  const userEmailParameter = queryStringParameters ? queryStringParameters.userEmail : null
-  const data = queryStringParameters ? JSON.parse(queryStringParameters.data) : null
+  const userEmailParameter = queryStringParameters
+    ? queryStringParameters.userEmail
+    : null
+  const data = queryStringParameters
+    ? JSON.parse(queryStringParameters.data)
+    : null
 
-  if (!userEmailParameter || !data) return {
-    body: 'Bad Request',
-    statusCode: 400,
-  }
+  if (!userEmailParameter || !data)
+    return {
+      body: 'Bad Request',
+      statusCode: 400,
+    }
 
   const client = new Client({
-    secret: process.env.FAUNADB_SECRET
+    secret: process.env.FAUNADB_SECRET,
   })
 
-  const checkPermission = userEmailParameter === userEmail
-    ? () => Promise.resolve([STATUS_OK, true])
-    : () => checkIsAdminUser(client, userEmail)
+  const checkPermission =
+    userEmailParameter === userEmail
+      ? () => Promise.resolve([STATUS_OK, true])
+      : () => checkIsAdminUser(client, userEmail)
 
   let [status, resultOrDiagnostic] = await checkPermission()
 
@@ -91,7 +98,11 @@ const handler = async (event, context) => {
     }
   }
 
-  [status, resultOrDiagnostic] = await alterUser(client, userEmailParameter, data)
+  ;[status, resultOrDiagnostic] = await alterUser(
+    client,
+    userEmailParameter,
+    data
+  )
 
   if (status !== STATUS_OK) {
     console.error(resultOrDiagnostic)

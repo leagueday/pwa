@@ -4,28 +4,27 @@
 // naturally as key-value stores of children
 export const laminate = rawXmlParseResult => {
   const getKeysString = node => {
-    if (!node || typeof(node) !== 'object') return ''
+    if (!node || typeof node !== 'object') return ''
 
-    return `${
-      Object.getOwnPropertyNames(node).filter(
-        propName => propName !== 'toJSON' && propName !== 'parent'
-      )
-    }`
+    return `${Object.getOwnPropertyNames(node).filter(
+      propName => propName !== 'toJSON' && propName !== 'parent'
+    )}`
   }
 
   const omitText = obj => {
-    if (obj.text) delete obj.text;
+    if (obj.text) delete obj.text
     return obj
   }
 
   function recSub(node) {
     if (!node) return node
 
-    const {attributes, children, name, text, type} = node
+    const { attributes, children, name, text, type } = node
 
     const newNode = {}
 
-    if (attributes && Object.keys(attributes).length > 0) newNode.attributes = attributes
+    if (attributes && Object.keys(attributes).length > 0)
+      newNode.attributes = attributes
 
     if (type && type !== 'element') newNode.type = type
 
@@ -43,11 +42,13 @@ export const laminate = rawXmlParseResult => {
         } else {
           newNode[child.name] = nextNamedChild
         }
-      }
-      else {
+      } else {
         const childKeys = getKeysString(child)
 
-        if ((childKeys === 'text,type' || childKeys === 'type,text') && child.type === 'text')
+        if (
+          (childKeys === 'text,type' || childKeys === 'type,text') &&
+          child.type === 'text'
+        )
           newNode.text = child.text
       }
     }
@@ -58,9 +59,12 @@ export const laminate = rawXmlParseResult => {
   return recSub(rawXmlParseResult)
 }
 
-export const makeRequestHeaders = bearerToken => bearerToken ? {
-  authorization: `Bearer ${bearerToken}`,
-} : { }
+export const makeRequestHeaders = bearerToken =>
+  bearerToken
+    ? {
+        authorization: `Bearer ${bearerToken}`,
+      }
+    : {}
 
 export const proxifyUrl = url => {
   const params = new URLSearchParams({

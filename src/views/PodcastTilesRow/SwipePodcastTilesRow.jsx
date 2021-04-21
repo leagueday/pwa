@@ -1,9 +1,9 @@
 import React from 'react'
-import {useSwipeable} from 'react-swipeable'
+import { useSwipeable } from 'react-swipeable'
 
-import {makeStyles} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 
-import {makeNextColor} from '../util'
+import { makeNextColor } from '../util'
 import Connector from './Connector'
 import PodcastTile from './PodcastTile'
 
@@ -28,17 +28,15 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const EmptyTile = () => {
-  return (
-    <div />
-  )
+  return <div />
 }
 
-const SwipePodcastTilesRow = ({id, podcasts}) => {
+const SwipePodcastTilesRow = ({ id, podcasts }) => {
   const classes = useStyles()
 
   return (
-    <Connector id={id} pageSize={PAGE_LENGTH} podcasts={podcasts}>{
-      ({displayPodcasts, goNextPage, goPrevPage}) => {
+    <Connector id={id} pageSize={PAGE_LENGTH} podcasts={podcasts}>
+      {({ displayPodcasts, goNextPage, goPrevPage }) => {
         const swipeHandlers = useSwipeable({
           onSwiped: eventData => {
             const dir = eventData?.dir
@@ -57,34 +55,29 @@ const SwipePodcastTilesRow = ({id, podcasts}) => {
         return (
           <div className={classes.swipePodcastTilesRow} {...swipeHandlers}>
             {[
-              ...displayPodcasts.map(
-                podcast => podcast ? (
+              ...displayPodcasts.map(podcast =>
+                podcast ? (
                   <div key={baseIndex++} className={classes.tile}>
-                    <PodcastTile
-                      podcast={podcast}
-                      textColor={nextColor()}
-                    />
+                    <PodcastTile podcast={podcast} textColor={nextColor()} />
                   </div>
                 ) : null
               ),
-              ...(
-                () => {
-                  const result = []
-                  for (let i = displayPodcasts.length; i < PAGE_LENGTH; i++) {
-                    result.push(
-                      <div key={baseIndex++} className={classes.tile}>
-                        <EmptyTile/>
-                      </div>
-                    )
-                  }
-                  return result
+              ...(() => {
+                const result = []
+                for (let i = displayPodcasts.length; i < PAGE_LENGTH; i++) {
+                  result.push(
+                    <div key={baseIndex++} className={classes.tile}>
+                      <EmptyTile />
+                    </div>
+                  )
                 }
-              )()
+                return result
+              })(),
             ]}
           </div>
         )
-      }
-    }</Connector>
+      }}
+    </Connector>
   )
 }
 

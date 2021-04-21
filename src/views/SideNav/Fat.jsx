@@ -1,12 +1,12 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
-import {actions, selectors} from '../../store'
-import {addScrollStyle} from '../util'
+import { actions, selectors } from '../../store'
+import { addScrollStyle } from '../util'
 import Expander from './Expander'
 import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
 import MyChannels from './MyChannels'
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     paddingTop: '0.5em',
   },
   logo: {
-    cursor: ({home}) => home ? 'default' : 'pointer',
+    cursor: ({ home }) => (home ? 'default' : 'pointer'),
     display: 'block',
     width: '100%',
   },
@@ -41,7 +41,10 @@ const useStyles = makeStyles(theme => ({
     flex: 2,
     paddingRight: '5%',
   },
-  scroller: addScrollStyle(colors.blue, theme)({
+  scroller: addScrollStyle(
+    colors.blue,
+    theme
+  )({
     flex: 1,
     minHeight: 0,
     overflowY: 'auto',
@@ -71,8 +74,8 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const FatSideNav = ({className, home}) => {
-  const classes = useStyles(({home}))
+const FatSideNav = ({ className, home }) => {
+  const classes = useStyles({ home })
 
   const dispatch = useDispatch()
   const goHome = home ? null : () => dispatch(actions.pushHistory('/'))
@@ -97,7 +100,11 @@ const FatSideNav = ({className, home}) => {
             <MyChannels />
           </Expander>
           {user && (
-            <Expander className={classes.expander} text="MY PODCASTS" tag="poca">
+            <Expander
+              className={classes.expander}
+              text="MY PODCASTS"
+              tag="poca"
+            >
               <MyPodcasts />
             </Expander>
           )}

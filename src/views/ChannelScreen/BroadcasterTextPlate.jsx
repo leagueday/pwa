@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
       paddingTop: '2vw',
     },
   },
-  title: ({color}) => ({
+  title: ({ color }) => ({
     color,
     fontSize: '150%',
     fontWeight: theme.typography.weight.bold,
@@ -57,39 +57,33 @@ const useStyles = makeStyles(theme => ({
   }),
 }))
 
-const BroadcasterTextPlate = ({className, channel}) => {
+const BroadcasterTextPlate = ({ className, channel }) => {
   const rawColor = channel.color
   const color = colors[rawColor] ?? rawColor
 
-  const classes = useStyles({color})
+  const classes = useStyles({ color })
 
   return (
     <div className={cx(classes.broadcasterTextPlate, className)}>
-      <div className={classes.channelTypename}>
-        Broadcaster Network
-      </div>
+      <div className={classes.channelTypename}>Broadcaster Network</div>
       <div className={classes.heterogeneousTitleLine}>
-        <div className={classes.title}>
-          {channel.title}
-        </div>
+        <div className={classes.title}>{channel.title}</div>
         <Hidden mdDown>
-          <div className={classes.channelTypename2}>
-            Broadcast Channel®
-          </div>
+          <div className={classes.channelTypename2}>Broadcast Channel®</div>
         </Hidden>
       </div>
-      <div className={classes.locationNote}>
-        {channel.locationNote}
-      </div>
-      <Backgrounder className={classes.backgrounder}
-                    text={channel.backgrounder}
-                    textMore={channel.backgrounderMore}
-                    color={color}
+      <div className={classes.locationNote}>{channel.locationNote}</div>
+      <Backgrounder
+        className={classes.backgrounder}
+        text={channel.backgrounder}
+        textMore={channel.backgrounderMore}
+        color={color}
       />
-      <SchedulePopper className={classes.schedulePopper}
-                      text={channel.scheduleNote}
-                      link={channel.scheduleLink}
-                      color={color}
+      <SchedulePopper
+        className={classes.schedulePopper}
+        text={channel.scheduleNote}
+        link={channel.scheduleLink}
+        color={color}
       />
     </div>
   )

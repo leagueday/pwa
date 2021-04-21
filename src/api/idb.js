@@ -40,9 +40,7 @@ export class IdbKvSet extends IdbKvMap {
   }
 
   async has(key) {
-    return super.get(key).then(
-      maybeVal => !!maybeVal
-    )
+    return super.get(key).then(maybeVal => !!maybeVal)
   }
 }
 
@@ -72,14 +70,17 @@ export class IdbKvTimedExpiryCache {
   async get(key) {
     const maybeCacheRecord = await idb_keyval.get(key, this.#store)
 
-    return [this._getRecordCacheStatus(maybeCacheRecord), maybeCacheRecord?.data]
+    return [
+      this._getRecordCacheStatus(maybeCacheRecord),
+      maybeCacheRecord?.data,
+    ]
   }
 
   async set(key, value) {
     const cacheRecord = { t: now(), data: value }
 
-    return idb_keyval.del(key, this.#store).then(
-      () => idb_keyval.set(key, cacheRecord, this.#store)
-    )
+    return idb_keyval
+      .del(key, this.#store)
+      .then(() => idb_keyval.set(key, cacheRecord, this.#store))
   }
 }

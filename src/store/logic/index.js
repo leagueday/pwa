@@ -10,8 +10,9 @@ export const thunks = {
   audio: audioThunks,
 }
 
-export const createRootReducer = ({router}) => combineReducers({
-  router,
-  app: appReducer,
-  audio: audioReducer,
-})
+export const createRootReducer = ({ router }) =>
+  combineReducers({
+    router,
+    app: appReducer,
+    audio: audioReducer,
+  })

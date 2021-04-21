@@ -15,8 +15,8 @@ import LiveBroadcastsMockup from './LiveBroadcastsMockup'
 import ReplayBroadcastsMockup from './ReplayBroadcastsMockup'
 
 const useStyles = makeStyles(theme => ({
-  bottomBlockItem: { },
-  bottomGrid: { },
+  bottomBlockItem: {},
+  bottomGrid: {},
   children: {
     padding: '1em',
     [theme.breakpoints.only('xs')]: {
@@ -119,38 +119,52 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const TopSection = ({classes, channel}) => (
+const TopSection = ({ classes, channel }) => (
   <Grid className={classes.imageTitleGrid} container>
     <Grid className={classes.topLeftGridItem} item xs={6} sm={4} md={4} lg={2}>
       <div className={classes.logoImageContainer}>
         <img className={classes.logoImage} src={channel.imageUrl} />
-        <PlusMinusButton className={classes.plusMinusButton} subjectId={channel.tag} subjectKind="channel" />
+        <PlusMinusButton
+          className={classes.plusMinusButton}
+          subjectId={channel.tag}
+          subjectKind="channel"
+        />
       </div>
     </Grid>
-    <Grid className={classes.topRightGridItem} item xs={12} sm={8} md={8} lg={10}>
+    <Grid
+      className={classes.topRightGridItem}
+      item
+      xs={12}
+      sm={8}
+      md={8}
+      lg={10}
+    >
       <BroadcasterTextPlate channel={channel} className={classes.textPlate} />
-      <ChannelChildren className={classes.children} childTags={channel.children} />
+      <ChannelChildren
+        className={classes.children}
+        childTags={channel.children}
+      />
     </Grid>
   </Grid>
 )
 
-const BroadcasterContent = ({channel}) => {
-  const classes = useStyles({channelColor: channel.color})
+const BroadcasterContent = ({ channel }) => {
+  const classes = useStyles({ channelColor: channel.color })
 
   const facetedPodcasts = useFacets(channel.tag)
 
   return (
     <ContentLayout
       accentColor={channel.color}
-      renderTop={
-        () => (
-          <TopSection channel={channel} classes={classes} />
-        )
-      }
+      renderTop={() => <TopSection channel={channel} classes={classes} />}
     >
       <Grid className={classes.bottomGrid} container>
         <Grid className={classes.bottomBlockItem} item xs={12}>
-          <BottomBlock accentColor={channel.color} titleStart="Live" titleRest="Broadcasts">
+          <BottomBlock
+            accentColor={channel.color}
+            titleStart="Live"
+            titleRest="Broadcasts"
+          >
             <LiveBroadcastsMockup
               className={classes.liveBroadcasts}
               channel={channel}
@@ -159,7 +173,11 @@ const BroadcasterContent = ({channel}) => {
           </BottomBlock>
         </Grid>
         <Grid className={classes.bottomBlockItem} item xs={12}>
-          <BottomBlock accentColor={channel.color} titleStart="Replay" titleRest="Broadcasts">
+          <BottomBlock
+            accentColor={channel.color}
+            titleStart="Replay"
+            titleRest="Broadcasts"
+          >
             <ReplayBroadcastsMockup
               className={classes.replayBroadcasts}
               channel={channel}
@@ -168,7 +186,11 @@ const BroadcasterContent = ({channel}) => {
           </BottomBlock>
         </Grid>
         <Grid className={classes.bottomBlockItem} item xs={12}>
-          <BottomBlock accentColor={channel.color} titleStart="Top" titleRest="Podcasts">
+          <BottomBlock
+            accentColor={channel.color}
+            titleStart="Top"
+            titleRest="Podcasts"
+          >
             <FacetedPodcastTiles data={facetedPodcasts} />
           </BottomBlock>
         </Grid>

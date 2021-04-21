@@ -1,8 +1,8 @@
-const {Client: FaunaClient, query: q} = require('faunadb')
+const { Client: FaunaClient, query: q } = require('faunadb')
 const RssParser = require('rss-parser')
 
 const parser = new RssParser({
-  defaultRSS: 2.0
+  defaultRSS: 2.0,
 })
 
 const handler = async (event, context) => {
@@ -11,7 +11,7 @@ const handler = async (event, context) => {
   const podcastRssUrl = queryStringParameters.podcastUrl
 
   const faunaClient = new FaunaClient({
-    secret: process.env.FAUNADB_SECRET
+    secret: process.env.FAUNADB_SECRET,
   })
 
   try {
@@ -20,7 +20,7 @@ const handler = async (event, context) => {
     const data = {
       feed,
       id: podcastId,
-      t: (new Date()).toISOString(),
+      t: new Date().toISOString(),
       url: podcastRssUrl,
     }
 
@@ -39,8 +39,7 @@ const handler = async (event, context) => {
 
     return {
       body: 'OK',
-      headers: {
-      },
+      headers: {},
       statusCode: 200,
     }
   } catch (err) {

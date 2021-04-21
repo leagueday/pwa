@@ -1,11 +1,11 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
 import * as colors from '../../styling/colors'
-import {actions} from '../../store'
+import { actions } from '../../store'
 import { IcoPause, IcoPlay, IcoPlus } from '../icons'
 import ComingSoon from '../ComingSoon'
 
@@ -60,7 +60,7 @@ const useStyles = makeStyles(theme => ({
       padding: '0 2vw',
     },
   },
-  episodePlus: ({canPlay, channelColor}) => ({
+  episodePlus: ({ canPlay, channelColor }) => ({
     color: theme.palette.text.primary,
     cursor: 'pointer',
     '&:hover': {
@@ -71,7 +71,7 @@ const useStyles = makeStyles(theme => ({
       width: '5vw',
     },
   }),
-  episodePOP: ({canPlay, channelColor}) => ({
+  episodePOP: ({ canPlay, channelColor }) => ({
     color: canPlay ? theme.palette.text.primary : colors.lightGray,
     cursor: canPlay ? 'pointer' : 'default',
     '&:hover': {
@@ -86,7 +86,7 @@ const useStyles = makeStyles(theme => ({
   episodePOPCell: {
     height: '60%',
   },
-  episodeRow: ({backgroundColor}) => ({
+  episodeRow: ({ backgroundColor }) => ({
     backgroundColor,
     display: 'flex',
     flexDirection: 'row',
@@ -129,7 +129,8 @@ const useStyles = makeStyles(theme => ({
       marginLeft: '2vw',
     },
   },
-  replayBroadcast: { // ok
+  replayBroadcast: {
+    // ok
     display: 'flex',
     flexDirection: 'column',
   },
@@ -139,7 +140,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     width: '100%',
   },
-  sectionTitle: ({channelColor}) => ({
+  sectionTitle: ({ channelColor }) => ({
     color: channelColor,
     display: 'flex',
     fontSize: '125%',
@@ -245,137 +246,145 @@ const mockupData = [
   },
 ]
 
-const filterMockupData = tag => mockupData.filter(
-  ({tags}) => tags.find(thisTag => thisTag === tag)
-)
+const filterMockupData = tag =>
+  mockupData.filter(({ tags }) => tags.find(thisTag => thisTag === tag))
 
 const transparent = 'rgba(0,0,0,1)'
 const episodeBackgroundColors = ['#070709', transparent, '#0E0E11', transparent]
 
-const EventImage = ({classes, imageUrl, onClick}) => (
-  <img className={cx(classes.eventImage, classes.clickable)}
-       onClick={onClick}
-       src={imageUrl} />
+const EventImage = ({ classes, imageUrl, onClick }) => (
+  <img
+    className={cx(classes.eventImage, classes.clickable)}
+    onClick={onClick}
+    src={imageUrl}
+  />
 )
 
-const EventTextplate = ({channelColor, onClick, sectionData}) => {
-  const { name, variety, } = sectionData
+const EventTextplate = ({ channelColor, onClick, sectionData }) => {
+  const { name, variety } = sectionData
 
-  const classes = useStyles({channelColor})
+  const classes = useStyles({ channelColor })
 
   return (
     <div className={classes.eventTextplate}>
-      <div className={cx(classes.sectionTitle, classes.clickable)} onClick={onClick}>
-        <div className={classes.textEllipsisOverflow}>
-          {name}
-        </div>
+      <div
+        className={cx(classes.sectionTitle, classes.clickable)}
+        onClick={onClick}
+      >
+        <div className={classes.textEllipsisOverflow}>{name}</div>
       </div>
-      <div className={cx(classes.sectionVariety, classes.clickable)} onClick={onClick}>
-        <div className={classes.textEllipsisOverflow}>
-          {variety}
-        </div>
+      <div
+        className={cx(classes.sectionVariety, classes.clickable)}
+        onClick={onClick}
+      >
+        <div className={classes.textEllipsisOverflow}>{variety}</div>
       </div>
     </div>
   )
 }
 
-const Track = ({episodeData, backgroundColor, counter, channelColor}) => {
+const Track = ({ episodeData, backgroundColor, counter, channelColor }) => {
   const {
     title,
     isPlaying,
     canPlay,
     fakeDateLabel,
-    fakeDurationLabel
+    fakeDurationLabel,
   } = episodeData
 
-  const classes = useStyles({backgroundColor, canPlay, channelColor})
+  const classes = useStyles({ backgroundColor, canPlay, channelColor })
 
   const PlayOrPauseIcon = isPlaying ? IcoPause : IcoPlay
 
   return (
     <div className={classes.episodeRow}>
       <div className={classes.episodeControls}>
-        <PlayOrPauseIcon classes={{inner: classes.episodePOP, outer: classes.episodePOPCell}}/>
-        <IcoPlus classes={{inner: classes.episodePlus, outer: classes.episodePOPCell}}/>
+        <PlayOrPauseIcon
+          classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
+        />
+        <IcoPlus
+          classes={{
+            inner: classes.episodePlus,
+            outer: classes.episodePOPCell,
+          }}
+        />
       </div>
       <div className={classes.episodeTitleAndData}>
         <div className={classes.episodeNumberAndTitle}>
           <div className={classes.episodeNumber}>
             {counter < 10 ? `0${counter}` : counter}
           </div>
-          <div className={classes.episodeTitle}>
-            {title}
-          </div>
+          <div className={classes.episodeTitle}>{title}</div>
         </div>
         <div className={classes.episodeDateAndDuration}>
           <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
-          <div className={classes.episodeDate}>
-            {fakeDateLabel}
-          </div>
-          <div className={classes.episodeDuration}>
-            {fakeDurationLabel}
-          </div>
+          <div className={classes.episodeDate}>{fakeDateLabel}</div>
+          <div className={classes.episodeDuration}>{fakeDurationLabel}</div>
         </div>
       </div>
     </div>
   )
 }
 
-const Tracks = ({sectionData, channelColor}) => {
-  const {episodes} = sectionData
+const Tracks = ({ sectionData, channelColor }) => {
+  const { episodes } = sectionData
 
-  const classes = useStyles({channelColor})
+  const classes = useStyles({ channelColor })
 
   return (
     <div className={classes.tracks}>
       <div className={classes.tracksLeftPad}>&nbsp;</div>
-      <div className={classes.tracksContent}>{
-        (
-          counter =>
-            episodes.map(episode => {
-              const bgC = episodeBackgroundColors[counter % episodeBackgroundColors.length]
-              counter = counter + 1
-              return (
-                <Track key={counter}
-                       episodeData={episode}
-                       backgroundColor={bgC}
-                       counter={counter}
-                       channelColor={channelColor}
-                />
-              )
-            })
-        )(0)
-      }</div>
+      <div className={classes.tracksContent}>
+        {(counter =>
+          episodes.map(episode => {
+            const bgC =
+              episodeBackgroundColors[counter % episodeBackgroundColors.length]
+            counter = counter + 1
+            return (
+              <Track
+                key={counter}
+                episodeData={episode}
+                backgroundColor={bgC}
+                counter={counter}
+                channelColor={channelColor}
+              />
+            )
+          }))(0)}
+      </div>
     </div>
   )
 }
 
-const ReplayBroadcastsMockup = ({className, channel}) => {
+const ReplayBroadcastsMockup = ({ className, channel }) => {
   const classes = useStyles()
 
   const dispatch = useDispatch()
-  const makeGotoEvent = event => () => dispatch(actions.pushHistory(`/event/${event}`))
+  const makeGotoEvent = event => () =>
+    dispatch(actions.pushHistory(`/event/${event}`))
 
   return (
     <div className={cx(classes.replayBroadcasts, className)}>
       <ComingSoon className={classes.comingSoon} />
-      {
-        filterMockupData(channel.tag).map(
-          sectionData => (
-            <div key={sectionData.name+sectionData.event} className={classes.replayBroadcast}>
-              <div className={classes.eventImageAndText}>
-                <EventImage classes={classes}
-                            imageUrl={sectionData.imageUrl}
-                            onClick={makeGotoEvent(sectionData.event)} />
-                <EventTextplate channelColor={channel.color}
-                                onClick={makeGotoEvent(sectionData.event)}
-                                sectionData={sectionData} />
-              </div>
-              <Tracks sectionData={sectionData} channelColor={channel.color} />
-            </div>
-          )
-        )
-      }
+      {filterMockupData(channel.tag).map(sectionData => (
+        <div
+          key={sectionData.name + sectionData.event}
+          className={classes.replayBroadcast}
+        >
+          <div className={classes.eventImageAndText}>
+            <EventImage
+              classes={classes}
+              imageUrl={sectionData.imageUrl}
+              onClick={makeGotoEvent(sectionData.event)}
+            />
+            <EventTextplate
+              channelColor={channel.color}
+              onClick={makeGotoEvent(sectionData.event)}
+              sectionData={sectionData}
+            />
+          </div>
+          <Tracks sectionData={sectionData} channelColor={channel.color} />
+        </div>
+      ))}
     </div>
   )
 }

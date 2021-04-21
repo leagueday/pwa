@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Title = ({onClick, title}) => {
+const Title = ({ onClick, title }) => {
   const classes = useStyles()
 
   return (

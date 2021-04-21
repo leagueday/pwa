@@ -13,13 +13,13 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '0.5em',
     [theme.breakpoints.only('xs')]: {
       marginBottom: '2vw',
-    }
+    },
   },
-  pinStripe: ({accentColor}) => ({
+  pinStripe: ({ accentColor }) => ({
     borderBottom: `0.2em solid ${accentColor ?? colors.white80}`,
     [theme.breakpoints.only('xs')]: {
       borderBottom: `0.25vw solid ${accentColor ?? colors.white80}`,
-    }
+    },
   }),
   rhsCell: {
     height: '50%',
@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.only('xs')]: {
       fontSize: '95%',
       paddingRight: '2vw',
-    }
+    },
   },
   titleRow: {
     alignItems: 'center',
@@ -56,17 +56,17 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     [theme.breakpoints.only('xs')]: {
       marginBottom: '2vw',
-    }
+    },
   },
-  titleStart: ({accentColor}) => ({
-    color: accentColor
+  titleStart: ({ accentColor }) => ({
+    color: accentColor,
   }),
 }))
 
 const BottomBlock = props => {
   const classes = useStyles(props)
 
-  const {className, titleRest, titleStart} = props
+  const { className, titleRest, titleStart } = props
 
   return (
     <div className={cx(classes.bottomBlock, className)}>
@@ -81,9 +81,7 @@ const BottomBlock = props => {
           <div className={classes.rhsCell} />
         </div>
       </div>
-      <div className={classes.children}>
-        {props.children}
-      </div>
+      <div className={classes.children}>{props.children}</div>
     </div>
   )
 }

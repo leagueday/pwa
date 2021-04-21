@@ -9,10 +9,10 @@ import BottomBlock from './BottomBlock'
 import ChannelTilesRow from './ChannelTilesRow'
 
 const useStyles = makeStyles({
-  channelCategories: { },
+  channelCategories: {},
 })
 
-const ChannelCategories = ({className}) => {
+const ChannelCategories = ({ className }) => {
   const classes = useStyles()
 
   const channels = useChannels().list
@@ -21,7 +21,7 @@ const ChannelCategories = ({className}) => {
   const channelsByCat = React.useMemo(() => {
     if (channelCategories.size === 0 || channels.length === 0) return []
 
-    const channelMap = new Map(channels.map(record => ([record.tag, record])))
+    const channelMap = new Map(channels.map(record => [record.tag, record]))
 
     const result = []
     for (let [title, tagSet] of channelCategories.entries()) {
@@ -36,15 +36,11 @@ const ChannelCategories = ({className}) => {
 
   return (
     <div className={cx(className, classes.channelCategories)}>
-      {
-        channelsByCat.map(
-          ([title, channels]) => (
-            <BottomBlock key={title} titleRest={title}>
-              <ChannelTilesRow id={`chan.${title}`} channels={channels} />
-            </BottomBlock>
-          )
-        )
-      }
+      {channelsByCat.map(([title, channels]) => (
+        <BottomBlock key={title} titleRest={title}>
+          <ChannelTilesRow id={`chan.${title}`} channels={channels} />
+        </BottomBlock>
+      ))}
     </div>
   )
 }

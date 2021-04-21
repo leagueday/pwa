@@ -30,8 +30,7 @@ export const channelSelectors = {
       // outstandingly, this may be an array
       if (Array.isArray(itunesImage)) {
         return itunesImage[0]?.attributes?.href
-      }
-      else {
+      } else {
         return itunesImage.attributes?.href
       }
     },
@@ -62,8 +61,8 @@ export const channelMutators = {
       }
 
       return rssDoc
-    }
-  }
+    },
+  },
 }
 
 export const itemSelectors = {
@@ -71,7 +70,7 @@ export const itemSelectors = {
     // audioType: item => item?.enclosure?.attributes?.type,
     audioUrl: item => item?.enclosure?.attributes?.url,
     description: item => item?.description,
-    duration: item=> item?.['itunes:duration'],
+    duration: item => item?.['itunes:duration'],
     pubDate: item => item?.pubDate,
     title: item => item?.title,
     url: item => item?.link,

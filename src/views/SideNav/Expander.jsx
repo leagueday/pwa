@@ -1,13 +1,13 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
 
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import Collapse from '@material-ui/core/Collapse'
 
-import {actions, selectors} from '../../store'
+import { actions, selectors } from '../../store'
 
-import {IcoSolidArrowDown, IcoSolidArrowUp} from '../icons'
+import { IcoSolidArrowDown, IcoSolidArrowUp } from '../icons'
 
 const useStyles = makeStyles(theme => ({
   clickable: {
@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
   },
-  text: ({skinny}) => ({
+  text: ({ skinny }) => ({
     flex: 1,
     fontSize: skinny ? '60%' : null,
     fontWeight: theme.typography.weight.bold,
@@ -46,8 +46,8 @@ const useStyles = makeStyles(theme => ({
   }),
 }))
 
-const Expander = ({children, className, defaultOpen, skinny, text, tag}) => {
-  const classes = useStyles({skinny})
+const Expander = ({ children, className, defaultOpen, skinny, text, tag }) => {
+  const classes = useStyles({ skinny })
 
   const dispatch = useDispatch()
 
@@ -62,34 +62,26 @@ const Expander = ({children, className, defaultOpen, skinny, text, tag}) => {
   const Icon = open ? IcoSolidArrowDown : IcoSolidArrowUp
 
   return skinny ? (
-      <div className={cx(className, classes.expander)}>
-        <div className={cx(classes.col, classes.clickable)} onClick={toggleOpen} >
-          <div className={classes.text}>
-            {text}
-          </div>
-          <Icon classes={{inner:classes.icon, outer:classes.iconContainer}} />
-        </div>
-        <Collapse in={open} timeout={'auto'}>
-          <div className={classes.content}>
-            {children}
-          </div>
-        </Collapse>
+    <div className={cx(className, classes.expander)}>
+      <div className={cx(classes.col, classes.clickable)} onClick={toggleOpen}>
+        <div className={classes.text}>{text}</div>
+        <Icon classes={{ inner: classes.icon, outer: classes.iconContainer }} />
       </div>
-    ) : (
-      <div className={cx(className, classes.expander)}>
-        <div className={cx(classes.row, classes.clickable)} onClick={toggleOpen} >
-          <Icon classes={{inner:classes.icon, outer:classes.iconContainer}} />
-          <div className={classes.text}>
-            {text}
-          </div>
-        </div>
-        <Collapse in={open} timeout={'auto'}>
-          <div className={classes.content}>
-            {children}
-          </div>
-        </Collapse>
+      <Collapse in={open} timeout={'auto'}>
+        <div className={classes.content}>{children}</div>
+      </Collapse>
+    </div>
+  ) : (
+    <div className={cx(className, classes.expander)}>
+      <div className={cx(classes.row, classes.clickable)} onClick={toggleOpen}>
+        <Icon classes={{ inner: classes.icon, outer: classes.iconContainer }} />
+        <div className={classes.text}>{text}</div>
       </div>
-    )
+      <Collapse in={open} timeout={'auto'}>
+        <div className={classes.content}>{children}</div>
+      </Collapse>
+    </div>
+  )
 }
 
 Expander.defaultProps = {

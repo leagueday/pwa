@@ -26,50 +26,45 @@ const useStyles = makeStyles({
 })
 
 const EmptyTile = () => {
-  return (
-    <div />
-  )
+  return <div />
 }
 
-const ButtonChannelTilesRow = ({id, channels}) => {
+const ButtonChannelTilesRow = ({ id, channels }) => {
   const classes = useStyles()
 
   let baseIndex = 0
 
   return (
-    <Connector channels={channels} id={id} pageSize={PAGE_LENGTH}>{
-      ({displayChannels, goNextPage, goPrevPage}) => (
+    <Connector channels={channels} id={id} pageSize={PAGE_LENGTH}>
+      {({ displayChannels, goNextPage, goPrevPage }) => (
         <SideButtons
           accentColor="magenta"
           onLeftClick={goPrevPage}
-          onRightClick={goNextPage}>
+          onRightClick={goNextPage}
+        >
           <div className={classes.buttonChannelTilesRow}>
             {[
-              ...displayChannels.map(
-                channel => (
-                  <div key={baseIndex++} className={classes.tile}>
-                    <ChannelTile channel={channel}/>
-                  </div>
-                )
-              ),
-              ...(
-                () => {
-                  const result = []
-                  for (let i = displayChannels.length; i < PAGE_LENGTH; i++) {
-                    result.push(
-                      <div key={baseIndex++} className={classes.tile}>
-                        <EmptyTile/>
-                      </div>
-                    )
-                  }
-                  return result
+              ...displayChannels.map(channel => (
+                <div key={baseIndex++} className={classes.tile}>
+                  <ChannelTile channel={channel} />
+                </div>
+              )),
+              ...(() => {
+                const result = []
+                for (let i = displayChannels.length; i < PAGE_LENGTH; i++) {
+                  result.push(
+                    <div key={baseIndex++} className={classes.tile}>
+                      <EmptyTile />
+                    </div>
+                  )
                 }
-              )()
+                return result
+              })(),
             ]}
           </div>
         </SideButtons>
-      )
-    }</Connector>
+      )}
+    </Connector>
   )
 }
 

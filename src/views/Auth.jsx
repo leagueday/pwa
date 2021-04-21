@@ -1,8 +1,8 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import netlifyIdentity from 'netlify-identity-widget'
 
-import {actions, selectors} from '../store'
+import { actions, selectors } from '../store'
 
 const makeOnInit = dispatch => user => {
   console.log('init', JSON.stringify(user, null, 2))
@@ -42,39 +42,30 @@ const Auth = () => {
 
   const { login: loginTaps, logout: logoutTaps } = taps
 
-  React.useEffect(
-    () => {
-      window.netlifyIdentity = netlifyIdentity
+  React.useEffect(() => {
+    window.netlifyIdentity = netlifyIdentity
 
-      netlifyIdentity.on('init', makeOnInit(dispatch))
-      netlifyIdentity.on('login', makeOnLogin(dispatch))
-      netlifyIdentity.on('logout', makeOnLogout(dispatch))
-      netlifyIdentity.on('error', onError)
-      // netlifyIdentity.on('open', onOpen)
-      // netlifyIdentity.on('close', onClose)
+    netlifyIdentity.on('init', makeOnInit(dispatch))
+    netlifyIdentity.on('login', makeOnLogin(dispatch))
+    netlifyIdentity.on('logout', makeOnLogout(dispatch))
+    netlifyIdentity.on('error', onError)
+    // netlifyIdentity.on('open', onOpen)
+    // netlifyIdentity.on('close', onClose)
 
-      netlifyIdentity.init()
-    },
-    []
-  )
+    netlifyIdentity.init()
+  }, [])
 
-  React.useEffect(
-    () => {
-      if (loginTaps > 0) {
-        netlifyIdentity.open()
-      }
-    },
-    [loginTaps]
-  )
+  React.useEffect(() => {
+    if (loginTaps > 0) {
+      netlifyIdentity.open()
+    }
+  }, [loginTaps])
 
-  React.useEffect(
-    () => {
-      if (logoutTaps > 0) {
-        netlifyIdentity.logout()
-      }
-    },
-    [logoutTaps]
-  )
+  React.useEffect(() => {
+    if (logoutTaps > 0) {
+      netlifyIdentity.logout()
+    }
+  }, [logoutTaps])
 
   return null
 }
