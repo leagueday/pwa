@@ -20,6 +20,10 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  slideContainer: {
+    overflowX: 'hidden',
+    position: 'relative',
+  },
   tile: {
     flex: 1,
     height: '100%',
@@ -55,42 +59,47 @@ const ButtonChannelTilesRow = ({id, channels, title}) => {
           direction => direction === 'L' ? goPrevPage && goPrevPage() : goNextPage && goNextPage()
         )
 
+        const maybeDebouncedPageLeft = pageNum > 0 ? () => debouncedPage('L') : null
+        const maybeDebouncedPageRight = pageNum < numPages - 1 ? () => debouncedPage('R') : null
+
         return (
           <BottomBlock numPages={numPages} pageNum={pageNum} titleRest={title}>
             <SideButtons
               accentColor="magenta"
-              onLeftClick={() => debouncedPage('L')}
-              onRightClick={() => debouncedPage('R')}>
-              <TransitionGroup component={null}>
-                <CSSTransition key={`${prevPageNum} ${pageNum}`}
-                               classNames={slideTransition}
-                               timeout={500}>
-                  <div className={classes.buttonChannelTilesRow}>
-                    {[
-                      ...displayChannels.map(
-                        channel => (
-                          <div key={baseIndex++} className={classes.tile}>
-                            <ChannelTile channel={channel}/>
-                          </div>
-                        )
-                      ),
-                      ...(
-                        () => {
-                          const result = []
-                          for (let i = displayChannels.length; i < PAGE_LENGTH; i++) {
-                            result.push(
-                              <div key={baseIndex++} className={classes.tile}>
-                                <EmptyTile/>
-                              </div>
-                            )
+              onLeftClick={maybeDebouncedPageLeft}
+              onRightClick={maybeDebouncedPageRight}>
+              <div className={classes.slideContainer}>
+                <TransitionGroup component={null}>
+                  <CSSTransition key={`${prevPageNum} ${pageNum}`}
+                                 classNames={slideTransition}
+                                 timeout={500}>
+                    <div className={classes.buttonChannelTilesRow}>
+                      {[
+                        ...displayChannels.map(
+                          channel => (
+                            <div key={baseIndex++} className={classes.tile}>
+                              <ChannelTile channel={channel}/>
+                            </div>
+                          )
+                        ),
+                        ...(
+                          () => {
+                            const result = []
+                            for (let i = displayChannels.length; i < PAGE_LENGTH; i++) {
+                              result.push(
+                                <div key={baseIndex++} className={classes.tile}>
+                                  <EmptyTile/>
+                                </div>
+                              )
+                            }
+                            return result
                           }
-                          return result
-                        }
-                      )()
-                    ]}
-                  </div>
-                </CSSTransition>
-              </TransitionGroup>
+                        )()
+                      ]}
+                    </div>
+                  </CSSTransition>
+                </TransitionGroup>
+              </div>
             </SideButtons>
           </BottomBlock>
         )

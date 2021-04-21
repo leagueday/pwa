@@ -15,6 +15,8 @@ const PAGE_LENGTH = 3
 
 const useStyles = makeStyles(theme => ({
   slideContainer: {
+    overflowX: 'hidden',
+    position: 'relative',
     width: '100%',
   },
   sliderDots: {

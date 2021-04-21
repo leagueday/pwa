@@ -15,7 +15,9 @@ const PAGE_LENGTH = 3
 
 const useStyles = makeStyles(theme => ({
   slideContainer: {
-    width: '100%',
+    maxWidth: '100%',
+    overflowX: 'hidden',
+    position: 'relative',
   },
   swipeChannelTilesRow: {
     display: 'flex',
