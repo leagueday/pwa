@@ -1,7 +1,4 @@
 import React from 'react'
-
-import DownSvg from '../svg/down.svg'
-
 import makeGenericIcon from './GenericIcon'
 
-export default makeGenericIcon(DownSvg)
+export default makeGenericIcon('/svg/down.svg')
