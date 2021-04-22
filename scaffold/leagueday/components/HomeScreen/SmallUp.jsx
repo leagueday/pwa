@@ -9,7 +9,7 @@ import { colors } from '../../styling'
 import BasicLayout from '../BasicLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import Loading from '../Loading'
-import { addScrollStyle } from '../util'
+import { addScrollStyle } from 'components/util'
 import SmUpBanner from './SmUpBanner'
 import TitleBar from './TitleBar'
 

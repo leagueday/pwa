@@ -9,7 +9,7 @@ import { colors } from '../../styling'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import PlusMinusButton from '../PlusMinusButton'
-import { cycleColorSequence, stripHtml } from '../util'
+import { cycleColorSequence, stripHtml } from 'components/util'
 import Item from './Item'
 
 const useStyles = makeStyles(theme => ({

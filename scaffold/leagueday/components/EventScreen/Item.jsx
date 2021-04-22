@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Hidden from '@material-ui/core/Hidden'
 
 import { colors } from '../../styling'
-import { computeZebraBackgroundColor } from '../util'
+import { computeZebraBackgroundColor } from 'components/util'
 import { makeIconButton } from '../IconButton'
 import { IcoPlay } from '../icons'
 

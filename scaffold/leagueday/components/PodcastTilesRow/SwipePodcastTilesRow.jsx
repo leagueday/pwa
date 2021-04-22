@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core'
 import debounce from '../../api/debounce'
 import usePrevious from '../../api/usePrevious'
 import SliderDots from '../SliderDots'
-import { makeNextColor, slideTransitionGroup } from '../util'
+import { makeNextColor, slideTransitionGroup } from 'components/util'
 import Connector from './Connector'
 import PodcastTile from './PodcastTile'
 

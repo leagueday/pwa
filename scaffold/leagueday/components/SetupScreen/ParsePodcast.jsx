@@ -14,7 +14,7 @@ import queryPodcast from '../../api/queryPodcast'
 import usePodcasts from '../../api/usePodcasts'
 import { selectors } from '../../store'
 import { colors } from '../../styling'
-import { addScrollStyle } from '../util'
+import { addScrollStyle } from 'components/util'
 
 const darkMagenta = Color(colors.magenta).darken(0.33).string()
 

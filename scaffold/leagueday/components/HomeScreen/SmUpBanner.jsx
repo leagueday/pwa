@@ -13,7 +13,7 @@ import { actions } from '../../store'
 import { colors } from '../../styling'
 
 import SideButtons from '../SideButtons'
-import { slideTransitionGroup } from '../util'
+import { slideTransitionGroup } from 'components/util'
 
 const useStyles = makeStyles(theme => ({
   banner: {

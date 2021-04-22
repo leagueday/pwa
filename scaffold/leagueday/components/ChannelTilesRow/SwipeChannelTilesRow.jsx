@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core'
 import debounce from '../../api/debounce'
 import usePrevious from '../../api/usePrevious'
 import BottomBlock from '../BottomBlock'
-import { slideTransitionGroup } from '../util'
+import { slideTransitionGroup } from 'components/util'
 import ChannelTile from './ChannelTile'
 import Connector from './Connector'
 

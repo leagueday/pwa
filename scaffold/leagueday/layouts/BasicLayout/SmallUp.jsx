@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { selectors } from '../../store'
-import AudioControls from '../AudioControls'
-import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe'
-import SideNav from '../SideNav'
+import AudioControls from 'components/AudioControls'
+import BrandGradientHorizontalStripe from 'components/BrandGradientHorizontalStripe'
+import SideNav from 'components/SideNav'
 
 const useStyles = makeStyles(theme => ({
   basicLayoutCol: {

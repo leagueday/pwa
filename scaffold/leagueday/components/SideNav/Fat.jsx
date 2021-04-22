@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { actions, selectors } from '../../store'
 import { colors } from '../../styling'
-import { addScrollStyle } from '../util'
+import { addScrollStyle } from 'components/util'
 import Expander from './Expander'
 import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
 import MyChannels from './MyChannels'

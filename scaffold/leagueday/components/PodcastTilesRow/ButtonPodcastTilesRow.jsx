@@ -7,7 +7,7 @@ import debounce from '../../api/debounce'
 import usePrevious from '../../api/usePrevious'
 import SliderDots from '../SliderDots'
 import SideButtons from '../SideButtons'
-import { makeNextColor, slideTransitionGroup } from '../util'
+import { makeNextColor, slideTransitionGroup } from 'components/util'
 import Connector from './Connector'
 import PodcastTile from './PodcastTile'
 

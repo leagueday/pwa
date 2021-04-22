@@ -11,7 +11,7 @@ import useHomeBanner from '../../api/useHomeBanner'
 import usePrevious from '../../api/usePrevious'
 import { actions } from '../../store'
 import { colors } from '../../styling'
-import { slideTransitionGroup } from '../util'
+import { slideTransitionGroup } from 'components/util'
 
 const useStyles = makeStyles(theme => ({
   slider: {

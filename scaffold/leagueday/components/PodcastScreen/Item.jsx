@@ -11,7 +11,7 @@ import { colors } from '../../styling'
 import { formatDatetime, secondsToHms } from '../dateutil'
 import { makeIconButton } from '../IconButton'
 import { IcoPause, IcoPlay } from '../icons'
-import { stripHtml, computeZebraBackgroundColor } from '../util'
+import { stripHtml, computeZebraBackgroundColor } from 'components/util'
 
 const PauseButton = makeIconButton(IcoPause)
 const PlayButton = makeIconButton(IcoPlay)

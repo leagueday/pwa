@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { actions, selectors } from '../../store'
 import { colors } from '../../styling'
-import { addScrollStyle } from '../util'
+import { addScrollStyle } from 'components/util'
 import { makeIconButton } from '../IconButton'
 import Expander from './Expander'
 import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'

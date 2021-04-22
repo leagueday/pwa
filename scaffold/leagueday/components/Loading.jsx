@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { cycleColorSequence } from './util'
+import { cycleColorSequence } from 'components/util'
 
 const useStyles = makeStyles(theme => ({
   loading: {

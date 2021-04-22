@@ -5,8 +5,8 @@ import cx from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { actions } from '../store'
-import BasicLayout from '../layouts/'
-import ContentLayout from '../layouts/'
+import BasicLayout from '../layouts/BasicLayout'
+import ContentLayout from '../layouts/ContentLayout'
 import Square from '../components/Square'
 import Item from '../components/Item'
 

@@ -5,9 +5,9 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { actions, selectors } from '../../store'
 import { colors } from '../../styling'
-import AppBar from '../AppBar'
-import AudioControls from '../AudioControls'
-import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe'
+import AppBar from 'components/AppBar'
+import AudioControls from 'components/AudioControls'
+import BrandGradientHorizontalStripe from 'components/BrandGradientHorizontalStripe'
 
 const useStyles = makeStyles(theme => ({
   appBar: {
