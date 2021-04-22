@@ -1,6 +1,6 @@
 import React from 'react'
 
-import RewindStopSvg from '../../svg/rewind-stop.svg'
+import RewindStopSvg from '../svg/rewind-stop.svg'
 
 import makeGenericIcon from './GenericIcon'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import FastFwdStopSvg from '../../svg/fast-fwd-stop.svg'
+import FastFwdStopSvg from '../svg/fast-fwd-stop.svg'
 
 import makeGenericIcon from './GenericIcon'
 

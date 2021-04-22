@@ -1,6 +1,6 @@
 import React from 'react'
 
-import PlaySvg from '../../svg/play.svg'
+import PlaySvg from '../svg/play.svg'
 
 import makeGenericIcon from './GenericIcon'
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import SolidArrowDownSvg from '../../svg/solid-arrow-down.svg'
+import SolidArrowDownSvg from '../svg/solid-arrow-down.svg'
 
 import makeGenericIcon from './GenericIcon'
 

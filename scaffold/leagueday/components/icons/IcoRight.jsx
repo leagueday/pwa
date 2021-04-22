@@ -1,6 +1,6 @@
 import React from 'react'
 
-import RightSvg from '../../svg/right.svg'
+import RightSvg from '../svg/right.svg'
 
 import makeGenericIcon from './GenericIcon'
 

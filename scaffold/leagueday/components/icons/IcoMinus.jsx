@@ -1,6 +1,6 @@
 import React from 'react'
 
-import MinusSvg from '../../svg/minus.svg'
+import MinusSvg from '../svg/minus.svg'
 
 import makeGenericIcon from './GenericIcon'
 
