@@ -4,11 +4,11 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import { actions } from '../store'
-import BasicLayout from '../layouts/'
-import ContentLayout from '../layouts/'
-import Square from '../components/Square'
-import Item from '../components/Item'
+import { actions } from '../../store'
+import BasicLayout from '../BasicLayout'
+import ContentLayout from '../ContentLayout'
+import Square from '../Square'
+import Item from './Item'
 
 const mockData = {
   lcs: {
