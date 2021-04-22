@@ -1,4 +1,4 @@
-import { assert } from 'chai'
+import assert from 'assert'
 
 describe('Array', function () {
   describe('#indexOf()', function () {
@@ -7,7 +7,7 @@ describe('Array', function () {
     })
 
     it('should pass on a truthy response', () => {
-      assert.isTrue(true)
+      assert(true)
     })
   })
 })

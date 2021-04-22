@@ -10,7 +10,7 @@
     "postinstall": "run-s install-functions",
     "start": "http-server -p 8888 --proxy http://localhost:8888? dist",
     "start-dev": "cross-env NODE_ENV=development webpack serve --config webpack-dev.config.js --mode development",
-    "test": "mocha '**/*.test.mjs'",
+    "test": "mocha -r jsdom-global/register '**/*.test.mjs'",
     "lint": "prettier --write .",
     "lint-check": "prettier  --check ."
   },
@@ -87,8 +87,9 @@
     ]
   },
   "devDependencies": {
-    "chai": "^4.3.4",
     "husky": "^6.0.0",
+    "jsdom": "16.5.3",
+    "jsdom-global": "3.0.2",
     "mocha": "^8.3.2",
     "prettier": "2.2.1"
   },
