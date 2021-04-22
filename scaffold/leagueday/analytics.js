@@ -1,6 +1,6 @@
 import ReactGA from 'react-ga'
 
-const logTiming = NODE_ENV === 'development'
+const logTiming = process.env.NODE_ENV === 'development'
 
 ReactGA.initialize('UA-180940239-4')
 
