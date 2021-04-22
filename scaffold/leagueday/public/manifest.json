@@ -1,0 +1,40 @@
+{
+  "name": "LeagueDay",
+  "short_name": "LeagueDay",
+  "icons": [
+    {
+      "src": "/img/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/img/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/img/1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#222222",
+  "theme_color": "#645434"
+}
