@@ -87,7 +87,7 @@
   },
   "devDependencies": {
     "husky": "^6.0.0",
-    "prettier": "2.2.1"
+    "prettier": "^2.2.1"
   },
   "husky": {
     "hooks": {
