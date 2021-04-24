@@ -18,7 +18,7 @@ const operatePodcastsList = (bearerToken, op, url) => {
     )
     .catch(err => {
       if (NODE_ENV === 'development')
-        console.error('user data request error', err)
+        console.error('podcast list ops request error', err)
       return err.message
     })
 }
@@ -26,10 +26,7 @@ const operatePodcastsList = (bearerToken, op, url) => {
 const PodcastsListOperations = {
   add: (bearerToken, url) => operatePodcastsList(bearerToken, 'add', url),
   fetch: bearerToken => operatePodcastsList(bearerToken, 'fetch'),
-  remove: (bearerToken, url) => {
-    console.log('plo.rm', url)
-    return operatePodcastsList(bearerToken, 'remove', url)
-  },
+  remove: (bearerToken, url) => operatePodcastsList(bearerToken, 'remove', url),
 }
 
 export default PodcastsListOperations
