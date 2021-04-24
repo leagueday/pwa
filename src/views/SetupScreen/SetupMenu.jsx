@@ -86,6 +86,12 @@ const SetupMenu = ({ subject }) => {
       <SubjectButtonRow
         classes={classes}
         focusedSubject={subject}
+        subject="podcasts-list"
+        subjectText="Podcasts List"
+      />
+      <SubjectButtonRow
+        classes={classes}
+        focusedSubject={subject}
         subject="parse-podcast"
         subjectText="Parse Podcast"
       />

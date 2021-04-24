@@ -5,11 +5,13 @@ import Card from '@material-ui/core/Card'
 
 import { colors } from '../../styling'
 import ParsePodcast from './ParsePodcast'
+import PodcastsList from './PodcastsList'
 import SetupMenu from './SetupMenu'
 import SetupMyChannelsSeed from './SetupMyChannelsSeed'
 
 const contentBySubject = {
   'parse-podcast': ParsePodcast,
+  'podcasts-list': PodcastsList,
   'seed-mylist': SetupMyChannelsSeed,
 }
 
