@@ -80,12 +80,6 @@ const SetupMenu = ({ subject }) => {
       <SubjectButtonRow
         classes={classes}
         focusedSubject={subject}
-        subject="seed-mylist"
-        subjectText="Seed MyList"
-      />
-      <SubjectButtonRow
-        classes={classes}
-        focusedSubject={subject}
         subject="podcasts-list"
         subjectText="Podcasts List"
       />
@@ -94,6 +88,18 @@ const SetupMenu = ({ subject }) => {
         focusedSubject={subject}
         subject="parse-podcast"
         subjectText="Parse Podcast"
+      />
+      <SubjectButtonRow
+        classes={classes}
+        focusedSubject={subject}
+        subject="channels"
+        subjectText="Channels"
+      />
+      <SubjectButtonRow
+        classes={classes}
+        focusedSubject={subject}
+        subject="seed-mylist"
+        subjectText="Seed MyList"
       />
     </Card>
   )
