@@ -101,6 +101,12 @@ const SetupMenu = ({ subject }) => {
         subject="seed-mylist"
         subjectText="Seed MyList"
       />
+      <SubjectButtonRow
+        classes={classes}
+        focusedSubject={subject}
+        subject="facets"
+        subjectText="Facets"
+      />
     </Card>
   )
 }
