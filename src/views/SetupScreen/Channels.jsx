@@ -468,6 +468,7 @@ const Channels = ({ className }) => {
       channel: { ...addEditChannelModal.channel, [name]: value },
     })
 
+  // data loader
   React.useEffect(() => {
     if (bearerToken) {
       ChannelsOperations.fetch(bearerToken).then(channels => {

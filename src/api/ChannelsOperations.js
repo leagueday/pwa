@@ -1,6 +1,6 @@
 import { makeRequestHeaders } from './util'
 
-const PODCASTS_LIST_ENDPOINT = `/.netlify/functions/fauna-channels`
+const CHANNELS_ENDPOINT = '/.netlify/functions/fauna-channels'
 
 const scrub = channel => {
   for (let key of Object.keys(channel)) {
@@ -19,7 +19,7 @@ const operateChannels = (bearerToken, op, channel) => {
     channel: channel ? JSON.stringify(channel) : null,
   })
 
-  return fetch(`${PODCASTS_LIST_ENDPOINT}?${params.toString()}`, {
+  return fetch(`${CHANNELS_ENDPOINT}?${params.toString()}`, {
     headers: makeRequestHeaders(bearerToken),
   })
     .then(res =>

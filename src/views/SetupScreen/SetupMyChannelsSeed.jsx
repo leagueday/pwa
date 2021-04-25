@@ -2,12 +2,11 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import Color from 'color'
 import cx from 'classnames'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 import { makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
-
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 import alterUser from '../../api/alterUser.js'
 import fetchUserData from '../../api/fetchUserData'
@@ -160,7 +159,6 @@ const SetupMyChannelsSeed = ({ className }) => {
       if (result.source.droppableId === 'seedList') {
         reorder(result.destination.index, result.source.index)
       } else if (result.source.droppableId === 'allChannels') {
-        console.log('doing add', result.destination.index, result.draggableId)
         add(result.destination.index, result.draggableId)
       }
     } else if (result.destination.droppableId === 'allChannels') {

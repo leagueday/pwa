@@ -31,8 +31,8 @@ const checkIsAdminUser = async (client, email) => {
   }
 }
 
-const addChannel = async (client, channel) => {
-  if (!channel) {
+const addFacet = async (client, facet) => {
+  if (!facet) {
     return [STATUS_BAD_PARAMS, null]
   }
 
@@ -40,9 +40,9 @@ const addChannel = async (client, channel) => {
     // prettier-ignore
     await client.query(
       q.Create(
-        q.Collection('channel'),
+        q.Collection('facet'),
         {
-          data: channel,
+          data: facet,
         },
       )
     )
@@ -53,14 +53,14 @@ const addChannel = async (client, channel) => {
   }
 }
 
-const fetchChannels = async client => {
+const fetchFacets = async client => {
   try {
     // prettier-ignore
     let {data} = await client.query(
       q.Map(
         q.Paginate(
           q.Documents(
-            q.Collection('channel')
+            q.Collection('facet')
           ),
           { size: 99999 }
         ),
@@ -76,8 +76,8 @@ const fetchChannels = async client => {
   }
 }
 
-const removeChannel = async (client, channel) => {
-  if (!channel) {
+const removeFacet = async (client, facet) => {
+  if (!facet) {
     return [STATUS_BAD_PARAMS, null]
   }
 
@@ -89,8 +89,8 @@ const removeChannel = async (client, channel) => {
   }
 }
 
-const updateChannel = async (client, channel) => {
-  if (!channel) {
+const updateFacet = async (client, facet) => {
+  if (!facet) {
     return [STATUS_BAD_PARAMS, null]
   }
 
@@ -101,8 +101,8 @@ const updateChannel = async (client, channel) => {
         {
           doc: q.Get(
             q.Match(
-              q.Index('channel_tag'),
-              channel.tag
+              q.Index('facet_title'),
+              facet.title
             )
           ),
           ref: q.Select(
@@ -110,7 +110,7 @@ const updateChannel = async (client, channel) => {
             q.Var('doc')
           ),
         },
-        q.Update(q.Var('ref'), { data: channel })
+        q.Update(q.Var('ref'), { data: facet })
       )
     )
     return [STATUS_OK, null]
@@ -125,13 +125,13 @@ const handler = async (event, context) => {
   const { user } = context.clientContext
 
   const opParameter = queryStringParameters ? queryStringParameters.op : null
-  const channelParameter =
-    queryStringParameters && queryStringParameters.channel
-      ? JSON.parse(queryStringParameters.channel)
+  const facetParameter =
+    queryStringParameters && queryStringParameters.facet
+      ? JSON.parse(queryStringParameters.facet)
       : null
 
   if (process.env.NODE_ENV === 'development')
-    console.log('fauna-channels', opParameter, JSON.stringify(channelParameter))
+    console.log('fauna-facets', opParameter, JSON.stringify(facetParameter))
 
   // obtain the user email from the context, depends on netlify identity
   const userEmail = user ? user.email : null
@@ -157,19 +157,13 @@ const handler = async (event, context) => {
   }
 
   if (opParameter === 'fetch') {
-    ;[status, resultOrDiagnostic] = await fetchChannels(client)
+    ;[status, resultOrDiagnostic] = await fetchFacets(client)
   } else if (opParameter === 'add') {
-    ;[status, resultOrDiagnostic] = await addChannel(client, channelParameter)
+    ;[status, resultOrDiagnostic] = await addFacet(client, facetParameter)
   } else if (opParameter === 'update') {
-    ;[status, resultOrDiagnostic] = await updateChannel(
-      client,
-      channelParameter
-    )
+    ;[status, resultOrDiagnostic] = await updateFacet(client, facetParameter)
   } else if (opParameter === 'remove') {
-    ;[status, resultOrDiagnostic] = await removeChannel(
-      client,
-      channelParameter
-    )
+    ;[status, resultOrDiagnostic] = await removeFacet(client, facetParameter)
   } else
     return {
       body: 'Bad Request',

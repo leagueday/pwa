@@ -5,13 +5,17 @@ import Card from '@material-ui/core/Card'
 
 import { colors } from '../../styling'
 import Channels from './Channels'
+import Facets from './Facets'
 import ParsePodcast from './ParsePodcast'
 import PodcastsList from './PodcastsList'
+import SetupHomeBanner from './SetupHomeBanner'
 import SetupMenu from './SetupMenu'
 import SetupMyChannelsSeed from './SetupMyChannelsSeed'
 
 const contentBySubject = {
   channels: Channels,
+  facets: Facets,
+  'home-banner': SetupHomeBanner,
   'parse-podcast': ParsePodcast,
   'podcasts-list': PodcastsList,
   'seed-mylist': SetupMyChannelsSeed,

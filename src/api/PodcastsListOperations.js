@@ -1,6 +1,6 @@
 import { makeRequestHeaders } from './util'
 
-const PODCASTS_LIST_ENDPOINT = `/.netlify/functions/fauna-podcasts-list`
+const PODCASTS_LIST_ENDPOINT = '/.netlify/functions/fauna-podcasts-list'
 
 const operatePodcastsList = (bearerToken, op, url) => {
   const params = new URLSearchParams({
