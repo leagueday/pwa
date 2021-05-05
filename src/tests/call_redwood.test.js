@@ -1,15 +1,10 @@
-var assert = require('assert')
-const axios = require('axios')
+import assert from 'assert'
+import { HttpLink, gql } from '@apollo/client'
+import fetch from 'cross-fetch'
 
-const { client } = require('../api/graphqlClient')
+import { client } from '../api/graphqlClient'
 
 describe('Networking tests', function () {
-  const axiosClient = axios.create({ baseURL: ADDRESS })
-  it('Simple connection', async () => {
-    const result = await axiosClient.get('/graphql')
-    assert(result)
-  })
-
   describe('Set up ApolloClient', () => {
     it('Requests podcast episodes', async () => {
       const result = await client.query({
