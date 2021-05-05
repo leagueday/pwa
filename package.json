@@ -86,6 +86,7 @@
     ]
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "husky": "^6.0.0",
     "prettier": "^2.2.1"
   },

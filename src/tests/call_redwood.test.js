@@ -1,10 +1,15 @@
 import assert from 'assert'
 import { HttpLink, gql } from '@apollo/client'
 import fetch from 'cross-fetch'
+require('dotenv').config()
 
 import { client } from '../api/graphqlClient'
 
 describe('Networking tests', function () {
+  it('Has an API_URL', () => {
+    console.log(process.env.API_URL)
+    assert(process.env.API_URL)
+  })
   describe('Set up ApolloClient', () => {
     it('Requests podcast episodes', async () => {
       const result = await client.query({

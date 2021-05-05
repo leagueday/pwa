@@ -5,7 +5,10 @@ import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Paper from '@material-ui/core/Paper'
 
+import { ApolloProvider } from '@apollo/client'
+
 import useChronicle from './api/useChronicle'
+import { client } from './api/graphqlClient'
 import { Provider as StoreProvider } from './store'
 import ThemeProvider from './styling/ThemeProvider'
 import Audio from './views/Audio'
@@ -69,16 +72,18 @@ const Chronicle = () => {
 }
 
 const App = () => (
-  <StoreProvider>
-    <Audio />
-    <Auth />
-    <Chronicle />
-    <CssBaseline />
-    <ThemeProvider>
-      <StyledAppContent />
-    </ThemeProvider>
-    <UserData />
-  </StoreProvider>
+  <ApolloProvider client={client}>
+    <StoreProvider>
+      <Audio />
+      <Auth />
+      <Chronicle />
+      <CssBaseline />
+      <ThemeProvider>
+        <StyledAppContent />
+      </ThemeProvider>
+      <UserData />
+    </StoreProvider>
+  </ApolloProvider>
 )
 
 export default hot(App)

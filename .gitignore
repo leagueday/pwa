@@ -1,7 +1,11 @@
+# Artifacts
 node_modules
 dist
 
 .DS_Store
+
+# Secrets
+.env
 
 
 # Local Netlify folder
