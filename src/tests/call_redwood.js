@@ -1,10 +1,7 @@
 var assert = require('assert')
-const { ApolloClient, InMemoryCache, HttpLink, gql } = require('@apollo/client')
-const fetch = require('cross-fetch')
-
 const axios = require('axios')
 
-const ADDRESS = 'https://hungry-pasteur-258023.netlify.app'
+const { client } = require('../api/graphqlClient')
 
 describe('Networking tests', function () {
   const axiosClient = axios.create({ baseURL: ADDRESS })
@@ -14,14 +11,6 @@ describe('Networking tests', function () {
   })
 
   describe('Set up ApolloClient', () => {
-    const client = new ApolloClient({
-      cache: new InMemoryCache(),
-      link: new HttpLink({
-        uri: ADDRESS + '/.netlify/functions/graphql',
-        fetch,
-      }),
-    })
-
     it('Requests podcast episodes', async () => {
       const result = await client.query({
         query: gql`
