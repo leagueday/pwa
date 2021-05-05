@@ -1,5 +1,5 @@
-const { ApolloClient, InMemoryCache, HttpLink, gql } = require('@apollo/client')
-const fetch = require('cross-fetch')
+import { ApolloClient, InMemoryCache, HttpLink, gql } from '@apollo/client'
+import fetch from 'cross-fetch'
 
 const ADDRESS = 'https://hungry-pasteur-258023.netlify.app'
 

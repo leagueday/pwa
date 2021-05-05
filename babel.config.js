@@ -12,5 +12,9 @@ function getPluginsForEnv(isProduction) {
 
 module.exports = api => ({
   plugins: getPluginsForEnv(!!api.env('production')),
-  presets: ['@babel/preset-env', '@babel/preset-react'],
+  presets: [
+    '@babel/preset-env',
+    '@babel/preset-react',
+    { targets: { node: 'current' } },
+  ],
 })
