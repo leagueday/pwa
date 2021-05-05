@@ -14,15 +14,32 @@ describe('Networking tests', function () {
   })
 
   describe('Set up ApolloClient', () => {
-    it('Makes a call for 2 collections', async () => {
-      const client = new ApolloClient({
-        cache: new InMemoryCache(),
-        link: new HttpLink({
-          uri: ADDRESS + '/.netlify/functions/graphql',
-          fetch,
-        }),
+    const client = new ApolloClient({
+      cache: new InMemoryCache(),
+      link: new HttpLink({
+        uri: ADDRESS + '/.netlify/functions/graphql',
+        fetch,
+      }),
+    })
+
+    it('Requests podcast episodes', async () => {
+      const result = await client.query({
+        query: gql`
+          query {
+            podcastEpisodes {
+              episode
+              url
+              title
+            }
+          }
+        `,
       })
 
+      assert(result)
+      assert(result.data.podcastEpisodes)
+    })
+
+    it('Makes a call for 2 collections', async () => {
       const result = await client.query({
         query: gql`
           query {
