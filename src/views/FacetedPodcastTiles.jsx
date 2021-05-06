@@ -13,18 +13,15 @@ const useStyles = makeStyles(theme => ({
 
 const FacetedPodcastTiles = ({ data }) => {
   const classes = useStyles()
-
-  const entries = data ? Array.from(data.entries()) : []
-
   let index = -1
 
   return (
     <div className={classes.facetedPodcastTiles}>
-      {entries.map(([title, podcasts]) => (
+      {data.map(({ title }) => (
         <PodcastTilesRow
           key={index++}
           id={title}
-          podcasts={podcasts}
+          podcasts={data}
           title={title}
         />
       ))}

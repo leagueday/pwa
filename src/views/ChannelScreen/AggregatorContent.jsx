@@ -1,5 +1,6 @@
 import React from 'react'
 import cx from 'classnames'
+import { gql, useQuery } from '@apollo/client'
 
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -14,6 +15,7 @@ import LiveBroadcastsMockup, {
 import ReplayBroadcastsMockup, {
   mockupGetHasBroadcasts as hasReplayMockupData,
 } from './ReplayBroadcastsMockup'
+import Loading from '../Loading'
 
 const useStyles = makeStyles(theme => ({
   channelColor: ({ channelColor }) => ({
@@ -95,7 +97,23 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
 const AggregatorContent = ({ channel }) => {
   const classes = useStyles({ channelColor: channel.color })
 
-  const facets = useFacets(channel.tag)
+  // const facets = useFacets(channel.tag)
+
+  const { loading, error, data } = useQuery(gql`
+    query {
+      channel(id: 1) {
+        podcasts {
+          imageUrl
+          title
+          id
+        }
+      }
+    }
+  `)
+
+  console.log(data)
+  // const { imageUrl, title, description } = data
+  // const items = data.podcasts
 
   const hasLive = hasLiveMockupData(channel)
   const hasReplay = hasReplayMockupData(channel)
@@ -112,6 +130,7 @@ const AggregatorContent = ({ channel }) => {
         />
       )}
     >
+      {loading && <Loading />}
       {hasLive && (
         <BottomBlock
           accentColor={channel.color}
@@ -143,7 +162,7 @@ const AggregatorContent = ({ channel }) => {
         titleStart={channel.title}
         titleRest="Podcasts"
       >
-        <FacetedPodcastTiles data={facets} />
+        {data && <FacetedPodcastTiles data={data.channel.podcasts} />}
       </BottomBlock>
     </ContentLayout>
   )

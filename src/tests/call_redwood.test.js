@@ -1,8 +1,6 @@
 import assert from 'assert'
 import { HttpLink, gql } from '@apollo/client'
 import fetch from 'cross-fetch'
-require('dotenv').config()
-
 import { client } from '../api/graphqlClient'
 
 describe('Networking tests', function () {

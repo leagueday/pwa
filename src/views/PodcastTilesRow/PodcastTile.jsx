@@ -77,10 +77,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const PodcastTile = ({ podcast, textColor }) => {
-  const { rss } = usePodcast(podcast)
-
-  const title = rss ? channelSelectors.v2.title(rss) : podcast.title
-  const imageUrl = channelSelectors.v2.imageUrl(rss)
+  const { imageUrl, title } = podcast
 
   const classes = useStyles({ textColor })
 
