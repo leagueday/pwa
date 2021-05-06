@@ -1,8 +1,8 @@
 import React from 'react'
+import { gql, useQuery } from '@apollo/client'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import usePodcasts from '../../api/usePodcasts'
 import BasicLayout from '../BasicLayout'
 import Loading from '../Loading'
 
@@ -30,19 +30,39 @@ const useStyles = makeStyles({
 const PodcastScreen = ({ podcastId }) => {
   const classes = useStyles()
 
-  const { data } = usePodcasts()
-
-  const podcast = React.useMemo(() => {
-    if (!data || !podcastId) return null
-
-    return data.find(({ id }) => id === podcastId)
-  }, [data, podcastId])
+  const { loading, error, data } = useQuery(
+    gql`
+      query($id: Int!) {
+        podcastFeed(id: $id) {
+          imageUrl
+          description
+          id
+          title
+          episodes {
+            audioUrl
+            description
+            title
+            duration
+            pubDate
+          }
+        }
+      }
+    `,
+    {
+      variables: {
+        id: parseInt(podcastId),
+      },
+    }
+  )
 
   return (
     <BasicLayout>
-      {podcast && (
+      {data && (
         <React.Suspense fallback={<Loading />}>
-          <Content className={classes.podcastScreenContent} podcast={podcast} />
+          <Content
+            className={classes.podcastScreenContent}
+            podcast={data.podcastFeed}
+          />
         </React.Suspense>
       )}
     </BasicLayout>

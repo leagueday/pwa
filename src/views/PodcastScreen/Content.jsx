@@ -3,8 +3,6 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import usePodcast from '../../api/usePodcast'
-import * as rssSelectors from '../../model/rss'
 import { colors } from '../../styling'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
@@ -144,12 +142,8 @@ const Content = ({ podcast }) => {
 
   const classes = useStyles({ accentColor: podcastColor ?? colors.white80 })
 
-  const { rss } = usePodcast(podcast, { forceRevalidate: true })
-
-  const imageUrl = rssSelectors.channelSelectors.v2.imageUrl(rss)
-  const title = rssSelectors.channelSelectors.v2.title(rss)
-  const description = rssSelectors.channelSelectors.v2.description(rss)
-  const items = rssSelectors.channelSelectors.v2.items(rss)
+  const { imageUrl, title, description, id } = podcast
+  const items = podcast.episodes
 
   const strippedDescription = React.useMemo(() => stripHtml(description), [
     description,
@@ -171,7 +165,7 @@ const Content = ({ podcast }) => {
         <PodcastChannelImage
           classes={classes}
           imageUrl={imageUrl}
-          podcastId={podcast?.id}
+          podcastId={id}
         />
       )}
       renderTopRight={() => (

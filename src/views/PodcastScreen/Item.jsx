@@ -5,8 +5,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import Collapse from '@material-ui/core/Collapse'
 import Hidden from '@material-ui/core/Hidden'
 
-import { itemSelectors } from '../../model/rss'
-import { actions, constants as storeConstants, selectors } from '../../store'
 import { colors } from '../../styling'
 import { formatDatetime, secondsToHms } from '../dateutil'
 import { makeIconButton } from '../IconButton'
@@ -115,11 +113,8 @@ const Item = ({
     backgroundColor: computeZebraBackgroundColor(itemIndex),
   })
 
-  const itemAudioUrl = itemSelectors.v2.audioUrl(item)
-  const description = itemSelectors.v2.description(item)
-  const duration = itemSelectors.v2.duration(item)
-  const pubDate = itemSelectors.v2.pubDate(item)
-  const title = itemSelectors.v2.title(item)
+  const { description, duration, pubDate, title } = item
+  const itemAudioUrl = item.audioUrl
 
   const audioUrl = useSelector(selectors.getAudioUrl)
   const audioMode = useSelector(selectors.getAudioMode)

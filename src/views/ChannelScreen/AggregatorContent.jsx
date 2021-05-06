@@ -4,7 +4,6 @@ import { gql, useQuery } from '@apollo/client'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-import useFacets from '../../api/useFacets'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
@@ -97,8 +96,6 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
 const AggregatorContent = ({ channel }) => {
   const classes = useStyles({ channelColor: channel.color })
 
-  // const facets = useFacets(channel.tag)
-
   const { loading, error, data } = useQuery(gql`
     query {
       channel(id: 1) {
@@ -110,10 +107,6 @@ const AggregatorContent = ({ channel }) => {
       }
     }
   `)
-
-  console.log(data)
-  // const { imageUrl, title, description } = data
-  // const items = data.podcasts
 
   const hasLive = hasLiveMockupData(channel)
   const hasReplay = hasReplayMockupData(channel)
