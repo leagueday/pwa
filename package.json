@@ -7,8 +7,6 @@
     "build": "run-s install-functions build-prod-webpack",
     "build-dev": "cross-env NODE_ENV=development webpack --config webpack-dev.config.js",
     "install-functions": "node scripts/install-functions.mjs",
-    "lint": "prettier --write .",
-    "lint-check": "prettier --check .",
     "postinstall": "run-s install-functions",
     "prepare": "husky install",
     "pretty-quick": "pretty-quick --staged",
