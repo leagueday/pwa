@@ -8,11 +8,11 @@
     "build-dev": "cross-env NODE_ENV=development webpack --config webpack-dev.config.js",
     "install-functions": "node scripts/install-functions.mjs",
     "postinstall": "run-s install-functions",
+    "prepare": "husky install",
+    "pretty-quick": "pretty-quick --staged",
     "start": "http-server -p 8888 --proxy http://localhost:8888? dist",
     "start-dev": "cross-env NODE_ENV=development webpack serve --config webpack-dev.config.js --mode development",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "prettier --write .",
-    "lint-check": "prettier  --check ."
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -87,11 +87,7 @@
   },
   "devDependencies": {
     "husky": "^6.0.0",
-    "prettier": "^2.2.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint-check"
-    }
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0"
   }
 }
