@@ -80,10 +80,6 @@ channelCategories: {},
 
 const DestributionPage = () => {
   const audioRef = useRef(null);
-  const src = "https://stream.mux.com/{PLAYBACK_ID}.m3u8"
-  const streamKey = 'eba8e3df-a087-fee7-00f5-099c8558f1c9';
-  const url="https://api.mux.com/video/v1/live-streams/LIVE_STREAM_ID"
-  const LIVE_STREAM_ID="hNBi4PEaC4MTI01XM6GfP3gNCGKkp6xy3B00TsOsRJpro"
   const facetedPodcasts = useFacets('Home')
   const classes = useStyles({ primaryColor })
   const [channelList,setChannelList]=useState({
@@ -101,7 +97,7 @@ const DestributionPage = () => {
   const user = useSelector(selectors.getUser)
   const userName = user?.user_metadata?.full_name
   const onChannelChanged=(e,key)=>{
-    console.log("targer vakjkljljlj",e.target.value,channels[key])
+    //console.log("targer vakjkljljlj",e.target.value,channels[key])
     let ChannelInfo=channels[key]
      if(!ChannelInfo.rtmpLink || !ChannelInfo.streamKey|| !ChannelInfo.liveStreamId){
          toast.error("We can't go live for this channel as the stream key was not provided. Please update key and try again.")
@@ -132,7 +128,11 @@ const DestributionPage = () => {
         username: 'e6dc9a66-fb63-414b-b187-6a39aaa6583f',
         password: access_token
       }
-      })
+      },  {headers: { 
+        "Content-Type": "application/json",
+        'Access-Control-Allow-Origin' : '*',
+        'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+      }})
         .then(response =>{
           setStreamkey({
             streamkey:response.data.data.stream_key
@@ -153,6 +153,7 @@ const DestributionPage = () => {
 let playId=playback['playback'];
 console.log("playbackid",playback)
 let playbackUrl=`https://stream.mux.com/${playId}.m3u8`
+localStorage.setItem('playback',playbackUrl)
 const playerRef = React.useRef();
 
 function playVideo() {

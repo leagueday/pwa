@@ -153,13 +153,16 @@ const Track = ({ classes }) => {
     </div>
   )
 }
-
 const LiveBroadcastsMockup = ({ className, channel }) => {
   const classes = useStyles()
-
+  let playbackurl=localStorage.getItem('playback')
   return (
     <div className={cx(classes.liveBroadcasts, className)}>
-      <ComingSoon className={classes.comingSoon} />
+      <ComingSoon 
+        className={playbackurl?classes.liveBroadcasts:classes.comingSoon}
+        channel={channel}
+        channelColor={channel.color}
+       />
       {filterMockupData(channel.tag).map(sectionData => (
         <div key={sectionData.name} className={classes.liveBroadcast}>
           <div className={classes.eventImageAndText}>

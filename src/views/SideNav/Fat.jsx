@@ -116,10 +116,6 @@ const golive=() => dispatch(actions.pushHistory('/live'));
         </div>
       </div>
       <SearchLozenge />
-      {/* <div className={classes.scroller}>
-        <div className={classes.scrollerChild}>
-    </div>
-    </div> */}
     
     
       <LiveAndUpcomingLozenge className={classes.lozenge} />
@@ -137,12 +133,7 @@ const golive=() => dispatch(actions.pushHistory('/live'));
               <MyPodcasts />
             </Expander>
           )}
-               {/* {
-        user && (
-      <Expander className={classes.expander} role="presentation" text="MyProfile"   tag="profile"onClick={myprofile}>
-	  </Expander>
-        )
-} */}
+
     <React.Suspense fallback={<Loading />}>
     {user &&(
      <Button
@@ -157,13 +148,6 @@ const golive=() => dispatch(actions.pushHistory('/live'));
   )}
     </React.Suspense>
 
-      {/* {
-        user &&(
-      <Expander className={classes.expander} role="presentation" text="GO LIVE" tag="live" onClick={golive}>
-	  </Expander>
-        )
-
-      } */}
         </div>
       </div>
     </div>
