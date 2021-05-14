@@ -19,7 +19,6 @@ const ChannelCategories = ({ className }) => {
 
   const channelsByCat = React.useMemo(() => {
     if (channelCategories.size === 0 || channels.length === 0) return []
-
     const channelMap = new Map(channels.map(record => [record.tag, record]))
 
     const result = []
