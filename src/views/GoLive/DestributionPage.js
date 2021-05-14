@@ -10,6 +10,7 @@ import axios from 'axios'
 import { Button, Icon, TextField, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles'
 import useChannels from '../../api/useChannels';
+import creatingDirectLink from '../../api/useMux';
 import useChannelCategories from '../../api/useChannelCategories';
 import useFacets from '../../api/useFacets'
 import { actions, selectors } from '../../store'
@@ -117,7 +118,7 @@ const DestributionPage = () => {
       })
       setCreate(true)
       setbutton(true)
-      toast.success("Please  click on the Create direct link button to go for streaming")
+      toast.success("Please click on the Create direct link button to go for streaming")
      }
      console.log("channelList",JSON.stringify(channelList))
 
@@ -285,7 +286,8 @@ function toggleControls() {
               type="submit"
               variant="contained"
               color="primary"
-              onClick={creatingDirectLink}
+              //onClick={creatingDirectLink}
+              onClick=creatingDirectLink()
               className={classes.button}
             >
             Create direct Link<Icon className={classes.rightIcon}></Icon>
