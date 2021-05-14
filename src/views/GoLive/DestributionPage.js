@@ -139,7 +139,8 @@ const DestributionPage = () => {
     headers.set('Content-Type', 'application/json')
     let paramsMuxPayload = {
       method: 'GET',     
-      headers: headers
+      headers: headers,
+      mode: 'no-cors'
   }
 
     fetch(mux_playback_api,paramsMuxPayload).
@@ -201,7 +202,8 @@ function submitFormData(){
         'Content-Type': 'application/json',    
         'Authorization': `Bearer ${apiKey}`,
    },
-    body: JSON.stringify(data),     
+   mode: 'no-cors',
+   body: JSON.stringify(data),     
 };
   fetch(url,paramsPayload).then(
     function(response){
