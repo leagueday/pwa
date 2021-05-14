@@ -132,6 +132,9 @@ const DestributionPage = () => {
     let mux_playback_api = `https://api.mux.com/video/v1/live-streams/${livestreamingId}`
     let authString = `${userName}:${access_token}`
     let headers = new Headers();
+    headers.set('Access-Control-Allow-Headers', 'Content-Type')
+    headers.set('Access-Control-Allow-Origin', '*')
+    headers.set('Access-Control-Allow-Methods', 'OPTIONS,POST,GET')
     headers.set('Authorization', 'Basic ' + btoa(authString))
     headers.set('Content-Type', 'application/json')
     let paramsMuxPayload = {
@@ -187,11 +190,14 @@ function submitFormData(){
       ]
     }
     
-  const baseId = 'appEjPPaNWByiDRdp'
+  const baseId = 'appXoertP1WJjd4TQ'
   let url=`https://api.airtable.com/v0/${baseId}/ChannelLiveData`
   const paramsPayload = {
     method: 'POST',    
     headers: {  
+        "Access-Control-Allow-Headers" : "Content-Type",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
         'Content-Type': 'application/json',    
         'Authorization': `Bearer ${apiKey}`,
    },
