@@ -9,7 +9,7 @@
     "install-functions": "node scripts/install-functions.mjs",
     "postinstall": "run-s install-functions",
     "start": "http-server -p 8888 --proxy http://localhost:8888? dist",
-    "start-dev": "cross-env PORT=3004 NODE_ENV=development webpack serve --config webpack-dev.config.js --mode development",
+    "start-dev": "cross-env PORT=3004 NODE_ENV=development --env.AIRTABLE_API_KEY=keyEcVKWAxBoB9kuq webpack serve --config webpack-dev.config.js --mode development",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "prettier --write .",
     "lint-check": "prettier  --check ."
@@ -46,7 +46,6 @@
     "css-loader": "^5.0.1",
     "dayjs": "^1.10.1",
     "history": "^5.0.0",
-    "hls.js": "^1.0.4-0.canary.7330",
     "html-webpack-plugin": "^4.5.0",
     "http-server": "^0.12.3",
     "idb-keyval": "^3.2.0",

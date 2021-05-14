@@ -2,6 +2,7 @@ import React,{useEffect, useState,useRef} from 'react'
 import { useSelector } from 'react-redux'
 import Hls from 'hls.js';
 import ReactHlsPlayer from 'react-hls-player';
+import Airtable from 'airtable'
 import 'react-h5-audio-player/lib/styles.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,7 +10,7 @@ import axios from 'axios'
 import { Button, Icon, TextField, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles'
 import useChannels from '../../api/useChannels';
-import useChannelCategories from '../../api/useChannels';
+import useChannelCategories from '../../api/useChannelCategories';
 import useFacets from '../../api/useFacets'
 import { actions, selectors } from '../../store'
 import { useDispatch } from "react-redux";
@@ -20,9 +21,9 @@ import Loading from '../Loading'
 import { addScrollStyle } from '../util'
 import TitleBar from './TitleBar'
 import GoLiveData from './GoLiveData';
+import { makeRequestHeaders } from '../util'
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 const primaryColor = colors.magenta
-  
 const useStyles = makeStyles(theme => ({
 channelCategories: {},
   channelCategories: {
@@ -86,7 +87,8 @@ const DestributionPage = () => {
     rtmpLink:"",
     streamKey:"",
     liveStreamId:"",
-    channelTitle:''
+    channelTitle:'',
+    channelTag:""
   })
   const [playback,setplayback]=useState("")
   const [streamkey,setStreamkey]=useState("")
@@ -100,7 +102,7 @@ const DestributionPage = () => {
     //console.log("targer vakjkljljlj",e.target.value,channels[key])
     let ChannelInfo=channels[key]
      if(!ChannelInfo.rtmpLink || !ChannelInfo.streamKey|| !ChannelInfo.liveStreamId){
-         toast.error("We can't go live for this channel as the stream key was not provided. Please update key and try again.")
+         toast.error("We can't Go Live for this channel as stream key is not provided. Please update key and try again.")
          setdirectLink(false);
          setCreate(false)
      }
@@ -110,51 +112,99 @@ const DestributionPage = () => {
         channelTitle:e.target.value,
         rtmpLink:ChannelInfo.rtmpLink,
         liveStreamId:ChannelInfo.liveStreamId,
-        streamKey:ChannelInfo.streamKey
+        streamKey:ChannelInfo.streamKey,
+        channelTag:ChannelInfo.tag
       })
       setCreate(true)
       setbutton(true)
-      toast.success("Please click on the create direct link button to being streaming")
+      toast.success("Please  click on the Create direct link button to go for streaming")
      }
      console.log("channelList",JSON.stringify(channelList))
 
     //   localStorage.setItem("selectedChannel",e.target.value)
   }
   const creatingDirectLink=()=>{
+    let userName = 'e6dc9a66-fb63-414b-b187-6a39aaa6583f'
     let access_token="2bGfOofUHoMPq5PtL6yb/peOp80MyN2VGsgLb5nIaREZhQ51iAtDdd4yR0pIp0bXYWWki2lcHVS"
     let livestreamingId=channelList['liveStreamId']
-    axios.get(`https://api.mux.com/video/v1/live-streams/${livestreamingId}`, {
-      auth: {
-        username: 'e6dc9a66-fb63-414b-b187-6a39aaa6583f',
-        password: access_token
-      }
-      },  {headers: { 
-        "Content-Type": "application/json",
-        'Access-Control-Allow-Origin' : '*',
-        'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-      }})
-        .then(response =>{
-          setStreamkey({
-            streamkey:response.data.data.stream_key
-          })
-          setplayback({
-            playback:response.data.data.playback_ids[0].id
-          })
-          setdirectLink(true)
-          setCreate(true)
-          setbutton(false)
-          console.log("response datta",playback)
-        })
-        .catch(function (error) {
-        toast.error(error.messages[0])
   
-  })
+    //call mux api to get playback url
+    let mux_playback_api = `https://api.mux.com/video/v1/live-streams/${livestreamingId}`
+    let authString = `${userName}:${access_token}`
+    let headers = new Headers();
+    headers.set('Authorization', 'Basic ' + btoa(authString))
+    headers.set('Content-Type', 'application/json')
+    let paramsMuxPayload = {
+      method: 'GET',     
+      headers: headers
+  }
+
+    fetch(mux_playback_api,paramsMuxPayload).
+            then(response => response.json())
+           .then(function(streamData){ 
+                //console.log(streamData.data);
+
+                setStreamkey({
+                  streamkey:streamData.data.stream_key
+                })
+                setplayback({
+                  playback:streamData.data.playback_ids[0].id
+                })
+                setdirectLink(true)
+                setCreate(true)
+                setbutton(false)
+                console.log("response data",playback)
+            }         
+    ).catch((error)=>{
+       toast.error(error.type)
+    })
+  
+  submitFormData()
 }
-let playId=playback['playback'];
+
+let playId=playback.playback;
 console.log("playbackid",playback)
 let playbackUrl=`https://stream.mux.com/${playId}.m3u8`
 localStorage.setItem('playback',playbackUrl)
 const playerRef = React.useRef();
+
+function submitFormData(){
+  const apiKey = "keyEcVKWAxBoB9kuq"
+  let data = {
+      "records": [
+        {
+          "fields": {
+            title:localStorage.getItem('title'),
+            description:localStorage.getItem('description'),
+            thumbnailUrl:localStorage.getItem('file'),
+            liveDate:new Date(),
+            channelTag:channelList.channelTag,
+            playbackUrl:localStorage.getItem('playback'),
+            userId:user.id,
+            userEmail:user.email
+          }
+        }
+      ]
+    }
+    
+  const baseId = 'appEjPPaNWByiDRdp'
+  let url=`https://api.airtable.com/v0/${baseId}/ChannelLiveData`
+  const paramsPayload = {
+    method: 'POST',    
+    headers: {  
+        'Content-Type': 'application/json',    
+        'Authorization': `Bearer ${apiKey}`,
+   },
+    body: JSON.stringify(data),     
+};
+  fetch(url,paramsPayload).then(
+    function(response){
+      //console.log("response from api",response)
+    }
+  ).catch((error)=>{
+     console.log("error while data fetching",error.type)
+  })
+}
 
 function playVideo() {
   playerRef.current.play();
@@ -187,7 +237,7 @@ function toggleControls() {
                 <table className="table">
                 <thead>
                   <tr>
-                  <th>Choose one League Day channel to stream to</th>
+                  <th>Choose a League Day channel to stream to</th>
                   </tr>
                 </thead>
         <tbody>
@@ -210,7 +260,7 @@ function toggleControls() {
          {create &&(
               <ul>
                 <header>
-                <h3> Please use and set these keys in OBS to start streaming and then press on Create direct Link button to go live</h3>
+                <h3> Please use and set these keys in OBS to start streaming and then press on Create direct Link button to go live on portal</h3>
                 </header>
               <li >
               Streaming Key:  {channelList['streamKey']}

@@ -95,7 +95,7 @@ const GoLive = () => {
         <div className={classes.primaryStripe} />
         <div className={classes.podcastTiles}>
         <div onChange={chooseselection}>
-        <input className={classes.heading} type="radio" value="USE OBS" name="obs"/> USE OBS 123<br/>
+        <input className={classes.heading} type="radio" value="USE OBS" name="obs"/> USE OBS<br/>
         {/* <input type="radio" value="Record or leagueDay" />Record or leagueDay */}
       </div>
      

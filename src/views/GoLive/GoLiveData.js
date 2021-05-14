@@ -82,9 +82,10 @@ const GoLiveData = (props) => {
     imageUploaded: 0,
     selectedFile: null,
     selectedFileError:"",
-    photoError:""
+    photoError:"",
+    image:""
   });
-
+  const [image,setimage]=React.useState()
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const facetedPodcasts = useFacets('Home')
   const [formInput, setFormInput] = React.useState(
@@ -105,9 +106,9 @@ const GoLiveData = (props) => {
       imageUploaded: 1,
       photoError:""
     });
+    setimage(file['name'])
     const reader = new FileReader();
     reader.onloadend = function(e) {
-      console.log("onloaded",file)
       setFile({
         ...state,
         selectedFile: [reader.result],
@@ -116,7 +117,7 @@ const GoLiveData = (props) => {
     }
     reader.readAsDataURL(file)
   };
-
+  console.log("onloaded",image)
   // const handleInput = evt => {
   //   const name = evt.target.name;
   //   const newValue = evt.target.value;
@@ -142,12 +143,13 @@ const GoLiveData = (props) => {
   const submit = (evt) => {
     evt.preventDefault()
     console.log("message fired",evt)
-    return sleep(3).then(() => {
-    if(validateForm(evt)){
+    return sleep(100).then(() => {
+    if(validateForm()){
     console.log("title & descridption addedd")
     localStorage.setItem("title",formInput['title'])
     localStorage.setItem("description",formInput['description'])
     localStorage.setItem('image',state['selectedFile'])
+    localStorage.setItem('file',image)
     dispatch(actions.pushHistory('/preview'))
     }
       })
@@ -226,6 +228,7 @@ const GoLiveData = (props) => {
               id="contained-button-file"
               multiple
               type="file"
+              accept=".png, .jpg, .jpeg"
               onChange={handleUploadClick}
             />
               <br/>

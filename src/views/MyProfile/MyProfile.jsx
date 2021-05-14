@@ -74,7 +74,7 @@ const MyProfile = () => {
         <TitleBar
           className={classes.titleBar}
           primaryColor={primaryColor}
-          text={userName ? `Welcome back, ${userName}!` : 'Home'}
+          text={userName ? `Welcome backs, ${userName}!` : 'Home'}
         />
         <div className={classes.primaryStripe} />
         <div className={classes.podcastTiles}>
