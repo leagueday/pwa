@@ -287,7 +287,7 @@ function toggleControls() {
               variant="contained"
               color="primary"
               //onClick={creatingDirectLink}
-              onClick=creatingDirectLink()
+              onClick={creatingDirectLink()}
               className={classes.button}
             >
             Create direct Link<Icon className={classes.rightIcon}></Icon>
