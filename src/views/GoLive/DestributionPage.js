@@ -22,6 +22,8 @@ import { addScrollStyle } from '../util'
 import TitleBar from './TitleBar'
 import GoLiveData from './GoLiveData';
 import { makeRequestHeaders } from '../util'
+import useAirtable from '../../api/useAirtable'
+
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 const primaryColor = colors.magenta
 const useStyles = makeStyles(theme => ({
@@ -181,28 +183,10 @@ function submitFormData(){
         }
       ]
     }
-    
-  const baseId = 'appXoertP1WJjd4TQ'
-  let url=`https://api.airtable.com/v0/${baseId}/ChannelLiveData`
-  const paramsPayload = {
-    method: 'POST',    
-    headers: {  
-        "Access-Control-Allow-Headers" : "Content-Type",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-        'Content-Type': 'application/json',    
-        'Authorization': `Bearer ${apiKey}`,
-   },
-   mode: 'no-cors',
-   body: JSON.stringify(data),     
-};
-  fetch(url,paramsPayload).then(
-    function(response){
-      //console.log("response from api",response)
-    }
-  ).catch((error)=>{
-     console.log("error while data fetching",error.type)
-  })
+  
+  const { data } = useAirtable('appXoertP1WJjd4TQ', 'ChannelLiveData')
+  
+  console.log(data)
 }
 
 function playVideo() {
