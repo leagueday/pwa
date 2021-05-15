@@ -22,7 +22,7 @@ import { addScrollStyle } from '../util'
 import TitleBar from './TitleBar'
 import GoLiveData from './GoLiveData';
 import { makeRequestHeaders } from '../util'
-import useAirtable from '../../api/useAirtable'
+import { fetchAirtable } from '../../api/useAirtable'
 
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 const primaryColor = colors.magenta
@@ -184,12 +184,13 @@ function submitFormData(){
       ]
     }
   
-  try {
-    const channelLiveData = useAirtable('appXoertP1WJjd4TQ', 'ChannelLiveData')
-    console.log(channelLiveData.data)
-  } catch(error) {
-    console.log(error)
-  }
+  fetchAirtable('appXoertP1WJjd4TQ', 'ChannelLiveData')
+    .then((channelLiveData) => {
+      console.log('channelLiveData', channelLiveData)
+    })
+    .catch((err) => {
+      console.log('channelLiveData Failed', err)
+    })
 }
 
 function playVideo() {

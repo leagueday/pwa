@@ -61,18 +61,21 @@ const fetcher = (base, table, view = 'Grid view') => () =>
   })
 
 const useAirtable = (baseKey, table, view) => {
-  console.log('cache key', `${baseKey}/${table}/${view}`)
   const cacheKey = `${baseKey}/${table}/${view}`
 
   const base = new Airtable({ apiKey }).base(baseKey)
-
-  console.log('base', base)
 
   return useSWR(cacheKey, fetcher(base, table, view), {
     revalidateOnFocus: false,
     revalidateOnMount: !swrCache.has(cacheKey), // default is true
     shouldRetryOnError: false,
   })
+}
+
+export const fetchAirtable = (baseKey, table, view) => {
+  const base = new Airtable({ apiKey }).base(baseKey)
+
+  return fetcher(base, table, view)
 }
 
 export default useAirtable
