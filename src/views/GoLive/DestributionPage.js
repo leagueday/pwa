@@ -184,9 +184,12 @@ function submitFormData(){
       ]
     }
   
-  const channelLiveData = useAirtable('appXoertP1WJjd4TQ', 'ChannelLiveData')
-  
-  console.log(channelLiveData.data)
+  try {
+    const channelLiveData = useAirtable('appXoertP1WJjd4TQ', 'ChannelLiveData')
+    console.log(channelLiveData.data)
+  } catch(error) {
+    console.log(error)
+  }
 }
 
 function playVideo() {
