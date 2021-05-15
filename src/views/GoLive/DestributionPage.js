@@ -10,7 +10,6 @@ import axios from 'axios'
 import { Button, Icon, TextField, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles'
 import useChannels from '../../api/useChannels';
-import creatingDirectLink from '../../api/useMux';
 import useChannelCategories from '../../api/useChannelCategories';
 import useFacets from '../../api/useFacets'
 import { actions, selectors } from '../../store'
@@ -118,48 +117,39 @@ const DestributionPage = () => {
       })
       setCreate(true)
       setbutton(true)
-      toast.success("Please click on the Create direct link button to go for streaming")
+      toast.success("Please  click on the Create direct link button to go for streaming")
      }
      console.log("channelList",JSON.stringify(channelList))
 
     //   localStorage.setItem("selectedChannel",e.target.value)
   }
   const creatingDirectLink=()=>{
-    let userName = 'e6dc9a66-fb63-414b-b187-6a39aaa6583f'
-    let access_token="2bGfOofUHoMPq5PtL6yb/peOp80MyN2VGsgLb5nIaREZhQ51iAtDdd4yR0pIp0bXYWWki2lcHVS"
     let livestreamingId=channelList['liveStreamId']
   
     //call mux api to get playback url
-    let mux_playback_api = `https://api.mux.com/video/v1/live-streams/${livestreamingId}`
-    let authString = `${userName}:${access_token}`
-    let headers = new Headers();
-    headers.set('Access-Control-Allow-Headers', 'Content-Type')
-    headers.set('Access-Control-Allow-Origin', '*')
-    headers.set('Access-Control-Allow-Methods', 'OPTIONS,POST,GET')
-    headers.set('Authorization', 'Basic ' + btoa(authString))
-    headers.set('Content-Type', 'application/json')
-    let paramsMuxPayload = {
-      method: 'GET',     
-      headers: headers,
-      mode: 'no-cors'
-  }
 
-    fetch(mux_playback_api,paramsMuxPayload).
-            then(response => response.json())
-           .then(function(streamData){ 
-                //console.log(streamData.data);
+    fetch('/.netlify/functions/mux-proxy', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
+    }).then(response => response.json())
+      .then(function(streamData){ 
+          //console.log(streamData.data);
 
-                setStreamkey({
-                  streamkey:streamData.data.stream_key
-                })
-                setplayback({
-                  playback:streamData.data.playback_ids[0].id
-                })
-                setdirectLink(true)
-                setCreate(true)
-                setbutton(false)
-                console.log("response data",playback)
-            }         
+          setStreamkey({
+            streamkey:streamData.data.stream_key
+          })
+          setplayback({
+            playback:streamData.data.playback_ids[0].id
+          })
+          setdirectLink(true)
+          setCreate(true)
+          setbutton(false)
+          console.log("response data",playback)
+      }         
     ).catch((error)=>{
        toast.error(error.type)
     })
@@ -286,8 +276,7 @@ function toggleControls() {
               type="submit"
               variant="contained"
               color="primary"
-              //onClick={creatingDirectLink}
-              onClick={creatingDirectLink()}
+              onClick={creatingDirectLink}
               className={classes.button}
             >
             Create direct Link<Icon className={classes.rightIcon}></Icon>
