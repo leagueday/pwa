@@ -8,7 +8,7 @@ const authStringEncoded = Buffer.from(authString).toString('base64')
 const headers = {
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST. GET, HEAD, OPTIONS',
+  'Access-Control-Allow-Methods': 'POST, GET, HEAD, OPTIONS',
   Authorization: `Basic ${authStringEncoded}`,
   'Content-Type': 'application/json',
 }

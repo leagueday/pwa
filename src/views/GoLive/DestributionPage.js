@@ -22,8 +22,6 @@ import { addScrollStyle } from '../util'
 import TitleBar from './TitleBar'
 import GoLiveData from './GoLiveData';
 import { makeRequestHeaders } from '../util'
-import { fetchAirtable } from '../../api/useAirtable'
-
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 const primaryColor = colors.magenta
 const useStyles = makeStyles(theme => ({
@@ -166,7 +164,6 @@ localStorage.setItem('playback',playbackUrl)
 const playerRef = React.useRef();
 
 function submitFormData(){
-  const apiKey = "keyEcVKWAxBoB9kuq"
   let data = {
       "records": [
         {
@@ -183,13 +180,23 @@ function submitFormData(){
         }
       ]
     }
+    
+  const baseId = 'appXoertP1WJjd4TQ'
   
-  fetchAirtable('appXoertP1WJjd4TQ', 'ChannelLiveData')
-    .then((channelLiveData) => {
-      console.log('channelLiveData', channelLiveData)
-    })
-    .catch((err) => {
-      console.log('channelLiveData Failed', err)
+  fetch('/.netlify/functions/airtable-proxy', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({url: `${baseId}/ChannelLiveData`, body: data})
+  }).then(response => response.json())
+    .then(
+      function(response){
+        console.log("response from api",response)
+      }
+    ).catch((error)=>{
+      console.log("error while data fetching",error.type)
     })
 }
 

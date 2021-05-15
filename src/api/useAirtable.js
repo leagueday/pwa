@@ -72,10 +72,4 @@ const useAirtable = (baseKey, table, view) => {
   })
 }
 
-export const fetchAirtable = (baseKey, table, view) => {
-  const base = new Airtable({ apiKey }).base(baseKey)
-
-  return fetcher(base, table, view)
-}
-
 export default useAirtable
