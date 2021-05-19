@@ -1,6 +1,5 @@
 import React,{useEffect, useState,useRef} from 'react'
 import { useSelector } from 'react-redux'
-import Hls from 'hls.js';
 import ReactHlsPlayer from 'react-hls-player';
 import Airtable from 'airtable'
 import 'react-h5-audio-player/lib/styles.css';
@@ -98,6 +97,7 @@ const DestributionPage = () => {
   const channels = useChannels().list
   const user = useSelector(selectors.getUser)
   const userName = user?.user_metadata?.full_name
+  let playbackStream=`https://stream.mux.com`
   const onChannelChanged=(e,key)=>{
     //console.log("targer vakjkljljlj",e.target.value,channels[key])
     let ChannelInfo=channels[key]
@@ -117,7 +117,7 @@ const DestributionPage = () => {
       })
       setCreate(true)
       setbutton(true)
-      toast.success("Please  click on the Create direct link button to go for streaming")
+      toast.success("Please click Create Direct Link below to stream to selected channel")
      }
      console.log("channelList",JSON.stringify(channelList))
 
@@ -148,7 +148,8 @@ const DestributionPage = () => {
           setdirectLink(true)
           setCreate(true)
           setbutton(false)
-          console.log("response data",playback)
+          //console.log("response data",playback)
+          localStorage.setItem('playback',streamData.data.playback_ids[0].id)
       }         
     ).catch((error)=>{
        toast.error(error.type)
@@ -159,11 +160,11 @@ const DestributionPage = () => {
 
 let playId=playback.playback;
 console.log("playbackid",playback)
-let playbackUrl=`https://stream.mux.com/${playId}.m3u8`
-localStorage.setItem('playback',playbackUrl)
+let playbackUrl= `${playbackStream}/${playId}.m3u8`
+//localStorage.setItem('playback',playbackUrl)
 const playerRef = React.useRef();
 
-function submitFormData(){
+function submitFormData(){ 
   let data = {
       "records": [
         {
@@ -173,7 +174,7 @@ function submitFormData(){
             thumbnailUrl:localStorage.getItem('file'),
             liveDate:new Date(),
             channelTag:channelList.channelTag,
-            playbackUrl:localStorage.getItem('playback'),
+            playbackUrl:`${playbackStream}/${localStorage.getItem('playback')}.m3u8`, 
             userId:user.id,
             userEmail:user.email
           }
@@ -181,8 +182,7 @@ function submitFormData(){
       ]
     }
     
-  const baseId = 'appXoertP1WJjd4TQ'
-  
+  const baseId = 'appXoertP1WJjd4TQ'  
   fetch('/.netlify/functions/airtable-proxy', {
     method: 'POST',
     headers: {
@@ -231,7 +231,7 @@ function toggleControls() {
                 <table className="table">
                 <thead>
                   <tr>
-                  <th>Choose a League Day channel to stream to</th>
+                  <th>Choose a LeagueDay channel to stream to</th>
                   </tr>
                 </thead>
         <tbody>
@@ -254,10 +254,10 @@ function toggleControls() {
          {create &&(
               <ul>
                 <header>
-                <h3> Please use and set these keys in OBS to start streaming and then press on Create direct Link button to go live on portal</h3>
+                <h3>Please link the keys below to OBS and then click Create Direct Link in order to go live on selected channel</h3>
                 </header>
               <li >
-              Streaming Key:  {channelList['streamKey']}
+              Stream Key:  {channelList['streamKey']}
                  </li>
                  <li>
                  RTMP Link: <a className={classes.space} href={playbackUrl} target="_blank">
