@@ -191,7 +191,7 @@ const playerRef = React.useRef();
     </div>
   )
 }
-const ComingSoon = ({ className,channel,channelColor }) => {
+const ComingSoon = ({ className,channel,channelColor, text }) => {
   const classes = useStyles()
   let urlIsthere=  localStorage.getItem('playback')
   console.log("urlis",urlIsthere)
@@ -205,7 +205,7 @@ const ComingSoon = ({ className,channel,channelColor }) => {
             src="/img/logo_square_transparent.png"
           />
         </div>
-        <div className={classes.text}>Coming Soon</div>
+        <div className={classes.text}>{ text || 'Coming Soon' }</div>
       </div>
       ):(
         <>

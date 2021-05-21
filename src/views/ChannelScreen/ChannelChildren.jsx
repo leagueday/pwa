@@ -21,8 +21,8 @@ const useStyles = makeStyles(theme => ({
   image: {
     cursor: 'pointer',
     marginLeft: '0.5em',
-    width: '7em',
-    height: '7em',
+    width: '3.5em',
+    height: '3.5em',
     borderRadius: '3.5em',
     objectFit: 'cover',
     [theme.breakpoints.only('xl')]: {

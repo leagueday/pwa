@@ -72,7 +72,7 @@ const BroadcasterTextPlate = ({ className, channel }) => {
           <div className={classes.channelTypename2}>Broadcast Channel®</div>
         </Hidden>
       </div>
-      <div className={classes.locationNote}>{channel.locationNote}</div>
+      {/* <div className={classes.locationNote}>{channel.locationNote}</div> */}
       <Backgrounder
         className={classes.backgrounder}
         text={channel.backgrounder}
