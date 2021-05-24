@@ -29,7 +29,9 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
   },
   text: {},
-  textPop: {},
+  textPop: {
+    margin: '0 0 0 0.5em'
+  },
 }))
 
 const SchedulePopper = ({ className, text, link, color }) => {
@@ -40,13 +42,13 @@ const SchedulePopper = ({ className, text, link, color }) => {
 
   return (
     <div className={cx(classes.schedulePopper, className)}>
-      <div className={classes.text}>{text}</div>
+      <span className={classes.text}>{text}</span>
       {link && (
-        <div className={classes.textPop}>
+        <span className={classes.textPop}>
           <a className={classes.link} href={link}>
-            See full schedule.
+            See Full Schedule
           </a>
-        </div>
+        </span>
       )}
     </div>
   )

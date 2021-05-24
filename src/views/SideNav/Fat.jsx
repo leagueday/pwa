@@ -1,9 +1,9 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
-
+import Loading from '../Loading'
 import { makeStyles } from '@material-ui/core/styles'
-
+import { Button } from "@material-ui/core";
 import { actions, selectors } from '../../store'
 import { colors } from '../../styling'
 import { addScrollStyle } from '../util'
@@ -72,6 +72,24 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 'auto',
     paddingBottom: '0.25vw',
   },
+  inNOutButton: {
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+    flex: 1.5,
+    color:"#ffffff",
+    marginTop:'5%',
+    marginLeft: "18%",
+    paddingBottom: '0.25vw',
+    text: ({ skinny }) => ({
+      flex: 1,
+      fontSize: skinny ? '60%' : null,
+      fontWeight: theme.typography.weight.bold,
+      marginLeft: '0.25em',
+      userSelect: 'none',
+      whiteSpace: 'nowrap',
+    }),
+  },
 }))
 
 const FatSideNav = ({ className, home }) => {
@@ -79,7 +97,12 @@ const FatSideNav = ({ className, home }) => {
 
   const dispatch = useDispatch()
   const goHome = home ? null : () => dispatch(actions.pushHistory('/'))
-
+  const myprofile = () =>
+  {
+    
+   dispatch(actions.pushHistory('/profile'))
+  }
+const golive=() => dispatch(actions.pushHistory('/live'));
   const user = useSelector(selectors.getUser)
 
   return (
@@ -93,6 +116,12 @@ const FatSideNav = ({ className, home }) => {
         </div>
       </div>
       <SearchLozenge />
+      {/* <div className={classes.scroller}>
+        <div className={classes.scrollerChild}>
+    </div>
+    </div> */}
+    
+    
       <LiveAndUpcomingLozenge className={classes.lozenge} />
       <div className={classes.scroller}>
         <div className={classes.scrollerChild}>
@@ -108,6 +137,21 @@ const FatSideNav = ({ className, home }) => {
               <MyPodcasts />
             </Expander>
           )}
+              
+    <React.Suspense fallback={<Loading />}>
+    {user &&(
+     <Button
+     className={classes.inNOutButton}
+     color="primary"
+     onClick={golive}
+     size="small"
+     variant="contained"
+ >
+   GO LIVE
+   </Button>
+  )}
+    </React.Suspense>
+
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 import Color from 'color'
 import cx from 'classnames'
-
+import ReactHlsPlayer from 'react-hls-player';
 import { makeStyles } from '@material-ui/core/styles'
 
 import { colors } from '../styling'
@@ -70,9 +70,8 @@ const ToggleImageButton = ({
   shadowColor,
 }) => {
   const classes = useStyles({ backgroundColor, shadowColor, size })
-
   return (
-    <div className={cx(classes.imageButton, className)} onClick={onClick}>
+    <div className={cx(classes.imageButton, className)} onClick={onClick} >
       <img
         className={classes.image}
         src={on ? onImage : offImage}

@@ -364,8 +364,8 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
 
   return (
     <div className={cx(classes.replayBroadcasts, className)}>
-      <ComingSoon className={classes.comingSoon} />
-      {filterMockupData(channel.tag).map(sectionData => (
+      {/* <ComingSoon className={classes.comingSoon} /> */}
+      {filterMockupData(channel.tag).slice(0, 1).map(sectionData => (
         <div
           key={sectionData.name + sectionData.event}
           className={classes.replayBroadcast}
@@ -382,7 +382,7 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
               sectionData={sectionData}
             />
           </div>
-          <Tracks sectionData={sectionData} channelColor={channel.color} />
+          {/* <Tracks sectionData={sectionData} channelColor={channel.color} /> */}
         </div>
       ))}
     </div>

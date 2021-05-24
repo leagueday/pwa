@@ -57,6 +57,13 @@ const Expander = ({ children, className, defaultOpen, skinny, text, tag }) => {
 
   const toggleOpen = () => {
     dispatch(actions.setNavExpander(!open, tag))
+    console.log('tage',tag)
+    if(tag=="profile"){
+    dispatch(actions.pushHistory('/profile'))
+    }
+     else if(tag == "live"){
+      dispatch(actions.pushHistory('/live'))
+    }
   }
 
   const Icon = open ? IcoSolidArrowDown : IcoSolidArrowUp
