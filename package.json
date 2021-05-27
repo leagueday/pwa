@@ -95,6 +95,7 @@
     ]
   },
   "devDependencies": {
+    "@sentry/webpack-plugin": "^1.15.1",
     "husky": "^6.0.0",
     "prettier": "^2.2.1"
   },
