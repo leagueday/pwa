@@ -37,6 +37,7 @@
     "@rgrove/parse-xml": "^2.0.4",
     "@sentry/react": "^6.4.1",
     "@sentry/tracing": "^6.4.1",
+    "@sentry/webpack-plugin": "^1.15.1",
     "airtable": "^0.10.1",
     "axios": "^0.21.1",
     "babel-loader": "^8.2.2",
@@ -95,7 +96,6 @@
     ]
   },
   "devDependencies": {
-    "@sentry/webpack-plugin": "^1.15.1",
     "husky": "^6.0.0",
     "prettier": "^2.2.1"
   },
