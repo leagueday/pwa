@@ -56,13 +56,10 @@ module.exports = {
       skipWaiting: true,
     }),
     new SentryWebpackPlugin({
-      // sentry-cli configuration
       authToken: process.env.SENTRY_AUTH_TOKEN,
+      release: '0.0.1',
       org: 'leagueday',
-      project: 'FILL OUT',
-      release: process.env.SENTRY_RELEASE,
-
-      // webpack specific configuration
+      project: 'leagueday',
       include: '.',
       ignore: [
         'node_modules',

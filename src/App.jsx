@@ -22,7 +22,7 @@ Sentry.init({
   dsn:
     'https://bca25f07acf44fe1bad1be0fbb836f75@o718294.ingest.sentry.io/5780709',
   integrations: [new Integrations.BrowserTracing()],
-
+  release: '0.0.1',
   tracesSampleRate: 0.7,
 })
 
@@ -81,7 +81,6 @@ const Chronicle = () => {
 
 const App = () => (
   <Sentry.ErrorBoundary fallback={'An error has occurred'}>
-    <button onClick={methodDoesNotExist}>Break the world</button>
     <StoreProvider>
       <Audio />
       <Auth />
