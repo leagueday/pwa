@@ -19,7 +19,8 @@ import UserData from './views/UserData'
 import { routesConfig } from './routes'
 
 Sentry.init({
-  dsn: 'https://examplePublicKey@o0.ingest.sentry.io/0',
+  dsn:
+    'https://bca25f07acf44fe1bad1be0fbb836f75@o718294.ingest.sentry.io/5780709',
   integrations: [new Integrations.BrowserTracing()],
 
   tracesSampleRate: 0.7,
