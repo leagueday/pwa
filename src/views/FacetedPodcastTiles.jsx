@@ -15,6 +15,10 @@ const FacetedPodcastTiles = ({ data }) => {
   const classes = useStyles()
   let index = -1
 
+  if (!Array.isArray(data)) {
+    return <h1>{JSON.stringify(data)}</h1>
+  }
+
   return (
     <div className={classes.facetedPodcastTiles}>
       {data.map(({ title }) => (

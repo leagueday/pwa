@@ -64,8 +64,9 @@ const ChannelTile = ({ channel }) => {
   const classes = useStyles({ textColor: channel.color })
 
   const dispatch = useDispatch()
+  debugger
   const gotoThisChannel = () =>
-    dispatch(actions.pushHistory(`/channel/${channel.tag}`))
+    dispatch(actions.pushHistory(`/channel/${channel.slug}`))
 
   return (
     <div className={classes.channelTile} onClick={gotoThisChannel}>
@@ -74,7 +75,7 @@ const ChannelTile = ({ channel }) => {
         <PlusMinusButton
           size="25%"
           className={classes.plusMinusButton}
-          subjectId={channel.tag}
+          subjectId={channel.slug}
           subjectKind="channel"
         />
       </Square>

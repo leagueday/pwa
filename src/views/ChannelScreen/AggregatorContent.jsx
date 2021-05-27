@@ -93,20 +93,28 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
   </div>
 )
 
-const AggregatorContent = ({ channel }) => {
+const AggregatorContent = (inputs, ...rest) => {
+  console.log('args', inputs, rest)
+  const channel = inputs.channel
   const classes = useStyles({ channelColor: channel.color })
-
-  const { loading, error, data } = useQuery(gql`
-    query {
-      channel(id: 1) {
-        podcasts {
-          imageUrl
-          title
-          id
+  const { loading, error, data } = useQuery(
+    gql`
+      query {
+        channel_by_slug(slug: $slug) {
+          podcasts {
+            imageUrl
+            title
+            id
+          }
         }
       }
+    `,
+    {
+      variables: {
+        slug: channel.tag,
+      },
     }
-  `)
+  )
 
   const hasLive = hasLiveMockupData(channel)
   const hasReplay = hasReplayMockupData(channel)
