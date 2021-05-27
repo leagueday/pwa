@@ -5,6 +5,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Paper from '@material-ui/core/Paper'
 
+import * as Sentry from '@sentry/react'
+import { Integrations } from '@sentry/tracing'
+
 import useChronicle from './api/useChronicle'
 import { Provider as StoreProvider } from './store'
 import ThemeProvider from './styling/ThemeProvider'
@@ -14,6 +17,13 @@ import Mushipan from './views/MushipanRouter'
 import UserData from './views/UserData'
 
 import { routesConfig } from './routes'
+
+Sentry.init({
+  dsn: 'https://examplePublicKey@o0.ingest.sentry.io/0',
+  integrations: [new Integrations.BrowserTracing()],
+
+  tracesSampleRate: 0.7,
+})
 
 // const userAgent = navigator.userAgent
 // const isChrome = userAgent.indexOf('Chrome') >= 0
@@ -69,16 +79,19 @@ const Chronicle = () => {
 }
 
 const App = () => (
-  <StoreProvider>
-    <Audio />
-    <Auth />
-    <Chronicle />
-    <CssBaseline />
-    <ThemeProvider>
-      <StyledAppContent />
-    </ThemeProvider>
-    <UserData />
-  </StoreProvider>
+  <Sentry.ErrorBoundary fallback={'An error has occurred'}>
+    <button onClick={methodDoesNotExist}>Break the world</button>
+    <StoreProvider>
+      <Audio />
+      <Auth />
+      <Chronicle />
+      <CssBaseline />
+      <ThemeProvider>
+        <StyledAppContent />
+      </ThemeProvider>
+      <UserData />
+    </StoreProvider>
+  </Sentry.ErrorBoundary>
 )
 
 export default hot(App)
