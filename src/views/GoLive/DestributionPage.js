@@ -94,74 +94,111 @@ const DestributionPage = () => {
   const [create,setCreate]=useState(false);
   const [directLink,setdirectLink]=useState(false)
   const [button,setbutton]=useState(false);
+  const[userProfile,setUserProfile]=React.useState([])
+  const [userChannel,setuserChannel]=React.useState([])
   const channels = useChannels().list
   const user = useSelector(selectors.getUser)
   const userName = user?.user_metadata?.full_name
-  let playbackStream=`https://stream.mux.com`
-  const onChannelChanged=(e,key)=>{
-    //console.log("targer vakjkljljlj",e.target.value,channels[key])
-    let ChannelInfo=channels[key]
-     if(!ChannelInfo.rtmpLink || !ChannelInfo.streamKey|| !ChannelInfo.liveStreamId){
-         toast.error("We can't Go Live for this channel as stream key is not provided. Please update key and try again.")
-         setdirectLink(false);
-         setCreate(false)
-     }
-     else{
-      setChannelList({
-        ...channelList,
-        channelTitle:e.target.value,
-        rtmpLink:ChannelInfo.rtmpLink,
-        liveStreamId:ChannelInfo.liveStreamId,
-        streamKey:ChannelInfo.streamKey,
-        channelTag:ChannelInfo.tag
-      })
-      setCreate(true)
-      setbutton(true)
-      toast.success("Please click Create Direct Link below to stream to selected channel")
-     }
-     console.log("channelList",JSON.stringify(channelList))
-
-    //   localStorage.setItem("selectedChannel",e.target.value)
-  }
-  const creatingDirectLink=()=>{
-    let livestreamingId=channelList['liveStreamId']
+  React.useEffect(()=>{
+    const baseId = 'appXoertP1WJjd4TQ'
+    const userId=user['id']
+    let fetchSearch=`?filterByFormula=({userId}=${JSON.stringify(userId)})`
   
-    //call mux api to get playback url
-
-    fetch('/.netlify/functions/mux-proxy', {
+    fetch('/.netlify/functions/airtable-getprofile', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
+      body: JSON.stringify({url: `${baseId}/UserProfile${fetchSearch}`})
     }).then(response => response.json())
-      .then(function(streamData){ 
-          //console.log(streamData.data);
-
-          setStreamkey({
-            streamkey:streamData.data.stream_key
-          })
-          setplayback({
-            playback:streamData.data.playback_ids[0].id
-          })
-          setdirectLink(true)
-          setCreate(true)
-          setbutton(false)
-          //console.log("response data",playback)
-          localStorage.setItem('playback',streamData.data.playback_ids[0].id)
-      }         
-    ).catch((error)=>{
-       toast.error(error.type)
+      .then(
+        function(response){ 
+            if(response.records[0].fields){
+              setuserChannel([response.records[0]])
+             setUserProfile(response.records[0].fields.restrictedChannelTags.split(','))
+            }
+        }
+      ).catch((error)=>{
+        console.log('error while data fetching',error)
+      })
+  },[])
+  let playbackStream=`https://stream.mux.com`
+  let userChannelPush={};
+ if(userChannel) {
+userChannel.map(item=>{
+  userChannelPush.title=item.fields.userChannel,
+  userChannelPush.rtmpLink=item.fields.rtmpLink,
+  userChannelPush.streamKey=item.fields.streamKey,
+  userChannelPush.liveStreamId=item.fields.liveStreamId
+})
+ }
+let channelsData=channels.concat(userChannelPush)
+ console.log('channeldata',JSON.stringify(channelsData))
+const onChannelChanged=(e,key)=>{
+  console.log("targer vakjkljljlj",e.target.value,JSON.stringify(channelsData[key]))
+  let ChannelInfo=channelsData[key]
+   if(!ChannelInfo.rtmpLink || !ChannelInfo.streamKey|| !ChannelInfo.liveStreamId){
+       toast.error("We can't Go Live for this channel as stream key is not provided. Please update key and try again.")
+       setdirectLink(false);
+       setCreate(false)
+   }
+   else{
+    setChannelList({
+      ...channelList,
+      channelTitle:e.target.value,
+      rtmpLink:ChannelInfo.rtmpLink,
+      liveStreamId:ChannelInfo.liveStreamId,
+      streamKey:ChannelInfo.streamKey,
+      channelTag:ChannelInfo.tag
     })
-  
-  submitFormData()
-}
+    setCreate(true)
+    setbutton(true)
+    toast.success("Please click Create Direct Link below to stream to selected channel")
+   }
 
+  //   localStorage.setItem("selectedChannel",e.target.value)
+}
+const creatingDirectLink=()=>{
+  let livestreamingId=channelList['liveStreamId']
+
+  //call mux api to get playback url
+    console.log('livestream',livestreamingId)
+  fetch('/.netlify/functions/mux-proxy', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
+  }).then(response => response.json())
+    .then(function(streamData){ 
+        console.log(streamData.data);
+
+        setStreamkey({
+          streamkey:streamData.data.stream_key
+        })
+        setplayback({
+          playback:streamData.data.playback_ids[0].id
+        })
+        setdirectLink(true)
+        setCreate(true)
+        setbutton(false)
+        console.log('stream',streamData)
+        //console.log("response data",playback)
+        localStorage.setItem('playback',streamData.data.playback_ids[0].id)
+    }         
+  ).catch((error)=>{
+     toast.error(error.type)
+  })
+
+submitFormData()
+}
 let playId=playback.playback;
 console.log("playbackid",playback)
 let playbackUrl= `${playbackStream}/${playId}.m3u8`
 //localStorage.setItem('playback',playbackUrl)
+console.log('playbackurl',playbackUrl)
 const playerRef = React.useRef();
 
 function submitFormData(){ 
@@ -182,7 +219,8 @@ function submitFormData(){
       ]
     }
     
-  const baseId = 'appXoertP1WJjd4TQ'  
+  const baseId = 'appXoertP1WJjd4TQ'
+  
   fetch('/.netlify/functions/airtable-proxy', {
     method: 'POST',
     headers: {
@@ -203,7 +241,6 @@ function submitFormData(){
 function playVideo() {
   playerRef.current.play();
   setdirectLink(false)
-  console.log("palyref",playerRef)
 }
 
 function pauseVideo() {
@@ -213,6 +250,13 @@ function pauseVideo() {
 function toggleControls() {
   playerRef.current.controls = !playerRef.current.controls;
 }
+channelsData && channelsData.map((channel,index)=>{
+  userProfile&& userProfile.map((item)=>{
+    if (channel.title === item) {
+      channelsData.splice(index, 1);
+    }
+  })
+})
   return (
     <BasicLayout home>
          <ToastContainer />
@@ -235,10 +279,10 @@ function toggleControls() {
                   </tr>
                 </thead>
         <tbody>
-        { channels.map((channel ,index) => {    
+        { channelsData && channelsData.map((channel ,index) => { 
                return(
             <tr key={index}>
-            <td>
+            <td rowSpan={3}>
             <input 
             type="radio" 
             className={classes.radio}
@@ -288,7 +332,7 @@ function toggleControls() {
           Play Audio : <ReactHlsPlayer
            playerRef={playerRef}
             src={playbackUrl}
-            autoPlay={false}
+            autoPlay={true}
             onClick={playVideo}
            controls={true}
            width="20%"

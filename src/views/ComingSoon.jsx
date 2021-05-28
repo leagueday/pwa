@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core'
 import ToggleImageButton from './ToggleImageButton'
 import { colors } from '../styling'
 import ReactHlsPlayer from 'react-hls-player';
+
+
 const useStyles = makeStyles(theme => ({
   comingSoon: {
     alignItems: 'flex-start',
@@ -117,6 +119,8 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
   },
 }))
+
+
 const mockupData = [
   {
     episodes: [],
@@ -129,31 +133,33 @@ const mockupData = [
 const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
 const filterMockupData = tag =>
   mockupData.filter(({ tags }) => tags.find(thisTag => thisTag === tag))
-const EventImage = ({ classes, imageUrl }) => (
+const EventImage = ({ classes, imageUrl }) => {
+  console.log('imageurl',imageUrl)
+  return (
+  
   <img className={cx(classes.eventImage)} src={imageUrl} />
-)
+  )
+}
+
 const EventTextplate = ({ channelColor, sectionData }) => {
-  const { name, variety } = sectionData
-  console.log('channels',channelColor)
   const classes = useStyles({ channelColor })
 
   return (
     <div className={classes.eventTextplate}>
       <div className={cx(classes.sectionTitle)}>
-        <div className={classes.textEllipsisOverflow}>{name}</div>
+        <div className={classes.textEllipsisOverflow}>{sectionData['title']} </div>
       </div>
       <div className={cx(classes.sectionVariety)}>
-        <div className={classes.textEllipsisOverflow}>{variety}</div>
+        <div className={classes.textEllipsisOverflow}>{sectionData['description']}</div>
       </div>
     </div>
   )
 }
 
 
-const Track = ({ classes }) => {
+const Track = ({ classes ,playbackurl}) => {
   const [isPlaying, setIsPlaying] = React.useState(false)
   const [plyerOn,setPlayerOn]=React.useState(false)
-  let playbackurl=localStorage.getItem('playback')
 const playerRef = React.useRef();
   const onClick = isPlaying
     ? () => setIsPlaying(false)
@@ -173,7 +179,6 @@ const playerRef = React.useRef();
         onImage="/img/logo_live_pause.png"
         offImage="/img/logo_live_play.png"
         shadowColor={buttonShadowColor}
-        src={playbackurl}
       />
       <div className={classes.trackText}>
         Live</div>
@@ -181,7 +186,7 @@ const playerRef = React.useRef();
             <ReactHlsPlayer
             playerRef={playerRef}
             src={playbackurl}
-            autoPlay={false}
+            autoPlay={true}
             onClick={playVideo}
             controls={true}
             width="20%"
@@ -191,13 +196,97 @@ const playerRef = React.useRef();
     </div>
   )
 }
-const ComingSoon = ({ className,channel,channelColor, text }) => {
+
+const ComingSoon = ({ className,channel,channelColor }) => {
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const [fetchLiveData,setFetchLiveData]=React.useState([])
+  const [liveStatus,setliveStatus]=React.useState(1)
+  
+  const [url,setUrl]=React.useState('')
+  React.useEffect(()=>{
+    liveData();
+    return sleep(3000).then(() => {
+    muxliveData();
+    })
+  },[])
+  const liveData=()=>{
+    const baseId = 'appXoertP1WJjd4TQ'
+    fetch('/.netlify/functions/commingsoon-proxy', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+     // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
+      body: JSON.stringify({url: `${baseId}/ChannelLiveData`})
+    }).then(response => response.json())
+      .then(
+        function(response){
+          setFetchLiveData([response.records[response.records.length-1]])
+          localStorage.setItem('livePlayurl',response.records[response.records.length-1].fields.playbackUrl )
+          seturl(response.records[response.records.length-1].fields.playbackUrl)
+          console.log('seturl',response.records[response.records.length-1].fields.playbackUrl)
+        }
+      ).catch((error)=>{
+        console.log("error while data fetching",error.type)
+      })
+  }
+  let  urlIsthere
+  if(urlIsthere){
+   fetchLiveData && fetchLiveData.map(item=> {
+     urlIsthere=item.fields.playbackUrl
+   })
+ }
+   const muxliveData=()=>{
+    const baseId = 'appXoertP1WJjd4TQ'
+    //console.log('abc--'+localStorage.getItem('livePlayurl'));
+    
+    if(localStorage.getItem('livePlayurl') == 'null' || localStorage.getItem('livePlayurl') == '' || localStorage.getItem('livePlayurl') == null)
+    {
+        setliveStatus(0)
+    }
+    else
+    {        
+        var str = localStorage.getItem('livePlayurl');
+        var serchStr = str.indexOf("undefined");
+        if(serchStr == '-1')
+        {
+            fetch('/.netlify/functions/mux-getlivedata', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+           // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
+            body: JSON.stringify({url: `${localStorage.getItem('livePlayurl')}`})
+          }).then(response => response.json())
+            .then(
+              function(response){
+                //console.log('abc',typeof response.error)
+                if(typeof response.error.messages[0]!=='undefined'){
+                  setliveStatus(0)
+
+                }
+              }
+            ).catch((error)=>{
+              console.log("error while data fetching",error.type)
+            })
+        }
+        else
+        {
+            setliveStatus(0)
+        }
+        
+    }      
+      
+    }
+  
+ console.log('livestatus',liveStatus)
   const classes = useStyles()
-  let urlIsthere=  localStorage.getItem('playback')
   console.log("urlis",urlIsthere)
   return (
     <div className={cx(classes.comingSoon,className)}>
-      {!urlIsthere ?(
+      {liveStatus==0 ?(
       <div className={classes.comingSoonRow}>
         <div className={classes.logoContainer}>
           <img
@@ -205,25 +294,24 @@ const ComingSoon = ({ className,channel,channelColor, text }) => {
             src="/img/logo_square_transparent.png"
           />
         </div>
-        <div className={classes.text}>{ text || 'Coming Soon' }</div>
+        <div className={classes.text}>Coming Soon</div>
       </div>
       ):(
         <>
-      {filterMockupData('riot').map((sectionData)=>{
-        console.log("channelcolor",channelColor)
+      {fetchLiveData.map((sectionData,index)=>{
         return (
-        <div key={sectionData.name} className={classes.liveBroadcast}>
+        <div key={sectionData.fields.title} className={classes.liveBroadcast}>
       <div className={classes.eventImageAndText}>
-            <EventImage classes={classes} imageUrl={sectionData.imageUrl} />
+            <EventImage classes={classes} imageUrl={sectionData.fields.thumbnailUrl}  />
             <EventTextplate
               channelColor={channelColor}
-              sectionData={sectionData}
+              sectionData={sectionData.fields}
             />
           </div>
           <div className={classes.liveness}>
             <div className={classes.livenessLeftPad}>&nbsp;</div>
             <div className={classes.livenessContent}>
-              <Track classes={classes} />
+              <Track classes={classes} playbackurl={sectionData.fields.playbackUrl}/>
             </div>
           </div>
     </div>

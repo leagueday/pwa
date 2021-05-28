@@ -1,7 +1,6 @@
 import React from 'react'
 import Color from 'color'
 import cx from 'classnames'
-import ReactHlsPlayer from 'react-hls-player';
 import { makeStyles } from '@material-ui/core/styles'
 
 import { colors } from '../styling'

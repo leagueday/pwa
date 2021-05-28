@@ -1,7 +1,6 @@
 import React from 'react'
 import cx from 'classnames'
 import Color from 'color'
-
 import { makeStyles } from '@material-ui/core/styles'
 
 import { colors } from '../../styling'
@@ -48,7 +47,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flex: 2,
     flexDirection: 'column',
-    margin: '0 0 0 1em',
     padding: '1em 0 1em 1em',
     [theme.breakpoints.only('xs')]: {
       padding: '2vw 0 2vw 2vw',
@@ -143,14 +141,14 @@ const Track = ({ classes }) => {
     <div className={classes.track}>
       <ToggleImageButton
         className={classes.logoButton}
-        size="4vw"
+        size="8vw"
         on={isPlaying}
         onClick={onClick}
         onImage="/img/logo_live_pause.png"
         offImage="/img/logo_live_play.png"
         shadowColor={buttonShadowColor}
       />
-      <div className={classes.trackText}></div>
+      <div className={classes.trackText}>Live</div>
     </div>
   )
 }
@@ -163,7 +161,6 @@ const LiveBroadcastsMockup = ({ className, channel }) => {
         className={playbackurl?classes.liveBroadcasts:classes.comingSoon}
         channel={channel}
         channelColor={channel.color}
-        text="Live starting June 4"
        />
       {filterMockupData(channel.tag).map(sectionData => (
         <div key={sectionData.name} className={classes.liveBroadcast}>
@@ -173,8 +170,11 @@ const LiveBroadcastsMockup = ({ className, channel }) => {
               channelColor={channel.color}
               sectionData={sectionData}
             />
+          </div>
+          <div className={classes.liveness}>
+            <div className={classes.livenessLeftPad}>&nbsp;</div>
             <div className={classes.livenessContent}>
-                <Track classes={classes} />
+              <Track classes={classes} />
             </div>
           </div>
         </div>

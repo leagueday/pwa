@@ -30,12 +30,12 @@ const Backgrounder = ({ className, text, textMore, color }) => {
     <div className={cx(classes.backgrounder, className)}>
       <div className={classes.text}>
         <span>{text}</span>
-        {!isExpanded ? (
+        {isExpanded ? (
           <>
             <span>{textMore}</span>
-            {/* <span className={classes.clicker} onClick={onClick}>
+            <span className={classes.clicker} onClick={onClick}>
               less
-            </span> */}
+            </span>
           </>
         ) : (
           <span className={classes.clicker} onClick={onClick}>

@@ -99,7 +99,6 @@ const AggregatorContent = ({ channel }) => {
 
   const hasLive = hasLiveMockupData(channel)
   const hasReplay = hasReplayMockupData(channel)
-
   return (
     <ContentLayout
       accentColor={channel.color}
