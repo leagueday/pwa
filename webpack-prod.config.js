@@ -2,6 +2,8 @@ const webpack = require('webpack')
 const CopyPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const WorkboxPlugin = require('workbox-webpack-plugin')
+const SentryWebpackPlugin = require('@sentry/webpack-plugin')
+
 const path = require('path')
 
 module.exports = {
@@ -52,6 +54,18 @@ module.exports = {
       // and not allow any straggling "old" SWs to hang around
       clientsClaim: true,
       skipWaiting: true,
+    }),
+    new SentryWebpackPlugin({
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      release: '0.0.1',
+      org: 'leagueday',
+      project: 'leagueday',
+      include: '.',
+      ignore: [
+        'node_modules',
+        'webpack-dev.config.js',
+        'webpack-prod.config.js',
+      ],
     }),
   ],
   resolve: {
