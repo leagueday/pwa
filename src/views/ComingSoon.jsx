@@ -5,8 +5,9 @@ import { makeStyles } from '@material-ui/core'
 import ToggleImageButton from './ToggleImageButton'
 import { colors } from '../styling'
 import ReactHlsPlayer from 'react-hls-player';
-
-
+import { useSelector,useDispatch } from 'react-redux'
+import { actions, selectors, constants as storeConstants} from '../store'
+import useChannels from '../api/useChannels'
 const useStyles = makeStyles(theme => ({
   comingSoon: {
     alignItems: 'flex-start',
@@ -159,30 +160,54 @@ const EventTextplate = ({ channelColor, sectionData }) => {
 
 const Track = ({ classes ,playbackurl}) => {
   const [isPlaying, setIsPlaying] = React.useState(false)
-  const [plyerOn,setPlayerOn]=React.useState(false)
+  const [plyerOn,setPlayerOn]=React.useState(false);
+  const dispatch = useDispatch()
 const playerRef = React.useRef();
   const onClick = isPlaying
     ? () => setIsPlaying(false)
     : () => setIsPlaying(true)
-    const playVideo=()=> {
-      playerRef.current.play();
-      setPlayerOn(true)
-      console.log("palyref",playerRef)
-    }
+    // const playVideo=()=> {
+    //   playerRef.current.play();
+    //   setPlayerOn(true)
+    //   console.log("palyref",playerRef)
+    // }
+const onPopClick = isPlaying
+? ev => {
+  dispatch(actions.pauseAudio())
+        ev.stopPropagation()
+        setIsPlaying(false)
+  }
+: ev => {
+   dispatch(actions.playAudio())
+          dispatch(
+            actions.selectAudio(
+              '',
+              '',
+              '',
+              playbackurl?playbackurl:"",
+              '',
+              '',
+              ''
+            )
+          )
+          setIsPlaying(true)
+          dispatch(actions.playAudio())
+          ev.stopPropagation()
+        }
   return (
     <div className={classes.track}>
       <ToggleImageButton
         className={classes.logoButton}
         size="8vw"
         on={isPlaying}
-        onClick={onClick}
+        onClick={onPopClick}
         onImage="/img/logo_live_pause.png"
         offImage="/img/logo_live_play.png"
         shadowColor={buttonShadowColor}
       />
       <div className={classes.trackText}>
         Live</div>
-        {isPlaying &&(
+        {/* {isPlaying &&(
             <ReactHlsPlayer
             playerRef={playerRef}
             src={playbackurl}
@@ -192,7 +217,7 @@ const playerRef = React.useRef();
             width="20%"
             height="auto"
             />
-        )}
+        )} */}
     </div>
   )
 }
@@ -200,15 +225,15 @@ const playerRef = React.useRef();
 const ComingSoon = ({ className,channel,channelColor }) => {
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const [fetchLiveData,setFetchLiveData]=React.useState([])
-  const [liveStatus,setliveStatus]=React.useState(1)
-  
+  const [liveStatus,setliveStatus]=React.useState(1);
+  const [channeLivestatus,setChannelLivestatus]=React.useState(0);
   const [url,setUrl]=React.useState('')
   React.useEffect(()=>{
     liveData();
     return sleep(3000).then(() => {
     muxliveData();
     })
-  },[])
+  },[liveStatus])
   const liveData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     fetch('/.netlify/functions/commingsoon-proxy', {
@@ -222,28 +247,28 @@ const ComingSoon = ({ className,channel,channelColor }) => {
     }).then(response => response.json())
       .then(
         function(response){
+          if(response.records.length){
           setFetchLiveData([response.records[response.records.length-1]])
           localStorage.setItem('livePlayurl',response.records[response.records.length-1].fields.playbackUrl )
           seturl(response.records[response.records.length-1].fields.playbackUrl)
           console.log('seturl',response.records[response.records.length-1].fields.playbackUrl)
+          }
+          else{
+            console.log('setlivestatus',liveStatus)
+          }
         }
       ).catch((error)=>{
         console.log("error while data fetching",error.type)
       })
   }
-  let  urlIsthere
-  if(urlIsthere){
-   fetchLiveData && fetchLiveData.map(item=> {
-     urlIsthere=item.fields.playbackUrl
-   })
- }
    const muxliveData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     //console.log('abc--'+localStorage.getItem('livePlayurl'));
-    
+    console.log('muxlivedata',localStorage.getItem('livePlayurl'))
     if(localStorage.getItem('livePlayurl') == 'null' || localStorage.getItem('livePlayurl') == '' || localStorage.getItem('livePlayurl') == null)
     {
         setliveStatus(0)
+        console.log('muxlivedatainside',localStorage.getItem('livePlayurl'),liveStatus)
     }
     else
     {        
@@ -280,13 +305,30 @@ const ComingSoon = ({ className,channel,channelColor }) => {
     }      
       
     }
-  
- console.log('livestatus',liveStatus)
+     let  urlIsthere;
+    let channelTitle;
+    if(fetchLiveData){
+     fetchLiveData && fetchLiveData.map(item=> {
+       urlIsthere=item.fields.playbackUrl,
+       channelTitle=item.fields.channelTag
+      
+     })
+   }
   const classes = useStyles()
-  console.log("urlis",urlIsthere)
+  let checkChannel;
+  if(channelTitle){
+    if(channel['tag']==channelTitle){
+      checkChannel=1;
+    }
+    else{
+      checkChannel=0;
+      //setChannelLivestatus(0)
+    }
+   }
+   console.log("urlis122",urlIsthere,checkChannel,liveStatus)
   return (
     <div className={cx(classes.comingSoon,className)}>
-      {liveStatus==0 ?(
+      {liveStatus==0 || checkChannel==0?(
       <div className={classes.comingSoonRow}>
         <div className={classes.logoContainer}>
           <img
@@ -298,11 +340,11 @@ const ComingSoon = ({ className,channel,channelColor }) => {
       </div>
       ):(
         <>
-      {fetchLiveData.map((sectionData,index)=>{
+      {fetchLiveData.length? fetchLiveData?.map((sectionData,index)=>{
         return (
-        <div key={sectionData.fields.title} className={classes.liveBroadcast}>
+        <div key={sectionData.fields.title?sectionData.fields.title:null} className={classes.liveBroadcast}>
       <div className={classes.eventImageAndText}>
-            <EventImage classes={classes} imageUrl={sectionData.fields.thumbnailUrl}  />
+            <EventImage classes={classes} imageUrl={sectionData.fields.thumbnailUrl?sectionData.fields.thumbnailUrl:""}  />
             <EventTextplate
               channelColor={channelColor}
               sectionData={sectionData.fields}
@@ -315,7 +357,7 @@ const ComingSoon = ({ className,channel,channelColor }) => {
             </div>
           </div>
     </div>
-        )})}
+        )}):""}
         </>
       )}
     

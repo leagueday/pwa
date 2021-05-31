@@ -254,13 +254,17 @@ const transparent = 'rgba(0,0,0,1)'
 const episodeBackgroundColors = ['#070709', transparent, '#0E0E11', transparent]
 
 const EventImage = ({ classes, imageUrl, onClick }) => {
-  console.log('imageulr',imageUrl.fields&&imageUrl.fields.thumbnailUrl)
+ // console.log('imageulr',imageUrl.fields&&imageUrl.fields.thumbnailUrl)
   return (
+    <React.Fragment>
+         {imageUrl && ( 
   <img
     className={cx(classes.eventImage, classes.clickable)}
     onClick={onClick}
     src={imageUrl.fields?imageUrl.fields.thumbnailUrl:''}
   />
+    )}
+    </React.Fragment>
   )
 }
 
@@ -269,20 +273,26 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
   const classes = useStyles({ channelColor })
 
   return (
-    <div className={classes.eventTextplate}>
-      <div
-        className={cx(classes.sectionTitle, classes.clickable)}
-        onClick={onClick}
-      >
-        <div className={classes.textEllipsisOverflow}>{sectionData.fields &&sectionData.fields.title} </div>
-      </div>
-      <div
-        className={cx(classes.sectionVariety, classes.clickable)}
-        onClick={onClick}
-      >
-        <div className={classes.textEllipsisOverflow}>{sectionData.fields && sectionData.fields.description}</div>
-      </div>
-    </div>
+    <React.Fragment>
+      {sectionData ?(
+          <div className={classes.eventTextplate}>
+      
+          <div
+            className={cx(classes.sectionTitle, classes.clickable)}
+            onClick={onClick}
+          >
+            <div className={classes.textEllipsisOverflow}>{sectionData.fields &&sectionData.fields.title} </div>
+          </div>
+          <div
+            className={cx(classes.sectionVariety, classes.clickable)}
+            onClick={onClick}
+          >
+            <div className={classes.textEllipsisOverflow}>{sectionData.fields && sectionData.fields.description}</div>
+          </div>
+        </div>
+      ):""}
+    </React.Fragment>
+   
   )
 }
 
@@ -296,7 +306,6 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl }) 
     fakeDateLabel,
     fakeDurationLabel,
   } = episodeData
-  console.log("episodedata",JSON.stringify(liveUrl))
   const classes = useStyles({ backgroundColor, canPlay, channelColor })
 
   const PlayOrPauseIcon = isPlaying ? IcoPause : IcoPlay
@@ -313,7 +322,7 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl }) 
   let playbackStream=`https://stream.mux.com`
   if(url){
  playBackUrl=`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`
-  console.log("playbackurl",playBackUrl)
+
   }
   return (
     <div className={classes.episodeRow}>
@@ -358,16 +367,15 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl }) 
 
 const Tracks = ({ sectionData, channelColor,assetsId }) => {
   const classes = useStyles({ channelColor })
-  console.log('assesetsid',assetsId)
   const [liveUrl,setLiveUrl]=React.useState([])
   React.useEffect(()=>{
     gettingMuxassetsId();
-  },[])
+  },[assetsId])
   const gettingMuxassetsId=()=>{
     console.log("getting")
   var params=assetsId
    for(var i=0;i<params.length;i++){
-    console.log("assess",params,params.length)
+ 
     fetch('/.netlify/functions/mux-proxy-assests', {
       method: 'POST',
       headers: {
@@ -378,14 +386,12 @@ const Tracks = ({ sectionData, channelColor,assetsId }) => {
     }).then(response => response.json())
       .then(function(assesetId){ 
         setLiveUrl(assesetId.data)
-          console.log("iddata",assesetId.data)
       }         
     ).catch((error)=>{
        toast.error(error.type)
     }) 
   }
   }
-  console.log('aseetsid',liveUrl)
   return (
     <div className={classes.tracks}>
       <div className={classes.tracksLeftPad}>&nbsp;</div>
@@ -466,7 +472,6 @@ const ReplayLiveBroadCast = ({ className, channel }) => {
   const dispatch = useDispatch()
   const makeGotoEvent = event => () =>
     dispatch(actions.pushHistory(`/event/${event}`))
-    console.log("fetchlive data",JSON.stringify(rescentAsscetid))
 
   return (
     <div className={cx(classes.replayBroadcasts, className,channel)}>

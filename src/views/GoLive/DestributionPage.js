@@ -1,5 +1,5 @@
 import React,{useEffect, useState,useRef} from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
 import ReactHlsPlayer from 'react-hls-player';
 import Airtable from 'airtable'
 import 'react-h5-audio-player/lib/styles.css';
@@ -11,8 +11,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import useChannels from '../../api/useChannels';
 import useChannelCategories from '../../api/useChannelCategories';
 import useFacets from '../../api/useFacets'
-import { actions, selectors } from '../../store'
-import { useDispatch } from "react-redux";
+import { actions, selectors, constants as storeConstants} from '../../store'
 import { colors } from '../../styling'
 import BasicLayout from '../BasicLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
@@ -20,9 +19,13 @@ import Loading from '../Loading'
 import { addScrollStyle } from '../util'
 import TitleBar from './TitleBar'
 import GoLiveData from './GoLiveData';
-import { makeRequestHeaders } from '../util'
+import { makeIconButton } from '../IconButton'
+import { IcoPause, IcoPlay } from '../icons'
+import Item from './Item'
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 const primaryColor = colors.magenta
+const PauseButton = makeIconButton(IcoPause)
+const PlayButton = makeIconButton(IcoPlay)
 const useStyles = makeStyles(theme => ({
 channelCategories: {},
   channelCategories: {
@@ -75,7 +78,22 @@ channelCategories: {},
   },
   playback:{
     marginBottom:"20px"
-  }
+  },
+  popButton: ({ accentColor }) => ({
+    backgroundColor: colors.darkGray,
+    width: '2em',
+    [theme.breakpoints.only('xs')]: {
+      height: '6vw',
+      marginLeft: '1vw',
+      width: '6vw',
+    },
+    '& *': {
+      color: colors.white,
+    },
+    '&:hover *': {
+      color: accentColor,
+    },
+  }),
 }))
 
 const DestributionPage = () => {
@@ -134,9 +152,8 @@ userChannel.map(item=>{
 })
  }
 let channelsData=channels.concat(userChannelPush)
- console.log('channeldata',JSON.stringify(channelsData))
 const onChannelChanged=(e,key)=>{
-  console.log("targer vakjkljljlj",e.target.value,JSON.stringify(channelsData[key]))
+
   let ChannelInfo=channelsData[key]
    if(!ChannelInfo.rtmpLink || !ChannelInfo.streamKey|| !ChannelInfo.liveStreamId){
        toast.error("We can't Go Live for this channel as stream key is not provided. Please update key and try again.")
@@ -195,10 +212,9 @@ const creatingDirectLink=()=>{
 submitFormData()
 }
 let playId=playback.playback;
-console.log("playbackid",playback)
 let playbackUrl= `${playbackStream}/${playId}.m3u8`
-//localStorage.setItem('playback',playbackUrl)
-console.log('playbackurl',playbackUrl)
+// //localStorage.setItem('playback',playbackUrl)
+// console.log('playbackurl',playbackUrl)
 const playerRef = React.useRef();
 
 function submitFormData(){ 
@@ -257,6 +273,36 @@ channelsData && channelsData.map((channel,index)=>{
     }
   })
 })
+const dispatch = useDispatch()
+const audioMode = useSelector(selectors.getAudioMode)
+const isSelectedAudio =playbackUrl&&playbackUrl
+const isPlaying =
+isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
+const PopButton = isPlaying ? PauseButton : PlayButton
+const onPopClick = isPlaying
+? ev => {
+  dispatch(actions.pauseAudio())
+        ev.stopPropagation()
+  }
+: ev => {
+  //console.log('iskhkjds',isSelectedAudio)
+   dispatch(actions.playAudio())
+          dispatch(
+            actions.selectAudio(
+              '',
+              '',
+              '',
+              isSelectedAudio?isSelectedAudio:"",
+              '',
+              '',
+              ''
+            )
+          )
+    
+          dispatch(actions.playAudio())
+          ev.stopPropagation()
+        }
+      
   return (
     <BasicLayout home>
          <ToastContainer />
@@ -329,16 +375,15 @@ channelsData && channelsData.map((channel,index)=>{
                    </a>
                    <br></br>
                    <br></br>
-          Play Audio : <ReactHlsPlayer
-           playerRef={playerRef}
-            src={playbackUrl}
-            autoPlay={true}
-            onClick={playVideo}
-           controls={true}
-           width="20%"
-            height="auto"
-             />
-
+             Play Audio: 
+             <PopButton
+          className={classes.popButton}
+          iconClassName={classes.popButtonIcon}
+          size="1.5em"
+          onClick={onPopClick}
+          shadowColor={colors.darkGray}
+        />
+          
                    <br/>
                    <br/>
                    </>
