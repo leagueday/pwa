@@ -12,6 +12,8 @@ import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import Loading from '../Loading'
 import { addScrollStyle } from '../util'
 import TitleBar from './TitleBar'
+import { uploadFile } from 'react-s3';
+import('buffer').then(({Buffer}) => {global.Buffer = Buffer;})
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 
 
@@ -85,7 +87,8 @@ const GoLiveData = (props) => {
     photoError:"",
     image:""
   });
-  const [image,setimage]=React.useState()
+  const [image,setimage]=React.useState();
+  const [disable,setdisable]=React.useState(true);
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const facetedPodcasts = useFacets('Home')
   const [formInput, setFormInput] = React.useState(
@@ -97,6 +100,13 @@ const GoLiveData = (props) => {
       descriptionError:"",
     }
   );
+  const config = {
+    bucketName:"leagueday-prod-images",
+    dirName:"uploads",
+    region:'us-east-1',
+    accessKeyId:"AKIA2NEES72FJV4VO343",
+    secretAccessKey:"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",
+  };
  const handleUploadClick = event => {
     var file = event.target.files[0];
     setFile({
@@ -106,7 +116,6 @@ const GoLiveData = (props) => {
       imageUploaded: 1,
       photoError:""
     });
-    setimage(file['name'])
     const reader = new FileReader();
     reader.onloadend = function(e) {
       setFile({
@@ -116,6 +125,16 @@ const GoLiveData = (props) => {
     })
     }
     reader.readAsDataURL(file)
+    return sleep(2).then(() => {
+      uploadFile(file, config)
+                .then(data => {
+                  setimage(data['location'])
+                  setdisable(false)
+                  console.log('datafile',JSON.stringify(data))})
+                .catch(err => {
+                  setdisable(false)
+                  console.error(err)})
+      })
   };
   console.log("onloaded",image)
   // const handleInput = evt => {
@@ -148,7 +167,7 @@ const GoLiveData = (props) => {
     console.log("title & descridption addedd")
     localStorage.setItem("title",formInput['title'])
     localStorage.setItem("description",formInput['description'])
-    localStorage.setItem('image',state['selectedFile'])
+    localStorage.setItem('channelImage',image)
     localStorage.setItem('file',image)
     dispatch(actions.pushHistory('/preview'))
     }
@@ -245,6 +264,7 @@ const GoLiveData = (props) => {
             variant="contained"
             color="primary"
             className={classes.button}
+            disabled={disable}
           >
             Save & Preview
           </Button>

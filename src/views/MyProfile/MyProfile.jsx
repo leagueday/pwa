@@ -288,12 +288,12 @@ const MyProfile = () => {
                   <p className="card-text">
                   <span>Twitch :{data.TwitchUrl}</span>
                   </p>
-                  <p className="card-text">
+                  {/* <p className="card-text">
                   <span>FaceBook :{data.FacebookUrl}</span>
                   </p>
                   <p className="card-text">
                   <span>Instagram: {data.InstagramUrl}</span>
-                  </p>
+                  </p> */}
                   </div>
                 </div>
               </div>
@@ -302,7 +302,7 @@ const MyProfile = () => {
                 <table className="table table-striped table-bordered">
                 <thead>
                   <tr>
-                  <th ><div style={{marginRight:"28%"}}><u>My Games</u></div></th>       
+                  <th ><div style={{marginRight:"0%"}}><u>My Games</u></div></th>       
                   </tr>
                 </thead>
                 <tbody>
@@ -372,13 +372,16 @@ const MyProfile = () => {
            </div>
            </div>
            {userProfile && userProfile.map(data=>(
+          
                 <Grid className={''} container>
+                  <br></br>
+                  <br></br>
                 <Grid className={''} item xs={12}>
-                 <BottomBlock
+                 {/* <BottomBlock
                  titleStart={data.name}
                  titleRest="Podcasts"
                  >
-               </BottomBlock>
+               </BottomBlock> */}
              </Grid>
              <Grid className={''}>
                 <BottomBlock
@@ -399,6 +402,14 @@ const MyProfile = () => {
                  titleStart={data.name}
                  titleRest="Recorded"
                  >
+                   <div className="avatar">
+                    <img
+                      src={data.channelImage?data.channelImage:""}
+                      className="card-img-top"
+                      width='15%'
+                      alt=""
+                    />
+                  </div>
                </BottomBlock>
              </Grid>
              </Grid>

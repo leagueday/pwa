@@ -95,17 +95,19 @@ const useStyles = makeStyles(theme => ({
   },
   liveness: {
     display: 'flex',
-    width: '100%',
+    width: '600%',
   },
   livenessLeftPad: {
-    flex: 0.5,
+    flex:-6
+  },
+  liveBroadcast:{
+    display: 'flex',
+    flexDirection: 'row',
   },
   livenessContent: {
     backgroundColor: '#070709',
-
     display: 'flex',
-    flex: 2,
-    flexDirection: 'column',
+    flex:4 ,
     padding: '1em 0 1em 1em',
     [theme.breakpoints.only('xs')]: {
       padding: '2vw 0 2vw 2vw',
@@ -114,8 +116,11 @@ const useStyles = makeStyles(theme => ({
   trackText: {
     color: colors.white80,
     flex: 1,
+    top:"-99%",
+    position:"relative",
     minWidth: '12vw',
-    paddingLeft: '2vw',
+    paddingLeft: '2.0vw',
+    paddingTop:"0.5vw",
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
@@ -206,7 +211,7 @@ const onPopClick = isPlaying
         shadowColor={buttonShadowColor}
       />
       <div className={classes.trackText}>
-        Live</div>
+      Stream</div>
         {/* {isPlaying &&(
             <ReactHlsPlayer
             playerRef={playerRef}
@@ -248,10 +253,10 @@ const ComingSoon = ({ className,channel,channelColor }) => {
       .then(
         function(response){
           if(response.records.length){
+           // console.log('seturl',JSON.stringify(response.records))
           setFetchLiveData([response.records[response.records.length-1]])
           localStorage.setItem('livePlayurl',response.records[response.records.length-1].fields.playbackUrl )
           seturl(response.records[response.records.length-1].fields.playbackUrl)
-          console.log('seturl',response.records[response.records.length-1].fields.playbackUrl)
           }
           else{
             console.log('setlivestatus',liveStatus)
@@ -325,7 +330,6 @@ const ComingSoon = ({ className,channel,channelColor }) => {
       //setChannelLivestatus(0)
     }
    }
-   console.log("urlis122",urlIsthere,checkChannel,liveStatus)
   return (
     <div className={cx(classes.comingSoon,className)}>
       {liveStatus==0 || checkChannel==0?(

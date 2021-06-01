@@ -274,9 +274,9 @@ const onChannelChanged=(e,channelFieldKey,tag)=>{
               date:new Date(),
               userId:user.id,
               email:user.email,
-              FacebookUrl:formInput.facebookUrl,
+              //FacebookUrl:formInput.facebookUrl,
               TwitterUrl:formInput.TwitterUrl,
-              InstagramUrl:formInput.InstagramUrl,
+              //InstagramUrl:formInput.InstagramUrl,
               TwitchUrl:formInput.TwitchUrl,
               MyContext:saveContext.toString(),
               userChannel:formInput.userChannelName,
@@ -481,7 +481,7 @@ const savedUserChannel=()=>{
             <br></br>
             <br></br>
             <div className={classes.root}>
-         Upload Image: <br></br><br></br>
+         Upload Profile Image: <br></br><br></br>
              <input
               accept="image/*"
               id="contained-button-file"
@@ -494,13 +494,14 @@ const savedUserChannel=()=>{
        <br></br>
          </div>
             <Fragment>
-              <label for="My Context">My Context</label>{'  '} {'  '}
+              <label for="My Context">About Me</label>{'  '} {'  '}
               <button type="button"  onClick={() => handleAdd()}>
                 +
               </button>
       {context.map((contexts, idx) => {
         return (
           <div key={`${contexts}-${idx}`}>
+            <br></br>
             <TextField
               type="text"
               label="Enter Context description"
@@ -513,7 +514,7 @@ const savedUserChannel=()=>{
       <label for="My Context"><u>Link Your Socials</u></label>
       <br></br>
       <br></br>
-          <TextField
+          {/* <TextField
             label="FacebookUrl"
             id="margin-normal"
             name="facebookUrl"
@@ -527,9 +528,9 @@ const savedUserChannel=()=>{
                 facebookUrl: e.target.value,
               })
             }
-          />
-          <br></br>
-          <br></br>
+          /> */}
+          {/* <br></br>
+          <br></br> */}
           <TextField
             label="TwitterUrl"
             id="margin-normal"
@@ -545,9 +546,9 @@ const savedUserChannel=()=>{
               })
             }
           />
-          <br></br>
-          <br></br>
-          <TextField
+          {/* <br></br>
+          <br></br> */}
+          {/* <TextField
             label="InstagramUrl"
             id="margin-normal"
             name="TwitterUrl"
@@ -561,7 +562,7 @@ const savedUserChannel=()=>{
                 InstagramUrl: e.target.value,
               })
             }
-          />
+          /> */}
           <br></br>
           <br></br>
           <TextField

@@ -5,7 +5,6 @@ import Airtable from 'airtable'
 import 'react-h5-audio-player/lib/styles.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios'
 import { Button, Icon, TextField, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles'
 import useChannels from '../../api/useChannels';
@@ -21,7 +20,6 @@ import TitleBar from './TitleBar'
 import GoLiveData from './GoLiveData';
 import { makeIconButton } from '../IconButton'
 import { IcoPause, IcoPlay } from '../icons'
-import Item from './Item'
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 const primaryColor = colors.magenta
 const PauseButton = makeIconButton(IcoPause)
@@ -224,7 +222,7 @@ function submitFormData(){
           "fields": {
             title:localStorage.getItem('title'),
             description:localStorage.getItem('description'),
-            thumbnailUrl:localStorage.getItem('file'),
+            thumbnailUrl:localStorage.getItem('channelImage'),
             liveDate:new Date(),
             channelTag:channelList.channelTag,
             playbackUrl:`${playbackStream}/${localStorage.getItem('playback')}.m3u8`, 
@@ -285,7 +283,7 @@ const onPopClick = isPlaying
         ev.stopPropagation()
   }
 : ev => {
-  //console.log('iskhkjds',isSelectedAudio)
+  console.log('iskhkjds',isSelectedAudio)
    dispatch(actions.playAudio())
           dispatch(
             actions.selectAudio(

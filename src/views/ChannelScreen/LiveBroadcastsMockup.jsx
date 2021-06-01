@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '../../styling'
 import ComingSoon from '../ComingSoon'
 import ToggleImageButton from '../ToggleImageButton'
-
+import ReplayLiveBroadCast from './ReplayLiveBroadCast'
 const useStyles = makeStyles(theme => ({
   comingSoon: {
     margin: '0 2vw 2vw 2vw',
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
   liveBroadcast: {
     display: 'flex',
-    flexDirection: 'column',
+   flexDirection: 'row',
   },
   liveBroadcasts: {
     alignItems: 'stretch',
@@ -40,20 +40,20 @@ const useStyles = makeStyles(theme => ({
   },
   liveness: {
     display: 'flex',
-    width: '100%',
+    width: '400%',
   },
   livenessContent: {
-    backgroundColor: '#070709',
-    display: 'flex',
-    flex: 2,
-    flexDirection: 'column',
-    padding: '1em 0 1em 1em',
+     backgroundColor: '#070709',
+     display: 'flex',
+    flex:4 ,
+     padding: '1em 0 1em 1em',
     [theme.breakpoints.only('xs')]: {
       padding: '2vw 0 2vw 2vw',
     },
   },
   livenessLeftPad: {
-    flex: 0.5,
+    display:"flex",
+    flex:-6
   },
   sectionTitle: ({ channelColor }) => ({
     color: channelColor,
@@ -86,7 +86,7 @@ const useStyles = makeStyles(theme => ({
     color: colors.white80,
     flex: 1,
     minWidth: '12vw',
-    paddingLeft: '2vw',
+    paddingLeft: '0.1vw',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
@@ -148,7 +148,7 @@ const Track = ({ classes }) => {
         offImage="/img/logo_live_play.png"
         shadowColor={buttonShadowColor}
       />
-      <div className={classes.trackText}>Live</div>
+      <div className={classes.trackText}>Stream</div>
     </div>
   )
 }
@@ -162,8 +162,12 @@ const LiveBroadcastsMockup = ({ className, channel }) => {
         channel={channel}
         channelColor={channel.color}
        />
-      {filterMockupData(channel.tag).map(sectionData => (
-        <div key={sectionData.name} className={classes.liveBroadcast}>
+          {/* <ReplayLiveBroadCast   
+            className={classes.replayBroadcasts}
+            channel={channel}
+            channelColor={channel.color}/> */}
+      {/* {filterMockupData(channel.tag).map(sectionData => (
+        <div key={sectionData.name}  className={classes.liveBroadcast}>
           <div className={classes.eventImageAndText}>
             <EventImage classes={classes} imageUrl={sectionData.imageUrl} />
             <EventTextplate
@@ -178,7 +182,7 @@ const LiveBroadcastsMockup = ({ className, channel }) => {
             </div>
           </div>
         </div>
-      ))}
+      ))} */}
     </div>
   )
 }

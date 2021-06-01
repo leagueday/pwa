@@ -254,7 +254,6 @@ const transparent = 'rgba(0,0,0,1)'
 const episodeBackgroundColors = ['#070709', transparent, '#0E0E11', transparent]
 
 const EventImage = ({ classes, imageUrl, onClick }) => {
- // console.log('imageulr',imageUrl.fields&&imageUrl.fields.thumbnailUrl)
   return (
     <React.Fragment>
          {imageUrl && ( 
@@ -271,7 +270,7 @@ const EventImage = ({ classes, imageUrl, onClick }) => {
 
 const EventTextplate = ({ channelColor, onClick, sectionData }) => {
   const classes = useStyles({ channelColor })
-
+  console.log('sectiondata',sectionData)
   return (
     <React.Fragment>
       {sectionData ?(
@@ -315,7 +314,6 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl }) 
   const playVideo=()=> {
     playerRef.current.play();
     setPlayerOn(true)
-    console.log("palyref",playerRef)
   }
   let playBackUrl;
   var url=liveUrl
@@ -353,7 +351,7 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl }) 
           <div className={classes.episodeNumber}>
             {counter < 10 ? `0${counter}` : counter}
           </div>
-          <div className={classes.episodeTitle}>{episodeData.fields?episodeData.fields.title:""}</div>
+          <div className={classes.episodeTitle}>{episodeData.fields.title?episodeData.fields.title:""}</div>
         </div>
         <div className={classes.episodeDateAndDuration}>
           <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
@@ -365,7 +363,7 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl }) 
   )
 }
 
-const Tracks = ({ sectionData, channelColor,assetsId }) => {
+const Tracks = ({ sectionData, channelColor,assetsId,channelData }) => {
   const classes = useStyles({ channelColor })
   const [liveUrl,setLiveUrl]=React.useState([])
   React.useEffect(()=>{
@@ -418,6 +416,7 @@ const Tracks = ({ sectionData, channelColor,assetsId }) => {
 }
 
 const ReplayLiveBroadCast = ({ className, channel }) => {
+console.log('channels',channel)
   const classes = useStyles()
   const channels = useChannels().list
   const [fetchLiveData,setFetchLiveData]=React.useState([])
@@ -429,6 +428,8 @@ const ReplayLiveBroadCast = ({ className, channel }) => {
   },[])
   const liveData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
+    let channelTag=channel['tag']
+    let fetchSearch=`?filterByFormula=({channelTag}=${JSON.stringify(channelTag)})`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
@@ -436,12 +437,13 @@ const ReplayLiveBroadCast = ({ className, channel }) => {
         'Content-Type': 'application/json'
       },
      // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
-      body: JSON.stringify({url: `${baseId}/ChannelLiveData`})
+      body: JSON.stringify({url: `${baseId}/ChannelLiveData/${fetchSearch}`})
     }).then(response => response.json())
       .then(
         function(response){
+          console.log('response',response.records)
           setFetchLiveData(response.records[response.records.length-1])
-          setShowLLiveData(response.records)
+          setShowLLiveData(response.records);
 
         }
       ).catch((error)=>{
@@ -478,6 +480,7 @@ const ReplayLiveBroadCast = ({ className, channel }) => {
       {/* <ComingSoon className={classes.comingSoon} /> */}
       {/* {fetchLiveData.map((sectionData,index)=>{
         return ( */}
+        
         <div key={fetchLiveData} className={classes.liveBroadcast}>
       <div className={classes.eventImageAndText}>
             <EventImage classes={classes} imageUrl={fetchLiveData}  />
@@ -490,7 +493,7 @@ const ReplayLiveBroadCast = ({ className, channel }) => {
             <div className={classes.livenessLeftPad}>&nbsp;</div>
             <div className={classes.livenessContent}>
               {/* { showLiveData.map((item,index)=>{ */}
-                  <Tracks sectionData={showLiveData} channelColor={channel.color} assetsId={rescentAsscetid} />
+                  <Tracks sectionData={showLiveData} channelColor={channel.color} assetsId={rescentAsscetid}  />
               {/* })} */}
             </div>
           </div>

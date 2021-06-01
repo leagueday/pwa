@@ -341,9 +341,9 @@ const onChannelChanged=(e,channelFieldKey,tag)=>{
               date:new Date(),
               userId:user.id,
               email:user.email,
-              FacebookUrl:formInput.facebookUrl,
+              //FacebookUrl:formInput.facebookUrl,
               TwitterUrl:formInput.TwitterUrl,
-              InstagramUrl:formInput.InstagramUrl,
+              //InstagramUrl:formInput.InstagramUrl,
               TwitchUrl:formInput.TwitchUrl,
               MyContext:contextvalue.toString(),
               userChannel:userChannelnput.userChannelName,
@@ -552,7 +552,7 @@ console.log('userchar',formInput.userChannelName,formInput.channelImageSaved)
             <br></br>
             <br></br>
             <div className={classes.root}>
-         Upload Image: <br></br><br></br>
+         Upload Profile Image: <br></br><br></br>
          <input
               accept="image/*"
               id="contained-button-file"
@@ -566,7 +566,7 @@ console.log('userchar',formInput.userChannelName,formInput.channelImageSaved)
        <br></br>
          </div>
             <Fragment>
-              <label for="My Context">My Context</label>
+              <label for="My Context">About Me</label>
               {context.map((contexts, idx) => {
            var itemsData =dataContext.map((item,index)=>{
                  
@@ -586,7 +586,7 @@ console.log('userchar',formInput.userChannelName,formInput.channelImageSaved)
       <label for="My Context"><u>Link Your Socials</u></label>
       <br></br>
       <br></br>
-          <TextField
+          {/* <TextField
             label="FacebookUrl"
             id="margin-normal"
             name="facebookUrl"
@@ -602,7 +602,7 @@ console.log('userchar',formInput.userChannelName,formInput.channelImageSaved)
             }
           />
           <br></br>
-          <br></br>
+          <br></br> */}
           <TextField
             label="TwitterUrl"
             id="margin-normal"
@@ -620,7 +620,7 @@ console.log('userchar',formInput.userChannelName,formInput.channelImageSaved)
           />
           <br></br>
           <br></br>
-          <TextField
+          {/* <TextField
             label="InstagramUrl"
             id="margin-normal"
             name="TwitterUrl"
@@ -636,7 +636,7 @@ console.log('userchar',formInput.userChannelName,formInput.channelImageSaved)
             }
           />
           <br></br>
-          <br></br>
+          <br></br> */}
           <TextField
             label="TwitchUrl"
             id="margin-normal"

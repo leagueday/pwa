@@ -8,6 +8,7 @@ import { actions } from '../../store'
 import { colors } from '../../styling'
 import { IcoPause, IcoPlay, IcoPlus } from '../icons'
 import ComingSoon from '../ComingSoon'
+import ReplayLiveBroadCast from './ReplayLiveBroadCast'
 
 const useStyles = makeStyles(theme => ({
   clickable: {
@@ -364,7 +365,12 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
 
   return (
     <div className={cx(classes.replayBroadcasts, className)}>
-      {/* <ComingSoon className={classes.comingSoon} /> */}
+      
+          <ReplayLiveBroadCast   
+            className={classes.replayBroadcasts}
+            channel={channel}
+            channelColor={channel.color}/>
+
       {filterMockupData(channel.tag).map(sectionData => (
         <div
           key={sectionData.name + sectionData.event}
