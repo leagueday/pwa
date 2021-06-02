@@ -240,10 +240,10 @@ const mockupData = [
        },
      ],
      event: 'lcs-lock',
-     imageUrl: '/img/restyle_demo/lcs_lockin.png',
-     name: 'League of Legends',
+     imageUrl: '/img/restyle_demo/LeagueNight2.png',
+     name: 'LeagueNight',
      tags: ['riot', 'lol'],
-     variety: 'LCS Lock In',
+     variety: 'with Kelsey Moser',
    },
 ]
 
