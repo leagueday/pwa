@@ -211,9 +211,9 @@ const mockupData = [
     ],
     event: 'lcs',
     imageUrl: '/img/restyle_demo/lcs.png',
-    name: 'League of Legends',
+    name: 'LEAGUE CHAMPIONSHIP SERIES',
     tags: ['riot', 'lol'],
-    variety: 'League Championship Series',
+    variety: '2021 Summer Split',
   },
    {
      episodes: [
