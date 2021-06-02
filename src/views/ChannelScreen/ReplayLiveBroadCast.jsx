@@ -270,7 +270,6 @@ const EventImage = ({ classes, imageUrl, onClick }) => {
 
 const EventTextplate = ({ channelColor, onClick, sectionData }) => {
   const classes = useStyles({ channelColor })
-  console.log('sectiondata',sectionData)
   return (
     <React.Fragment>
       {sectionData ?(
@@ -280,13 +279,13 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
             className={cx(classes.sectionTitle, classes.clickable)}
             onClick={onClick}
           >
-            <div className={classes.textEllipsisOverflow}>{sectionData.fields &&sectionData.fields.title} </div>
+            <div className={''}>{sectionData.fields&&sectionData.fields.channelTag=='lol'?"2021 LCS Summer Split":sectionData.fields && sectionData.fields.title}</div>
           </div>
           <div
             className={cx(classes.sectionVariety, classes.clickable)}
             onClick={onClick}
           >
-            <div className={classes.textEllipsisOverflow}>{sectionData.fields && sectionData.fields.description}</div>
+            <div className={classes.textEllipsisOverflow}>{sectionData.fields && sectionData.fields.title}</div>
           </div>
         </div>
       ):""}
@@ -295,7 +294,7 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
   )
 }
 
-const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl }) => {
+const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,channelData }) => {
   const [isPlaying,setIsPlaying]=React.useState(false);
   const [canPlay,setcanPlay]=React.useState(false);
   const {
@@ -323,43 +322,48 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl }) 
 
   }
   return (
-    <div className={classes.episodeRow}>
-      <div className={classes.episodeControls}>
-        <PlayOrPauseIcon
-          onClick={onClick}
-          classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
-        />
-        {isPlaying &&(
-            <ReactHlsPlayer
-            src={`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`}
-            autoPlay={false}
-            onClick={playVideo}
-            controls={true}
-            width="30%"
-            height="auto"
+    <React.Fragment>
+      {channelData['tag']!='lol'?(
+          <div className={classes.episodeRow}>
+          <div className={classes.episodeControls}>
+            <PlayOrPauseIcon
+              onClick={onClick}
+              classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
             />
-        )}
-        <IcoPlus
-          classes={{
-            inner: classes.episodePlus,
-            outer: classes.episodePOPCell,
-          }}
-        />
-      </div>
-      <div className={classes.episodeTitleAndData}>
-        <div className={classes.episodeNumberAndTitle}>
-          <div className={classes.episodeNumber}>
-            {counter < 10 ? `0${counter}` : counter}
+            {isPlaying &&(
+                <ReactHlsPlayer
+                src={`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`}
+                autoPlay={false}
+                onClick={playVideo}
+                controls={true}
+                width="30%"
+                height="auto"
+                />
+            )}
+            <IcoPlus
+              classes={{
+                inner: classes.episodePlus,
+                outer: classes.episodePOPCell,
+              }}
+            />
           </div>
-          <div className={classes.episodeTitle}>{episodeData.fields.title?episodeData.fields.title:""}</div>
+          <div className={classes.episodeTitleAndData}>
+            <div className={classes.episodeNumberAndTitle}>
+              <div className={classes.episodeNumber}>
+                {counter < 10 ? `0${counter}` : counter}
+              </div>
+              <div className={classes.episodeTitle}>{episodeData.fields.title?episodeData.fields.title:""}</div>
+            </div>
+            <div className={classes.episodeDateAndDuration}>
+              <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
+              <div className={classes.episodeDate}>{episodeData.fields?episodeData.fields.liveDate.split('T')[0]:""}</div>
+              <div className={classes.episodeDuration}>{fakeDurationLabel}</div>
+            </div>
+          </div>
         </div>
-        <div className={classes.episodeDateAndDuration}>
-          <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
-          <div className={classes.episodeDate}>{episodeData.fields?episodeData.fields.liveDate:""}</div>
-          <div className={classes.episodeDuration}>{fakeDurationLabel}</div>
-        </div>
-      </div>
-    </div>
+      ):''}
+
+    </React.Fragment>
   )
 }
 
@@ -407,6 +411,7 @@ const Tracks = ({ sectionData, channelColor,assetsId,channelData }) => {
                 counter={counter}
                 channelColor={channelColor}
                 liveUrl={liveUrl}
+                channelData={channelData}
               />
             )
           }))(0)}
@@ -416,7 +421,6 @@ const Tracks = ({ sectionData, channelColor,assetsId,channelData }) => {
 }
 
 const ReplayLiveBroadCast = ({ className, channel }) => {
-console.log('channels',channel)
   const classes = useStyles()
   const channels = useChannels().list
   const [fetchLiveData,setFetchLiveData]=React.useState([])
@@ -436,12 +440,10 @@ console.log('channels',channel)
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-     // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
       body: JSON.stringify({url: `${baseId}/ChannelLiveData/${fetchSearch}`})
     }).then(response => response.json())
       .then(
         function(response){
-          console.log('response',response.records)
           setFetchLiveData(response.records[response.records.length-1])
           setShowLLiveData(response.records);
 
@@ -453,7 +455,6 @@ console.log('channels',channel)
   const gettingMuxassets=()=>{
     let livestreamingId=channels &&channels.map(item=>item.liveStreamId)
     //call mux api to get playback url
-     console.log('livetreamingid',livestreamingId[0])
     fetch('/.netlify/functions/mux-proxy', {
       method: 'POST',
       headers: {
@@ -493,7 +494,7 @@ console.log('channels',channel)
             <div className={classes.livenessLeftPad}>&nbsp;</div>
             <div className={classes.livenessContent}>
               {/* { showLiveData.map((item,index)=>{ */}
-                  <Tracks sectionData={showLiveData} channelColor={channel.color} assetsId={rescentAsscetid}  />
+                  <Tracks sectionData={showLiveData} channelColor={channel.color} assetsId={rescentAsscetid} channelData={channel} />
               {/* })} */}
             </div>
           </div>

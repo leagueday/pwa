@@ -181,11 +181,7 @@ const BroadcasterContent = ({ channel }) => {
             className={classes.replayBroadcasts}
             channel={channel}
             channelColor={channel.color}/>     
-            {/* <ReplayBroadcastsMockup
-              className={classes.replayBroadcasts}
-              channel={channel}
-              channelColor={channel.color}
-            /> */}
+           
           </BottomBlock>
         </Grid>
         <Grid className={classes.bottomBlockItem} item xs={12}>

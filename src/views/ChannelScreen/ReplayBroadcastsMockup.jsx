@@ -3,13 +3,13 @@ import { useDispatch } from 'react-redux'
 import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
-
+import useChannels from '../../api/useChannels'
 import { actions } from '../../store'
 import { colors } from '../../styling'
 import { IcoPause, IcoPlay, IcoPlus } from '../icons'
 import ComingSoon from '../ComingSoon'
 import ReplayLiveBroadCast from './ReplayLiveBroadCast'
-
+import ReactHlsPlayer from 'react-hls-player';
 const useStyles = makeStyles(theme => ({
   clickable: {
     cursor: 'pointer',
@@ -215,36 +215,36 @@ const mockupData = [
     tags: ['riot', 'lol'],
     variety: 'League Championship Series',
   },
-  {
-    episodes: [
-      {
-        title: 'Title of Episode X',
-        isPlaying: false,
-        canPlay: true,
-        fakeDateLabel: '3/2/21',
-        fakeDurationLabel: '41:50',
-      },
-      {
-        title: 'Title of Episode Y',
-        isPlaying: true,
-        canPlay: true,
-        fakeDateLabel: '2/28/21',
-        fakeDurationLabel: '43:22',
-      },
-      {
-        title: 'Title of Episode Z',
-        isPlaying: false,
-        canPlay: false,
-        fakeDateLabel: '1/22/21',
-        fakeDurationLabel: '35:38',
-      },
-    ],
-    event: 'lcs-lock',
-    imageUrl: '/img/restyle_demo/lcs_lockin.png',
-    name: 'League of Legends',
-    tags: ['riot', 'lol'],
-    variety: 'LCS Lock In',
-  },
+  // {
+  //   episodes: [
+  //     {
+  //       title: 'Title of Episode X',
+  //       isPlaying: false,
+  //       canPlay: true,
+  //       fakeDateLabel: '3/2/21',
+  //       fakeDurationLabel: '41:50',
+  //     },
+  //     {
+  //       title: 'Title of Episode Y',
+  //       isPlaying: true,
+  //       canPlay: true,
+  //       fakeDateLabel: '2/28/21',
+  //       fakeDurationLabel: '43:22',
+  //     },
+  //     {
+  //       title: 'Title of Episode Z',
+  //       isPlaying: false,
+  //       canPlay: false,
+  //       fakeDateLabel: '1/22/21',
+  //       fakeDurationLabel: '35:38',
+  //     },
+  //   ],
+  //   event: 'lcs-lock',
+  //   imageUrl: '/img/restyle_demo/lcs_lockin.png',
+  //   name: 'League of Legends',
+  //   tags: ['riot', 'lol'],
+  //   variety: 'LCS Lock In',
+  // },
 ]
 
 const filterMockupData = tag =>
@@ -284,25 +284,56 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
   )
 }
 
-const Track = ({ episodeData, backgroundColor, counter, channelColor }) => {
+const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl }) => {
+  console.log('episodedata',episodeData)
+  const [isPlaying,setIsPlaying]=React.useState(false);
+  const [canPlay,setcanPlay]=React.useState(false);
   const {
-    title,
-    isPlaying,
-    canPlay,
     fakeDateLabel,
     fakeDurationLabel,
   } = episodeData
-
   const classes = useStyles({ backgroundColor, canPlay, channelColor })
 
   const PlayOrPauseIcon = isPlaying ? IcoPause : IcoPlay
+  // let playback
+  // liveUrl.map(item=>{
+  //   playback=item.duration
+  // })
+  const onClick = isPlaying
+  ? () => setIsPlaying(false)
+  : () => setIsPlaying(true)
+  const playVideo=()=> {
+    playerRef.current.play();
+    setPlayerOn(true)
+  }
+  let playBackUrl;
+  var url=liveUrl
+//   let playbackStream=`https://stream.mux.com`
+//   if(url){
+//  playBackUrl=`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`
 
+//   } 
+ 
+    
   return (
+    <React.Fragment>
+     { episodeData.length&&episodeData?.map((episode,index)=>(
     <div className={classes.episodeRow}>
       <div className={classes.episodeControls}>
         <PlayOrPauseIcon
           classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
+          //onClick={onClick}
         />
+          {/* {isPlaying &&(
+                <ReactHlsPlayer
+                src={`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`}
+                autoPlay={false}
+                onClick={playVideo}
+                controls={true}
+                width="30%"
+                height="auto"
+                />
+            )} */}
         <IcoPlus
           classes={{
             inner: classes.episodePlus,
@@ -310,34 +341,63 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor }) => {
           }}
         />
       </div>
+    
+
       <div className={classes.episodeTitleAndData}>
-        <div className={classes.episodeNumberAndTitle}>
-          <div className={classes.episodeNumber}>
-            {counter < 10 ? `0${counter}` : counter}
-          </div>
-          <div className={classes.episodeTitle}>{title}</div>
-        </div>
-        <div className={classes.episodeDateAndDuration}>
-          <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
-          <div className={classes.episodeDate}>{fakeDateLabel}</div>
-          <div className={classes.episodeDuration}>{fakeDurationLabel}</div>
-        </div>
-      </div>
+           <div className={classes.episodeNumberAndTitle}>
+           <div className={classes.episodeNumber}>
+             {counter < 10 ? `0${counter}` : counter}
+           </div>
+           <div className={classes.episodeTitle}>{episode.fields.title?episode.fields.title:""}</div>
+         </div>
+         <div className={classes.episodeDateAndDuration}>
+           <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
+           <div className={classes.episodeDate}>{episode.fields.liveDate?episode.fields.liveDate.split('T')[0]:""}</div>
+           <div className={classes.episodeDuration}>{fakeDurationLabel}</div>
+         
+     </div>
     </div>
+    </div>
+     ))}
+    </React.Fragment>
   )
 }
 
-const Tracks = ({ sectionData, channelColor }) => {
-  const { episodes } = sectionData
-
+const Tracks = ({ sectionData, channelColor ,assetid}) => {
+  console.log('assests',JSON.stringify(assetid))
+  const [liveUrl,setLiveUrl]=React.useState([])
+  React.useEffect(()=>{
+    gettingMuxassetsId();
+  },[assetid])
+  const gettingMuxassetsId=()=>{
+   if(assetid){
+  var params=assetid
+   for(var i=0;i<params.length;i++){
+ 
+    fetch('/.netlify/functions/mux-proxy-assests', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+    'Content-Type': 'application/json'
+      },
+      body:JSON.stringify({url: `video/v1/assets/${params[i]}`})
+    }).then(response => response.json())
+      .then(function(assesetId){ 
+        setLiveUrl([assesetId.data])
+      }         
+    ).catch((error)=>{
+       toast.error(error.type)
+    }) 
+  }
+}
+  }
   const classes = useStyles({ channelColor })
-
   return (
     <div className={classes.tracks}>
       <div className={classes.tracksLeftPad}>&nbsp;</div>
       <div className={classes.tracksContent}>
         {(counter =>
-          episodes.map(episode => {
+          sectionData.map(episode => {
             const bgC =
               episodeBackgroundColors[counter % episodeBackgroundColors.length]
             counter = counter + 1
@@ -348,6 +408,7 @@ const Tracks = ({ sectionData, channelColor }) => {
                 backgroundColor={bgC}
                 counter={counter}
                 channelColor={channelColor}
+                liveUrl={liveUrl}
               />
             )
           }))(0)}
@@ -358,19 +419,74 @@ const Tracks = ({ sectionData, channelColor }) => {
 
 const ReplayBroadcastsMockup = ({ className, channel }) => {
   const classes = useStyles()
+  const channels = useChannels().list
+  const [RecordedData,setRecordedData]=React.useState([])
+  const [rescentAsscetid,setrescentAsscetId]=React.useState([])
+  React.useEffect(()=>{
+    showRecordedData();
+    gettingMuxassets()
+  },[])
+  const showRecordedData=()=>{
+    const baseId = 'appXoertP1WJjd4TQ'
+    let urladd=`maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(channel['tag'])}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    fetch('/.netlify/functions/commingsoon-proxy', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+     // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
+      body: JSON.stringify({url: `${baseId}/ChannelLiveData?${urladd}`})
+    }).then(response => response.json())
+      .then(
+        function(response){
+          if(response.records.length){
+          // console.log('recordeddata',JSON.stringify(response.records))
+          setRecordedData([response.records])
+          seturl(response.records[0].fields.playbackUrl)
+          }
+          else{
+         
+          }
+        }
+      ).catch((error)=>{
+        console.log("error while data fetching",error.type)
+      })
+  }
+  const gettingMuxassets=()=>{
+    let livestreamingId=channels &&channels.map(item=>item.liveStreamId)
+    fetch('/.netlify/functions/mux-proxy', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId[1]}`})
+    }).then(response => response.json())
+      .then(function(assesetId){ 
+        // let arrAsset=[]
 
+        // if(assesetId.data.recent_asset_ids.length>3){
+        //   arrAsset.push(assesetId.data.recent_asset_ids.slice(Math.max(assesetId.data.recent_asset_ids.length - 3, 0)))
+        // }
+        // else{
+        //   arrAsset.push(assesetId.data.recent_asset_ids)
+        // }
+        setrescentAsscetId(assesetId.data.recent_asset_ids)
+      }         
+    ).catch((error)=>{
+       toast.error(error.type)
+    }) 
+  }
   const dispatch = useDispatch()
   const makeGotoEvent = event => () =>
     dispatch(actions.pushHistory(`/event/${event}`))
-
   return (
     <div className={cx(classes.replayBroadcasts, className)}>
-      
           <ReplayLiveBroadCast   
             className={classes.replayBroadcasts}
             channel={channel}
             channelColor={channel.color}/>
-
       {filterMockupData(channel.tag).map(sectionData => (
         <div
           key={sectionData.name + sectionData.event}
@@ -388,7 +504,7 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
               sectionData={sectionData}
             />
           </div>
-          <Tracks sectionData={sectionData} channelColor={channel.color} />
+          <Tracks sectionData={RecordedData} channelColor={channel.color} assetid={rescentAsscetid} />
         </div>
       ))}
     </div>

@@ -112,6 +112,7 @@ const DestributionPage = () => {
   const [button,setbutton]=useState(false);
   const[userProfile,setUserProfile]=React.useState([])
   const [userChannel,setuserChannel]=React.useState([])
+  const [playbackChannel,setplaybackChannel]=React.useState('')
   const channels = useChannels().list
   const user = useSelector(selectors.getUser)
   const userName = user?.user_metadata?.full_name
@@ -172,13 +173,13 @@ const onChannelChanged=(e,key)=>{
     toast.success("Please click Create Direct Link below to stream to selected channel")
    }
 
-  //   localStorage.setItem("selectedChannel",e.target.value)
+
 }
 const creatingDirectLink=()=>{
   let livestreamingId=channelList['liveStreamId']
 
   //call mux api to get playback url
-    console.log('livestream',livestreamingId)
+
   fetch('/.netlify/functions/mux-proxy', {
     method: 'POST',
     headers: {
@@ -189,7 +190,7 @@ const creatingDirectLink=()=>{
   }).then(response => response.json())
     .then(function(streamData){ 
         console.log(streamData.data);
-
+        setplaybackChannel(streamData.data.playback_ids[0].id)
         setStreamkey({
           streamkey:streamData.data.stream_key
         })
@@ -199,23 +200,20 @@ const creatingDirectLink=()=>{
         setdirectLink(true)
         setCreate(true)
         setbutton(false)
-        console.log('stream',streamData)
-        //console.log("response data",playback)
         localStorage.setItem('playback',streamData.data.playback_ids[0].id)
+        submitFormData(streamData.data.playback_ids[0].id)
     }         
   ).catch((error)=>{
      toast.error(error.type)
   })
 
-submitFormData()
 }
 let playId=playback.playback;
 let playbackUrl= `${playbackStream}/${playId}.m3u8`
-// //localStorage.setItem('playback',playbackUrl)
-// console.log('playbackurl',playbackUrl)
+let playbachannelUrl=playbackChannel
 const playerRef = React.useRef();
 
-function submitFormData(){ 
+function submitFormData(play_id){ 
   let data = {
       "records": [
         {
@@ -225,7 +223,7 @@ function submitFormData(){
             thumbnailUrl:localStorage.getItem('channelImage'),
             liveDate:new Date(),
             channelTag:channelList.channelTag,
-            playbackUrl:`${playbackStream}/${localStorage.getItem('playback')}.m3u8`, 
+            playbackUrl:`${playbackStream}/${play_id}.m3u8`, 
             userId:user.id,
             userEmail:user.email
           }

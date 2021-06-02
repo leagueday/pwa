@@ -241,6 +241,7 @@ const ComingSoon = ({ className,channel,channelColor }) => {
   },[liveStatus])
   const liveData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
+    let urladd=`filterByFormula={channelTag}=${JSON.stringify(channel['tag'])}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
@@ -248,15 +249,14 @@ const ComingSoon = ({ className,channel,channelColor }) => {
         'Content-Type': 'application/json'
       },
      // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
-      body: JSON.stringify({url: `${baseId}/ChannelLiveData`})
+      body: JSON.stringify({url: `${baseId}/ChannelLiveData?${urladd}`})
     }).then(response => response.json())
       .then(
         function(response){
           if(response.records.length){
-           // console.log('seturl',JSON.stringify(response.records))
-          setFetchLiveData([response.records[response.records.length-1]])
-          localStorage.setItem('livePlayurl',response.records[response.records.length-1].fields.playbackUrl )
-          seturl(response.records[response.records.length-1].fields.playbackUrl)
+          setFetchLiveData([response.records[0]])
+          localStorage.setItem('livePlayurl',response.records[0].fields.playbackUrl )
+          seturl(response.records[0].fields.playbackUrl)
           }
           else{
             console.log('setlivestatus',liveStatus)
@@ -269,7 +269,6 @@ const ComingSoon = ({ className,channel,channelColor }) => {
    const muxliveData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     //console.log('abc--'+localStorage.getItem('livePlayurl'));
-    console.log('muxlivedata',localStorage.getItem('livePlayurl'))
     if(localStorage.getItem('livePlayurl') == 'null' || localStorage.getItem('livePlayurl') == '' || localStorage.getItem('livePlayurl') == null)
     {
         setliveStatus(0)
@@ -320,10 +319,11 @@ const ComingSoon = ({ className,channel,channelColor }) => {
      })
    }
   const classes = useStyles()
-  let checkChannel;
-  if(channelTitle){
+  let checkChannel=0;
+  if(channelTitle ){
     if(channel['tag']==channelTitle){
       checkChannel=1;
+      console.log('channeltitle',channelTitle,channel['tag'])
     }
     else{
       checkChannel=0;
