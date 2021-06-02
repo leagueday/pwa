@@ -215,36 +215,36 @@ const mockupData = [
     tags: ['riot', 'lol'],
     variety: 'League Championship Series',
   },
-  // {
-  //   episodes: [
-  //     {
-  //       title: 'Title of Episode X',
-  //       isPlaying: false,
-  //       canPlay: true,
-  //       fakeDateLabel: '3/2/21',
-  //       fakeDurationLabel: '41:50',
-  //     },
-  //     {
-  //       title: 'Title of Episode Y',
-  //       isPlaying: true,
-  //       canPlay: true,
-  //       fakeDateLabel: '2/28/21',
-  //       fakeDurationLabel: '43:22',
-  //     },
-  //     {
-  //       title: 'Title of Episode Z',
-  //       isPlaying: false,
-  //       canPlay: false,
-  //       fakeDateLabel: '1/22/21',
-  //       fakeDurationLabel: '35:38',
-  //     },
-  //   ],
-  //   event: 'lcs-lock',
-  //   imageUrl: '/img/restyle_demo/lcs_lockin.png',
-  //   name: 'League of Legends',
-  //   tags: ['riot', 'lol'],
-  //   variety: 'LCS Lock In',
-  // },
+   {
+     episodes: [
+       {
+         title: 'Title of Episode X',
+         isPlaying: false,
+         canPlay: true,
+         fakeDateLabel: '3/2/21',
+         fakeDurationLabel: '41:50',
+       },
+       {
+         title: 'Title of Episode Y',
+         isPlaying: true,
+         canPlay: true,
+         fakeDateLabel: '2/28/21',
+         fakeDurationLabel: '43:22',
+       },
+       {
+         title: 'Title of Episode Z',
+         isPlaying: false,
+         canPlay: false,
+         fakeDateLabel: '1/22/21',
+         fakeDurationLabel: '35:38',
+       },
+     ],
+     event: 'lcs-lock',
+     imageUrl: '/img/restyle_demo/lcs_lockin.png',
+     name: 'League of Legends',
+     tags: ['riot', 'lol'],
+     variety: 'LCS Lock In',
+   },
 ]
 
 const filterMockupData = tag =>
