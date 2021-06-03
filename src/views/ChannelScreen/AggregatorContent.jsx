@@ -130,6 +130,11 @@ const AggregatorContent = ({ channel }) => {
           titleStart={channel.title}
           titleRest="Replays"
         >
+          <ReplayBroadcastsMockup
+            className={classes.replayBroadcasts}
+            channel={channel}
+            channelColor={channel.color}
+          />
         </BottomBlock>
       )}
       {/* <BottomBlock
