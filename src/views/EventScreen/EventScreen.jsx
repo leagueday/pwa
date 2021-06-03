@@ -51,7 +51,7 @@ const mockData = {
   },
   leaguenight: {
     color: 'orange',
-    imageUrl: '/img/restyle_demo/lcs.png',
+    imageUrl: '/img/restyle_demo/LeagueNight2.png',
     items: [
       ['FlyQuest vs. Immortals', '03/07/2021', '00:47:11'],
       ['Team Liquid vs. Counter Logic Gaming', '03/07/2021', '00:45:16'],
@@ -84,8 +84,8 @@ const mockData = {
       ['Team Liquid vs. TSM', '02/26/2021', '00:45:43'],
       ['Cloud9 vs. Golden Guardians', '02/26/2021', '00:48:34'],
     ],
-    subTitle: 'LCS Spring Split 2021',
-    title: 'League Night',
+    subTitle: '',
+    title: 'LeagueNight',
   },
 }
 
