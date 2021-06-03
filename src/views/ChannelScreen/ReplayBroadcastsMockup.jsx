@@ -481,6 +481,10 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
     dispatch(actions.pushHistory(`/event/${event}`))
   return (
     <div className={cx(classes.replayBroadcasts, className)}>
+          <ReplayLiveBroadCast   
+            className={classes.replayBroadcasts}
+            channel={channel}
+            channelColor={channel.color}/>
       {filterMockupData(channel.tag).map(sectionData => (
         <div
           key={sectionData.name + sectionData.event}
