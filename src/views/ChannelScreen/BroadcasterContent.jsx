@@ -181,10 +181,14 @@ const BroadcasterContent = ({ channel }) => {
             className={classes.replayBroadcasts}
             channel={channel}
             channelColor={channel.color}/>     
-           
+            {/* <ReplayBroadcastsMockup
+              className={classes.replayBroadcasts}
+              channel={channel}
+              channelColor={channel.color}
+            /> */}
           </BottomBlock>
         </Grid>
-        <Grid className={classes.bottomBlockItem} item xs={12}>
+        {/* <Grid className={classes.bottomBlockItem} item xs={12}>
           <BottomBlock
             accentColor={channel.color}
             titleStart="Top"
@@ -192,7 +196,7 @@ const BroadcasterContent = ({ channel }) => {
           >
             <FacetedPodcastTiles data={facetedPodcasts} />
           </BottomBlock>
-        </Grid>
+        </Grid> */}
       </Grid>
     </ContentLayout>
   )

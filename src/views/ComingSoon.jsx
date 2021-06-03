@@ -140,7 +140,7 @@ const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
 const filterMockupData = tag =>
   mockupData.filter(({ tags }) => tags.find(thisTag => thisTag === tag))
 const EventImage = ({ classes, imageUrl }) => {
-  console.log('imageurl',imageUrl)
+
   return (
   
   <img className={cx(classes.eventImage)} src={imageUrl} />
@@ -230,16 +230,17 @@ const onPopClick = isPlaying
 const ComingSoon = ({ className,channel,channelColor }) => {
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const [fetchLiveData,setFetchLiveData]=React.useState([])
-  const [liveStatus,setliveStatus]=React.useState(1);
-  const [channeLivestatus,setChannelLivestatus]=React.useState(0);
+  const [liveStatus,setliveStatus]=React.useState(0);
+  const [liveurlcheck,setliveurlchk]=React.useState('')
+
   const [url,setUrl]=React.useState('')
   React.useEffect(()=>{
-    liveData();
-    return sleep(3000).then(() => {
-    muxliveData();
-    })
+    liveData(channel['liveStreamId']);
+    // return sleep(3000).then(() => {
+    // muxliveData();
+    // })
   },[liveStatus])
-  const liveData=()=>{
+  const liveData=(channellivestream)=>{
     const baseId = 'appXoertP1WJjd4TQ'
     let urladd=`filterByFormula={channelTag}=${JSON.stringify(channel['tag'])}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
@@ -254,6 +255,7 @@ const ComingSoon = ({ className,channel,channelColor }) => {
       .then(
         function(response){
           if(response.records.length){
+            muxliveData(response.records[0].fields.playbackUrl,channellivestream)
           setFetchLiveData([response.records[0]])
           localStorage.setItem('livePlayurl',response.records[0].fields.playbackUrl )
           seturl(response.records[0].fields.playbackUrl)
@@ -266,35 +268,37 @@ const ComingSoon = ({ className,channel,channelColor }) => {
         console.log("error while data fetching",error.type)
       })
   }
-   const muxliveData=()=>{
+  let checkChannel;
+   const muxliveData=(liveurl,livestreamid)=>{
     const baseId = 'appXoertP1WJjd4TQ'
+    console.log('livestreamid',livestreamid)
+    // let livestreamingId=channels &&channels.map(item=>item.liveStreamId)
     //console.log('abc--'+localStorage.getItem('livePlayurl'));
-    if(localStorage.getItem('livePlayurl') == 'null' || localStorage.getItem('livePlayurl') == '' || localStorage.getItem('livePlayurl') == null)
-    {
-        setliveStatus(0)
-        console.log('muxlivedatainside',localStorage.getItem('livePlayurl'),liveStatus)
-    }
-    else
-    {        
-        var str = localStorage.getItem('livePlayurl');
-        var serchStr = str.indexOf("undefined");
-        if(serchStr == '-1')
+    // if(localStorage.getItem('livePlayurl') == 'null' || localStorage.getItem('livePlayurl') == '' || localStorage.getItem('livePlayurl') == null)
+    // {
+    //     setliveStatus(0)
+    //     console.log('muxlivedatainside',localStorage.getItem('livePlayurl'),liveStatus)
+    // }
+    // else
+    // {        
+        // var str = localStorage.getItem('livePlayurl');
+        // var serchStr = str.indexOf("undefined");
+        if(liveurl)
         {
-            fetch('/.netlify/functions/mux-getlivedata', {
+            fetch('/.netlify/functions/mux-proxy', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
-           // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
-            body: JSON.stringify({url: `${localStorage.getItem('livePlayurl')}`})
+            body: JSON.stringify({url: `video/v1/live-streams/${livestreamid}`})
+            //body: JSON.stringify({url: `${liveurl}`})
           }).then(response => response.json())
             .then(
               function(response){
-                //console.log('abc',typeof response.error)
-                if(typeof response.error.messages[0]!=='undefined'){
-                  setliveStatus(0)
-
+                console.log('abc',response)
+                if(response.data.status=='active'){
+                  setliveStatus(1)
                 }
               }
             ).catch((error)=>{
@@ -307,32 +311,13 @@ const ComingSoon = ({ className,channel,channelColor }) => {
         }
         
     }      
-      
-    }
-     let  urlIsthere;
-    let channelTitle;
-    if(fetchLiveData){
-     fetchLiveData && fetchLiveData.map(item=> {
-       urlIsthere=item.fields.playbackUrl,
-       channelTitle=item.fields.channelTag
-      
-     })
-   }
+
   const classes = useStyles()
-  let checkChannel=0;
-  if(channelTitle ){
-    if(channel['tag']==channelTitle){
-      checkChannel=1;
-      console.log('channeltitle',channelTitle,channel['tag'])
-    }
-    else{
-      checkChannel=0;
-      //setChannelLivestatus(0)
-    }
-   }
+ 
+console.log('checkchannel',checkChannel)
   return (
     <div className={cx(classes.comingSoon,className)}>
-      {liveStatus==0 || checkChannel==0?(
+      {liveStatus==0 ?(
       <div className={classes.comingSoonRow}>
         <div className={classes.logoContainer}>
           <img

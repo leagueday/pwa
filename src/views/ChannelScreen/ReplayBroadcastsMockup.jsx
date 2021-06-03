@@ -285,7 +285,6 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
 }
 
 const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl }) => {
-  console.log('episodedata',episodeData)
   const [isPlaying,setIsPlaying]=React.useState(false);
   const [canPlay,setcanPlay]=React.useState(false);
   const {
@@ -364,7 +363,6 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl }) 
 }
 
 const Tracks = ({ sectionData, channelColor ,assetid}) => {
-  console.log('assests',JSON.stringify(assetid))
   const [liveUrl,setLiveUrl]=React.useState([])
   React.useEffect(()=>{
     gettingMuxassetsId();
@@ -372,23 +370,23 @@ const Tracks = ({ sectionData, channelColor ,assetid}) => {
   const gettingMuxassetsId=()=>{
    if(assetid){
   var params=assetid
-   for(var i=0;i<params.length;i++){
+  //  for(var i=0;i<params.length;i++){
  
-    fetch('/.netlify/functions/mux-proxy-assests', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-    'Content-Type': 'application/json'
-      },
-      body:JSON.stringify({url: `video/v1/assets/${params[i]}`})
-    }).then(response => response.json())
-      .then(function(assesetId){ 
-        setLiveUrl([assesetId.data])
-      }         
-    ).catch((error)=>{
-       toast.error(error.type)
-    }) 
-  }
+  //   fetch('/.netlify/functions/mux-proxy-assests', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //   'Content-Type': 'application/json'
+  //     },
+  //     body:JSON.stringify({url: `video/v1/assets/${params[i]}`})
+  //   }).then(response => response.json())
+  //     .then(function(assesetId){ 
+  //       setLiveUrl([assesetId.data])
+  //     }         
+  //   ).catch((error)=>{
+  //      toast.error(error.type)
+  //   }) 
+  // }
 }
   }
   const classes = useStyles({ channelColor })

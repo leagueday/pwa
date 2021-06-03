@@ -256,13 +256,13 @@ const episodeBackgroundColors = ['#070709', transparent, '#0E0E11', transparent]
 const EventImage = ({ classes, imageUrl, onClick }) => {
   return (
     <React.Fragment>
-         {imageUrl && ( 
-  <img
-    className={cx(classes.eventImage, classes.clickable)}
-    onClick={onClick}
-    src={imageUrl.fields?imageUrl.fields.thumbnailUrl:''}
-  />
-    )}
+  {imageUrl&&imageUrl?.map((image,i)=>(
+   <img
+   className={cx(classes.eventImage, classes.clickable)}
+   onClick={onClick}
+   src={image.fields&&image.fields.thumbnailUrl}
+ />
+  ))}
     </React.Fragment>
   )
 }
@@ -272,23 +272,23 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
   const classes = useStyles({ channelColor })
   return (
     <React.Fragment>
-      {sectionData ?(
-          <div className={classes.eventTextplate}>
+      {sectionData.length&&sectionData?.map((channel,i)=>(
+        <div className={classes.eventTextplate}>
       
-          <div
-            className={cx(classes.sectionTitle, classes.clickable)}
-            onClick={onClick}
-          >
-            <div className={''}>{sectionData.fields&&sectionData.fields.channelTag=='lol'?"2021 LCS Summer Split":sectionData.fields && sectionData.fields.title}</div>
-          </div>
-          <div
-            className={cx(classes.sectionVariety, classes.clickable)}
-            onClick={onClick}
-          >
-            <div className={classes.textEllipsisOverflow}>{sectionData.fields && sectionData.fields.title}</div>
-          </div>
+        <div
+          className={cx(classes.sectionTitle, classes.clickable)}
+          onClick={onClick}
+        >
+          <div className={classes.textEllipsisOverflow}>{channel.fields&&channel.fields.channelTag=='lol'?"2021 LCS Summer Split":channel.fields && channel.fields.title}</div>
         </div>
-      ):""}
+        <div
+          className={cx(classes.sectionVariety, classes.clickable)}
+          onClick={onClick}
+        >
+          <div className={classes.textEllipsisOverflow}>{channel.fields && channel.fields.title}</div>
+        </div>
+      </div>
+      ))}
     </React.Fragment>
    
   )
@@ -361,7 +361,8 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,cha
             </div>
           </div>
         </div>
-      ):''}
+      ):
+      ''}
 
     </React.Fragment>
   )
@@ -375,24 +376,26 @@ const Tracks = ({ sectionData, channelColor,assetsId,channelData }) => {
   },[assetsId])
   const gettingMuxassetsId=()=>{
     console.log("getting")
-  var params=assetsId
-   for(var i=0;i<params.length;i++){
+    if(assetsId){
+  // var params=assetsId
+  //  for(var i=0;i<params.length;i++){
  
-    fetch('/.netlify/functions/mux-proxy-assests', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-    'Content-Type': 'application/json'
-      },
-      body:JSON.stringify({url: `video/v1/assets/${params[i]}`})
-    }).then(response => response.json())
-      .then(function(assesetId){ 
-        setLiveUrl(assesetId.data)
-      }         
-    ).catch((error)=>{
-       toast.error(error.type)
-    }) 
-  }
+  //   fetch('/.netlify/functions/mux-proxy-assests', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //   'Content-Type': 'application/json'
+  //     },
+  //     body:JSON.stringify({url: `video/v1/assets/${params[i]}`})
+  //   }).then(response => response.json())
+  //     .then(function(assesetId){ 
+  //       setLiveUrl(assesetId.data)
+  //     }         
+  //   ).catch((error)=>{
+  //      toast.error(error.type)
+  //   }) 
+  // }
+}
   }
   return (
     <div className={classes.tracks}>
@@ -421,6 +424,7 @@ const Tracks = ({ sectionData, channelColor,assetsId,channelData }) => {
 }
 
 const ReplayLiveBroadCast = ({ className, channel }) => {
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const classes = useStyles()
   const channels = useChannels().list
   const [fetchLiveData,setFetchLiveData]=React.useState([])
@@ -428,32 +432,37 @@ const ReplayLiveBroadCast = ({ className, channel }) => {
   const [rescentAsscetid,setrescentAsscetId]=React.useState([])
   React.useEffect(()=>{
     liveData();
-    gettingMuxassets();
+    return sleep(3000).then(() => {
+    gettingMuxassets(channel['liveStreamId']);
+    })
   },[])
   const liveData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
-    let channelTag=channel['tag']
-    let fetchSearch=`?filterByFormula=({channelTag}=${JSON.stringify(channelTag)})`
-    fetch('/.netlify/functions/commingsoon-proxy', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({url: `${baseId}/ChannelLiveData/${fetchSearch}`})
-    }).then(response => response.json())
-      .then(
-        function(response){
-          setFetchLiveData(response.records[response.records.length-1])
-          setShowLLiveData(response.records);
-
-        }
-      ).catch((error)=>{
-        console.log("error while data fetching",error.type)
-      })
+      let urladd=`maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(channel['tag'])}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+      fetch('/.netlify/functions/commingsoon-proxy', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+       // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
+        body: JSON.stringify({url: `${baseId}/ChannelLiveData?${urladd}`})
+      }).then(response => response.json())
+        .then(
+          function(response){
+            if(response.records.length){
+              setFetchLiveData([response.records[0]])
+              setShowLLiveData(response.records);
+            }
+            else{
+           
+            }
+          }
+        ).catch((error)=>{
+          console.log("error while data fetching",error.type)
+        })
   }
-  const gettingMuxassets=()=>{
-    let livestreamingId=channels &&channels.map(item=>item.liveStreamId)
+  const gettingMuxassets=(livestreamid)=>{
     //call mux api to get playback url
     fetch('/.netlify/functions/mux-proxy', {
       method: 'POST',
@@ -461,7 +470,7 @@ const ReplayLiveBroadCast = ({ className, channel }) => {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId[0]}`})
+      body: JSON.stringify({url: `video/v1/live-streams/${livestreamid}`})
     }).then(response => response.json())
       .then(function(assesetId){ 
           setrescentAsscetId(assesetId.data.recent_asset_ids)

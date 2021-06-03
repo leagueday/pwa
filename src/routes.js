@@ -38,9 +38,10 @@ export const routesConfig = [
     () => true,
     ChannelScreen,
     pathTokens => ({
-      channelTag: 'lol',
+      channelTag: 'lcs',
     }),
   ],
+
   [
     matchFirstToken('event'),
     () => true,
