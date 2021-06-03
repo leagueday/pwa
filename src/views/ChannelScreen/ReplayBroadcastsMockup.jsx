@@ -266,7 +266,7 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
 
   const classes = useStyles({ channelColor })
 
-  return (
+  /*return (
     <div className={classes.eventTextplate}>
       <div
         className={cx(classes.sectionTitle, classes.clickable)}
@@ -281,7 +281,7 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
         <div className={classes.textEllipsisOverflow}>{variety}</div>
       </div>
     </div>
-  )
+  )*/
 }
 
 const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl }) => {
