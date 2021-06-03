@@ -239,7 +239,7 @@ const mockupData = [
          fakeDurationLabel: '35:38',
        },
      ],
-     event: 'lcs-lock',
+     event: 'league-night',
      imageUrl: '/img/restyle_demo/LeagueNight2.png',
      name: 'LeagueNight',
      tags: ['riot', 'lol'],
