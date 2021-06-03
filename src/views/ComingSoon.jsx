@@ -177,8 +177,6 @@ const playerRef = React.useRef();
     //   console.log("palyref",playerRef)
     // }
 const onPopClick = isPlaying
-    ? () => setIsPlaying(false)
-    : () => setIsPlaying(true)
 ? ev => {
   dispatch(actions.pauseAudio())
         ev.stopPropagation()
