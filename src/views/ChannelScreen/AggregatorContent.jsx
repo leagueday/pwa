@@ -128,7 +128,7 @@ const AggregatorContent = ({ channel }) => {
         <BottomBlock
           accentColor={channel.color}
           titleStart={channel.title}
-          titleRest="Replays"
+          titleRest="Replays1"
         >
           <ReplayBroadcastsMockup
             className={classes.replayBroadcasts}

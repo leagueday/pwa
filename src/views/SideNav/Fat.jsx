@@ -95,7 +95,7 @@ const useStyles = makeStyles(theme => ({
 const FatSideNav = ({ className, home }) => {
   const classes = useStyles({ home })
   const user = useSelector(selectors.getUser)
-  const [profileCreated,setProfileCreated]=React.useState('')
+  const [profileCreated,setProfileCreated]=React.useState(0)
   React.useEffect(()=>{
     getProfileData();
   },[])
@@ -116,15 +116,19 @@ const FatSideNav = ({ className, home }) => {
     }).then(response => response.json())
       .then(
         function(response){ 
-            if(response.records[0].fields){
-
-              setProfileCreated(response.records[0].fields.profileCreated)
+            if(response.records.length > 0){
+              //setProfileCreated(response.records[0].fields.profileCreated)
+              setProfileCreated(3)
               localStorage.setItem('profilecreated',response.records[0].fields.profileCreated)
+            }
+            else
+            {
+                setProfileCreated(2)
             }
         }
       ).catch((error)=>{
         console.log('error while data fetching',error)
-        setProfileCreated(false)
+        //setProfileCreated(2)
       })
   }
   const dispatch = useDispatch()
@@ -178,8 +182,9 @@ const createProfile=()=>dispatch(actions.pushHistory('/create'))
     </React.Suspense> */}
 
     <React.Suspense fallback={<Loading />}>
-    {user &&(
-      profileCreated? ( 
+    {user &&(    
+      
+      (profileCreated == 3)? ( 
       <Button
         className={classes.inNOutButton}
         color="primary"
@@ -188,7 +193,9 @@ const createProfile=()=>dispatch(actions.pushHistory('/create'))
         variant="contained"
     >
       PROFILE
-      </Button>):(   <Button
+      </Button>):(   
+      (profileCreated == 2)?(
+      <Button
      className={classes.inNOutButton}
      color="primary"
      onClick={createProfile}
@@ -196,7 +203,9 @@ const createProfile=()=>dispatch(actions.pushHistory('/create'))
      variant="contained"
  >
    CREATE PROFILE
-   </Button>)
+   </Button>
+   ):""
+    )
   
   )}
   
