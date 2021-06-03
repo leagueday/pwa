@@ -502,7 +502,7 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
               sectionData={sectionData}
             />
           </div>
-          <!--><Tracks sectionData={RecordedData} channelColor={channel.color} assetid={rescentAsscetid} />-->
+          <Tracks sectionData={RecordedData} channelColor={channel.color} assetid={rescentAsscetid} />
         </div>
       ))}
     </div>
