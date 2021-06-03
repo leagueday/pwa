@@ -49,7 +49,7 @@ const mockData = {
     subTitle: 'LCS Spring Split 2021',
     title: 'LCS Replays',
   },
-  league-night: {
+  leaguenight: {
     color: 'orange',
     imageUrl: '/img/restyle_demo/lcs.png',
     items: [
