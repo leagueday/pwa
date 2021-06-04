@@ -299,7 +299,7 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,lea
   // liveUrl.map(item=>{
   //   playback=item.duration
   // })
-  const onClick = isPlaying
+  const onClick = isPlaying 
   ? () => setIsPlaying(false)
   : () => setIsPlaying(true)
   const playVideo=()=> {
@@ -324,16 +324,16 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,lea
           classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
           onClick={onClick}
         />
-          {/* {isPlaying &&(
+          {isPlaying &&(
                 <ReactHlsPlayer
-                src={`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`}
+                src={`https://stream.mux.com/F015ggYrDdrjrdKwW00J75j202OQE3sPqAGRSajKfHWIwU.m3u8`}
                 autoPlay={false}
                 onClick={playVideo}
                 controls={true}
                 width="30%"
                 height="auto"
                 />
-            )} */}
+            )}
         <IcoPlus
           classes={{
             inner: classes.episodePlus,
