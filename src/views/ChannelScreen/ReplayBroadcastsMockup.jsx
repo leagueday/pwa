@@ -433,7 +433,7 @@ const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,l
   } = episodeData
   const classes = useStyles({ backgroundColor, canPlay, channelColor })
   
-  let audio = new Audio(liveUrl)
+  let audio = new Audio("https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3")
   
   const onClick = isPlaying 
   ? () => audio.pause()
