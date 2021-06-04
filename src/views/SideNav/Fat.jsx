@@ -94,19 +94,55 @@ const useStyles = makeStyles(theme => ({
 
 const FatSideNav = ({ className, home }) => {
   const classes = useStyles({ home })
-
+  const user = useSelector(selectors.getUser)
+  const [profileCreated,setProfileCreated]=React.useState(0)
+  React.useEffect(()=>{
+    getProfileData();
+  },[])
+  const getProfileData=()=>{
+    const baseId = 'appXoertP1WJjd4TQ'
+    let fetchSearch;
+    if(user){
+    const userId=user['id']
+     fetchSearch=`?filterByFormula=({userId}=${JSON.stringify(userId)})`
+    }
+    fetch('/.netlify/functions/airtable-getprofile', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({url: `${baseId}/UserProfile${fetchSearch}`})
+    }).then(response => response.json())
+      .then(
+        function(response){ 
+            if(response.records.length > 0){
+              //setProfileCreated(response.records[0].fields.profileCreated)
+              setProfileCreated(3)
+              localStorage.setItem('profilecreated',response.records[0].fields.profileCreated)
+            }
+            else
+            {
+                setProfileCreated(2)
+            }
+        }
+      ).catch((error)=>{
+        console.log('error while data fetching',error)
+        //setProfileCreated(2)
+      })
+  }
   const dispatch = useDispatch()
   const goHome = home ? null : () => dispatch(actions.pushHistory('/'))
   const myprofile = () =>
   {
-    
    dispatch(actions.pushHistory('/profile'))
   }
-const golive=() => dispatch(actions.pushHistory('/live'));
-  const user = useSelector(selectors.getUser)
 
+const golive=() => dispatch(actions.pushHistory('/live'));
+const createProfile=()=>dispatch(actions.pushHistory('/create'))
   return (
     <div className={cx(classes.sideNav, className)}>
+        <React.Suspense fallback={<Loading />}>
       <div className={classes.controls}>
         <div className={classes.logoContainer}>
           <img className={classes.logo} onClick={goHome} src="/img/logo.png" />
@@ -116,12 +152,6 @@ const golive=() => dispatch(actions.pushHistory('/live'));
         </div>
       </div>
       <SearchLozenge />
-      {/* <div className={classes.scroller}>
-        <div className={classes.scrollerChild}>
-    </div>
-    </div> */}
-    
-    
       <LiveAndUpcomingLozenge className={classes.lozenge} />
       <div className={classes.scroller}>
         <div className={classes.scrollerChild}>
@@ -137,8 +167,7 @@ const golive=() => dispatch(actions.pushHistory('/live'));
               <MyPodcasts />
             </Expander>
           )}
-              
-    <React.Suspense fallback={<Loading />}>
+    {/* <React.Suspense fallback={<Loading />}>
     {user &&(
      <Button
      className={classes.inNOutButton}
@@ -150,10 +179,41 @@ const golive=() => dispatch(actions.pushHistory('/live'));
    GO LIVE
    </Button>
   )}
+    </React.Suspense> */}
+
+    <React.Suspense fallback={<Loading />}>
+    {user &&(    
+      
+      (profileCreated == 3)? ( 
+      <Button
+        className={classes.inNOutButton}
+        color="primary"
+        onClick={myprofile}
+        size="small"
+        variant="contained"
+    >
+      PROFILE
+      </Button>):(   
+      (profileCreated == 2)?(
+      <Button
+     className={classes.inNOutButton}
+     color="primary"
+     onClick={createProfile}
+     size="small"
+     variant="contained"
+ >
+   CREATE PROFILE
+   </Button>
+   ):""
+    )
+  
+  )}
+  
     </React.Suspense>
 
         </div>
       </div>
+      </React.Suspense>
     </div>
   )
 }

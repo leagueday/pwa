@@ -87,7 +87,7 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
       {channel.title}
     </div>
     <div className={classes.headlineTitleRow}>
-      {hasBroadcasts ? 'Podcasts and Live Events AudioCasts' : 'Podcasts'}
+      {hasBroadcasts ? 'LCS Coverage' : 'Podcasts'}
     </div>
   </div>
 )
@@ -99,7 +99,6 @@ const AggregatorContent = ({ channel }) => {
 
   const hasLive = hasLiveMockupData(channel)
   const hasReplay = hasReplayMockupData(channel)
-
   return (
     <ContentLayout
       accentColor={channel.color}
@@ -138,13 +137,13 @@ const AggregatorContent = ({ channel }) => {
           />
         </BottomBlock>
       )}
-      <BottomBlock
+      {/* <BottomBlock
         accentColor={channel.color}
         titleStart={channel.title}
         titleRest="Podcasts"
       >
         <FacetedPodcastTiles data={facets} />
-      </BottomBlock>
+      </BottomBlock> */}
     </ContentLayout>
   )
 }

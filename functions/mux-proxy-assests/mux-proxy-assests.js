@@ -20,6 +20,7 @@ const handler = async (event, context) => {
   const { url } = JSON.parse(event.body)
 
   const response = await fetch(`https://api.mux.com/${url}`, { headers })
+
   return {
     body: await response.text(),
     headers: {

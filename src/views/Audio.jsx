@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import ReactHlsPlayer from 'react-hls-player';
 
 /**
  * views/Audio
@@ -157,6 +158,7 @@ const nonsecBlubrryPrefix = 'http://media.blubrry.com/'
 
 const Audio = () => {
   const [getAudioRef, setAudioRef] = useAudioRef()
+  const [isSetAdio,setisAudio]=React.useState(false)
   const audioMode = useSelector(selectors.getAudioMode)
   const audioUrl = useSelector(selectors.getAudioUrl)
 
@@ -178,14 +180,14 @@ const Audio = () => {
     // play: playTaps,
     replay: replayTaps,
   } = taps
-
+let sourceurl;
   const scrubbedAudioUrl = React.useMemo(() => {
     if (audioUrl && audioUrl.startsWith(nonsecBlubrryPrefix)) {
       const embeddedUrlOffset = audioUrl.indexOf(
         'http',
         nonsecBlubrryPrefix.length
       )
-
+      sourceurl=embeddedUrlOffset;
       if (embeddedUrlOffset > 0) {
         return audioUrl.substr(embeddedUrlOffset)
       }
@@ -232,10 +234,21 @@ const Audio = () => {
 
     audioDomNode.currentTime = seekPosition
   }, [seekPosition])
-
+  let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://anchor.fm/s')
+  console.log('scruburl',scrubbedAudioUrl,)
   return audioUrl ? (
     <span>
+     {srcUrl?(
       <audio ref={setAudioRef} src={scrubbedAudioUrl} />
+     ):
+      (  <ReactHlsPlayer
+          src={scrubbedAudioUrl}
+          autoPlay={true}
+           controls={false}
+           width="20%"
+          height="auto"
+             />  
+      )}
     </span>
   ) : null
 }

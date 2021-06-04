@@ -8,12 +8,11 @@ import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
 import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import PlusMinusButton from '../PlusMinusButton'
-
 import BroadcasterTextPlate from './BroadcasterTextPlate'
 import ChannelChildren from './ChannelChildren'
 import LiveBroadcastsMockup from './LiveBroadcastsMockup'
 import ReplayBroadcastsMockup from './ReplayBroadcastsMockup'
-
+import ReplayLiveBroadCast from './ReplayLiveBroadCast'
 const useStyles = makeStyles(theme => ({
   bottomBlockItem: {},
   bottomGrid: {},
@@ -178,14 +177,18 @@ const BroadcasterContent = ({ channel }) => {
             titleStart="Replay"
             titleRest="Broadcasts"
           >
-            <ReplayBroadcastsMockup
+          <ReplayLiveBroadCast   
+            className={classes.replayBroadcasts}
+            channel={channel}
+            channelColor={channel.color}/>     
+            {/* <ReplayBroadcastsMockup
               className={classes.replayBroadcasts}
               channel={channel}
               channelColor={channel.color}
-            />
+            /> */}
           </BottomBlock>
         </Grid>
-        <Grid className={classes.bottomBlockItem} item xs={12}>
+        {/* <Grid className={classes.bottomBlockItem} item xs={12}>
           <BottomBlock
             accentColor={channel.color}
             titleStart="Top"
@@ -193,7 +196,7 @@ const BroadcasterContent = ({ channel }) => {
           >
             <FacetedPodcastTiles data={facetedPodcasts} />
           </BottomBlock>
-        </Grid>
+        </Grid> */}
       </Grid>
     </ContentLayout>
   )

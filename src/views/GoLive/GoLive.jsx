@@ -75,12 +75,12 @@ const GoLive = () => {
      })
   }
   const gotoliveScreen = () =>{
-    if(select.length==""|| !select){
-      toast.error("Please select OBS")
-    }
-    else{
+    // if(select.length==""|| !select){
+    //   toast.error("Please select OBS")
+    // }
+    // else{
       dispatch(actions.pushHistory('/gotolive'))
-    }
+   // }
   }
   return (
     <BasicLayout home>
@@ -94,8 +94,8 @@ const GoLive = () => {
         />
         <div className={classes.primaryStripe} />
         <div className={classes.podcastTiles}>
-        <div onChange={chooseselection}>
-        <input className={classes.heading} type="radio" value="USE OBS" name="obs"/> USE OBS<br/>
+        <div >
+        <input className={classes.heading} type="radio" value="USE OBS" defaultChecked='USE OBS' name="obs"/> USE OBS<br/>
         {/* <input type="radio" value="Record or leagueDay" />Record or leagueDay */}
       </div>
      

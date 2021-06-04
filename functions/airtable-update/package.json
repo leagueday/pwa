@@ -1,0 +1,20 @@
+{
+  "name": "airtable-proxy",
+  "version": "1.0.0",
+  "description": "Airtable Proxy",
+  "main": "airtable-update.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "netlify",
+    "serverless",
+    "js"
+  ],
+  "author": "LeagueDay",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  }
+}

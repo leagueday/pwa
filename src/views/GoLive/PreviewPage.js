@@ -71,7 +71,7 @@ const PreviewPage = () => {
 
   const user = useSelector(selectors.getUser)
   const userName = user?.user_metadata?.full_name
-  let image=localStorage.getItem('image')
+  let image=localStorage.getItem('channelImage')
   const dispatch=useDispatch()
   const channeldestribution=()=>{
       console.log("channnallist")

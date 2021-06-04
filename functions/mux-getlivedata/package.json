@@ -1,0 +1,20 @@
+{
+  "name": "mux-proxy",
+  "version": "1.0.0",
+  "description": "MUX Proxy",
+  "main": "mux-getlivedata.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "netlify",
+    "serverless",
+    "js"
+  ],
+  "author": "LeagueDay",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  }
+}
