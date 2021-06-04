@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import cx from 'classnames'
-import ReactHlsPlayer from 'react-hls-player';
+import ReactPlayer from "react-player";
 
 import { makeStyles } from '@material-ui/core/styles'
 import useChannels from '../../api/useChannels'
@@ -321,20 +321,24 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,lea
      { episodeData.length&&episodeData?.map((episode,index)=>(
     <div className={classes.episodeRow}>
       <div className={classes.episodeControls}>
-        <PlayOrPauseIcon
-          classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
-          onClick={onClick}
+       /*{isPlaying &&( <ReactPlayer
+        url="https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3"
+        width="400px"
+        height="50px"
+        playing={false}
+        controls={true}
         />
-          {isPlaying &&(
+        )}*/
+          {/* {isPlaying &&(
                 <ReactHlsPlayer
-                src={`https://stream.mux.com/F015ggYrDdrjrdKwW00J75j202OQE3sPqAGRSajKfHWIwU.m3u8`}
+                src={`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`}
                 autoPlay={false}
                 onClick={playVideo}
                 controls={true}
                 width="30%"
                 height="auto"
                 />
-            )}
+            )} */}
         <IcoPlus
           classes={{
             inner: classes.episodePlus,
@@ -345,6 +349,10 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,lea
     
 
       <div className={classes.episodeTitleAndData}>
+      <PlayOrPauseIcon
+          classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
+          onClick={onClick}
+        />
            <div className={classes.episodeNumberAndTitle}>
            <div className={classes.episodeNumber}>
              {counter < 10 ? `0${counter}` : counter}
