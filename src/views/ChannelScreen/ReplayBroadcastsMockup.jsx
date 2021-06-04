@@ -306,6 +306,7 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,lea
   const onClick = isPlaying 
   ? () => audio.pause()
   : () => audio.play()
+  
   const playVideo=()=> {
     playerRef.current.play();
     setPlayerOn(true)
@@ -421,7 +422,9 @@ const Tracks = ({ sectionData, channelColor ,assetid,leaugeNightData,channel}) =
     </div>
   )
 }
-const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor}) => {
+
+const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,leaugeNightData,channel}) => {
+//const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor}) => {
   const [isPlaying,setIsPlaying]=React.useState(false);
   const [canPlay,setcanPlay]=React.useState(false);
   const {
@@ -429,7 +432,13 @@ const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor}) => {
     fakeDurationLabel,
   } = episodeData
   const classes = useStyles({ backgroundColor, canPlay, channelColor })
-
+  
+  let audio = new Audio(liveUrl)
+  
+  const onClick = isPlaying 
+  ? () => audio.pause()
+  : () => audio.play()
+  
   const PlayOrPauseIcon = isPlaying ? IcoPause : IcoPlay    
   return (
     <React.Fragment>
@@ -438,6 +447,7 @@ const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor}) => {
       <div className={classes.episodeControls}>
         <PlayOrPauseIcon
           classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
+          onClick={onClick}
         />
         <IcoPlus
           classes={{
