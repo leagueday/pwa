@@ -286,85 +286,45 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
   )
 }
 
-const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,leaugeNightData,channel}) => {
-  const [isPlaying,setIsPlaying]=React.useState(false);
-  const [canPlay,setcanPlay]=React.useState(false);
+const Track = ({episodeData, backgroundColor, counter, channelColor}) => {
   const {
+    title,
+    isPlaying,
+    canPlay,
     fakeDateLabel,
-    fakeDurationLabel,
+    fakeDurationLabel
   } = episodeData
-  const classes = useStyles({ backgroundColor, canPlay, channelColor })
+
+  const classes = useStyles({backgroundColor, canPlay, channelColor})
 
   const PlayOrPauseIcon = isPlaying ? IcoPause : IcoPlay
-  // let playback
-  // liveUrl.map(item=>{
-  //   playback=item.duration
-  // })
-  
-  let audio = new Audio(liveUrl)
-  
-  const onClick = isPlaying 
-  ? () => audio.pause()
-  : () => audio.play()
-  
-  const playVideo=()=> {
-    playerRef.current.play();
-    setPlayerOn(true)
-  }
-  let playBackUrl;
-  var url=liveUrl
-//   let playbackStream=`https://stream.mux.com`
-//   if(url){
-//  playBackUrl=`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`
 
-//   } 
- 
-    
   return (
-    <React.Fragment>
-     { episodeData.length&&episodeData?.map((episode,index)=>(
     <div className={classes.episodeRow}>
       <div className={classes.episodeControls}>
-        <PlayOrPauseIcon
-          classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
-          onClick={onClick}
-        />
-          {/* {isPlaying &&(
-                <ReactHlsPlayer
-                src={`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`}
-                autoPlay={false}
-                onClick={playVideo}
-                controls={true}
-                width="30%"
-                height="auto"
-                />
-            )} */}
-        <IcoPlus
-          classes={{
-            inner: classes.episodePlus,
-            outer: classes.episodePOPCell,
-          }}
-        />
+        <PlayOrPauseIcon classes={{inner: classes.episodePOP, outer: classes.episodePOPCell}}/>
+        <IcoPlus classes={{inner: classes.episodePlus, outer: classes.episodePOPCell}}/>
       </div>
-    
-
       <div className={classes.episodeTitleAndData}>
-           <div className={classes.episodeNumberAndTitle}>
-           <div className={classes.episodeNumber}>
-             {counter < 10 ? `0${counter}` : counter}
-           </div>
-           <div className={classes.episodeTitle}>{episode.fields.title?episode.fields.title:""}</div>
-         </div>
-         <div className={classes.episodeDateAndDuration}>
-           <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
-           <div className={classes.episodeDate}>{episode.fields.liveDate?episode.fields.liveDate.split('T')[0]:""}</div>
-           <div className={classes.episodeDuration}>{fakeDurationLabel}</div>
-         
-     </div>
+        <div className={classes.episodeNumberAndTitle}>
+          <div className={classes.episodeNumber}>
+            {counter < 10 ? `0${counter}` : counter}
+          </div>
+          <div className={classes.episodeTitle}>
+            {title}
+          </div>
+        </div>
+        <div className={classes.episodeDateAndDuration}>
+          <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
+          <div className={classes.episodeDate}>
+            {fakeDateLabel}
+          </div>
+          <div className={classes.episodeDuration}>
+            {fakeDurationLabel}
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-     ))}
-    </React.Fragment>
   )
 }
 
@@ -456,7 +416,7 @@ const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,l
       <div className={classes.episodeControls}>
         <PlayOrPauseIcon
           classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
-          onClick={{onClick}}
+          onClick={onClick}
         />
         <IcoPlus
           classes={{
