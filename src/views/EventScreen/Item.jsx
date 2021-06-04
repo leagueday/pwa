@@ -1,5 +1,6 @@
 import React from 'react'
 import cx from 'classnames'
+import ReactPlayer from "react-player";
 
 import { makeStyles } from '@material-ui/core/styles'
 import Hidden from '@material-ui/core/Hidden'
@@ -10,6 +11,8 @@ import { makeIconButton } from '../IconButton'
 import { IcoPlay } from '../icons'
 
 const PlayButton = makeIconButton(IcoPlay)
+
+let audio = new Audio("https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3")
 
 const useStyles = makeStyles(theme => ({
   attribute: {
@@ -77,6 +80,10 @@ const Item = ({ accentColor, className, date, duration, itemIndex, title }) => {
     accentColor,
     backgroundColor: computeZebraBackgroundColor(itemIndex),
   })
+  
+  const onClick = () => {
+    audio.play()
+  }
 
   return (
     <div className={cx(classes.item, className)}>
@@ -87,6 +94,7 @@ const Item = ({ accentColor, className, date, duration, itemIndex, title }) => {
           size="1.5em"
           color={colors.white}
           shadowColor={colors.darkGray}
+          onClick={onClick}
         />
         <div className={classes.itemNumber}>
           {itemIndex < 9 ? `0${itemIndex + 1}` : String(itemIndex + 1)}
