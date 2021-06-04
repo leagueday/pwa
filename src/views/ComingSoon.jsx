@@ -316,7 +316,6 @@ console.log('checkchannel',checkChannel)
             src="/img/logo_square_transparent.png"
           />
         </div>
-        <div className={classes.text}>Coming Soon</div>
       </div>
       ):(
         <>
