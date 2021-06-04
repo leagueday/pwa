@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import cx from 'classnames'
+import ReactHlsPlayer from 'react-hls-player';
 
 import { makeStyles } from '@material-ui/core/styles'
 import useChannels from '../../api/useChannels'
