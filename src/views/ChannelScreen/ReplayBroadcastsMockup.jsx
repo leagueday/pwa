@@ -456,7 +456,7 @@ const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,l
       <div className={classes.episodeControls}>
         <PlayOrPauseIcon
           classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
-          onClick={onClick()}
+          onClick={{onClick}}
         />
         <IcoPlus
           classes={{
