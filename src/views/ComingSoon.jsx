@@ -4,10 +4,8 @@ import Color from 'color'
 import { makeStyles } from '@material-ui/core'
 import ToggleImageButton from './ToggleImageButton'
 import { colors } from '../styling'
-import ReactHlsPlayer from 'react-hls-player';
 import { useSelector,useDispatch } from 'react-redux'
 import { actions, selectors, constants as storeConstants} from '../store'
-import useChannels from '../api/useChannels'
 const useStyles = makeStyles(theme => ({
   comingSoon: {
     alignItems: 'flex-start',
@@ -176,20 +174,26 @@ const playerRef = React.useRef();
     //   setPlayerOn(true)
     //   console.log("palyref",playerRef)
     // }
-const onPopClick = isPlaying
+const audioMode = useSelector(selectors.getAudioMode)
+const isSelectedAudio =playbackurl&&playbackurl
+const isPlayings =
+isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
+const onPopClick = isPlayings
 ? ev => {
   dispatch(actions.pauseAudio())
         ev.stopPropagation()
         setIsPlaying(false)
+        window.location.reload()
   }
 : ev => {
+        if (isSelectedAudio)
    dispatch(actions.playAudio())
           dispatch(
             actions.selectAudio(
               '',
               '',
               '',
-              playbackurl?playbackurl:"",
+              isSelectedAudio?isSelectedAudio:"",
               '',
               '',
               ''
@@ -271,18 +275,6 @@ const ComingSoon = ({ className,channel,channelColor }) => {
   let checkChannel;
    const muxliveData=(liveurl,livestreamid)=>{
     const baseId = 'appXoertP1WJjd4TQ'
-    console.log('livestreamid',livestreamid)
-    // let livestreamingId=channels &&channels.map(item=>item.liveStreamId)
-    //console.log('abc--'+localStorage.getItem('livePlayurl'));
-    // if(localStorage.getItem('livePlayurl') == 'null' || localStorage.getItem('livePlayurl') == '' || localStorage.getItem('livePlayurl') == null)
-    // {
-    //     setliveStatus(0)
-    //     console.log('muxlivedatainside',localStorage.getItem('livePlayurl'),liveStatus)
-    // }
-    // else
-    // {        
-        // var str = localStorage.getItem('livePlayurl');
-        // var serchStr = str.indexOf("undefined");
         if(liveurl)
         {
             fetch('/.netlify/functions/mux-proxy', {
@@ -292,7 +284,6 @@ const ComingSoon = ({ className,channel,channelColor }) => {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({url: `video/v1/live-streams/${livestreamid}`})
-            //body: JSON.stringify({url: `${liveurl}`})
           }).then(response => response.json())
             .then(
               function(response){
