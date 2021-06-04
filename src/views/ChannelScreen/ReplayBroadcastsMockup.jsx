@@ -437,13 +437,15 @@ const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,l
   console.log('audio test')
   console.log(liveUrl)
   
-  const setPlay = isPlaying
-  ? () => setIsPlaying(false)
-  : () => setIsPlaying(true)
+  function onClick() {
+	const setPlay = isPlaying
+  	? () => setIsPlaying(false)
+  	: () => setIsPlaying(true)
   
-  const setClick = isPlaying 
-  ? () => audio.pause()
-  : () => audio.play()
+  	const setClick = isPlaying 
+  	? () => audio.pause()
+  	: () => audio.play()
+  }
   
   const PlayOrPauseIcon = isPlaying ? IcoPause : IcoPlay    
   
