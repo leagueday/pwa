@@ -437,7 +437,7 @@ const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,l
   console.log('audio test')
   console.log(liveUrl)
   
-  const setIsPlaying = isPlaying
+  const setPlay = isPlaying
   ? () => setIsPlaying(false)
   : () => setIsPlaying(true)
   
@@ -454,7 +454,7 @@ const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,l
       <div className={classes.episodeControls}>
         <PlayOrPauseIcon
           classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
-          onClick={onClick() { setIsPlaying(); setClick(); }}
+          onClick={onClick() { setPlay(); setClick(); }}
         />
         <IcoPlus
           classes={{
