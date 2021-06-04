@@ -89,9 +89,6 @@ const Item = ({ accentColor, className, date, duration, itemIndex, title }) => {
   const onClick = isPlaying 
   ? () => setIsPlaying(false)
   : () => setIsPlaying(true)
-  const onClick = () => {
-    audio.play()
-  }
 
   return (
     <div className={cx(classes.item, className)}>
