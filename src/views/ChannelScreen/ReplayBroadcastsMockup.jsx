@@ -301,8 +301,6 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,lea
   //   playback=item.duration
   // })
   
-  console.log(liveUrl)
-  
   let audio = new Audio(liveUrl)
   
   const onClick = isPlaying 
@@ -435,7 +433,12 @@ const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,l
   } = episodeData
   const classes = useStyles({ backgroundColor, canPlay, channelColor })
   
+  const PlayOrPauseIcon = isPlaying ? IcoPause : IcoPlay
+  
   let audio = new Audio("https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3")
+  console.log('audio test')
+  console.log(liveUrl)
+  
   
   const onClick = isPlaying 
   ? () => audio.pause()
