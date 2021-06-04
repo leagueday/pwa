@@ -301,6 +301,8 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,lea
   //   playback=item.duration
   // })
   
+  console.log(liveUrl)
+  
   let audio = new Audio(liveUrl)
   
   const onClick = isPlaying 
