@@ -51,7 +51,7 @@ const mockData = {
   },
   leaguenight: {
     color: 'orange',
-    imageUrl: '/img/restyle_demo/leaguenight.png',
+    imageUrl: '/img/restyle_demo/LeagueNight2.png',
     items: [
       ['FlyQuest vs. Immortals', '03/07/2021', '00:47:11'],
       ['Team Liquid vs. Counter Logic Gaming', '03/07/2021', '00:45:16'],
