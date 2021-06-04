@@ -8,7 +8,7 @@ import Hidden from '@material-ui/core/Hidden'
 import { colors } from '../../styling'
 import { computeZebraBackgroundColor } from '../util'
 import { makeIconButton } from '../IconButton'
-import { IcoPlay } from '../icons'
+import { IcoPause, IcoPlay, IcoPlus } from '../icons'
 
 const PlayButton = makeIconButton(IcoPlay)
 
@@ -76,11 +76,19 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Item = ({ accentColor, className, date, duration, itemIndex, title }) => {
+  const [isPlaying,setIsPlaying]=React.useState(false);
   const classes = useStyles({
     accentColor,
     backgroundColor: computeZebraBackgroundColor(itemIndex),
   })
-  
+  const PlayOrPauseIcon = isPlaying ? IcoPause : IcoPlay
+  // let playback
+  // liveUrl.map(item=>{
+  //   playback=item.duration
+  // })
+  const onClick = isPlaying 
+  ? () => setIsPlaying(false)
+  : () => setIsPlaying(true)
   const onClick = () => {
     audio.play()
   }
@@ -88,7 +96,7 @@ const Item = ({ accentColor, className, date, duration, itemIndex, title }) => {
   return (
     <div className={cx(classes.item, className)}>
       <div className={classes.itemRow}>
-        <PlayButton
+        <PlayOrPauseIcon
           className={classes.popButton}
           iconClassName={classes.popButtonIcon}
           size="1.5em"
