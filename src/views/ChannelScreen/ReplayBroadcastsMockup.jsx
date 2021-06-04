@@ -300,9 +300,12 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,lea
   // liveUrl.map(item=>{
   //   playback=item.duration
   // })
+  
+  let audio = new Audio(liveUrl)
+  
   const onClick = isPlaying 
-  ? () => setIsPlaying(false)
-  : () => setIsPlaying(true)
+  ? () => audio.pause()
+  : () => audio.play()
   const playVideo=()=> {
     playerRef.current.play();
     setPlayerOn(true)
@@ -321,14 +324,10 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,lea
      { episodeData.length&&episodeData?.map((episode,index)=>(
     <div className={classes.episodeRow}>
       <div className={classes.episodeControls}>
-       /*{isPlaying &&( <ReactPlayer
-        url="https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3"
-        width="400px"
-        height="50px"
-        playing={false}
-        controls={true}
+        <PlayOrPauseIcon
+          classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
+          onClick={onClick}
         />
-        )}*/
           {/* {isPlaying &&(
                 <ReactHlsPlayer
                 src={`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`}
@@ -349,10 +348,6 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,lea
     
 
       <div className={classes.episodeTitleAndData}>
-      <PlayOrPauseIcon
-          classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
-          onClick={onClick}
-        />
            <div className={classes.episodeNumberAndTitle}>
            <div className={classes.episodeNumber}>
              {counter < 10 ? `0${counter}` : counter}

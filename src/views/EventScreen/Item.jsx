@@ -90,6 +90,7 @@ const Item = ({ accentColor, className, date, duration, itemIndex, title }) => {
   ? () => setIsPlaying(false)
   : () => setIsPlaying(true)
 
+
   return (
     <div className={cx(classes.item, className)}>
       <div className={classes.itemRow}>
