@@ -309,8 +309,7 @@ console.log('checkchannel',checkChannel)
   return (
     <div className={cx(classes.comingSoon,className)}>
       {liveStatus==0 ?(
-      <div className={classes.comingSoonRow}>
-      
+      <div>
       </div>
       ):(
         <>
