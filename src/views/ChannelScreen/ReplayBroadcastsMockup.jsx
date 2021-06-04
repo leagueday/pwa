@@ -432,19 +432,21 @@ const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,l
     fakeDurationLabel,
   } = episodeData
   const classes = useStyles({ backgroundColor, canPlay, channelColor })
-  
-  const PlayOrPauseIcon = isPlaying ? IcoPause : IcoPlay
-  
+    
   let audio = new Audio("https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3")
   console.log('audio test')
   console.log(liveUrl)
   
+  const setIsPlaying = isPlaying
+  ? () => setIsPlaying(false)
+  : () => setIsPlaying(true)
   
-  const onClick = isPlaying 
+  const setClick = isPlaying 
   ? () => audio.pause()
   : () => audio.play()
   
   const PlayOrPauseIcon = isPlaying ? IcoPause : IcoPlay    
+  
   return (
     <React.Fragment>
      { episodeData.length&&episodeData?.map((episode,index)=>(
@@ -452,7 +454,7 @@ const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,l
       <div className={classes.episodeControls}>
         <PlayOrPauseIcon
           classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
-          onClick={onClick}
+          onClick={onClick() { setIsPlaying(); setClick(); }}
         />
         <IcoPlus
           classes={{
