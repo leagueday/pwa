@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
-
+import useChannels from '../../api/useChannels'
 import { actions } from '../../store'
 import BasicLayout from '../BasicLayout'
 import ContentLayout from '../ContentLayout'
@@ -48,44 +48,6 @@ const mockData = {
     ],
     subTitle: 'LCS Spring Split 2021',
     title: 'LCS Replays',
-  },
-  leaguenight: {
-    color: 'orange',
-    imageUrl: '/img/restyle_demo/LeagueNight2.png',
-    items: [
-      ['FlyQuest vs. Immortals', '03/07/2021', '00:47:11'],
-      ['Team Liquid vs. Counter Logic Gaming', '03/07/2021', '00:45:16'],
-      ['TSM vs. Cloud8', '03/07/2021', '00:46:45'],
-      ['Evil Geniuses vs. Dignitas', '03/07/2021', '00:44:53'],
-      ['100 Thieves vs. Golden Guardians', '03/07/2021', '00:45:43'],
-      ['Counter Logic Gaming vs. FlyQuest', '03/06/2021', '00:48:34'],
-      ['Evil Geniuses vs. Immortals', '03/06/2021', '00:47:11'],
-      ['Cloud9 vs. Team Liquid', '03/06/2021', '00:45:16'],
-      ['100 Thieves vs. TSM', '03/06/2021', '00:46:45'],
-      ['Dignitas vs. Golden Guardians', '03/06/2021', '00:44:53'],
-      ['Immortals vs. Counter Logic Gaming', '03/05/2021', '00:45:43'],
-      ['Team Liquid vs. Golden Guardians', '03/05/2021', '00:48:34'],
-      ['FlyQuest vs. Cloud9', '03/05/2021', '00:47:11'],
-      ['100 Thieves vs. Evil Geniuses', '03/05/2021', '00:45:16'],
-      ['TSM vs. Dignitas', '03/05/2021', '00:46:45'],
-      ['Dignitas vs. Counter Logic Gaming', '02/28/2021', '00:44:53'],
-      ['Evil Geniuses vs. Golden Guardians', '02/28/2021', '00:45:43'],
-      ['Immortals vs. Team Liquid', '02/28/2021', '00:48:34'],
-      ['100 Thieves vs. Cloud9', '02/28/2021', '00:47:11'],
-      ['FlyQuest vs. TSM', '02/28/2021', '00:45:16'],
-      ['Golden Guardians vs. Immortals', '02/27/2021', '00:46:45'],
-      ['TSM vs. Counter Logic Gaming', '02/27/2021', '00:44:53'],
-      ['Dignitas vs. 100 Thieves', '02/27/2021', '00:45:43'],
-      ['Cloud9 vs. Evil Geniuses', '02/27/2021', '00:48:34'],
-      ['Team Liquid vs. FlyQuest', '02/27/2021', '00:47:11'],
-      ['Immortals vs. Dignitas', '02/26/2021', '00:45:16'],
-      ['Counter Logic Gaming vs. 100 Thieves', '02/26/2021', '00:46:45'],
-      ['Evil Geniuses vs. FlyQuest', '02/26/2021', '00:44:53'],
-      ['Team Liquid vs. TSM', '02/26/2021', '00:45:43'],
-      ['Cloud9 vs. Golden Guardians', '02/26/2021', '00:48:34'],
-    ],
-    subTitle: '',
-    title: 'LeagueNight',
   },
 }
 
@@ -166,12 +128,19 @@ const Headline = ({ classes, subTitle, title }) => (
 )
 
 const EventScreen = ({ tag }) => {
+  const channels = useChannels().list
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  let livestreamingId=channels.map(item=>item.liveStreamId)
   const dispatch = useDispatch()
   const data = mockData[tag] ?? mockData['lcs']
   const [eventDataFetch,seteventDataFetch]=React.useState([])
   const [eventDataFetchlCS,seteventDataFetchlCS]=React.useState([])
   const [loading,setisloading]=React.useState(0)
+  const [rescentAsscetid,setrescentAsscetId]=React.useState([])
   const classes = useStyles({ color: data?.color })
+  const [liveUrl,setLiveUrl]=React.useState([])
+  const [expandedIndex, setExpandedIndex] = React.useState()
+  const [duration,setduration]=React.useState([])
 
   React.useEffect(() => {
     if (!data) {
@@ -183,7 +152,59 @@ const EventScreen = ({ tag }) => {
       if(tag=='lcs'){
     EvenScreeDatalOL();
       }
+      //gettingMuxassets(livestreamingId);
+    
   }, [data])
+//  let newArr=[];
+//  let durationArr=[]
+//  React.useEffect(()=>{
+//    if(rescentAsscetid){
+//      rescentAsscetid&&rescentAsscetid.map((item,i)=>{
+//        fetch('/.netlify/functions/mux-proxy-assests', {
+//          method: 'POST',
+//          headers: {
+//            'Accept': 'application/json',
+//        'Content-Type': 'application/json'
+//          },
+//          body:JSON.stringify({url: `video/v1/assets/${item}`})
+//        }).then(response => response.json())
+//          .then(function(assesetId){ 
+//            assesetId.data&& assesetId.data.playback_ids.map((item)=>{
+//             newArr.push(item.id)
+//            })
+//            assesetId.data&& assesetId.data.recording_times.map((item)=>{
+//              durationArr.push(item.duration)
+//            })
+//          }         
+//        ).catch((error)=>{
+//           toast.error(error.type)
+//        }) 
+//    })
+//  } 
+//      setLiveUrl(newArr)
+//      setduration(durationArr)  
+//    
+//  },[rescentAsscetid])
+  
+  /* const gettingMuxassets=(livestreamingId)=>{
+    fetch('/.netlify/functions/mux-proxy', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
+    }).then(response => response.json())
+      .then(function(assesetId){ 
+        if(assesetId){
+         setrescentAsscetId(assesetId.data.recent_asset_ids)
+        }
+      }         
+    ).catch((error)=>{
+       toast.error(error.type)
+    })
+  } */
+  
   const EvenScreeDatalOL=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     let urladd=`filterByFormula={channelTag}='lol'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
@@ -239,14 +260,15 @@ const EventScreen = ({ tag }) => {
   const imageUrl = data?.imageUrl
   const subTitle = data?.subTitle
   const title = data?.title
-
-  // let index = 0
-  // const nextIndex = () => {
-  //   const result = index
-  //   index = index + 1
-  //   return result
-  // }
-
+  console.log('data ::: ', data);
+  const makeToggleIsExpanded = itemIndex =>
+  expandedIndex === itemIndex
+    ? () => {
+        setExpandedIndex(null)
+      }
+    : () => {
+        setExpandedIndex(itemIndex)
+      }
   return (
     <BasicLayout>
       <ContentLayout
@@ -264,28 +286,39 @@ const EventScreen = ({ tag }) => {
           <>
           {loading==1?eventDataFetch.length&&eventDataFetch?.map((title, index) =>(
               <Item
+                key={index}
                 accentColor={color}
                 className={classes.item}
-                date={title.fields.liveDate.split('T')[0]}
+                date={title.fields.liveDate?title.fields.liveDate.split('T')[0]:''}
                 duration={''}
                 itemIndex={index}
                 key={index}
                 title={title.fields.title}
+                description={title.fields.description}
+                itemAudioUrl={title.fields.playbackUrl}
+                isExpanded={expandedIndex === index}
+                toggleIsExpanded={makeToggleIsExpanded(index)}
+                dataFetch={eventDataFetch}
               />
-            )
+             )
           ):""
           }
           </>
          <> 
         {loading==2?eventDataFetchlCS&&eventDataFetchlCS?.map((title, index) =>(
               <Item
+                key={index}
                 accentColor={color}
                 className={classes.item}
-                date={title.fields.liveDate.split('T')[0]}
+                date={title.fields.liveDate?title.fields.liveDate.split('T')[0]:''}
                 duration={''}
                 itemIndex={index}
                 key={index}
                 title={title.fields.title}
+                description={title.fields.description}
+                itemAudioUrl={title.fields.playbackUrl}
+                isExpanded={expandedIndex === index}
+                toggleIsExpanded={makeToggleIsExpanded(index)}
               />
             )
         ):""

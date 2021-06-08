@@ -91,6 +91,10 @@ const useStyles = makeStyles(theme => ({
     height: '6vw',
     width: '6vw',
   },
+  eventImageFormobileView:{
+    height: '15vw',
+    width: '15vw',
+  },
   liveness: {
     display: 'flex',
     width: '600%',
@@ -141,7 +145,7 @@ const EventImage = ({ classes, imageUrl }) => {
 
   return (
   
-  <img className={cx(classes.eventImage)} src={imageUrl} />
+  <img className={cx(window.innerWidth>945?classes.eventImage:classes.eventImageFormobileView)} src={imageUrl} />
   )
 }
 
@@ -309,7 +313,14 @@ console.log('checkchannel',checkChannel)
   return (
     <div className={cx(classes.comingSoon,className)}>
       {liveStatus==0 ?(
-      <div>
+      <div className={classes.comingSoonRow}>
+        <div className={classes.logoContainer}>
+          <img
+            className={classes.logo}
+            src="/img/logo_square_transparent.png"
+          />
+        </div>
+        <div className={classes.text}>Coming Soon</div>
       </div>
       ):(
         <>

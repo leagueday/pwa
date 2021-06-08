@@ -234,8 +234,9 @@ let sourceurl;
 
     audioDomNode.currentTime = seekPosition
   }, [seekPosition])
-  let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://anchor.fm/s')
-  console.log('scruburl',scrubbedAudioUrl,)
+  //let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://anchor.fm/s')
+  let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://anchor.fm/s')||scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://www')||scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('http://www')
+  //console.log('scruburl',scrubbedAudioUrl,)
   return audioUrl ? (
     <span>
      {srcUrl?(
