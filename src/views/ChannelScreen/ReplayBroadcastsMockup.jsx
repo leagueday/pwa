@@ -335,6 +335,16 @@ const onPopClick = isPlayings
           classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
           onClick={onPopClick}
         />
+          {/* {isPlaying &&(
+                <ReactHlsPlayer
+                src={`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`}
+                autoPlay={false}
+                onClick={playVideo}
+                controls={true}
+                width="30%"
+                height="auto"
+                />
+            )} */}
         <IcoPlus
           classes={{
             inner: classes.episodePlus,
