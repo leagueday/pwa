@@ -181,3 +181,10 @@ export const setAudioPosition = position => ({
     position,
   },
 })
+
+export const setAudioVolume = volume => ({
+  type: ActionType.SET_AUDIO_VOLUME,
+  payload: {
+    volume,
+  },
+})
