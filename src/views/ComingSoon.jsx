@@ -313,7 +313,8 @@ console.log('checkchannel',checkChannel)
   return (
     <div className={cx(classes.comingSoon,className)}>
       {liveStatus==0 ?(
-
+      <div>
+      </div>
       ):(
         <>
       {fetchLiveData.length? fetchLiveData?.map((sectionData,index)=>{
