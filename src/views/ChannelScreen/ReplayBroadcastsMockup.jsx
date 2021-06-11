@@ -335,16 +335,6 @@ const onPopClick = isPlayings
           classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
           onClick={onPopClick}
         />
-          {/* {isPlaying &&(
-                <ReactHlsPlayer
-                src={`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`}
-                autoPlay={false}
-                onClick={playVideo}
-                controls={true}
-                width="30%"
-                height="auto"
-                />
-            )} */}
         <IcoPlus
           classes={{
             inner: classes.episodePlus,
@@ -429,6 +419,7 @@ const Tracks = ({ sectionData, channelColor ,assetid,leaugeNightData,channel}) =
     </div>
   )
 }
+
 const Tracks1 = ({ episodeData, backgroundColor, counter,indexdata, channelColor}) => {
   const [isPlaying,setIsPlaying]=React.useState(false);
   const [canPlay,setcanPlay]=React.useState(false);
@@ -548,6 +539,7 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
     //gettingMuxassets();
     leagueNightshowRecordedData();
   },[])
+  
   const showRecordedData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     let urladd=`maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(channel['tag'])}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
@@ -629,7 +621,7 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
   }
   const dispatch = useDispatch()
   const makeGotoEvent = event => () =>{
-  console.log('event',event)
+  //console.log('event',event)
     dispatch(actions.pushHistory(`/event/${event}`))
   }
   return (
