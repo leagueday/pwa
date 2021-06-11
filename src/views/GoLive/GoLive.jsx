@@ -69,7 +69,7 @@ const GoLive = () => {
   
   const dispatch = useDispatch()
   function chooseselection(e){
-    console.log("value choose",e.target.value)
+    //console.log("value choose",e.target.value)
      setSelect({
        select:e.target.value
      })

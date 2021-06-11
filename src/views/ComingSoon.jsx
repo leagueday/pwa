@@ -91,6 +91,10 @@ const useStyles = makeStyles(theme => ({
     height: '6vw',
     width: '6vw',
   },
+  eventImageFormobileView:{
+    height: '15vw',
+    width: '15vw',
+  },
   liveness: {
     display: 'flex',
     width: '600%',
@@ -141,7 +145,7 @@ const EventImage = ({ classes, imageUrl }) => {
 
   return (
   
-  <img className={cx(classes.eventImage)} src={imageUrl} />
+  <img className={cx(window.innerWidth>945?classes.eventImage:classes.eventImageFormobileView)} src={imageUrl} />
   )
 }
 
@@ -265,7 +269,7 @@ const ComingSoon = ({ className,channel,channelColor }) => {
           seturl(response.records[0].fields.playbackUrl)
           }
           else{
-            console.log('setlivestatus',liveStatus)
+            //console.log('setlivestatus',liveStatus)
           }
         }
       ).catch((error)=>{
@@ -287,7 +291,7 @@ const ComingSoon = ({ className,channel,channelColor }) => {
           }).then(response => response.json())
             .then(
               function(response){
-                console.log('abc',response)
+                //console.log('abc',response)
                 if(response.data.status=='active'){
                   setliveStatus(1)
                 }
@@ -305,7 +309,7 @@ const ComingSoon = ({ className,channel,channelColor }) => {
 
   const classes = useStyles()
  
-console.log('checkchannel',checkChannel)
+//console.log('checkchannel',liveStatus)
   return (
     <div className={cx(classes.comingSoon,className)}>
       {liveStatus==0 ?(
