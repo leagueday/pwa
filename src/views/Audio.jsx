@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import ReactHlsPlayer from 'react-hls-player';
-=======
 import React, { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactHlsPlayer from 'react-hls-player';
 import Hls from 'hls.js';
->>>>>>> parent of d126b6f (Revert "Channel plays (#46)")
 
 /**
  * views/Audio
@@ -182,11 +176,8 @@ const nonsecBlubrryPrefix = 'http://media.blubrry.com/'
 
 const Audio = () => {
   const [getAudioRef, setAudioRef] = useAudioRef()
-<<<<<<< HEAD
-=======
   const [getAudioPlayerRef, setAudioPlayerRef] = useAudioPlayerRef()
   const [hlsMediaPlayer, setHlsMediaPlayer] = React.useState(null)
->>>>>>> parent of d126b6f (Revert "Channel plays (#46)")
   const [isSetAdio,setisAudio]=React.useState(false)
   const audioMode = useSelector(selectors.getAudioMode)
   const audioUrl = useSelector(selectors.getAudioUrl)
@@ -273,23 +264,6 @@ let sourceurl;
 
     audioDomNode.currentTime = seekPosition
   }, [seekPosition])
-<<<<<<< HEAD
-  let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://anchor.fm/s')
-  console.log('scruburl',scrubbedAudioUrl,)
-  return audioUrl ? (
-    <span>
-     {srcUrl?(
-      <audio ref={setAudioRef} src={scrubbedAudioUrl} />
-     ):
-      (  <ReactHlsPlayer
-          src={scrubbedAudioUrl}
-          autoPlay={true}
-           controls={false}
-           width="20%"
-          height="auto"
-             />  
-      )}
-=======
   let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://stream.mux.com')
 
   React.useEffect(() => {
@@ -336,7 +310,6 @@ let sourceurl;
         />
         */
       }
->>>>>>> parent of d126b6f (Revert "Channel plays (#46)")
     </span>
   ) : null
 }
