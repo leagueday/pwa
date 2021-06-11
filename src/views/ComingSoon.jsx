@@ -269,7 +269,7 @@ const ComingSoon = ({ className,channel,channelColor }) => {
           seturl(response.records[0].fields.playbackUrl)
           }
           else{
-            //console.log('setlivestatus',liveStatus)
+            console.log('setlivestatus',liveStatus)
           }
         }
       ).catch((error)=>{
@@ -291,7 +291,7 @@ const ComingSoon = ({ className,channel,channelColor }) => {
           }).then(response => response.json())
             .then(
               function(response){
-                //console.log('abc',response)
+                console.log('abc',response)
                 if(response.data.status=='active'){
                   setliveStatus(1)
                 }
@@ -309,7 +309,7 @@ const ComingSoon = ({ className,channel,channelColor }) => {
 
   const classes = useStyles()
  
-//console.log('checkchannel',liveStatus)
+console.log('checkchannel',checkChannel)
   return (
     <div className={cx(classes.comingSoon,className)}>
       {liveStatus==0 ?(

@@ -186,13 +186,62 @@ const EventScreen = ({ tag }) => {
     }
     if(tag=='leaguenight'){
       EvenScreeDatalCS();
-    }
+      }
+      if(tag=='lcs'){
+    EvenScreeDatalOL();
+      }
+      //gettingMuxassets(livestreamingId);
     
-    if(tag=='lcs'){
-      EvenScreeDatalOL();
-    }
-        
   }, [data])
+//  let newArr=[];
+//  let durationArr=[]
+//  React.useEffect(()=>{
+//    if(rescentAsscetid){
+//      rescentAsscetid&&rescentAsscetid.map((item,i)=>{
+//        fetch('/.netlify/functions/mux-proxy-assests', {
+//          method: 'POST',
+//          headers: {
+//            'Accept': 'application/json',
+//        'Content-Type': 'application/json'
+//          },
+//          body:JSON.stringify({url: `video/v1/assets/${item}`})
+//        }).then(response => response.json())
+//          .then(function(assesetId){ 
+//            assesetId.data&& assesetId.data.playback_ids.map((item)=>{
+//             newArr.push(item.id)
+//            })
+//            assesetId.data&& assesetId.data.recording_times.map((item)=>{
+//              durationArr.push(item.duration)
+//            })
+//          }         
+//        ).catch((error)=>{
+//           toast.error(error.type)
+//        }) 
+//    })
+//  } 
+//      setLiveUrl(newArr)
+//      setduration(durationArr)  
+//    
+//  },[rescentAsscetid])
+  
+  /* const gettingMuxassets=(livestreamingId)=>{
+    fetch('/.netlify/functions/mux-proxy', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
+    }).then(response => response.json())
+      .then(function(assesetId){ 
+        if(assesetId){
+         setrescentAsscetId(assesetId.data.recent_asset_ids)
+        }
+      }         
+    ).catch((error)=>{
+       toast.error(error.type)
+    })
+  } */
   
   const EvenScreeDatalOL=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
@@ -219,7 +268,6 @@ const EventScreen = ({ tag }) => {
         setisloading(0)
       })
   }
-  
   const EvenScreeDatalCS=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     let urladd=`filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
@@ -250,7 +298,7 @@ const EventScreen = ({ tag }) => {
   const imageUrl = data?.imageUrl
   const subTitle = data?.subTitle
   const title = data?.title
-  //console.log('data ::: ', data);
+  console.log('data ::: ', data);
   const makeToggleIsExpanded = itemIndex =>
   expandedIndex === itemIndex
     ? () => {

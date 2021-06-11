@@ -264,10 +264,10 @@ let sourceurl;
 
     audioDomNode.currentTime = seekPosition
   }, [seekPosition])
-  let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://stream.mux.com')
+  let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://anchor.fm/s')||scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://www')||scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('http://www')
 
   React.useEffect(() => {
-    if (srcUrl && audioUrl) {
+    if (!srcUrl && audioUrl) {
       if (Hls.isSupported()) {
         var video = document.getElementById('audioPlayer');
         if (hlsMediaPlayer) {
@@ -290,7 +290,7 @@ let sourceurl;
 
   return audioUrl ? (
     <span>
-     {!srcUrl ? (
+     {srcUrl ? (
         <audio ref={setAudioRef} src={scrubbedAudioUrl} />
       ):
       (/* Player Element */ 
