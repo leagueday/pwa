@@ -372,31 +372,34 @@ const Tracks = ({ sectionData, channelColor,assetsId,channelData }) => {
   const classes = useStyles({ channelColor })
   const [liveUrl,setLiveUrl]=React.useState([])
   React.useEffect(()=>{
-    gettingMuxassetsId();
+    //gettingMuxassetsId();
   },[assetsId])
-  const gettingMuxassetsId=()=>{
+  
+  /* const gettingMuxassetsId=()=>{
     console.log("getting")
-    if(assetsId){
-  // var params=assetsId
-  //  for(var i=0;i<params.length;i++){
- 
-  //   fetch('/.netlify/functions/mux-proxy-assests', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //   'Content-Type': 'application/json'
-  //     },
-  //     body:JSON.stringify({url: `video/v1/assets/${params[i]}`})
-  //   }).then(response => response.json())
-  //     .then(function(assesetId){ 
-  //       setLiveUrl(assesetId.data)
-  //     }         
-  //   ).catch((error)=>{
-  //      toast.error(error.type)
-  //   }) 
-  // }
-}
-  }
+    if(assetsId)
+    {
+        var params=assetsId
+         for(var i=0;i<params.length;i++){
+
+          fetch('/.netlify/functions/mux-proxy-assests', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+          'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({url: `video/v1/assets/${params[i]}`})
+          }).then(response => response.json())
+            .then(function(assesetId){ 
+              setLiveUrl(assesetId.data)
+            }         
+          ).catch((error)=>{
+             toast.error(error.type)
+          }) 
+        }
+     }
+  } */
+  
   return (
     <div className={classes.tracks}>
       <div className={classes.tracksLeftPad}>&nbsp;</div>
@@ -436,6 +439,7 @@ const ReplayLiveBroadCast = ({ className, channel }) => {
     gettingMuxassets(channel['liveStreamId']);
     })
   },[])
+  
   const liveData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
       let urladd=`maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(channel['tag'])}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
@@ -462,6 +466,7 @@ const ReplayLiveBroadCast = ({ className, channel }) => {
           console.log("error while data fetching",error.type)
         })
   }
+  
   const gettingMuxassets=(livestreamid)=>{
     //call mux api to get playback url
     fetch('/.netlify/functions/mux-proxy', {
@@ -478,8 +483,7 @@ const ReplayLiveBroadCast = ({ className, channel }) => {
     ).catch((error)=>{
        toast.error(error.type)
     }) 
-  }
-  
+  }  
   
   const dispatch = useDispatch()
   const makeGotoEvent = event => () =>

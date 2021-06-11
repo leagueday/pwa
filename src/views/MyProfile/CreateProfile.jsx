@@ -110,6 +110,7 @@ const useStyles = makeStyles(theme => ({
     margin: "10px 10px 0px 0px"
   }
 }))
+
 const CreateProfile = (props) => {
   const channels = useChannels().list
   const [state,setFile] = React.useState({
@@ -162,8 +163,8 @@ const CreateProfile = (props) => {
   let newFileName = filesSaved.name.replace(/\..+$/, "");
   uploadFile(filesSaved, config)
             .then(data => {
-              setimage(data['location'])
-              console.log('datafile',JSON.stringify(data))})
+              setimage(data['location'])              
+            })
             .catch(err => console.error(err))
  
     setFile({
@@ -174,7 +175,7 @@ const CreateProfile = (props) => {
       photoError:""
     });
 
-    const reader = new FileReader();
+  const reader = new FileReader();
     reader.onloadend = function(e) {
       setFile({
         ...state,
@@ -185,6 +186,7 @@ const CreateProfile = (props) => {
     }
     reader.readAsDataURL(event.target.files[0])
   };
+  
   const handleChannelImage=async event=>{
     var channelImageSaved = event.target.files[0];
     setFormInput({
@@ -195,9 +197,10 @@ const CreateProfile = (props) => {
     uploadFile(channelImageSaved, config)
               .then(data => {
                 setsaveChannelImage(data['location'])
-                console.log('datafile',JSON.stringify(data))})
+               })
               .catch(err => console.error(err))
   }
+  
   const validateForm=()=>{
     let formIsValid = true;
     if (formInput.name === "" || formInput.name===undefined||formInput.name === null ||!formInput.name ) {
@@ -216,12 +219,14 @@ const CreateProfile = (props) => {
     return formIsValid;
 
   }
-  const dispatch = useDispatch()
+  
+const dispatch = useDispatch()
 function handleAdd() {
   const values = [...context];
   values.push({ value: null });
   setContext(values);
 }
+
 function handleChange(i, event) {
   const values = [...context];
   values[i].value = event.target.value;
@@ -231,7 +236,6 @@ function handleChange(i, event) {
     arr.push(context[i].value);
   }
   setsaveContext(arr)
-  console.log('valueadded',arr)
 }
 
 const onChannelChanged=(e,channelFieldKey,tag)=>{
@@ -291,8 +295,7 @@ const onChannelChanged=(e,channelFieldKey,tag)=>{
         ]
       }
       
-    const baseId = 'appXoertP1WJjd4TQ'
-    
+    const baseId = 'appXoertP1WJjd4TQ'    
     fetch('/.netlify/functions/airtable-proxy', {
       method: 'POST',
       headers: {
@@ -303,7 +306,7 @@ const onChannelChanged=(e,channelFieldKey,tag)=>{
     }).then(response => response.json())
       .then(
         function(response){
-          console.log("response from api",response)
+          
           setFormInput({
             ...formInput,
             name:"",
@@ -328,6 +331,7 @@ const onChannelChanged=(e,channelFieldKey,tag)=>{
   }})
 
 }
+
 const muxChannel=()=>{
   fetch('/.netlify/functions/mux-livestream', {
     method: 'POST',
@@ -347,6 +351,7 @@ const muxChannel=()=>{
      toast.error(error.type)
   })
 }
+
 const savedUserChannel=()=>{
   let data = {
     "records": [
@@ -360,6 +365,7 @@ const savedUserChannel=()=>{
       }
     ]
   }
+  
   const baseId = 'appXoertP1WJjd4TQ'
   fetch('/.netlify/functions/airtable-proxy', {
     method: 'POST',
@@ -371,7 +377,6 @@ const savedUserChannel=()=>{
   }).then(response => response.json())
     .then(
       function(response){
-        console.log("response from api",response)
         
        setContext("");
        setChannelTag('')

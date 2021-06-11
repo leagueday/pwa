@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactHlsPlayer from 'react-hls-player';
+=======
+import React, { useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import ReactHlsPlayer from 'react-hls-player';
+import Hls from 'hls.js';
+>>>>>>> parent of d126b6f (Revert "Channel plays (#46)")
 
 /**
  * views/Audio
@@ -64,7 +71,7 @@ const addDebugEventListeners = debugAudio
         ['waiting', 'Playback has stopped because of a temporary lack of data'],
       ]) {
         audioDomNode.addEventListener(event, () => {
-          console.log(`Audio Event: ${event} (${description})`)
+          //console.log(`Audio Event: ${event} (${description})`)
         })
       }
     }
@@ -153,11 +160,33 @@ const useAudioRef = () => {
   return [getRef, setRef]
 }
 
+const useAudioPlayerRef = () => {
+  const playerRef = React.useRef();
+  const dispatch = useDispatch();
+  const getRef = React.useCallback(() => playerRef.current, [])
+  const setRef = React.useCallback(node => {
+    if (node) {
+      node.addEventListener('play', () => {
+        dispatch(actions.playAudioEvent())
+      })
+      node.addEventListener('pause', () => {
+        dispatch(actions.pauseAudioEvent())
+      })
+    }
+    playerRef.current = node
+  }, [])
+  return [getRef, setRef];
+}
 // one off hack
 const nonsecBlubrryPrefix = 'http://media.blubrry.com/'
 
 const Audio = () => {
   const [getAudioRef, setAudioRef] = useAudioRef()
+<<<<<<< HEAD
+=======
+  const [getAudioPlayerRef, setAudioPlayerRef] = useAudioPlayerRef()
+  const [hlsMediaPlayer, setHlsMediaPlayer] = React.useState(null)
+>>>>>>> parent of d126b6f (Revert "Channel plays (#46)")
   const [isSetAdio,setisAudio]=React.useState(false)
   const audioMode = useSelector(selectors.getAudioMode)
   const audioUrl = useSelector(selectors.getAudioUrl)
@@ -213,6 +242,16 @@ let sourceurl;
     }
   }, [audioMode, scrubbedAudioUrl])
 
+  React.useEffect(() => {
+    const audioPlayerDomNode = getAudioPlayerRef()
+    if (!audioPlayerDomNode || !audioPlayerDomNode.src) return
+    if (audioMode === storeConsts.AUDIO_MODE_PAUSE && !audioPlayerDomNode.paused) {
+      audioPlayerDomNode.pause()
+    } else if (audioMode === storeConsts.AUDIO_MODE_PLAY && audioPlayerDomNode.paused) {
+      audioPlayerDomNode.play()
+    }
+  }, [audioMode, scrubbedAudioUrl])
+
   //////////////////////////////////////////////////////////////////////////////
   // forward, replay - consequence of button tap
   React.useEffect(() => {
@@ -234,6 +273,7 @@ let sourceurl;
 
     audioDomNode.currentTime = seekPosition
   }, [seekPosition])
+<<<<<<< HEAD
   let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://anchor.fm/s')
   console.log('scruburl',scrubbedAudioUrl,)
   return audioUrl ? (
@@ -249,6 +289,54 @@ let sourceurl;
           height="auto"
              />  
       )}
+=======
+  let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://stream.mux.com')
+
+  React.useEffect(() => {
+    if (srcUrl && audioUrl) {
+      if (Hls.isSupported()) {
+        var video = document.getElementById('audioPlayer');
+        if (hlsMediaPlayer) {
+          hlsMediaPlayer.destroy()
+        }
+        if (video) {
+          var hls = new Hls();
+          // bind them together
+          hls.detachMedia();
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+            hls.loadSource(scrubbedAudioUrl);
+          });
+          setHlsMediaPlayer(hls)
+        }
+      }
+    }
+    return () => true;
+  }, [srcUrl, audioUrl])
+
+  return audioUrl ? (
+    <span>
+     {!srcUrl ? (
+        <audio ref={setAudioRef} src={scrubbedAudioUrl} />
+      ):
+      (/* Player Element */ 
+        <video ref={setAudioPlayerRef} id="audioPlayer" autoPlay={true}/>
+      )}
+      {
+        /*
+        <ReactHlsPlayer
+          playerRef={setAudioPlayerRef}
+          src={audioUrl}
+          autoPlay={true}
+          hlsConfig={{
+            debug: false
+          }}
+          width="20%"
+          height="auto"
+        />
+        */
+      }
+>>>>>>> parent of d126b6f (Revert "Channel plays (#46)")
     </span>
   ) : null
 }
