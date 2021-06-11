@@ -193,6 +193,7 @@ const MyProfile = () => {
     getProfileData();
     getuserChannelData();
   },[])
+  
   const getProfileData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     const userId=user['id']
@@ -216,6 +217,7 @@ const MyProfile = () => {
         console.log('error while data fetching',error)
       })
   }
+  
   const getuserChannelData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     const userId=user['id']
@@ -238,14 +240,14 @@ const MyProfile = () => {
         console.log('error while data fetching',error)
       })
   }
+  
   const facetedPodcasts = useFacets('Home')
-
   const classes = useStyles({ primaryColor })
   const dispatch=useDispatch();
   const userName = user?.user_metadata?.full_name
   const golive=() => dispatch(actions.pushHistory('/live'));
   const editProfile=()=>dispatch(actions.pushHistory('/editprofile'))
-  console.log('channelname',userChannel)
+  //console.log('channelname',userChannel)
   return (
     <BasicLayout home>
       {user && (

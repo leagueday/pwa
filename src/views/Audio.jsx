@@ -186,6 +186,8 @@ const Audio = () => {
   const position = useSelector(selectors.getAudioPosition)
   const taps = useSelector(selectors.getAudioTaps)
   const seek = useSelector(selectors.getAudioSeek)
+  const volume = useSelector(selectors.getAudioVolume)
+  const hlsRef = useRef(null)
 
   const seekPosition = seek?.position
 
@@ -200,14 +202,14 @@ const Audio = () => {
     // play: playTaps,
     replay: replayTaps,
   } = taps
-let sourceurl;
+  let sourceurl
   const scrubbedAudioUrl = React.useMemo(() => {
     if (audioUrl && audioUrl.startsWith(nonsecBlubrryPrefix)) {
       const embeddedUrlOffset = audioUrl.indexOf(
         'http',
         nonsecBlubrryPrefix.length
       )
-      sourceurl=embeddedUrlOffset;
+      sourceurl = embeddedUrlOffset
       if (embeddedUrlOffset > 0) {
         return audioUrl.substr(embeddedUrlOffset)
       }
