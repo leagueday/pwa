@@ -74,7 +74,7 @@ const PreviewPage = () => {
   let image=localStorage.getItem('channelImage')
   const dispatch=useDispatch()
   const channeldestribution=()=>{
-      //console.log("channnallist")
+      console.log("channnallist")
       dispatch(actions.pushHistory('/channelist'))
   }
   return (

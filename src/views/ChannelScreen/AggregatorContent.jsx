@@ -87,7 +87,7 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
       {channel.title}
     </div>
     <div className={classes.headlineTitleRow}>
-      {hasBroadcasts ? 'Podcasts and Live Events AudioCasts' : 'Podcasts'}
+      {hasBroadcasts ? 'LCS Coverage' : 'Podcasts'}
     </div>
   </div>
 )
@@ -137,18 +137,13 @@ const AggregatorContent = ({ channel }) => {
           />
         </BottomBlock>
       )}
-     
-     {channel.tag != 'lol' ? (
-         <BottomBlock
-            accentColor={channel.color}
-            titleStart={channel.title}
-            titleRest="Podcasts"
-          >
-            <FacetedPodcastTiles data={facets} />
-          </BottomBlock>   
-       ):''
-     }
-      
+      {/* <BottomBlock
+        accentColor={channel.color}
+        titleStart={channel.title}
+        titleRest="Podcasts"
+      >
+        <FacetedPodcastTiles data={facets} />
+      </BottomBlock> */}
     </ContentLayout>
   )
 }
