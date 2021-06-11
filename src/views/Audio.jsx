@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import ReactHlsPlayer from 'react-hls-player';
+import ReactHlsPlayer from 'react-hls-player'
 
 /**
  * views/Audio
@@ -158,7 +158,7 @@ const nonsecBlubrryPrefix = 'http://media.blubrry.com/'
 
 const Audio = () => {
   const [getAudioRef, setAudioRef] = useAudioRef()
-  const [isSetAdio,setisAudio]=React.useState(false)
+  const [isSetAdio, setisAudio] = React.useState(false)
   const audioMode = useSelector(selectors.getAudioMode)
   const audioUrl = useSelector(selectors.getAudioUrl)
 
@@ -166,6 +166,8 @@ const Audio = () => {
   const position = useSelector(selectors.getAudioPosition)
   const taps = useSelector(selectors.getAudioTaps)
   const seek = useSelector(selectors.getAudioSeek)
+  const volume = useSelector(selectors.getAudioVolume)
+  const hlsRef = useRef(null)
 
   const seekPosition = seek?.position
 
@@ -180,14 +182,14 @@ const Audio = () => {
     // play: playTaps,
     replay: replayTaps,
   } = taps
-let sourceurl;
+  let sourceurl
   const scrubbedAudioUrl = React.useMemo(() => {
     if (audioUrl && audioUrl.startsWith(nonsecBlubrryPrefix)) {
       const embeddedUrlOffset = audioUrl.indexOf(
         'http',
         nonsecBlubrryPrefix.length
       )
-      sourceurl=embeddedUrlOffset;
+      sourceurl = embeddedUrlOffset
       if (embeddedUrlOffset > 0) {
         return audioUrl.substr(embeddedUrlOffset)
       }
@@ -234,20 +236,39 @@ let sourceurl;
 
     audioDomNode.currentTime = seekPosition
   }, [seekPosition])
-  let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://anchor.fm/s')
-  console.log('scruburl',scrubbedAudioUrl,)
+
+  let srcUrl =
+    scrubbedAudioUrl && scrubbedAudioUrl.startsWith('https://anchor.fm/s')
+  console.log('scruburl', scrubbedAudioUrl)
+
+  useEffect(() => {
+    let formattedVolume = volume / 100
+    if (srcUrl) {
+      const audioDomNode = getAudioRef()
+      if (!audioDomNode) {
+        return
+      }
+      audioDomNode.volue = formattedVolume
+    } else {
+      if (hlsRef.current) {
+        hlsRef.current.volume = formattedVolume
+      }
+    }
+  }, [volume, srcUrl])
+
   return audioUrl ? (
     <span>
-     {srcUrl?(
-      <audio ref={setAudioRef} src={scrubbedAudioUrl} />
-     ):
-      (  <ReactHlsPlayer
+      {srcUrl ? (
+        <audio ref={setAudioRef} src={scrubbedAudioUrl} />
+      ) : (
+        <ReactHlsPlayer
           src={scrubbedAudioUrl}
           autoPlay={true}
-           controls={false}
-           width="20%"
+          controls={false}
+          width="20%"
           height="auto"
-             />  
+          playerRef={hlsRef}
+        />
       )}
     </span>
   ) : null
