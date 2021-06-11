@@ -35,4 +35,3 @@ export const getAudioSeeked = store => getAudioState(store)?.events.seeked
 export const getAudioTaps = store => getAudioState(store)?.taps
 export const getAudioTitle = store => getAudioState(store)?.title
 export const getAudioUrl = store => getAudioState(store)?.audioUrl
-export const getAudioVolume = store => getAudioState(store)?.volume

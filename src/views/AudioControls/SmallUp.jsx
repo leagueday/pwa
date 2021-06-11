@@ -20,7 +20,6 @@ import ToggleImageButton from '../ToggleImageButton'
 import Connector from './Connector'
 import ProgressBox from './ProgressBox'
 import Title from './Title'
-import VolumeBox from './VolumeBox'
 
 const FastFwdStopButton = makeIconButton(IcoFastFwdStop)
 const ForwardStopButton = makeIconButton(IcoForwardStop)
@@ -36,12 +35,12 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 'auto',
-    maxHeight: '8em',
+    maxHeight: '6em',
     minHeight: '6em',
     userSelect: 'none',
     width: '100%',
     [theme.breakpoints.only('md')]: {
-      maxHeight: '8em',
+      maxHeight: '4em',
       minHeight: '4em',
     },
   },
@@ -111,8 +110,6 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.only('md')]: {
       marginLeft: '0.5em',
     },
-  },
-  volumeBox: {
   },
 }))
 
@@ -195,9 +192,6 @@ const SmUpAudioControls = () => {
                   onClick={forwardButtonOnclick}
                   shadowColor={buttonShadowColor}
                 />
-                <div className={classes.volumeBox}>
-                  <VolumeBox />
-                </div>
               </div>
             </div>
           </div>
