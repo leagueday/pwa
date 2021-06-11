@@ -20,6 +20,7 @@ import { makeIconButton } from '../IconButton'
 import Connector from './Connector'
 import ExtraSmallHidden from './ExtraSmallHidden'
 import ProgressBox from './ProgressBox'
+import VolumeBox from './VolumeBox'
 import ToggleImageButton from '../ToggleImageButton'
 import XsTitle from './XsTitle'
 
@@ -78,6 +79,10 @@ const useStyles = makeStyles(theme => ({
     padding: '2vw',
     position: 'relative',
   },
+  volumeBox: {
+    padding: '0 3vw',
+    marginTop: '2vw'
+  }
 }))
 
 const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
@@ -192,6 +197,9 @@ const XsCondensedAudioControls = ({ className, primaryColor }) => {
                 onClick={forwardButtonOnclick}
                 shadowColor={buttonShadowColor}
               />
+            </div>
+            <div className={classes.volumeBox}>
+              <VolumeBox />
             </div>
           </div>
         ))(
