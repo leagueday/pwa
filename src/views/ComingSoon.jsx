@@ -313,14 +313,7 @@ const ComingSoon = ({ className,channel,channelColor }) => {
   return (
     <div className={cx(classes.comingSoon,className)}>
       {liveStatus==0 ?(
-      <div className={classes.comingSoonRow}>
-        <div className={classes.logoContainer}>
-          <img
-            className={classes.logo}
-            src="/img/logo_square_transparent.png"
-          />
-        </div>
-        <div className={classes.text}>Coming Soon</div>
+      <div>
       </div>
       ):(
         <>

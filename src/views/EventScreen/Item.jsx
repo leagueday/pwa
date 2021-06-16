@@ -112,17 +112,17 @@ const Item = ({
 
   const onPopClick = isPlaying
   ? ev => {
-      console.log('PAUSED AUDIO');
+      //console.log('PAUSED AUDIO');
       dispatch(actions.pauseAudio())
       ev.stopPropagation()
     }
   : ev => {
       if (isSelectedAudio) {
-        console.log('PLAYED AUDIO');
+        //console.log('PLAYED AUDIO');
         dispatch(actions.playAudio())
       }
       else {
-        console.log('PLAY AUDIO');
+        //console.log('PLAY AUDIO');
         //console.log('itemIndex :: ', itemIndex);
         dispatch(
           actions.selectAudio(

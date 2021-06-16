@@ -419,6 +419,7 @@ const Tracks = ({ sectionData, channelColor ,assetid,leaugeNightData,channel}) =
     </div>
   )
 }
+
 const Tracks1 = ({ episodeData, backgroundColor, counter,indexdata, channelColor}) => {
   const [isPlaying,setIsPlaying]=React.useState(false);
   const [canPlay,setcanPlay]=React.useState(false);
