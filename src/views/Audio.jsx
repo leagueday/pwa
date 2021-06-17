@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Hls from 'hls.js';
+import ReactHlsPlayer from 'react-hls-player'
 
 /**
  * views/Audio
@@ -327,7 +328,18 @@ let sourceurl;
         <audio ref={setAudioRef} src={scrubbedAudioUrl} />
       ):
       (/* Player Element */ 
-        <video ref={setAudioPlayerRef} id="audioPlayer" autoPlay={true} format="m3u8" type="m3u8" />
+         (window.innerWidth>945?
+            (/* Player Element */ 
+              <video ref={setAudioPlayerRef} id="audioPlayer" autoPlay={true} format="m3u8" type="m3u8" />
+            ):(
+              <ReactHlsPlayer
+              src={scrubbedAudioUrl}
+              autoPlay={true}
+              controls={false}
+              width="20%"
+              height="auto"
+            />
+            ))
       )}
     </span>
   ) : null
