@@ -281,8 +281,9 @@ let sourceurl;
   let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://stream.mux.com')
   React.useEffect(() => {
     if (srcUrl && audioUrl) {
+      let video = document.getElementById('audioPlayer');
       if (Hls.isSupported()) {
-        var video = document.getElementById('audioPlayer');
+        
         if (hlsMediaPlayer) {
           hlsMediaPlayer.destroy()
         }
@@ -296,6 +297,12 @@ let sourceurl;
           });
           setHlsMediaPlayer(hls)
         }
+      }
+      else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = srcUrl;
+        video.addEventListener('audioPlayer', function() {
+          video.play();
+        });
       }
     }
     return () => true;
@@ -320,8 +327,8 @@ let sourceurl;
         <audio ref={setAudioRef} src={scrubbedAudioUrl} />
       ):
       (/* Player Element */ 
-        <video ref={setAudioPlayerRef} id="audioPlayer" autoPlay={true} />
-      )}      
+        <video ref={setAudioPlayerRef} id="audioPlayer" autoPlay={true} format="m3u8" type="m3u8" />
+      )}
     </span>
   ) : null
 }
