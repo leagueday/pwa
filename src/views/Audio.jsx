@@ -281,7 +281,7 @@ let sourceurl;
   }, [seekPosition])
   let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://stream.mux.com')
   React.useEffect(() => {
-    if (srcUrl && audioUrl) {
+    if (srcUrl && audioUrl && window.innerWidth>945) {
       let video = document.getElementById('audioPlayer');
       if (Hls.isSupported()) {
         
