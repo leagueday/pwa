@@ -29,6 +29,7 @@ const initialState = {
     replay: 0,
   },
   title: null,
+  volume: 66,
 }
 
 const setCounter = (keyword, nextCount, counters) =>
@@ -206,6 +207,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         position: action.payload.position,
+      }
+    }
+    case ActionType.SET_AUDIO_VOLUME: {
+      return {
+        ...state,
+        volume: action.payload.volume,
       }
     }
     default:

@@ -116,6 +116,7 @@ const DestributionPage = () => {
   const channels = useChannels().list
   const user = useSelector(selectors.getUser)
   const userName = user?.user_metadata?.full_name
+  
   React.useEffect(()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     const userId=user['id']
@@ -140,16 +141,18 @@ const DestributionPage = () => {
         console.log('error while data fetching',error)
       })
   },[])
-  let playbackStream=`https://stream.mux.com`
-  let userChannelPush={};
+  
+ let playbackStream=`https://stream.mux.com`
+ let userChannelPush={};
  if(userChannel) {
-userChannel.map(item=>{
-  userChannelPush.title=item.fields.userChannel,
-  userChannelPush.rtmpLink=item.fields.rtmpLink,
-  userChannelPush.streamKey=item.fields.streamKey,
-  userChannelPush.liveStreamId=item.fields.liveStreamId
-})
+    userChannel.map(item=>{
+      userChannelPush.title=item.fields.userChannel,
+      userChannelPush.rtmpLink=item.fields.rtmpLink,
+      userChannelPush.streamKey=item.fields.streamKey,
+      userChannelPush.liveStreamId=item.fields.liveStreamId
+    })
  }
+ 
 let channelsData=channels.concat(userChannelPush)
 const onChannelChanged=(e,key)=>{
 
@@ -173,13 +176,12 @@ const onChannelChanged=(e,key)=>{
     toast.success("Please click Create Direct Link below to stream to selected channel")
    }
 
-
 }
+
 const creatingDirectLink=()=>{
   let livestreamingId=channelList['liveStreamId']
-
+  
   //call mux api to get playback url
-
   fetch('/.netlify/functions/mux-proxy', {
     method: 'POST',
     headers: {
@@ -189,7 +191,7 @@ const creatingDirectLink=()=>{
     body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
   }).then(response => response.json())
     .then(function(streamData){ 
-        console.log(streamData.data);
+        //console.log(streamData.data);
         setplaybackChannel(streamData.data.playback_ids[0].id)
         setStreamkey({
           streamkey:streamData.data.stream_key
@@ -208,6 +210,7 @@ const creatingDirectLink=()=>{
   })
 
 }
+
 let playId=playback.playback;
 let playbackUrl= `${playbackStream}/${playId}.m3u8`
 let playbachannelUrl=playbackChannel
@@ -231,8 +234,7 @@ function submitFormData(play_id){
       ]
     }
     
-  const baseId = 'appXoertP1WJjd4TQ'
-  
+  const baseId = 'appXoertP1WJjd4TQ'  
   fetch('/.netlify/functions/airtable-proxy', {
     method: 'POST',
     headers: {
@@ -243,7 +245,7 @@ function submitFormData(play_id){
   }).then(response => response.json())
     .then(
       function(response){
-        console.log("response from api",response)
+        //console.log("response from api",response)
       }
     ).catch((error)=>{
       console.log("error while data fetching",error.type)
@@ -281,7 +283,7 @@ const onPopClick = isPlaying
         ev.stopPropagation()
   }
 : ev => {
-  console.log('iskhkjds',isSelectedAudio)
+  //console.log('iskhkjds',isSelectedAudio)
    dispatch(actions.playAudio())
           dispatch(
             actions.selectAudio(

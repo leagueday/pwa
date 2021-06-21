@@ -78,6 +78,7 @@ const useStyles = makeStyles(theme => ({
     width: 400
   }
 }))
+
 const GoLiveData = (props) => {
   const [state,setFile] = React.useState({
     mainState: "initial",
@@ -87,6 +88,7 @@ const GoLiveData = (props) => {
     photoError:"",
     image:""
   });
+  
   const [image,setimage]=React.useState();
   const [disable,setdisable]=React.useState(true);
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -100,6 +102,7 @@ const GoLiveData = (props) => {
       descriptionError:"",
     }
   );
+  
   const config = {
     bucketName:"leagueday-prod-images",
     dirName:"uploads",
@@ -107,6 +110,7 @@ const GoLiveData = (props) => {
     accessKeyId:"AKIA2NEES72FJV4VO343",
     secretAccessKey:"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",
   };
+  
  const handleUploadClick = event => {
     var file = event.target.files[0];
     setFile({
@@ -129,14 +133,14 @@ const GoLiveData = (props) => {
       uploadFile(file, config)
                 .then(data => {
                   setimage(data['location'])
-                  setdisable(false)
-                  console.log('datafile',JSON.stringify(data))})
+                  setdisable(false)                  
+              })
                 .catch(err => {
                   setdisable(false)
                   console.error(err)})
       })
   };
-  console.log("onloaded",image)
+  //console.log("onloaded",image)
   // const handleInput = evt => {
   //   const name = evt.target.name;
   //   const newValue = evt.target.value;
@@ -161,10 +165,10 @@ const GoLiveData = (props) => {
   const dispatch = useDispatch()
   const submit = (evt) => {
     evt.preventDefault()
-    console.log("message fired",evt)
+    //console.log("message fired",evt)
     return sleep(100).then(() => {
     if(validateForm()){
-    console.log("title & descridption addedd")
+    //console.log("title & descridption addedd")
     localStorage.setItem("title",formInput['title'])
     localStorage.setItem("description",formInput['description'])
     localStorage.setItem('channelImage',image)
