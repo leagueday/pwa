@@ -187,17 +187,14 @@ const MyProfile = () => {
   const [userProfile, setUserProfile] = React.useState([])
   const [userChannel, setUserChannel] = React.useState([])
   const user = useSelector(selectors.getUser)
-
   React.useEffect(() => {
     getProfileData()
     getuserChannelData()
   }, [])
-
   const getProfileData = () => {
     const baseId = 'appXoertP1WJjd4TQ'
     const userId = user['id']
     let fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
-
     fetch('/.netlify/functions/airtable-getprofile', {
       method: 'POST',
       headers: {
@@ -216,7 +213,6 @@ const MyProfile = () => {
         console.log('error while data fetching', error)
       })
   }
-
   const getuserChannelData = () => {
     const baseId = 'appXoertP1WJjd4TQ'
     const userId = user['id']
@@ -239,7 +235,6 @@ const MyProfile = () => {
         console.log('error while data fetching', error)
       })
   }
-  
   const facetedPodcasts = useFacets('Home')
 
   const classes = useStyles({ primaryColor })
@@ -304,11 +299,11 @@ const MyProfile = () => {
                             <span>Twitch :{data.TwitchUrl}</span>
                           </p>
                           {/* <p className="card-text">
-                  <span>FaceBook :{data.FacebookUrl}</span>
-                  </p>
-                  <p className="card-text">
-                  <span>Instagram: {data.InstagramUrl}</span>
-                  </p> */}
+                 <span>FaceBook :{data.FacebookUrl}</span>
+                 </p>
+                 <p className="card-text">
+                 <span>Instagram: {data.InstagramUrl}</span>
+                 </p> */}
                         </div>
                       </div>
                     </div>
@@ -337,26 +332,26 @@ const MyProfile = () => {
                       </table>
                     </div>
                     {/* <div className={classes.awards}>
-                 <div className="card-body">
-                  <h5 className="card-title">
-                    <br></br><br></br>
-                  <label><u>My Awards</u></label> 
-                  </h5>
-                  <p className="card-text">
-                  <span>My awards data in progress</span>
-                  </p>
-                </div>
-              </div> */}
+                <div className="card-body">
+                 <h5 className="card-title">
+                   <br></br><br></br>
+                 <label><u>My Awards</u></label>
+                 </h5>
+                 <p className="card-text">
+                 <span>My awards data in progress</span>
+                 </p>
+               </div>
+             </div> */}
                     {/* <div className={classes.mycontext}>
-                 <div className="card-body">
-                  <h5 className="card-title">
-                  <label><u>My Contexts</u></label> 
-                  </h5>
-                  <p className="card-text">
-                  <span>{data.MyContext}</span>
-                  </p>
-                </div>
-              </div> */}
+                <div className="card-body">
+                 <h5 className="card-title">
+                 <label><u>My Contexts</u></label>
+                 </h5>
+                 <p className="card-text">
+                 <span>{data.MyContext}</span>
+                 </p>
+               </div>
+             </div> */}
                   </div>
                 ))}
             </div>
@@ -397,10 +392,10 @@ const MyProfile = () => {
                   <br></br>
                   <Grid className={''} item xs={12}>
                     {/* <BottomBlock
-                 titleStart={data.name}
-                 titleRest="Podcasts"
-                 >
-               </BottomBlock> */}
+                titleStart={data.name}
+                titleRest="Podcasts"
+                >
+              </BottomBlock> */}
                   </Grid>
                   <Grid className={''}>
                     <BottomBlock titleStart={data.name} titleRest="Live">

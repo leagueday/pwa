@@ -213,16 +213,16 @@ const Track = ({ classes, playbackurl }) => {
       />
       <div className={classes.trackText}>Stream</div>
       {/* {isPlaying &&(
-            <ReactHlsPlayer
-            playerRef={playerRef}
-            src={playbackurl}
-            autoPlay={true}
-            onClick={playVideo}
-            controls={true}
-            width="20%"
-            height="auto"
-            />
-        )} */}
+           <ReactHlsPlayer
+           playerRef={playerRef}
+           src={playbackurl}
+           autoPlay={true}
+           onClick={playVideo}
+           controls={true}
+           width="20%"
+           height="auto"
+           />
+       )} */}
     </div>
   )
 }
@@ -240,14 +240,11 @@ const ComingSoon = ({ className, channel, channelColor }) => {
     // muxliveData();
     // })
   }, [liveStatus])
-
   const liveData = channellivestream => {
     const baseId = 'appXoertP1WJjd4TQ'
-    
     let urladd = `filterByFormula={channelTag}=${JSON.stringify(
       channel['tag']
     )}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
-
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
@@ -275,9 +272,7 @@ const ComingSoon = ({ className, channel, channelColor }) => {
         console.log('error while data fetching', error.type)
       })
   }
-
-  let checkChannel;
-
+  let checkChannel
   const muxliveData = (liveurl, livestreamid) => {
     const baseId = 'appXoertP1WJjd4TQ'
     if (liveurl) {
@@ -305,9 +300,7 @@ const ComingSoon = ({ className, channel, channelColor }) => {
   }
 
   const classes = useStyles()
-
   console.log('checkchannel', checkChannel)
-
   return (
     <div className={cx(classes.comingSoon, className)}>
       {liveStatus == 0 ? (
@@ -355,10 +348,8 @@ const ComingSoon = ({ className, channel, channelColor }) => {
     </div>
   )
 }
-
 export const mockupGetHasBroadcasts = channel => {
   const data = filterMockupData(channel.tag)
   return data.length > 0
 }
-
-export default ComingSoon;
+export default ComingSoon
