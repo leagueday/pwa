@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import useAirTable from '../api/useAirtable'
 import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '../styling'
+import { useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles(theme => ({
   nextLive: {
@@ -11,12 +13,23 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     fontSize: '100%',
     background: '#111',
+    [theme.breakpoints.only('xs')]: {
+      background: 'black',
+      fontSize: '70%'
+    },
+    [theme.breakpoints.only('sm')]: {
+      flexDirection: 'column',
+      fontSize: '90%'
+    },
   },
   nextLiveText: {
     fontWeight: theme.typography.fontWeightBold,
     width: '70%',
     marginLeft: 10,
-    textAlign: 'center'
+    textAlign: 'center',
+    [theme.breakpoints.only('xs')]: {
+      width: '100%'
+    },
   },
   liveSpan: {
     color: colors.magenta
@@ -26,11 +39,20 @@ const useStyles = makeStyles(theme => ({
     // width: 'inherit',
     width: '18%',
     // flex: 1
-  }
+    [theme.breakpoints.only('xs')]: {
+      display: 'none'
+    },
+  },
 }))
 
 const NextLive = ({ titleStart, titleRest }) => {
+  const theme = useTheme();
+  const smUp = useMediaQuery(theme.breakpoints.up('sm'));
+  const xsUp = useMediaQuery(theme.breakpoints.up('xs'));
   const classes = useStyles();
+
+  console.log('small', smUp, 'xs', xsUp)
+
   const [live, setlive] = useState(false)
   const [days, setDays] = useState(0)
   const [hours, setHours] = useState(0)
@@ -112,7 +134,7 @@ const NextLive = ({ titleStart, titleRest }) => {
   // }, [data])
 
   return (
-    <div classes={classes.nextLive}>
+    <div classes={xsUp ? classes.nextLiveSm : classes.nextLive }>
       {/* {titleStart === 'League of Legends' &&
         titleRest === 'Live' &&
         live === false && (

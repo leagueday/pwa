@@ -1,11 +1,11 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 import useChannels from '../../api/useChannels'
-import { actions } from '../../store'
 import { colors } from '../../styling'
+import { actions, selectors, constants as storeConstants} from '../../store'
 import { IcoPause, IcoPlay, IcoPlus } from '../icons'
 const useStyles = makeStyles(theme => ({
   clickable: {
@@ -290,132 +290,109 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
   )
 }
 
-const Track = ({
-  episodeData,
-  backgroundColor,
-  counter,
-  channelColor,
-  liveUrl,
-  leaugeNightData,
-  channel,
-}) => {
-  const [isPlaying, setIsPlaying] = React.useState(false)
-  const [canPlay, setcanPlay] = React.useState(false)
-  const { fakeDateLabel, fakeDurationLabel } = episodeData
+const Track = ({ episodeData, backgroundColor, counter,indexData,itemaudioUrl, channelColor,liveUrl,leaugeNightData,channe}) => {
+  const [isPlaying,setIsPlaying]=React.useState(false);
+  const [canPlay,setcanPlay]=React.useState(false);
+  const dispatch = useDispatch()
+  const {
+    fakeDateLabel,
+    fakeDurationLabel,
+  } = episodeData
   const classes = useStyles({ backgroundColor, canPlay, channelColor })
-
-  const PlayOrPauseIcon = isPlaying ? IcoPause : IcoPlay
-  // let playback
-  // liveUrl.map(item=>{
-  //   playback=item.duration
-  // })
+  const audioUrl = useSelector(selectors.getAudioUrl)
+  const isSelectedAudio = audioUrl && audioUrl===  episodeData.fields.playbackUrl
+  const audioMode = useSelector(selectors.getAudioMode)
+  const isPlayings =
+  isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
   const onClick = isPlaying
-    ? () => setIsPlaying(false)
-    : () => setIsPlaying(true)
-  const playVideo = () => {
-    playerRef.current.play()
-    setPlayerOn(true)
+  ? () => setIsPlaying(false)
+  : () => setIsPlaying(true)
+  const PlayOrPauseIcon = isPlayings ? IcoPause : IcoPlay
+const onPopClick = isPlayings
+? ev => {
+  dispatch(actions.pauseAudio())
+        ev.stopPropagation()
   }
-  let playBackUrl
-  var url = liveUrl
-  //   let playbackStream=`https://stream.mux.com`
-  //   if(url){
-  //  playBackUrl=`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`
-
-  //   }
-
+: ev => {
+  if (isSelectedAudio)
+    dispatch(actions.playAudio())
+        else{
+          dispatch(
+            actions.selectAudio(
+              '',
+              '',
+              '',
+              episodeData.fields.playbackUrl,
+              indexData,
+              '',
+              ''
+            )
+          )
+          dispatch(actions.playAudio())
+            }
+          ev.stopPropagation() 
+        }
   return (
     <React.Fragment>
-      {episodeData.length &&
-        episodeData?.map((episode, index) => (
-          <div className={classes.episodeRow}>
-            <div className={classes.episodeControls}>
-              <PlayOrPauseIcon
-                classes={{
-                  inner: classes.episodePOP,
-                  outer: classes.episodePOPCell,
-                }}
-                onClick={onClick}
-              />
-              {/* {isPlaying &&(
-                <ReactHlsPlayer
-                src={`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`}
-                autoPlay={false}
-                onClick={playVideo}
-                controls={true}
-                width="30%"
-                height="auto"
-                />
-            )} */}
-              <IcoPlus
-                classes={{
-                  inner: classes.episodePlus,
-                  outer: classes.episodePOPCell,
-                }}
-              />
-            </div>
-
-            <div className={classes.episodeTitleAndData}>
-              <div className={classes.episodeNumberAndTitle}>
-                <div className={classes.episodeNumber}>
-                  {counter < 10 ? `0${counter}` : counter}
-                </div>
-                <div className={classes.episodeTitle}>
-                  {episode.fields.title ? episode.fields.title : ''}
-                </div>
-              </div>
-              <div className={classes.episodeDateAndDuration}>
-                <div className={classes.episodeDateAndDurationLeftPad}>
-                  &nbsp;
-                </div>
-                <div className={classes.episodeDate}>
-                  {episode.fields.liveDate
-                    ? episode.fields.liveDate.split('T')[0]
-                    : ''}
-                </div>
-                <div className={classes.episodeDuration}>
-                  {fakeDurationLabel}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+    <div className={classes.episodeRow} >
+      <div className={classes.episodeControls}>
+        <PlayOrPauseIcon
+          classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
+          onClick={onPopClick}
+        />
+        <IcoPlus
+          classes={{
+            inner: classes.episodePlus,
+            outer: classes.episodePOPCell,
+          }}
+        />
+      </div>
+    
+      <div className={classes.episodeTitleAndData}>
+           <div className={classes.episodeNumberAndTitle}>
+           <div className={classes.episodeNumber}>
+             {counter < 10 ? `0${counter}` : counter}
+           </div>
+           <div className={classes.episodeTitle}>{episodeData.fields.title?episodeData.fields.title:""}</div>
+         </div>
+         <div className={classes.episodeDateAndDuration}>
+           <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
+           <div className={classes.episodeDate}>{episodeData.fields.liveDate?episodeData.fields.liveDate.split('T')[0]:""}</div>
+           <div className={classes.episodeDuration}>{fakeDurationLabel}</div>
+         
+     </div>
+    </div>
+    </div>
     </React.Fragment>
   )
 }
 
-const Tracks = ({
-  sectionData,
-  channelColor,
-  assetid,
-  leaugeNightData,
-  channel,
-}) => {
-  const [liveUrl, setLiveUrl] = React.useState([])
-  React.useEffect(() => {
-    gettingMuxassetsId()
-  }, [assetid])
-  const gettingMuxassetsId = () => {
-    if (assetid) {
-      var params = assetid
-      //  for(var i=0;i<params.length;i++){
-
-      //   fetch('/.netlify/functions/mux-proxy-assests', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Accept': 'application/json',
-      //   'Content-Type': 'application/json'
-      //     },
-      //     body:JSON.stringify({url: `video/v1/assets/${params[i]}`})
-      //   }).then(response => response.json())
-      //     .then(function(assesetId){
-      //       setLiveUrl([assesetId.data])
-      //     }
-      //   ).catch((error)=>{
-      //      toast.error(error.type)
-      //   })
-      // }
-    }
+const Tracks = ({ sectionData, channelColor ,assetid,leaugeNightData,channel}) => {
+  const [liveUrl,setLiveUrl]=React.useState([])
+  React.useEffect(()=>{
+    //gettingMuxassetsId();
+  },[assetid])
+  const gettingMuxassetsId=()=>{
+//    if(assetid){
+//   var params=assetid
+//    for(var i=0;i<params.length;i++){
+ 
+//     fetch('/.netlify/functions/mux-proxy-assests', {
+//       method: 'POST',
+//       headers: {
+//         'Accept': 'application/json',
+//     'Content-Type': 'application/json'
+//       },
+//       body:JSON.stringify({url: `video/v1/assets/${params[i]}`})
+//     }).then(response => response.json())
+//       .then(function(assesetId){ 
+//         setLiveUrl([assesetId.data])
+//       }         
+//     ).catch((error)=>{
+//        toast.error(error.type)
+//     }) 
+//   }
+// }
   }
   const classes = useStyles({ channelColor })
   return (
@@ -423,16 +400,19 @@ const Tracks = ({
       <div className={classes.tracksLeftPad}>&nbsp;</div>
       <div className={classes.tracksContent}>
         {(counter =>
-          sectionData.map(episode => {
+          sectionData.map((episode,key) => {
+           // console.log('epiosdedata',episode)
             const bgC =
               episodeBackgroundColors[counter % episodeBackgroundColors.length]
             counter = counter + 1
             return (
               <Track
                 key={counter}
+                indexData={key}
                 episodeData={episode}
                 backgroundColor={bgC}
                 counter={counter}
+                //itemaudioUrl={episode.fields.playbackUrl}
                 channelColor={channelColor}
                 liveUrl={liveUrl}
                 leaugeNightData={leaugeNightData}
@@ -444,58 +424,81 @@ const Tracks = ({
     </div>
   )
 }
-const Tracks1 = ({ episodeData, backgroundColor, counter, channelColor }) => {
-  const [isPlaying, setIsPlaying] = React.useState(false)
-  const [canPlay, setcanPlay] = React.useState(false)
-  const { fakeDateLabel, fakeDurationLabel } = episodeData
-  const classes = useStyles({ backgroundColor, canPlay, channelColor })
 
-  const PlayOrPauseIcon = isPlaying ? IcoPause : IcoPlay
+const Tracks1 = ({ episodeData, backgroundColor, counter,indexdata, channelColor}) => {
+  const [isPlaying,setIsPlaying]=React.useState(false);
+  const [canPlay,setcanPlay]=React.useState(false);
+  const {
+    fakeDateLabel,
+    fakeDurationLabel,
+  } = episodeData
+  const classes = useStyles({ backgroundColor, canPlay, channelColor })
+  const dispatch = useDispatch()
+  const audioUrl = useSelector(selectors.getAudioUrl)
+  const isSelectedAudio = audioUrl && audioUrl===  episodeData.fields.playbackUrl
+  const audioMode = useSelector(selectors.getAudioMode)
+  const isPlayings =
+  isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
+  const onClick = isPlaying
+  ? () => setIsPlaying(false)
+  : () => setIsPlaying(true)
+  const PlayOrPauseIcon = isPlayings ? IcoPause : IcoPlay
+const onPopClick = isPlayings
+? ev => {
+  dispatch(actions.pauseAudio())
+        ev.stopPropagation()
+  }
+: ev => {
+  if (isSelectedAudio)
+    dispatch(actions.playAudio())
+        else{
+          dispatch(
+            actions.selectAudio(
+              '',
+              '',
+              '',
+              episodeData.fields.playbackUrl,
+              '',
+              '',
+              episodeData.fields.title
+            )
+          )
+          dispatch(actions.playAudio())
+            }
+          ev.stopPropagation() 
+        }
   return (
     <React.Fragment>
-      {episodeData.length &&
-        episodeData?.map((episode, index) => (
-          <div className={classes.episodeRow}>
-            <div className={classes.episodeControls}>
-              <PlayOrPauseIcon
-                classes={{
-                  inner: classes.episodePOP,
-                  outer: classes.episodePOPCell,
-                }}
-              />
-              <IcoPlus
-                classes={{
-                  inner: classes.episodePlus,
-                  outer: classes.episodePOPCell,
-                }}
-              />
-            </div>
+    <div className={classes.episodeRow} >
+      <div className={classes.episodeControls}>
+        <PlayOrPauseIcon
+          classes={{ inner: classes.episodePOP, outer: classes.episodePOPCell }}
+          onClick={onPopClick}
+        />
+        <IcoPlus
+          classes={{
+            inner: classes.episodePlus,
+            outer: classes.episodePOPCell,
+          }}
+        />
+      </div>
+    
 
-            <div className={classes.episodeTitleAndData}>
-              <div className={classes.episodeNumberAndTitle}>
-                <div className={classes.episodeNumber}>
-                  {counter < 10 ? `0${counter}` : counter}
-                </div>
-                <div className={classes.episodeTitle}>
-                  {episode.fields.title ? episode.fields.title : ''}
-                </div>
-              </div>
-              <div className={classes.episodeDateAndDuration}>
-                <div className={classes.episodeDateAndDurationLeftPad}>
-                  &nbsp;
-                </div>
-                <div className={classes.episodeDate}>
-                  {episode.fields.liveDate
-                    ? episode.fields.liveDate.split('T')[0]
-                    : ''}
-                </div>
-                <div className={classes.episodeDuration}>
-                  {fakeDurationLabel}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className={classes.episodeTitleAndData}>
+           <div className={classes.episodeNumberAndTitle}>
+           <div className={classes.episodeNumber}>
+             {counter < 10 ? `0${counter}` : counter}
+           </div>
+           <div className={classes.episodeTitle}>{episodeData.fields.title?episodeData.fields.title:""}</div>
+         </div>
+         <div className={classes.episodeDateAndDuration}>
+           <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
+           <div className={classes.episodeDate}>{episodeData.fields.liveDate?episodeData.fields.liveDate.split('T')[0]:""}</div>
+           <div className={classes.episodeDuration}>{fakeDurationLabel}</div>
+         
+     </div>
+    </div>
+    </div>
     </React.Fragment>
   )
 }
@@ -508,13 +511,14 @@ const TracksData = ({ leaugeNightData, channelColor, channel }) => {
       <div className={classes.tracksLeftPad}>&nbsp;</div>
       <div className={classes.tracksContent}>
         {(counter =>
-          leaugeNightData.map(episode => {
+          leaugeNightData.map((episode,indexdata) => {
             const bgC =
               episodeBackgroundColors[counter % episodeBackgroundColors.length]
             counter = counter + 1
             return (
               <Tracks1
                 key={counter}
+                indexdata={indexdata}
                 episodeData={episode}
                 backgroundColor={bgC}
                 counter={counter}
@@ -532,14 +536,16 @@ const TracksData = ({ leaugeNightData, channelColor, channel }) => {
 const ReplayBroadcastsMockup = ({ className, channel }) => {
   const classes = useStyles()
   const channels = useChannels().list
-  const [RecordedData, setRecordedData] = React.useState([])
-  const [rescentAsscetid, setrescentAsscetId] = React.useState([])
-  const [leagueNightRecorded, setleagueNightRecorded] = React.useState([])
-  React.useEffect(() => {
-    showRecordedData()
-    gettingMuxassets()
-  }, [])
-  const showRecordedData = () => {
+  const [RecordedData,setRecordedData]=React.useState([])
+  const [rescentAsscetid,setrescentAsscetId]=React.useState([])
+  const [leagueNightRecorded,setleagueNightRecorded]=React.useState([]);
+  React.useEffect(()=>{
+    showRecordedData();
+    //gettingMuxassets();
+    leagueNightshowRecordedData();
+  },[])
+  
+  const showRecordedData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     let urladd = `maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(
       channel['tag']
@@ -557,7 +563,7 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
       .then(function (response) {
         if (response.records.length) {
           // console.log('recordeddata',JSON.stringify(response.records))
-          setRecordedData([response.records])
+          setRecordedData(response.records)
           seturl(response.records[0].fields.playbackUrl)
         } else {
         }
@@ -566,8 +572,9 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
         console.log('error while data fetching', error.type)
       })
   }
-  const gettingMuxassets = () => {
-    let livestreamingId = channels && channels.map(item => item.liveStreamId)
+  /*
+  const gettingMuxassets=()=>{
+    let livestreamingId=channels &&channels.map(item=>item.liveStreamId)
     fetch('/.netlify/functions/mux-proxy', {
       method: 'POST',
       headers: {
@@ -590,12 +597,12 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
         //   arrAsset.push(assesetId.data.recent_asset_ids)
         // }
         setrescentAsscetId(assesetId.data.recent_asset_ids)
-      })
-      .catch(error => {
-        toast.error(error.type)
-      })
-  }
-  const leagueNightshowRecordedData = () => {
+      }         
+    ).catch((error)=>{
+       toast.error(error.type)
+    }) 
+  } */
+  const leagueNightshowRecordedData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     let urladd = `maxRecords=3&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
@@ -604,26 +611,25 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
-      body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        if (response.records.length) {
-          setleagueNightRecorded([response.records])
-        } else {
-        }
+     // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
+      body: JSON.stringify({url: `${baseId}/ChannelLiveData?${urladd}`})
+    }).then(response => response.json())
+      .then(
+        function(response){
+          if(response.records.length){
+          setleagueNightRecorded(response.records)
+          }
       })
       .catch(error => {
         console.log('error while data fetching', error.type)
       })
   }
   const dispatch = useDispatch()
-  const makeGotoEvent = event => () => {
-    console.log('event', event)
+  const makeGotoEvent = event => () =>{
+  //console.log('event',event)
     dispatch(actions.pushHistory(`/event/${event}`))
   }
-  
+
   return (
     <div className={cx(classes.replayBroadcasts, className)}>
       {filterMockupData(channel.tag).map(sectionData => {

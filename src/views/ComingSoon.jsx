@@ -91,6 +91,10 @@ const useStyles = makeStyles(theme => ({
     height: '6vw',
     width: '6vw',
   },
+  eventImageFormobileView:{
+    height: '15vw',
+    width: '15vw',
+  },
   liveness: {
     display: 'flex',
     width: '600%',
@@ -137,7 +141,11 @@ const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
 const filterMockupData = tag =>
   mockupData.filter(({ tags }) => tags.find(thisTag => thisTag === tag))
 const EventImage = ({ classes, imageUrl }) => {
-  return <img className={cx(classes.eventImage)} src={imageUrl} />
+
+  return (
+  
+  <img className={cx(window.innerWidth>945?classes.eventImage:classes.eventImageFormobileView)} src={imageUrl} />
+  )
 }
 
 const EventTextplate = ({ channelColor, sectionData }) => {
@@ -264,9 +272,7 @@ const ComingSoon = ({ className, channel, channelColor }) => {
             response.records[0].fields.playbackUrl
           )
           seturl(response.records[0].fields.playbackUrl)
-        } else {
-          console.log('setlivestatus', liveStatus)
-        }
+          }
       })
       .catch(error => {
         console.log('error while data fetching', error.type)
@@ -275,32 +281,37 @@ const ComingSoon = ({ className, channel, channelColor }) => {
   let checkChannel
   const muxliveData = (liveurl, livestreamid) => {
     const baseId = 'appXoertP1WJjd4TQ'
-    if (liveurl) {
-      fetch('/.netlify/functions/mux-proxy', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ url: `video/v1/live-streams/${livestreamid}` }),
-      })
-        .then(response => response.json())
-        .then(function (response) {
-          console.log('abc', response)
-          if (response.data.status == 'active') {
-            setliveStatus(1)
-          }
-        })
-        .catch(error => {
-          console.log('error while data fetching', error.type)
-        })
-    } else {
-      setliveStatus(0)
-    }
-  }
+        if(liveurl)
+        {
+            fetch('/.netlify/functions/mux-proxy', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({url: `video/v1/live-streams/${livestreamid}`})
+          }).then(response => response.json())
+            .then(
+              function(response){
+                //console.log('abc',response)
+                if(response.data.status=='active'){
+                  setliveStatus(1)
+                }
+              }
+            ).catch((error)=>{
+              console.log("error while data fetching",error.type)
+            })
+        }
+        else
+        {
+            setliveStatus(0)
+        }
+        
+    }      
 
   const classes = useStyles()
-  console.log('checkchannel', checkChannel)
+ 
+//console.log('checkchannel',liveStatus)
   return (
     <div className={cx(classes.comingSoon, className)}>
       {liveStatus == 0 ? (

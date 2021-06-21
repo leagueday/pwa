@@ -187,11 +187,12 @@ const MyProfile = () => {
   const [userProfile, setUserProfile] = React.useState([])
   const [userChannel, setUserChannel] = React.useState([])
   const user = useSelector(selectors.getUser)
-  React.useEffect(() => {
-    getProfileData()
-    getuserChannelData()
-  }, [])
-  const getProfileData = () => {
+  React.useEffect(()=>{
+    getProfileData();
+    getuserChannelData();
+  },[])
+  
+  const getProfileData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     const userId = user['id']
     let fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
@@ -213,7 +214,8 @@ const MyProfile = () => {
         console.log('error while data fetching', error)
       })
   }
-  const getuserChannelData = () => {
+  
+  const getuserChannelData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     const userId = user['id']
     let fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
@@ -235,14 +237,14 @@ const MyProfile = () => {
         console.log('error while data fetching', error)
       })
   }
+  
   const facetedPodcasts = useFacets('Home')
-
   const classes = useStyles({ primaryColor })
   const dispatch = useDispatch()
   const userName = user?.user_metadata?.full_name
-  const golive = () => dispatch(actions.pushHistory('/live'))
-  const editProfile = () => dispatch(actions.pushHistory('/editprofile'))
-  console.log('channelname', userChannel)
+  const golive=() => dispatch(actions.pushHistory('/live'));
+  const editProfile=()=>dispatch(actions.pushHistory('/editprofile'))
+  //console.log('channelname',userChannel)
   return (
     <BasicLayout home>
       {user && (
