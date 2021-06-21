@@ -2,11 +2,11 @@ import React from 'react'
 import cx from 'classnames'
 import Color from 'color'
 import { makeStyles } from '@material-ui/core/styles'
-
 import { colors } from '../../styling'
 import ComingSoon from '../ComingSoon'
 import ToggleImageButton from '../ToggleImageButton'
-import ReplayLiveBroadCast from './ReplayLiveBroadCast'
+import ReplayLiveBroadCast from './ReplayLiveBroadCast';
+
 const useStyles = makeStyles(theme => ({
   comingSoon: {
     margin: '0 2vw 2vw 2vw',
@@ -152,6 +152,7 @@ const Track = ({ classes }) => {
     </div>
   )
 }
+
 const LiveBroadcastsMockup = ({ className, channel }) => {
   const classes = useStyles()
   let playbackurl=localStorage.getItem('playback')
@@ -192,4 +193,4 @@ export const mockupGetHasBroadcasts = channel => {
   return data.length > 0
 }
 
-export default LiveBroadcastsMockup
+export default LiveBroadcastsMockup;

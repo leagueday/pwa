@@ -114,7 +114,7 @@ const SetupMyChannelsSeed = ({ className }) => {
     () => {
       if (list && seedList.length === 0)
         fetchUserData().then(maybeData => {
-          if (NODE_ENV === 'development') console.log('user data', maybeData)
+          if (NODE_ENV === 'development')
           if (typeof maybeData === 'object') {
             setSeedlist(maybeData.my)
           }

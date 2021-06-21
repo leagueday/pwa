@@ -1,5 +1,4 @@
 // DEPRECATED
-
 import useAirtable from './useAirtable'
 
 const base = 'appXoertP1WJjd4TQ'

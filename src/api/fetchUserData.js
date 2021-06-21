@@ -13,8 +13,7 @@ const fetchUserData = bearerToken =>
     )
     .catch(err => {
       if (NODE_ENV === 'development')
-        console.error('user data request error', err)
       return err.message
     })
 
-export default fetchUserData
+export default fetchUserData;

@@ -17,7 +17,8 @@ import { addScrollStyle } from '../util'
 import TitleBar from './TitleBar'
 import blue from "@material-ui/core/colors/blue";
 import { uploadFile } from 'react-s3';
-import Fat from '../SideNav/Fat'
+import Fat from '../SideNav/Fat';
+
 import('buffer').then(({Buffer}) => {global.Buffer = Buffer;})
 const primaryColor = colors.magenta
 
@@ -148,6 +149,7 @@ const CreateProfile = (props) => {
   const [saveContext,setsaveContext]=React.useState([])
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInput = React.useRef();
+
   const config = {
     bucketName:"leagueday-prod-images",
     dirName:"uploads",

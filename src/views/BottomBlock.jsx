@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import cx from 'classnames'
-
 import { makeStyles } from '@material-ui/core/styles'
-
 import { colors } from '../styling'
 import SliderDots from './SliderDots'
+import NextLive from './NextLive'
 
 const useStyles = makeStyles(theme => ({
   bottomBlock: {
@@ -41,6 +40,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   title: {
+    position: 'relative',
     flexGrow: 0,
     flexShrink: 1,
     fontSize: '150%',
@@ -77,8 +77,9 @@ const useStyles = makeStyles(theme => ({
 
 const BottomBlock = props => {
   const classes = useStyles(props)
-
   const { className, numPages, pageNum, titleRest, titleStart } = props
+
+  console.log('children  ',props)
 
   return (
     <div className={cx(classes.bottomBlock, className)}>

@@ -4,16 +4,16 @@ import Hls from 'hls.js';
 import ReactHlsPlayer from 'react-hls-player'
 
 /**
- * views/Audio
- *
- * react wrapper of `<audio />`
- *
- * renders from redux into dom, so it's decoupled from the
- * controller but the way they both use redux is hardwired
- */
-
+* views/Audio
+*
+* react wrapper of `<audio />`
+*
+* renders from redux into dom, so it's decoupled from the
+* controller but the way they both use redux is hardwired
+*/
+ 
 import { actions, constants as storeConsts, selectors, thunks } from '../store'
-
+ 
 const debugAudio = false
 const addDebugEventListeners = debugAudio
   ? audioDomNode => {
@@ -173,7 +173,7 @@ const useAudioPlayerRef = () => {
 }
 // one off hack
 const nonsecBlubrryPrefix = 'http://media.blubrry.com/'
-
+ 
 const Audio = () => {
   const [getAudioRef, setAudioRef] = useAudioRef()
   const [getAudioPlayerRef, setAudioPlayerRef] = useAudioPlayerRef()

@@ -49,4 +49,4 @@ const SearchLozenge = ({ className }) => {
   )
 }
 
-export default SearchLozenge
+// export default SearchLozenge;

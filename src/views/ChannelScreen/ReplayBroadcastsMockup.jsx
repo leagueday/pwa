@@ -114,7 +114,7 @@ const useStyles = makeStyles(theme => ({
     height: '6vw',
     width: '6vw',
   },
-  eventImageFormobileView:{
+  eventImageFormobileView: {
     height: '15vw',
     width: '15vw',
   },
@@ -213,39 +213,39 @@ const mockupData = [
     event: 'lcs',
     imageUrl: '/img/restyle_demo/lcs.png',
     name: 'LEAGUE CHAMPIONSHIP SERIES',
-    tags: ['riot', 'lol','lolnight'],
+    tags: ['riot', 'lol', 'lolnight'],
     variety: '2021 Summer Split',
   },
-   {
-     episodes: [
-       {
-         title: 'Title of Episode X',
-         isPlaying: false,
-         canPlay: true,
-         fakeDateLabel: '3/2/21',
-         fakeDurationLabel: '41:50',
-       },
-       {
-         title: 'Title of Episode Y',
-         isPlaying: true,
-         canPlay: true,
-         fakeDateLabel: '2/28/21',
-         fakeDurationLabel: '43:22',
-       },
-       {
-         title: 'Title of Episode Z',
-         isPlaying: false,
-         canPlay: false,
-         fakeDateLabel: '1/22/21',
-         fakeDurationLabel: '35:38',
-       },
-     ],
-     event: 'leaguenight',
-     imageUrl: '/img/restyle_demo/LeagueNight2.png',
-     name: 'LeagueNight',
-     tags: ['riot', 'lol','lolnight'],
-     variety: 'with Kelsey Moser',
-   },
+  {
+    episodes: [
+      {
+        title: 'Title of Episode X',
+        isPlaying: false,
+        canPlay: true,
+        fakeDateLabel: '3/2/21',
+        fakeDurationLabel: '41:50',
+      },
+      {
+        title: 'Title of Episode Y',
+        isPlaying: true,
+        canPlay: true,
+        fakeDateLabel: '2/28/21',
+        fakeDurationLabel: '43:22',
+      },
+      {
+        title: 'Title of Episode Z',
+        isPlaying: false,
+        canPlay: false,
+        fakeDateLabel: '1/22/21',
+        fakeDurationLabel: '35:38',
+      },
+    ],
+    event: 'leaguenight',
+    imageUrl: '/img/restyle_demo/LeagueNight2.png',
+    name: 'LeagueNight',
+    tags: ['riot', 'lol', 'lolnight'],
+    variety: 'with Kelsey Moser',
+  },
 ]
 
 const filterMockupData = tag =>
@@ -256,7 +256,12 @@ const episodeBackgroundColors = ['#070709', transparent, '#0E0E11', transparent]
 
 const EventImage = ({ classes, imageUrl, onClick }) => (
   <img
-    className={cx(window.innerWidth>945?classes.eventImage:classes.eventImageFormobileView, classes.clickable)}
+    className={cx(
+      window.innerWidth > 945
+        ? classes.eventImage
+        : classes.eventImageFormobileView,
+      classes.clickable
+    )}
     onClick={onClick}
     src={imageUrl}
   />
@@ -498,8 +503,8 @@ const onPopClick = isPlayings
   )
 }
 
-const TracksData = ({ leaugeNightData, channelColor ,channel}) => {
-  const [liveUrl,setLiveUrl]=React.useState([])
+const TracksData = ({ leaugeNightData, channelColor, channel }) => {
+  const [liveUrl, setLiveUrl] = React.useState([])
   const classes = useStyles({ channelColor })
   return (
     <div className={classes.tracks}>
@@ -542,29 +547,29 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
   
   const showRecordedData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
-    let urladd=`maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(channel['tag'])}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    let urladd = `maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(
+      channel['tag']
+    )}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-     // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
-      body: JSON.stringify({url: `${baseId}/ChannelLiveData?${urladd}`})
-    }).then(response => response.json())
-      .then(
-        function(response){
-          if(response.records.length){
+      // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
+      body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
+    })
+      .then(response => response.json())
+      .then(function (response) {
+        if (response.records.length) {
           // console.log('recordeddata',JSON.stringify(response.records))
           setRecordedData(response.records)
           seturl(response.records[0].fields.playbackUrl)
-          }
-          else{
-         
-          }
+        } else {
         }
-      ).catch((error)=>{
-        console.log("error while data fetching",error.type)
+      })
+      .catch(error => {
+        console.log('error while data fetching', error.type)
       })
   }
   /*
@@ -573,15 +578,18 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
     fetch('/.netlify/functions/mux-proxy', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId[1]}`})
-    }).then(response => response.json())
-      .then(function(assesetId){ 
-        leagueNightshowRecordedData();
+      body: JSON.stringify({
+        url: `video/v1/live-streams/${livestreamingId[1]}`,
+      }),
+    })
+      .then(response => response.json())
+      .then(function (assesetId) {
+        leagueNightshowRecordedData()
         // let arrAsset=[]
- 
+
         // if(assesetId.data.recent_asset_ids.length>3){
         //   arrAsset.push(assesetId.data.recent_asset_ids.slice(Math.max(assesetId.data.recent_asset_ids.length - 3, 0)))
         // }
@@ -596,12 +604,12 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
   } */
   const leagueNightshowRecordedData=()=>{
     const baseId = 'appXoertP1WJjd4TQ'
-    let urladd=`maxRecords=3&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    let urladd = `maxRecords=3&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
      // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
       body: JSON.stringify({url: `${baseId}/ChannelLiveData?${urladd}`})
@@ -611,12 +619,9 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
           if(response.records.length){
           setleagueNightRecorded(response.records)
           }
-          else{
-         
-          }
-        }
-      ).catch((error)=>{
-        console.log("error while data fetching",error.type)
+      })
+      .catch(error => {
+        console.log('error while data fetching', error.type)
       })
   }
   const dispatch = useDispatch()
@@ -624,62 +629,69 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
   //console.log('event',event)
     dispatch(actions.pushHistory(`/event/${event}`))
   }
+
   return (
     <div className={cx(classes.replayBroadcasts, className)}>
       {filterMockupData(channel.tag).map(sectionData => {
         return (
           <React.Fragment>
-        {sectionData.event=='lcs'&&(
-           <div
-           key={sectionData.name + sectionData.event}
-           className={classes.replayBroadcast}
-         >
-           
-           <div className={classes.eventImageAndText}>
-             <EventImage
-               classes={classes}
-               imageUrl={sectionData.imageUrl}
-               onClick={makeGotoEvent(sectionData.event)}
-             />
-             <EventTextplate
-               channelColor={channel.color}
-               onClick={makeGotoEvent(sectionData.event)}
-               sectionData={sectionData}
-             />
-           </div>
-           <Tracks sectionData={RecordedData} channelColor={channel.color} assetid={rescentAsscetid}  />
-         </div>
-        )}   
-        </React.Fragment>
-      )
-      })} 
+            {sectionData.event == 'lcs' && (
+              <div
+                key={sectionData.name + sectionData.event}
+                className={classes.replayBroadcast}
+              >
+                <div className={classes.eventImageAndText}>
+                  <EventImage
+                    classes={classes}
+                    imageUrl={sectionData.imageUrl}
+                    onClick={makeGotoEvent(sectionData.event)}
+                  />
+                  <EventTextplate
+                    channelColor={channel.color}
+                    onClick={makeGotoEvent(sectionData.event)}
+                    sectionData={sectionData}
+                  />
+                </div>
+                <Tracks
+                  sectionData={RecordedData}
+                  channelColor={channel.color}
+                  assetid={rescentAsscetid}
+                />
+              </div>
+            )}
+          </React.Fragment>
+        )
+      })}
+
       {filterMockupData(channel.tag).map(sectionData => {
         return (
           <React.Fragment>
-        {sectionData.event=='leaguenight'&&(
-           <div
-           key={sectionData.name + sectionData.event}
-           className={classes.replayBroadcast}
-         >
-           
-           <div className={classes.eventImageAndText}>
-             <EventImage
-               classes={classes}
-               imageUrl={sectionData.imageUrl}
-               onClick={makeGotoEvent(sectionData.event)}
-             />
-             <EventTextplate
-               channelColor={channel.color}
-               onClick={makeGotoEvent(sectionData.event)}
-               sectionData={sectionData}
-             />
-           </div>
-           <TracksData leaugeNightData={leagueNightRecorded}  channelColor={channel.color} />
-         </div>
-        )}   
-        </React.Fragment>
-      )
-      })} 
+            {sectionData.event == 'leaguenight' && (
+              <div
+                key={sectionData.name + sectionData.event}
+                className={classes.replayBroadcast}
+              >
+                <div className={classes.eventImageAndText}>
+                  <EventImage
+                    classes={classes}
+                    imageUrl={sectionData.imageUrl}
+                    onClick={makeGotoEvent(sectionData.event)}
+                  />
+                  <EventTextplate
+                    channelColor={channel.color}
+                    onClick={makeGotoEvent(sectionData.event)}
+                    sectionData={sectionData}
+                  />
+                </div>
+                <TracksData
+                  leaugeNightData={leagueNightRecorded}
+                  channelColor={channel.color}
+                />
+              </div>
+            )}
+          </React.Fragment>
+        )
+      })}
     </div>
   )
 }

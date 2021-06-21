@@ -1,6 +1,6 @@
 import React from 'react'
 import cx from 'classnames'
-
+import NextLive from '../NextLive';
 import { makeStyles } from '@material-ui/core/styles'
 
 import useFacets from '../../api/useFacets'
@@ -89,16 +89,16 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
     <div className={classes.headlineTitleRow}>
       {hasBroadcasts ? 'Live AudioCasts and Replays' : 'Podcasts'}
     </div>
+    <NextLive titleStart={channel.title}/>
   </div>
 )
 
 const AggregatorContent = ({ channel }) => {
   const classes = useStyles({ channelColor: channel.color })
-
   const facets = useFacets(channel.tag)
-
   const hasLive = hasLiveMockupData(channel)
   const hasReplay = hasReplayMockupData(channel)
+
   return (
     <ContentLayout
       accentColor={channel.color}
@@ -124,6 +124,7 @@ const AggregatorContent = ({ channel }) => {
           />
         </BottomBlock>
       )}
+
       {hasReplay && (
         <BottomBlock
           accentColor={channel.color}
