@@ -83,6 +83,7 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     width: '45%',
     position: 'absolute',
+    color: 'white'
   },
   signInOutButtonContainer: {
     paddingTop: '0.25vw',

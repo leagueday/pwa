@@ -6,10 +6,9 @@ import { colors } from '../styling'
 const useStyles = makeStyles(theme => ({
   nextLive: {
     display: 'flex',
-    width: '60%',
+    width: '100%',
     // paddingTop: '1rem',
     alignItems: 'center',
-    justifyContent: 'space-between',
     fontSize: '100%',
     background: '#111',
   },
@@ -25,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   nextLiveImg: {
     // flex: 0.5,
     // width: 'inherit',
-    width: '25%',
+    width: '18%',
     // flex: 1
   }
 }))
@@ -113,7 +112,7 @@ const NextLive = ({ titleStart, titleRest }) => {
   // }, [data])
 
   return (
-    <div>
+    <div classes={classes.nextLive}>
       {/* {titleStart === 'League of Legends' &&
         titleRest === 'Live' &&
         live === false && (
