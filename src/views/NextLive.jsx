@@ -138,7 +138,7 @@ const NextLive = ({ titleStart, titleRest }) => {
               // style={{ width: '120px', height: '30px' }}
             />
             <p className={classes.nextLiveText}>
-              We are Live every Friday, Saturday and Sunday from <span className={classes.liveSpan}>6-10pm EST</span>, and Wednesdays from <span className={classes.liveSpan}>10-11pm EST</span>!
+              Live every Friday, Saturday and Sunday from <span className={classes.liveSpan}>6-10pm EST</span>, and Wednesdays from <span className={classes.liveSpan}>10-11pm EST</span>!
             </p>
           </div>
         }
