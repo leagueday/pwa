@@ -273,9 +273,12 @@ const ComingSoon = ({ className, channel, channelColor }) => {
           )
           seturl(response.records[0].fields.playbackUrl)
           }
-      })
-      .catch(error => {
-        console.log('error while data fetching', error.type)
+          else{
+            //console.log('setlivestatus',liveStatus)
+          }
+        }
+      ).catch((error)=>{
+        console.log("error while data fetching",error.type)
       })
   }
   let checkChannel
