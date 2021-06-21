@@ -1,5 +1,4 @@
 import { makeRequestHeaders } from './util'
-
 const PARSE_PODCAST_ENDPOINT = `/.netlify/functions/parse-podcast`
 
 const parsePodcast = (bearerToken, podcastId, podcastUrl) => {
@@ -19,4 +18,4 @@ const parsePodcast = (bearerToken, podcastId, podcastUrl) => {
   })
 }
 
-export default parsePodcast
+export default parsePodcast;

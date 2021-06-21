@@ -313,8 +313,7 @@ const Track = ({ episodeData, backgroundColor, counter, channelColor,liveUrl,lea
 //  playBackUrl=`${playbackStream}/${url.playback_ids?url.playback_ids[0].id:""}.m3u8`
 
 //   } 
- 
-    
+
   return (
     <React.Fragment>
      { episodeData.length&&episodeData?.map((episode,index)=>(

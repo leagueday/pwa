@@ -72,4 +72,4 @@ const useAirtable = (baseKey, table, view) => {
   })
 }
 
-export default useAirtable
+export default useAirtable;

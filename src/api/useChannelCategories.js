@@ -28,4 +28,4 @@ const useChannelCategories = () => {
   }, [data])
 }
 
-export default useChannelCategories
+export default useChannelCategories;

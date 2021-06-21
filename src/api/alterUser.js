@@ -13,4 +13,4 @@ const alterUser = async (bearerToken, userEmail, data) => {
   })
 }
 
-export default alterUser
+export default alterUser;

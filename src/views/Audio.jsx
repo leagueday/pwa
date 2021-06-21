@@ -234,8 +234,10 @@ let sourceurl;
 
     audioDomNode.currentTime = seekPosition
   }, [seekPosition])
+  
   let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://anchor.fm/s')
   console.log('scruburl',scrubbedAudioUrl,)
+
   return audioUrl ? (
     <span>
      {srcUrl?(
@@ -253,4 +255,4 @@ let sourceurl;
   ) : null
 }
 
-export default Audio
+export default Audio;
