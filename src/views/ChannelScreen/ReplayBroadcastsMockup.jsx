@@ -623,6 +623,7 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
     console.log('event', event)
     dispatch(actions.pushHistory(`/event/${event}`))
   }
+  
   return (
     <div className={cx(classes.replayBroadcasts, className)}>
       {filterMockupData(channel.tag).map(sectionData => {
@@ -655,6 +656,7 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
           </React.Fragment>
         )
       })}
+
       {filterMockupData(channel.tag).map(sectionData => {
         return (
           <React.Fragment>
