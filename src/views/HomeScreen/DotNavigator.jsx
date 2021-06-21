@@ -71,4 +71,4 @@ const DotNavigator = ({
   )
 }
 
-export default DotNavigator
+export default DotNavigator;

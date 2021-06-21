@@ -5,7 +5,7 @@ import netlifyIdentity from 'netlify-identity-widget'
 import { actions, selectors } from '../store'
 
 const makeOnInit = dispatch => user => {
-  console.log('init', JSON.stringify(user, null, 2))
+  // console.log('init', JSON.stringify(user, null, 2))
 
   if (user) {
     dispatch(actions.setUser(user))

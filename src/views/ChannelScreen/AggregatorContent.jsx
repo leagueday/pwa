@@ -94,11 +94,10 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
 
 const AggregatorContent = ({ channel }) => {
   const classes = useStyles({ channelColor: channel.color })
-
   const facets = useFacets(channel.tag)
-
   const hasLive = hasLiveMockupData(channel)
   const hasReplay = hasReplayMockupData(channel)
+
   return (
     <ContentLayout
       accentColor={channel.color}
@@ -124,6 +123,7 @@ const AggregatorContent = ({ channel }) => {
           />
         </BottomBlock>
       )}
+
       {hasReplay && (
         <BottomBlock
           accentColor={channel.color}

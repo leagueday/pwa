@@ -5,6 +5,7 @@ import { loadOrFetchPodcastRssDoc } from '../../../api/usePodcast'
 
 export const maybeUseLatestListen = getLatestListen => (dispatch, getState) => {
   getLatestListen().then(maybeLatestListen => {
+
     const podcastId = maybeLatestListen?.podcastId
     const podcastName = maybeLatestListen?.podcastName
     const audioUrl = maybeLatestListen?.audioUrl

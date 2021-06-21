@@ -10,7 +10,7 @@ const UserData = () => {
 
   React.useEffect(() => {
     fetchUserData(user?.token?.access_token).then(maybeData => {
-      if (NODE_ENV === 'development') console.log('user data', maybeData)
+      if (NODE_ENV === 'development') 
       if (typeof maybeData === 'object') {
         dispatch(actions.setUserData(maybeData))
       }

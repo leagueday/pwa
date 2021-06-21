@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import cx from 'classnames'
-
 import { makeStyles } from '@material-ui/core/styles'
-
 import { colors } from '../styling'
 import SliderDots from './SliderDots'
+import NextLive from './NextLive'
 
 const useStyles = makeStyles(theme => ({
   bottomBlock: {
@@ -15,6 +14,24 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.only('xs')]: {
       marginBottom: '2vw',
     },
+  },
+  nextLive: {
+    display: 'flex',
+    width: '60%',
+    // paddingTop: '1rem',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    fontSize: '100%',
+    background: '#111',
+  },
+  nextLiveText: {
+    fontWeight: theme.typography.fontWeightMedium,
+    width: '70%',
+    marginLeft: 10
+  },
+  nextLiveImg: {
+    // flex: 0.5,
+    width: 'inherit',
   },
   pinStripe: ({ accentColor }) => ({
     borderBottom: `0.2em solid ${accentColor ?? colors.white80}`,
@@ -41,6 +58,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   title: {
+    position: 'relative',
     flexGrow: 0,
     flexShrink: 1,
     fontSize: '150%',
@@ -77,7 +95,6 @@ const useStyles = makeStyles(theme => ({
 
 const BottomBlock = props => {
   const classes = useStyles(props)
-
   const { className, numPages, pageNum, titleRest, titleStart } = props
 
   return (
@@ -103,6 +120,23 @@ const BottomBlock = props => {
           />
         )}
       </div>
+        {/* <NextLive
+          titleRest={titleRest}
+          titleStart={titleStart}
+          classes={classes}
+        /> */}
+        {titleStart === 'League of Legends' && titleRest === 'Live' &&
+          <div className={classes.nextLive}>
+            <img
+              src="/img/NEW_LDLogo.png"
+              className={classes.nextLiveImg}
+              style={{ width: '120px', height: '30px' }}
+            />
+            <p className={classes.nextLiveText}>
+              We are Live Every Friday, Saturday and Sunday from 6-10pm EST, and Wednesdays from 10-11pm EST!
+            </p>
+          </div>
+        }
       <div className={classes.children}>{props.children}</div>
     </div>
   )

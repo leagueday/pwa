@@ -13,7 +13,7 @@ const handler = async (event, context) => {
   const response = await fetch(`https://api.airtable.com/v0/${url}`,{
     headers:headers
   })
-    console.log('response',response)
+    // console.log('response',response)
   return {
     body: await response.text(),
     headers: headers,
