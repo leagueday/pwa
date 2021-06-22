@@ -1,8 +1,6 @@
 const fetch = require('node-fetch')
-
-const userName = 'e6dc9a66-fb63-414b-b187-6a39aaa6583f'
-const accessToken =
-  '2bGfOofUHoMPq5PtL6yb/peOp80MyN2VGsgLb5nIaREZhQ51iAtDdd4yR0pIp0bXYWWki2lcHVS'
+const userName = process.env.REACT_APP_MUX_TOKEN_ID
+const accessToken = process.env.REACT_APP_MUX_TOKEN_SECRET
 const authString = `${userName}:${accessToken}`
 const authStringEncoded = Buffer.from(authString).toString('base64')
 const headers = {

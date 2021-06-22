@@ -9,7 +9,7 @@ import BasicLayout from '../BasicLayout'
 import ContentLayout from '../ContentLayout'
 import Square from '../Square'
 import Item from './Item'
-
+import { REACT_APP_BASE_ID } from '../../config'
 const mockData = {
   lcs: {
     color: 'orange',
@@ -166,99 +166,93 @@ const Headline = ({ classes, subTitle, title }) => (
 )
 
 const EventScreen = ({ tag }) => {
+  const baseId = REACT_APP_BASE_ID
   const channels = useChannels().list
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  let livestreamingId=channels.map(item=>item.liveStreamId)
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+  let livestreamingId = channels.map(item => item.liveStreamId)
   const dispatch = useDispatch()
   const data = mockData[tag] ?? mockData['lcs']
-  const [eventDataFetch,seteventDataFetch]=React.useState([])
-  const [eventDataFetchlCS,seteventDataFetchlCS]=React.useState([])
-  const [loading,setisloading]=React.useState(0)
-  const [rescentAsscetid,setrescentAsscetId]=React.useState([])
+  const [eventDataFetch, seteventDataFetch] = React.useState([])
+  const [eventDataFetchlCS, seteventDataFetchlCS] = React.useState([])
+  const [loading, setisloading] = React.useState(0)
+  const [rescentAsscetid, setrescentAsscetId] = React.useState([])
   const classes = useStyles({ color: data?.color })
-  const [liveUrl,setLiveUrl]=React.useState([])
+  const [liveUrl, setLiveUrl] = React.useState([])
   const [expandedIndex, setExpandedIndex] = React.useState()
-  const [duration,setduration]=React.useState([])
+  const [duration, setduration] = React.useState([])
 
   React.useEffect(() => {
     if (!data) {
       dispatch(actions.pushHistory('/'))
     }
-    if(tag=='leaguenight'){
-      EvenScreeDatalCS();
+    if (tag == 'leaguenight') {
+      EvenScreeDatalCS()
     }
-    
-    if(tag=='lcs'){
-      EvenScreeDatalOL();
+
+    if (tag == 'lcs') {
+      EvenScreeDatalOL()
     }
-        
   }, [data])
-  
-  const EvenScreeDatalOL=()=>{
-    const baseId = 'appXoertP1WJjd4TQ'
-    let urladd=`filterByFormula={channelTag}='lol'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+
+  const EvenScreeDatalOL = () => {
+    let urladd = `filterByFormula={channelTag}='lol'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({url: `${baseId}/ChannelLiveData?${urladd}`})
-    }).then(response => response.json())
-      .then(
-        function(response){
-          if(response.records.length){
-            setisloading(1)
-            seteventDataFetch(response.records)
-          }
-          else{
-            setisloading(2)
-          }
+      body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
+    })
+      .then(response => response.json())
+      .then(function (response) {
+        if (response.records.length) {
+          setisloading(1)
+          seteventDataFetch(response.records)
+        } else {
+          setisloading(2)
         }
-      ).catch((error)=>{
+      })
+      .catch(error => {
         setisloading(0)
       })
   }
-  
-  const EvenScreeDatalCS=()=>{
-    const baseId = 'appXoertP1WJjd4TQ'
-    let urladd=`filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+
+  const EvenScreeDatalCS = () => {
+    let urladd = `filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({url: `${baseId}/ChannelLiveData?${urladd}`})
-    }).then(response => response.json())
-      .then(
-        function(response){
-          if(response.records.length){
-            seteventDataFetchlCS(response.records)
-            setisloading(2)
-          }
-          else{
-            setisloading(3)
-          }
+      body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
+    })
+      .then(response => response.json())
+      .then(function (response) {
+        if (response.records.length) {
+          seteventDataFetchlCS(response.records)
+          setisloading(2)
+        } else {
+          setisloading(3)
         }
-      ).catch((error)=>{
+      })
+      .catch(error => {
         setisloading(8)
-        console.log("error while data fetching",error.type)
       })
   }
   const color = data?.color
   const imageUrl = data?.imageUrl
   const subTitle = data?.subTitle
   const title = data?.title
-  //console.log('data ::: ', data);
   const makeToggleIsExpanded = itemIndex =>
-  expandedIndex === itemIndex
-    ? () => {
-        setExpandedIndex(null)
-      }
-    : () => {
-        setExpandedIndex(itemIndex)
-      }
+    expandedIndex === itemIndex
+      ? () => {
+          setExpandedIndex(null)
+        }
+      : () => {
+          setExpandedIndex(itemIndex)
+        }
   return (
     <BasicLayout>
       <ContentLayout
@@ -273,46 +267,56 @@ const EventScreen = ({ tag }) => {
           />
         )}
       >
-          <>
-          {loading==1?eventDataFetch.length&&eventDataFetch?.map((title, index) =>(
-              <Item
-                key={index}
-                accentColor={color}
-                className={classes.item}
-                date={title.fields.liveDate?title.fields.liveDate.split('T')[0]:''}
-                duration={''}
-                itemIndex={index}
-                key={index}
-                title={title.fields.title}
-                description={title.fields.description}
-                itemAudioUrl={title.fields.playbackUrl}
-                isExpanded={expandedIndex === index}
-                toggleIsExpanded={makeToggleIsExpanded(index)}
-                dataFetch={eventDataFetch}
-              />
-             )
-          ):""
-          }
-          </>
-         <> 
-        {loading==2?eventDataFetchlCS&&eventDataFetchlCS?.map((title, index) =>(
-              <Item
-                key={index}
-                accentColor={color}
-                className={classes.item}
-                date={title.fields.liveDate?title.fields.liveDate.split('T')[0]:''}
-                duration={''}
-                itemIndex={index}
-                key={index}
-                title={title.fields.title}
-                description={title.fields.description}
-                itemAudioUrl={title.fields.playbackUrl}
-                isExpanded={expandedIndex === index}
-                toggleIsExpanded={makeToggleIsExpanded(index)}
-              />
-            )
-        ):""
-          }
+        <>
+          {loading == 1
+            ? eventDataFetch.length &&
+              eventDataFetch?.map((title, index) => (
+                <Item
+                  key={index}
+                  accentColor={color}
+                  className={classes.item}
+                  date={
+                    title.fields.liveDate
+                      ? title.fields.liveDate.split('T')[0]
+                      : ''
+                  }
+                  duration={''}
+                  itemIndex={index}
+                  key={index}
+                  title={title.fields.title}
+                  description={title.fields.description}
+                  itemAudioUrl={title.fields.playbackUrl}
+                  isExpanded={expandedIndex === index}
+                  toggleIsExpanded={makeToggleIsExpanded(index)}
+                  dataFetch={eventDataFetch}
+                />
+              ))
+            : ''}
+        </>
+        <>
+          {loading == 2
+            ? eventDataFetchlCS &&
+              eventDataFetchlCS?.map((title, index) => (
+                <Item
+                  key={index}
+                  accentColor={color}
+                  className={classes.item}
+                  date={
+                    title.fields.liveDate
+                      ? title.fields.liveDate.split('T')[0]
+                      : ''
+                  }
+                  duration={''}
+                  itemIndex={index}
+                  key={index}
+                  title={title.fields.title}
+                  description={title.fields.description}
+                  itemAudioUrl={title.fields.playbackUrl}
+                  isExpanded={expandedIndex === index}
+                  toggleIsExpanded={makeToggleIsExpanded(index)}
+                />
+              ))
+            : ''}
         </>
       </ContentLayout>
     </BasicLayout>

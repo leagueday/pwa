@@ -1,22 +1,26 @@
-import React,{ useReducer } from 'react'
-import { useSelector,useDispatch } from 'react-redux'
-import { Button, Icon, TextField, Paper, Typography } from "@material-ui/core";
+import React, { useReducer } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Button, Icon, TextField, Paper, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import 'react-h5-audio-player/lib/styles.css';
-import { ToastContainer, toast } from 'react-toastify';
+import 'react-h5-audio-player/lib/styles.css'
+import { ToastContainer, toast } from 'react-toastify'
 import useFacets from '../../api/useFacets'
-import { selectors,actions } from '../../store'
+import { selectors, actions } from '../../store'
 import { colors } from '../../styling'
 import BasicLayout from '../BasicLayout'
-import FacetedPodcastTiles from '../FacetedPodcastTiles'
-import Loading from '../Loading'
 import { addScrollStyle } from '../util'
 import TitleBar from './TitleBar'
-import { uploadFile } from 'react-s3';
-import('buffer').then(({Buffer}) => {global.Buffer = Buffer;})
-const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
-
-
+import { uploadFile } from 'react-s3'
+import {
+  REACT_APP_ACCESSKEY_ID,
+  REACT_APP_BUCKET_NAME,
+  REACT_APP_REGION,
+  REACT_APP_SECRET_ACESS_KEY,
+  REACT_APP_DIR_NAME,
+} from '../../config'
+import('buffer').then(({ Buffer }) => {
+  global.Buffer = Buffer
+})
 const primaryColor = colors.magenta
 
 const useStyles = makeStyles(theme => ({
@@ -49,234 +53,227 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '0.25em',
   },
   button: {
-    margin :"auto",
-     marginLeft:"10%",
+    margin: 'auto',
+    marginLeft: '10%',
   },
   leftIcon: {
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
   },
   rightIcon: {
     marginLeft: theme.spacing(1),
-    textAlign:"center"
+    textAlign: 'center',
   },
   iconSmall: {
-    fontSize: 20
+    fontSize: 20,
   },
   root: {
-    padding: theme.spacing(3, 2)
+    padding: theme.spacing(3, 2),
   },
   input: {
-    display: "none"
+    display: 'none',
   },
   container: {
-    display: "flex",
-    flexWrap: "wrap"
+    display: 'flex',
+    flexWrap: 'wrap',
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 400
-  }
+    width: 400,
+  },
 }))
 
-const GoLiveData = (props) => {
-  const [state,setFile] = React.useState({
-    mainState: "initial",
+const GoLiveData = props => {
+  const [state, setFile] = React.useState({
+    mainState: 'initial',
     imageUploaded: 0,
     selectedFile: null,
-    selectedFileError:"",
-    photoError:"",
-    image:""
-  });
-  
-  const [image,setimage]=React.useState();
-  const [disable,setdisable]=React.useState(true);
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    selectedFileError: '',
+    photoError: '',
+    image: '',
+  })
+
+  const [image, setimage] = React.useState()
+  const [disable, setdisable] = React.useState(true)
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
   const facetedPodcasts = useFacets('Home')
-  const [formInput, setFormInput] = React.useState(
-    {
-      title: "",
-      description: "",
-      thumbnail:'',
-      titleError:"",
-      descriptionError:"",
-    }
-  );
-  
+  const [formInput, setFormInput] = React.useState({
+    title: '',
+    description: '',
+    thumbnail: '',
+    titleError: '',
+    descriptionError: '',
+  })
+
   const config = {
-    bucketName:"leagueday-prod-images",
-    dirName:"uploads",
-    region:'us-east-1',
-    accessKeyId:"AKIA2NEES72FJV4VO343",
-    secretAccessKey:"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",
-  };
-  
- const handleUploadClick = event => {
-    var file = event.target.files[0];
+    bucketName: REACT_APP_BUCKET_NAME,
+    dirName: REACT_APP_DIR_NAME,
+    region: REACT_APP_REGION,
+    accessKeyId: REACT_APP_ACCESSKEY_ID,
+    secretAccessKey: REACT_APP_SECRET_ACESS_KEY,
+  }
+
+  const handleUploadClick = event => {
+    var file = event.target.files[0]
     setFile({
       ...state,
-      mainState: "uploaded",
+      mainState: 'uploaded',
       selectedFile: URL.createObjectURL(file),
       imageUploaded: 1,
-      photoError:""
-    });
-    const reader = new FileReader();
-    reader.onloadend = function(e) {
+      photoError: '',
+    })
+    const reader = new FileReader()
+    reader.onloadend = function (e) {
       setFile({
         ...state,
         selectedFile: [reader.result],
-        photoError:""
-    })
+        photoError: '',
+      })
     }
     reader.readAsDataURL(file)
     return sleep(2).then(() => {
       uploadFile(file, config)
-                .then(data => {
-                  setimage(data['location'])
-                  setdisable(false)                  
-              })
-                .catch(err => {
-                  setdisable(false)
-                  console.error(err)})
-      })
-  };
-  //console.log("onloaded",image)
-  // const handleInput = evt => {
-  //   const name = evt.target.name;
-  //   const newValue = evt.target.value;
-  //   setFormInput({ [name]: newValue });
-  // };
-  const validateForm=()=>{
-    let formIsValid = true;
-    if (formInput.title == "" || formInput.title == null ||!formInput.title ) {
-      formIsValid = false;
-      formInput.titleError = "Please Enter Title";
+        .then(data => {
+          setimage(data['location'])
+          setdisable(false)
+        })
+        .catch(err => {
+          setdisable(false)
+          console.error(err)
+        })
+    })
+  }
+  const validateForm = () => {
+    let formIsValid = true
+    if (formInput.title == '' || formInput.title == null || !formInput.title) {
+      formIsValid = false
+      formInput.titleError = 'Please Enter Title'
     }
-    if (formInput.description == "" || formInput.description == null || !formInput.description) {
-      formIsValid = false;
-      formInput.descriptionError = "Please Enter Description";
+    if (
+      formInput.description == '' ||
+      formInput.description == null ||
+      !formInput.description
+    ) {
+      formIsValid = false
+      formInput.descriptionError = 'Please Enter Description'
     }
-    if (!state.selectedFile || state.selectedFile.length==null ) {
-      formIsValid = false;
-      state.photoError = "Please Add Thumbnail";
+    if (!state.selectedFile || state.selectedFile.length == null) {
+      formIsValid = false
+      state.photoError = 'Please Add Thumbnail'
     }
-    return formIsValid;
+    return formIsValid
   }
   const dispatch = useDispatch()
-  const submit = (evt) => {
+  const submit = evt => {
     evt.preventDefault()
-    //console.log("message fired",evt)
     return sleep(100).then(() => {
-    if(validateForm()){
-    //console.log("title & descridption addedd")
-    localStorage.setItem("title",formInput['title'])
-    localStorage.setItem("description",formInput['description'])
-    localStorage.setItem('channelImage',image)
-    localStorage.setItem('file',image)
-    dispatch(actions.pushHistory('/preview'))
-    }
-      })
-}
+      if (validateForm()) {
+        localStorage.setItem('title', formInput['title'])
+        localStorage.setItem('description', formInput['description'])
+        localStorage.setItem('channelImage', image)
+        localStorage.setItem('file', image)
+        dispatch(actions.pushHistory('/preview'))
+      }
+    })
+  }
   const classes = useStyles({ primaryColor })
   const user = useSelector(selectors.getUser)
   const userName = user?.user_metadata?.full_name
   return (
     <BasicLayout home>
-      <ToastContainer/>
-      {user ?(
-      <div className={classes.homeContent}>
-      <TitleBar
-          className={classes.titleBar}
-          primaryColor={primaryColor}
-          text={userName ? `Welcome back, ${userName}!` : 'Home'}
-        />
-         <div>
-      <Paper className={classes.root}>
-        <Typography variant="h5" component="h3">
-          {props.formName}
-        </Typography>
-        <Typography component="p">{props.formDescription}</Typography>
-
-        <form  onSubmit={submit} >
-          <TextField
-            label="Title"
-            id="margin-normal"
-            name="title"
-            value={formInput.title}
-            defaultValue={formInput.title}
-            className={classes.textField}
-            helperText="Enter your Title"
-            onChange={(e) =>
-              setFormInput({
-                ...formInput,
-                title: e.target.value,
-                titleError: "",
-              })
-            }
+      <ToastContainer />
+      {user ? (
+        <div className={classes.homeContent}>
+          <TitleBar
+            className={classes.titleBar}
+            primaryColor={primaryColor}
+            text={userName ? `Welcome back, ${userName}!` : 'Home'}
           />
-          <br/>
-             {formInput.titleError.length > 0 && (
-              <span style={{ color: "red" }}>
-              {formInput.titleError}
-              </span>
-            )}
-            <br/>
-            <br/>
-          <TextField
-            label="Description"
-            id="margin-normal"
-            name="description"
-            value={formInput.description}
-            defaultValue={formInput.description}
-            className={classes.textField}
-            helperText="Enter Your Description"
-            onChange={(e) =>
-              setFormInput({
-                ...formInput,
-                description: e.target.value,
-                descriptionError: "",
-              })
-            }
-          />
-          <br/>
-            {formInput.descriptionError.length > 0 && (
-              <span style={{ color: "red" }}>
-              {formInput.descriptionError}
-              </span>
-            )}
-          <br/>
-          <br/>
-          Add Thumbnail:  <input
-              accept="image/*"
-              id="contained-button-file"
-              multiple
-              type="file"
-              accept=".png, .jpg, .jpeg"
-              onChange={handleUploadClick}
-            />
-              <br/>
-            {state.photoError.length > 0 && (
-              <span style={{ color: "red" }}>
-              {state.photoError}
-              </span>
-            )}
-            <br></br>
-            <br></br>
+          <div>
+            <Paper className={classes.root}>
+              <Typography variant="h5" component="h3">
+                {props.formName}
+              </Typography>
+              <Typography component="p">{props.formDescription}</Typography>
 
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            disabled={disable}
-          >
-            Save & Preview
-          </Button>
-        </form>
-      </Paper>
-      </div>
-    </div>
-         ):(window.location.href='/')}
+              <form onSubmit={submit}>
+                <TextField
+                  label="Title"
+                  id="margin-normal"
+                  name="title"
+                  value={formInput.title}
+                  defaultValue={formInput.title}
+                  className={classes.textField}
+                  helperText="Enter your Title"
+                  onChange={e =>
+                    setFormInput({
+                      ...formInput,
+                      title: e.target.value,
+                      titleError: '',
+                    })
+                  }
+                />
+                <br />
+                {formInput.titleError.length > 0 && (
+                  <span style={{ color: 'red' }}>{formInput.titleError}</span>
+                )}
+                <br />
+                <br />
+                <TextField
+                  label="Description"
+                  id="margin-normal"
+                  name="description"
+                  value={formInput.description}
+                  defaultValue={formInput.description}
+                  className={classes.textField}
+                  helperText="Enter Your Description"
+                  onChange={e =>
+                    setFormInput({
+                      ...formInput,
+                      description: e.target.value,
+                      descriptionError: '',
+                    })
+                  }
+                />
+                <br />
+                {formInput.descriptionError.length > 0 && (
+                  <span style={{ color: 'red' }}>
+                    {formInput.descriptionError}
+                  </span>
+                )}
+                <br />
+                <br />
+                Add Thumbnail:{' '}
+                <input
+                  accept="image/*"
+                  id="contained-button-file"
+                  multiple
+                  type="file"
+                  accept=".png, .jpg, .jpeg"
+                  onChange={handleUploadClick}
+                />
+                <br />
+                {state.photoError.length > 0 && (
+                  <span style={{ color: 'red' }}>{state.photoError}</span>
+                )}
+                <br></br>
+                <br></br>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  disabled={disable}
+                >
+                  Save & Preview
+                </Button>
+              </form>
+            </Paper>
+          </div>
+        </div>
+      ) : (
+        (window.location.href = '/')
+      )}
     </BasicLayout>
   )
 }

@@ -87,7 +87,7 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
       {channel.title}
     </div>
     <div className={classes.headlineTitleRow}>
-      {hasBroadcasts ? 'Live AudioCasts and Replays' : 'Podcasts'}
+      {hasBroadcasts ? 'Podcasts and Live Events AudioCasts' : 'Podcasts'}
     </div>
   </div>
 )

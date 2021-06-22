@@ -1,0 +1,6 @@
+export const REACT_APP_BASE_ID = 'appXoertP1WJjd4TQ'
+export const REACT_APP_BUCKET_NAME = 'leagueday-prod-images'
+export const REACT_APP_DIR_NAME = 'uploads'
+export const REACT_APP_REGION = 'us-east-1'
+export const REACT_APP_ACCESSKEY_ID = 'AKIA2NEES72FJV4VO343'
+export const REACT_APP_SECRET_ACESS_KEY = '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'

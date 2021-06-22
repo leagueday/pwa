@@ -1,11 +1,9 @@
 const fetch = require('node-fetch')
-
-const apiKey = 'keyEcVKWAxBoB9kuq'
 const headers = {
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, GET, HEAD, OPTIONS',
-  Authorization: `Bearer ${apiKey}`,
+  Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
   'Content-Type': 'application/json',
 }
 
