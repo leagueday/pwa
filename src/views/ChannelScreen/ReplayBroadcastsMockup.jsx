@@ -31,18 +31,26 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     fontFamily: theme.typography.family.secondary,
     padding: '0 0.5em',
+    display: 'inherit',
+    [theme.breakpoints.only('md')]: {
+      display: 'none',
+      padding: '0 2vw',
+    },
+    [theme.breakpoints.only('sm')]: {
+      display: 'none',
+      padding: '0 2vw',
+    },
     [theme.breakpoints.only('xs')]: {
+      display: 'none',
       padding: '0 2vw',
     },
   },
   episodeDateAndDuration: {
+    flex: 1,
     display: 'flex',
     flexDirection: 'row',
     marginLeft: 'auto',
     width: '100%',
-  },
-  episodeDateAndDurationLeftPad: {
-    // flex: 1,
   },
   episodeDuration: {
     color: colors.white80,
@@ -82,10 +90,12 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       color: channelColor,
     },
+    height: '10%',
+    marginRight: '2vw',
     [theme.breakpoints.only('xs')]: {
-      height: '5vw',
-      width: '5vw',
-      marginRight: '2vw',
+      height: '4vw',
+      width: '4vw',
+      marginRight: '1vw',
     },
   }),
   episodePOPCell: {
@@ -102,20 +112,18 @@ const useStyles = makeStyles(theme => ({
     height: '3rem',
     color: colors.white,
     [theme.breakpoints.only('xs')]: {
+      height: '33%',
       fontSize: '80%',
       paddingLeft: '2vw',
     },
   }),
   episodeTitle: {
     color: colors.white80,
-    flex: 1,
     minWidth: '12vw',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
   },
   episodeTitleAndData: {
     display: 'flex',
-    flexDirection: 'row',
+    // flexDirection: 'row',
     width: '100%',
     [theme.breakpoints.only('xs')]: {
       flexDirection: 'column',
@@ -189,6 +197,10 @@ const useStyles = makeStyles(theme => ({
     padding: '1em 0',
     [theme.breakpoints.only('xs')]: {
       padding: '2vw 0',
+      width: '98%',
+    },
+    [theme.breakpoints.only('sm')]: {
+      width: '100%',
     },
   },
 }))
@@ -210,7 +222,8 @@ const mockupData = [
   },
 ]
 
-const filterMockupData = tag => mockupData.filter(({ tags }) => tags.find(thisTag => thisTag === tag))
+const filterMockupData = tag =>
+  mockupData.filter(({ tags }) => tags.find(thisTag => thisTag === tag))
 
 const transparent = 'rgba(0,0,0,1)'
 const episodeBackgroundColors = ['#070709', transparent, '#0E0E11', transparent]
@@ -271,11 +284,13 @@ const Track = ({
 
   const audioUrl = useSelector(selectors.getAudioUrl)
 
-  const isSelectedAudio = audioUrl && audioUrl === episodeData.fields.playbackUrl
+  const isSelectedAudio =
+    audioUrl && audioUrl === episodeData.fields.playbackUrl
 
   const audioMode = useSelector(selectors.getAudioMode)
 
-  const isPlayings = isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
+  const isPlayings =
+    isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
 
   const PlayOrPauseIcon = isPlayings ? IcoPause : IcoPlay
   const onPopClick = isPlayings
@@ -491,7 +506,6 @@ const TracksData = ({
   return (
     <div className={classes.tracks}>
       <div className={classes.tracksContent}>
-
         {leaugeNightData && (
           <div className={classes.replays}>
             <span className={classes.replaySpan}>
@@ -537,9 +551,11 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
   }, [])
 
   const showRecordedData = () => {
-    const baseId = 'appXoertP1WJjd4TQ';
+    const baseId = 'appXoertP1WJjd4TQ'
 
-    let urladd = `maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(channel['tag'])}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    let urladd = `maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(
+      channel['tag']
+    )}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
 
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
