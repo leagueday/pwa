@@ -9,7 +9,7 @@ import { colors } from '../../styling'
 import { addScrollStyle } from '../util'
 import { makeIconButton } from '../IconButton'
 import Expander from './Expander'
-// import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
+import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
 import MyChannels from './MyChannels'
 import MyPodcasts from './MyPodcasts'
 import SignInOutButton from './SignInOutButton'
@@ -102,10 +102,10 @@ const SkinnySideNav = ({ className, home }) => {
           <SignInOutButton className={classes.signInOutButton} />
         </div>
       </div>
-      {/* <div className={classes.control}>
+      <div className={classes.control}>
         <SearchButton className={classes.searchButton} />
-      </div> */}
-      {/* <LiveAndUpcomingLozenge className={classes.lozenge} skinny /> */}
+      </div>
+      <LiveAndUpcomingLozenge className={classes.lozenge} skinny />
       <div className={classes.scroller}>
         <div className={classes.scrollerChild}>
           <Expander
@@ -132,4 +132,4 @@ const SkinnySideNav = ({ className, home }) => {
   )
 }
 
-export default SkinnySideNav;
+export default SkinnySideNav
