@@ -32,15 +32,7 @@ const useStyles = makeStyles(theme => ({
     fontFamily: theme.typography.family.secondary,
     padding: '0 0.5em',
     display: 'inherit',
-    [theme.breakpoints.only('md')]: {
-      display: 'none',
-      padding: '0 2vw',
-    },
-    [theme.breakpoints.only('sm')]: {
-      display: 'none',
-      padding: '0 2vw',
-    },
-    [theme.breakpoints.only('xs')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none',
       padding: '0 2vw',
     },
@@ -139,7 +131,13 @@ const useStyles = makeStyles(theme => ({
   },
   eventImageAndText: {
     display: 'flex',
-    width: '100%',
+    [theme.breakpoints.up('lg')]: {
+      background: '#111',
+      '&:hover': {
+        background: '#222',
+      },
+      width: '40%',
+    }
   },
   eventTextplate: {
     display: 'flex',
