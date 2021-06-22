@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
-
 import { makeStyles } from '@material-ui/core/styles'
-import useChannels from '../../api/useChannels'
 import { colors } from '../../styling'
 import { actions, selectors, constants as storeConstants } from '../../store'
 import { IcoPause, IcoPlay, IcoPlus } from '../icons'
+
 const useStyles = makeStyles(theme => ({
   clickable: {
     cursor: 'pointer',
+  },
+  replays: {
+    fontWeight: theme.typography.fontWeightBold,
+  },
+  replaySpan: {
+    color: colors.orange,
   },
   comingSoon: {
     margin: '0 2vw 2vw 2vw',
@@ -20,6 +25,8 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
   },
   episodeDate: {
+    position: 'absolute',
+    right: '15%',
     color: colors.white80,
     flex: 1,
     fontFamily: theme.typography.family.secondary,
@@ -35,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   episodeDateAndDurationLeftPad: {
-    flex: 1,
+    // flex: 1,
   },
   episodeDuration: {
     color: colors.white80,
@@ -70,10 +77,10 @@ const useStyles = makeStyles(theme => ({
     },
   }),
   episodePOP: ({ canPlay, channelColor }) => ({
-    color: canPlay ? theme.palette.text.primary : colors.lightGray,
-    cursor: canPlay ? 'pointer' : 'default',
+    cursor: 'pointer',
+    color: theme.palette.text.primary,
     '&:hover': {
-      color: canPlay ? channelColor : colors.lightGray,
+      color: channelColor,
     },
     [theme.breakpoints.only('xs')]: {
       height: '5vw',
@@ -85,11 +92,15 @@ const useStyles = makeStyles(theme => ({
     height: '60%',
   },
   episodeRow: ({ backgroundColor }) => ({
+    position: 'relative',
     backgroundColor,
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
     paddingLeft: '1em',
     userSelect: 'none',
+    height: '3rem',
+    color: colors.white,
     [theme.breakpoints.only('xs')]: {
       fontSize: '80%',
       paddingLeft: '2vw',
@@ -134,18 +145,13 @@ const useStyles = makeStyles(theme => ({
   replayBroadcast: {
     display: 'flex',
     flexDirection: 'column',
-    // background: '#111',
     marginTop: 15,
-    // width: '35%',
-    cursor: 'pointer',
-    // '&:hover': {
-    //   background: '#333',
-    // },
   },
   viewAll: {
+    cursor: 'pointer',
     color: colors.white,
     textDecoration: 'underline',
-    fontWeight: theme.typography.fontWeightBold,
+    fontWeight: theme.typography.fontWeightMedium,
   },
   sectionTitle: ({ channelColor }) => ({
     color: channelColor,
@@ -176,45 +182,19 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   tracksContent: {
+    margin: '.5rem 0',
     display: 'flex',
-    flex: 2,
     flexDirection: 'column',
+    width: '75%',
     padding: '1em 0',
     [theme.breakpoints.only('xs')]: {
       padding: '2vw 0',
     },
   },
-  tracksLeftPad: {
-    flex: 0.5,
-  },
 }))
 
-// Ikea Furniture Cardboard Stereo
 const mockupData = [
   {
-    episodes: [
-      {
-        title: 'Title of Episode X',
-        isPlaying: false,
-        canPlay: true,
-        fakeDateLabel: '3/2/21',
-        fakeDurationLabel: '41:50',
-      },
-      {
-        title: 'Title of Episode Y',
-        isPlaying: true,
-        canPlay: true,
-        fakeDateLabel: '2/28/21',
-        fakeDurationLabel: '43:22',
-      },
-      {
-        title: 'Title of Episode Z',
-        isPlaying: false,
-        canPlay: false,
-        fakeDateLabel: '1/22/21',
-        fakeDurationLabel: '35:38',
-      },
-    ],
     event: 'lcs',
     imageUrl: '/img/restyle_demo/lcs.png',
     name: 'LEAGUE CHAMPIONSHIP SERIES',
@@ -222,29 +202,6 @@ const mockupData = [
     variety: '2021 Summer Split',
   },
   {
-    episodes: [
-      {
-        title: 'Title of Episode X',
-        isPlaying: false,
-        canPlay: true,
-        fakeDateLabel: '3/2/21',
-        fakeDurationLabel: '41:50',
-      },
-      {
-        title: 'Title of Episode Y',
-        isPlaying: true,
-        canPlay: true,
-        fakeDateLabel: '2/28/21',
-        fakeDurationLabel: '43:22',
-      },
-      {
-        title: 'Title of Episode Z',
-        isPlaying: false,
-        canPlay: false,
-        fakeDateLabel: '1/22/21',
-        fakeDurationLabel: '35:38',
-      },
-    ],
     event: 'leaguenight',
     imageUrl: '/img/restyle_demo/LeagueNight2.png',
     name: 'LeagueNight',
@@ -253,8 +210,7 @@ const mockupData = [
   },
 ]
 
-const filterMockupData = tag =>
-  mockupData.filter(({ tags }) => tags.find(thisTag => thisTag === tag))
+const filterMockupData = tag => mockupData.filter(({ tags }) => tags.find(thisTag => thisTag === tag))
 
 const transparent = 'rgba(0,0,0,1)'
 const episodeBackgroundColors = ['#070709', transparent, '#0E0E11', transparent]
@@ -304,23 +260,23 @@ const Track = ({
   itemaudioUrl,
   channelColor,
   liveUrl,
-  leaugeNightData,
   channe,
 }) => {
-  const [isPlaying, setIsPlaying] = React.useState(false)
-  const [canPlay, setcanPlay] = React.useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [canPlay, setcanPlay] = useState(false)
+
   const dispatch = useDispatch()
-  const { fakeDateLabel, fakeDurationLabel } = episodeData
+
   const classes = useStyles({ backgroundColor, canPlay, channelColor })
+
   const audioUrl = useSelector(selectors.getAudioUrl)
-  const isSelectedAudio =
-    audioUrl && audioUrl === episodeData.fields.playbackUrl
+
+  const isSelectedAudio = audioUrl && audioUrl === episodeData.fields.playbackUrl
+
   const audioMode = useSelector(selectors.getAudioMode)
-  const isPlayings =
-    isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
-  const onClick = isPlaying
-    ? () => setIsPlaying(false)
-    : () => setIsPlaying(true)
+
+  const isPlayings = isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
+
   const PlayOrPauseIcon = isPlayings ? IcoPause : IcoPlay
   const onPopClick = isPlayings
     ? ev => {
@@ -345,8 +301,9 @@ const Track = ({
         }
         ev.stopPropagation()
       }
+
   return (
-    <React.Fragment>
+    <>
       <div className={classes.episodeRow}>
         <div className={classes.episodeControls}>
           <PlayOrPauseIcon
@@ -356,12 +313,12 @@ const Track = ({
             }}
             onClick={onPopClick}
           />
-          <IcoPlus
+          {/* <IcoPlus
             classes={{
               inner: classes.episodePlus,
               outer: classes.episodePOPCell,
             }}
-          />
+          /> */}
         </div>
 
         <div className={classes.episodeTitleAndData}>
@@ -380,11 +337,10 @@ const Track = ({
                 ? episodeData.fields.liveDate.split('T')[0]
                 : ''}
             </div>
-            <div className={classes.episodeDuration}>{fakeDurationLabel}</div>
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </>
   )
 }
 
@@ -394,40 +350,24 @@ const Tracks = ({
   assetid,
   leaugeNightData,
   channel,
+  chanelEvent,
 }) => {
-  const [liveUrl, setLiveUrl] = React.useState([])
-  React.useEffect(() => {
-    //gettingMuxassetsId();
-  }, [assetid])
-  const gettingMuxassetsId = () => {
-    //    if(assetid){
-    //   var params=assetid
-    //    for(var i=0;i<params.length;i++){
-    //     fetch('/.netlify/functions/mux-proxy-assests', {
-    //       method: 'POST',
-    //       headers: {
-    //         'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    //       },
-    //       body:JSON.stringify({url: `video/v1/assets/${params[i]}`})
-    //     }).then(response => response.json())
-    //       .then(function(assesetId){
-    //         setLiveUrl([assesetId.data])
-    //       }
-    //     ).catch((error)=>{
-    //        toast.error(error.type)
-    //     })
-    //   }
-    // }
-  }
+  const [liveUrl, setLiveUrl] = useState([])
+
   const classes = useStyles({ channelColor })
   return (
     <div className={classes.tracks}>
-      <div className={classes.tracksLeftPad}>&nbsp;</div>
       <div className={classes.tracksContent}>
+        {sectionData && (
+          <div className={classes.replays}>
+            <span className={classes.replaySpan}>
+              {chanelEvent.toUpperCase()}
+            </span>{' '}
+            Replay Preview
+          </div>
+        )}
         {(counter =>
           sectionData.map((episode, key) => {
-            // console.log('epiosdedata',episode)
             const bgC =
               episodeBackgroundColors[counter % episodeBackgroundColors.length]
             counter = counter + 1
@@ -438,7 +378,6 @@ const Tracks = ({
                 episodeData={episode}
                 backgroundColor={bgC}
                 counter={counter}
-                //itemaudioUrl={episode.fields.playbackUrl}
                 channelColor={channelColor}
                 liveUrl={liveUrl}
                 leaugeNightData={leaugeNightData}
@@ -458,21 +397,23 @@ const Tracks1 = ({
   indexdata,
   channelColor,
 }) => {
-  const [isPlaying, setIsPlaying] = React.useState(false)
-  const [canPlay, setcanPlay] = React.useState(false)
-  const { fakeDateLabel, fakeDurationLabel } = episodeData
-  const classes = useStyles({ backgroundColor, canPlay, channelColor })
+  const classes = useStyles({ backgroundColor, channelColor })
   const dispatch = useDispatch()
+
+  const { fakeDateLabel, fakeDurationLabel } = episodeData
+
   const audioUrl = useSelector(selectors.getAudioUrl)
+
   const isSelectedAudio =
     audioUrl && audioUrl === episodeData.fields.playbackUrl
+
   const audioMode = useSelector(selectors.getAudioMode)
+
   const isPlayings =
     isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
-  const onClick = isPlaying
-    ? () => setIsPlaying(false)
-    : () => setIsPlaying(true)
+
   const PlayOrPauseIcon = isPlayings ? IcoPause : IcoPlay
+
   const onPopClick = isPlayings
     ? ev => {
         dispatch(actions.pauseAudio())
@@ -496,8 +437,9 @@ const Tracks1 = ({
         }
         ev.stopPropagation()
       }
+
   return (
-    <React.Fragment>
+    <>
       <div className={classes.episodeRow}>
         <div className={classes.episodeControls}>
           <PlayOrPauseIcon
@@ -507,12 +449,12 @@ const Tracks1 = ({
             }}
             onClick={onPopClick}
           />
-          <IcoPlus
+          {/* <IcoPlus
             classes={{
               inner: classes.episodePlus,
               outer: classes.episodePOPCell,
             }}
-          />
+          /> */}
         </div>
 
         <div className={classes.episodeTitleAndData}>
@@ -531,21 +473,34 @@ const Tracks1 = ({
                 ? episodeData.fields.liveDate.split('T')[0]
                 : ''}
             </div>
-            <div className={classes.episodeDuration}>{fakeDurationLabel}</div>
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </>
   )
 }
 
-const TracksData = ({ leaugeNightData, channelColor, channel }) => {
-  const [liveUrl, setLiveUrl] = React.useState([])
+const TracksData = ({
+  leaugeNightData,
+  channelColor,
+  channel,
+  sectionName,
+}) => {
+  const [liveUrl, setLiveUrl] = useState([])
   const classes = useStyles({ channelColor })
   return (
     <div className={classes.tracks}>
-      <div className={classes.tracksLeftPad}>&nbsp;</div>
       <div className={classes.tracksContent}>
+
+        {leaugeNightData && (
+          <div className={classes.replays}>
+            <span className={classes.replaySpan}>
+              {sectionName.toUpperCase()}
+            </span>{' '}
+            Replay Preview
+          </div>
+        )}
+
         {(counter =>
           leaugeNightData.map((episode, indexdata) => {
             const bgC =
@@ -572,34 +527,31 @@ const TracksData = ({ leaugeNightData, channelColor, channel }) => {
 
 const ReplayBroadcastsMockup = ({ className, channel }) => {
   const classes = useStyles()
-  const channels = useChannels().list
-  const [RecordedData, setRecordedData] = React.useState([])
-  const [rescentAsscetid, setrescentAsscetId] = React.useState([])
-  const [leagueNightRecorded, setleagueNightRecorded] = React.useState([])
-  React.useEffect(() => {
+  const [RecordedData, setRecordedData] = useState([])
+  const [rescentAsscetid, setrescentAsscetId] = useState([])
+  const [leagueNightRecorded, setleagueNightRecorded] = useState([])
+
+  useEffect(() => {
     showRecordedData()
-    //gettingMuxassets();
     leagueNightshowRecordedData()
   }, [])
 
   const showRecordedData = () => {
-    const baseId = 'appXoertP1WJjd4TQ'
-    let urladd = `maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(
-      channel['tag']
-    )}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    const baseId = 'appXoertP1WJjd4TQ';
+
+    let urladd = `maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(channel['tag'])}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
       body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
     })
       .then(response => response.json())
       .then(function (response) {
         if (response.records.length) {
-          // console.log('recordeddata',JSON.stringify(response.records))
           setRecordedData(response.records)
           seturl(response.records[0].fields.playbackUrl)
         } else {
@@ -609,46 +561,17 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
         console.log('error while data fetching', error.type)
       })
   }
-  /*
-  const gettingMuxassets=()=>{
-    let livestreamingId=channels &&channels.map(item=>item.liveStreamId)
-    fetch('/.netlify/functions/mux-proxy', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        url: `video/v1/live-streams/${livestreamingId[1]}`,
-      }),
-    })
-      .then(response => response.json())
-      .then(function (assesetId) {
-        leagueNightshowRecordedData()
-        // let arrAsset=[]
 
-        // if(assesetId.data.recent_asset_ids.length>3){
-        //   arrAsset.push(assesetId.data.recent_asset_ids.slice(Math.max(assesetId.data.recent_asset_ids.length - 3, 0)))
-        // }
-        // else{
-        //   arrAsset.push(assesetId.data.recent_asset_ids)
-        // }
-        setrescentAsscetId(assesetId.data.recent_asset_ids)
-      }         
-    ).catch((error)=>{
-       toast.error(error.type)
-    }) 
-  } */
   const leagueNightshowRecordedData = () => {
     const baseId = 'appXoertP1WJjd4TQ'
     let urladd = `maxRecords=3&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
       body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
     })
       .then(response => response.json())
@@ -664,7 +587,6 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
 
   const dispatch = useDispatch()
   const makeGotoEvent = event => () => {
-    //console.log('event',event)
     dispatch(actions.pushHistory(`/event/${event}`))
   }
 
@@ -672,7 +594,7 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
     <div className={cx(classes.replayBroadcasts, className)}>
       {filterMockupData(channel.tag).map(sectionData => {
         return (
-          <React.Fragment>
+          <>
             {sectionData.event == 'lcs' && (
               <div
                 key={sectionData.name + sectionData.event}
@@ -694,19 +616,20 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
                   />
                 </div>
                 <Tracks
+                  chanelEvent={sectionData.event}
                   sectionData={RecordedData}
                   channelColor={channel.color}
                   assetid={rescentAsscetid}
                 />
               </div>
             )}
-          </React.Fragment>
+          </>
         )
       })}
 
       {filterMockupData(channel.tag).map(sectionData => {
         return (
-          <React.Fragment>
+          <>
             {sectionData.event == 'leaguenight' && (
               <div
                 key={sectionData.name + sectionData.event}
@@ -725,12 +648,13 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
                   />
                 </div>
                 <TracksData
+                  sectionName={sectionData.event}
                   leaugeNightData={leagueNightRecorded}
                   channelColor={channel.color}
                 />
               </div>
             )}
-          </React.Fragment>
+          </>
         )
       })}
     </div>
