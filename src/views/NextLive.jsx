@@ -10,12 +10,23 @@ const useStyles = makeStyles(theme => ({
     // paddingTop: '1rem',
     alignItems: 'center',
     fontSize: '100%',
+    [theme.breakpoints.only('xs')]: {
+      background: 'black',
+      fontSize: '70%'
+    },
+    [theme.breakpoints.only('sm')]: {
+      flexDirection: 'column',
+      fontSize: '90%'
+    },
   },
   nextLiveText: {
     fontWeight: theme.typography.fontWeightBold,
     width: '70%',
     marginLeft: 10,
-    textAlign: 'center'
+    textAlign: 'center',
+    [theme.breakpoints.only('xs')]: {
+      width: '100%'
+    },
   },
   liveSpan: {
     color: colors.magenta
@@ -25,7 +36,10 @@ const useStyles = makeStyles(theme => ({
     // width: 'inherit',
     width: '18%',
     // flex: 1
-  }
+    [theme.breakpoints.only('xs')]: {
+      display: 'none'
+    },
+  },
 }))
 
 const NextLive = ({ titleStart, titleRest }) => {
