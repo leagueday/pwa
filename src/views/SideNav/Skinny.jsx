@@ -103,9 +103,9 @@ const SkinnySideNav = ({ className, home }) => {
         </div>
       </div>
       <div className={classes.control}>
-        <SearchButton className={classes.searchButton} />
+        {/* <SearchButton className={classes.searchButton} /> */}
       </div>
-      <LiveAndUpcomingLozenge className={classes.lozenge} skinny />
+      {/* <LiveAndUpcomingLozenge className={classes.lozenge} skinny /> */}
       <div className={classes.scroller}>
         <div className={classes.scrollerChild}>
           <Expander

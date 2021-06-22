@@ -140,7 +140,13 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     '&:hover': {
       background: '#333'
-    }
+    },
+    [theme.breakpoints.only('xs')]: {
+      width: '90%'
+    },
+    [theme.breakpoints.only('sm')]: {
+      width: '90%'
+    },
   },
   viewAll: {
     color: colors.magenta,
