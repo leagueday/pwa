@@ -36,26 +36,24 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     display: 'block',
     width: '100%',
-    marginBottom: '0',
+    marginBottom: '0'
   },
   logoContainer: {
-    position: 'relative',
     flex: 2,
     paddingRight: '5%',
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-around'
   },
   logoText: {
-    position: 'absolute',
-    top: 0,
-    right: '5%',
-    opacity: 0.8,
+    marginTop: '0',
+    marginBottom: '30px',
     textAlign: 'top',
+    height: '30%',
     fontWeight: theme.typography.fontWeightBold,
     fontSize: '150%',
-    color: colors.magenta,
+    color: colors.magenta
   },
   scroller: addScrollStyle(
     colors.blue,
@@ -79,32 +77,21 @@ const useStyles = makeStyles(theme => ({
     width: 'min(17%, 14em)',
   },
   signInOutButton: {
-    fontSize: '95%',
+    fontSize: '80%',
     whiteSpace: 'nowrap',
-    width: '45%',
-    position: 'absolute',
-    color: 'white'
+    width: '100%',
   },
   signInOutButtonContainer: {
     paddingTop: '0.25vw',
-    position: 'relative',
-    marginTop: '25px',
-    marginBottom: '25px',
-    width: '100%',
-  },
-  signInOut: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
   inNOutButton: {
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
-    // flex: 1,
-    marginLeft: '5%',
+    flex: 1.5,
     color: '#ffffff',
-    width: '45%',
+    marginTop: '5%',
+    marginLeft: '18%',
     paddingBottom: '0.25vw',
     text: ({ skinny }) => ({
       flex: 1,
@@ -182,10 +169,10 @@ const FatSideNav = ({ className, home }) => {
               onClick={goHome}
               src="/img/NEW_LDLogo.png"
             />
-            <p className={classes.logoText}>BETA</p>
+              <p className={classes.logoText}>BETA</p>
           </div>
           <div className={classes.signInOutButtonContainer}>
-          <SignInOutButton className={classes.signInOutButton} />
+            <SignInOutButton className={classes.signInOutButton} />
           </div>
         </div>
         <div className={classes.scroller}>
@@ -206,6 +193,20 @@ const FatSideNav = ({ className, home }) => {
                 <MyPodcasts />
               </Expander>
             )}
+            {/* <React.Suspense fallback={<Loading />}>
+    {user &&(
+     <Button
+     className={classes.inNOutButton}
+     color="primary"
+     onClick={golive}
+     size="small"
+     variant="contained"
+ >
+   GO LIVE
+   </Button>
+  )}
+    </React.Suspense> */}
+
             <React.Suspense fallback={<Loading />}>
               {user &&
                 (profileCreated == 3 ? (
@@ -239,4 +240,4 @@ const FatSideNav = ({ className, home }) => {
   )
 }
 
-export default FatSideNav;
+export default FatSideNav

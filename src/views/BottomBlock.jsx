@@ -15,6 +15,24 @@ const useStyles = makeStyles(theme => ({
       marginBottom: '2vw',
     },
   },
+  nextLive: {
+    display: 'flex',
+    width: '60%',
+    // paddingTop: '1rem',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    fontSize: '100%',
+    background: '#111',
+  },
+  nextLiveText: {
+    fontWeight: theme.typography.fontWeightMedium,
+    width: '70%',
+    marginLeft: 10
+  },
+  nextLiveImg: {
+    // flex: 0.5,
+    width: 'inherit',
+  },
   pinStripe: ({ accentColor }) => ({
     borderBottom: `0.2em solid ${accentColor ?? colors.white80}`,
     [theme.breakpoints.only('xs')]: {
@@ -79,8 +97,6 @@ const BottomBlock = props => {
   const classes = useStyles(props)
   const { className, numPages, pageNum, titleRest, titleStart } = props
 
-  console.log('children  ',props)
-
   return (
     <div className={cx(classes.bottomBlock, className)}>
       <div className={classes.titleAndDotsRow}>
@@ -104,6 +120,23 @@ const BottomBlock = props => {
           />
         )}
       </div>
+        {/* <NextLive
+          titleRest={titleRest}
+          titleStart={titleStart}
+          classes={classes}
+        /> */}
+        {titleStart === 'League of Legends' && titleRest === 'Live' &&
+          <div className={classes.nextLive}>
+            <img
+              src="/img/NEW_LDLogo.png"
+              className={classes.nextLiveImg}
+              style={{ width: '120px', height: '30px' }}
+            />
+            <p className={classes.nextLiveText}>
+              We are Live Every Friday, Saturday and Sunday from 6-10pm EST, and Wednesdays from 10-11pm EST!
+            </p>
+          </div>
+        }
       <div className={classes.children}>{props.children}</div>
     </div>
   )

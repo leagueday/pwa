@@ -132,20 +132,15 @@ const useStyles = makeStyles(theme => ({
     },
   },
   replayBroadcast: {
+    // ok
     display: 'flex',
     flexDirection: 'column',
-    background: '#111',
-    marginTop: 15,
-    width: '35%',
-    cursor: 'pointer',
-    '&:hover': {
-      background: '#333'
-    }
   },
-  viewAll: {
-    color: colors.magenta,
-    textDecoration: 'underline',
-    fontWeight: theme.typography.fontWeightBold
+  replayBroadcasts: {
+    alignItems: 'stretch',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
   },
   sectionTitle: ({ channelColor }) => ({
     color: channelColor,
@@ -291,7 +286,6 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
       >
         <div className={classes.textEllipsisOverflow}>{variety}</div>
       </div>
-      <div className={classes.viewAll}>View All Replays</div>
     </div>
   )
 }
@@ -569,7 +563,6 @@ const TracksData = ({ leaugeNightData, channelColor, channel }) => {
     </div>
   )
 }
-
 const ReplayBroadcastsMockup = ({ className, channel }) => {
   const classes = useStyles()
   const channels = useChannels().list
@@ -675,32 +668,31 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
           <React.Fragment>
             {sectionData.event == 'lcs' && (
               <div
-              key={sectionData.name + sectionData.event}
-              className={classes.replayBroadcast}
+                key={sectionData.name + sectionData.event}
+                className={classes.replayBroadcast}
               >
-                <div className={classes.eventImageAndText} onClick={makeGotoEvent(sectionData.event)}>
+                <div className={classes.eventImageAndText}>
                   <EventImage
                     classes={classes}
                     imageUrl={sectionData.imageUrl}
                     onClick={makeGotoEvent(sectionData.event)}
-                    />
+                  />
                   <EventTextplate
                     channelColor={channel.color}
                     onClick={makeGotoEvent(sectionData.event)}
                     sectionData={sectionData}
-                    />
+                  />
                 </div>
-                {/* <Tracks
+                <Tracks
                   sectionData={RecordedData}
                   channelColor={channel.color}
                   assetid={rescentAsscetid}
-                /> */}
+                />
               </div>
             )}
           </React.Fragment>
         )
       })}
-
       {filterMockupData(channel.tag).map(sectionData => {
         return (
           <React.Fragment>
@@ -721,10 +713,10 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
                     sectionData={sectionData}
                   />
                 </div>
-                {/* <TracksData
+                <TracksData
                   leaugeNightData={leagueNightRecorded}
                   channelColor={channel.color}
-                /> */}
+                />
               </div>
             )}
           </React.Fragment>
