@@ -79,8 +79,6 @@ const BottomBlock = props => {
   const classes = useStyles(props)
   const { className, numPages, pageNum, titleRest, titleStart } = props
 
-  console.log('children  ',props)
-
   return (
     <div className={cx(classes.bottomBlock, className)}>
       <div className={classes.titleAndDotsRow}>
