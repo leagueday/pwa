@@ -1,7 +1,35 @@
 import React, { useState, useEffect } from 'react'
 import useAirTable from '../api/useAirtable'
+import { makeStyles } from '@material-ui/core/styles'
+import { colors } from '../styling'
 
-const NextLive = ({ titleStart, titleRest, classes }) => {
+const useStyles = makeStyles(theme => ({
+  nextLive: {
+    display: 'flex',
+    width: '100%',
+    // paddingTop: '1rem',
+    alignItems: 'center',
+    fontSize: '100%',
+  },
+  nextLiveText: {
+    fontWeight: theme.typography.fontWeightBold,
+    width: '70%',
+    marginLeft: 10,
+    textAlign: 'center'
+  },
+  liveSpan: {
+    color: colors.magenta
+  },
+  nextLiveImg: {
+    // flex: 0.5,
+    // width: 'inherit',
+    width: '18%',
+    // flex: 1
+  }
+}))
+
+const NextLive = ({ titleStart, titleRest }) => {
+  const classes = useStyles();
   const [live, setlive] = useState(false)
   const [days, setDays] = useState(0)
   const [hours, setHours] = useState(0)
@@ -68,23 +96,23 @@ const NextLive = ({ titleStart, titleRest, classes }) => {
     // }
   }
 
-  useEffect(() => {
-    let mounted = true
-    if (mounted) {
-      setInterval(countDown, 100)
-    }
-    return function cleanup() {
-      mounted = false
-    }
-  }, [])
+  // useEffect(() => {
+  //   let mounted = true
+  //   if (mounted) {
+  //     setInterval(countDown, 100)
+  //   }
+  //   return function cleanup() {
+  //     mounted = false
+  //   }
+  // }, [])
 
-  useEffect(() => {
-    getLiveData()
-  }, [data])
+  // useEffect(() => {
+  //   getLiveData()
+  // }, [data])
 
   return (
-    <div>
-      {titleStart === 'League of Legends' &&
+    <div classes={classes.nextLive}>
+      {/* {titleStart === 'League of Legends' &&
         titleRest === 'Live' &&
         live === false && (
           <div className={classes.nextLive}>
@@ -100,7 +128,19 @@ const NextLive = ({ titleStart, titleRest, classes }) => {
               {minutes > 1 || minutes === 0 ? 's' : ''}
             </p>
           </div>
-        )}
+        )} */}
+        {titleStart === 'League of Legends' &&
+          <div className={classes.nextLive}>
+            <img
+              src="/img/NEW_LDLogo.png"
+              className={classes.nextLiveImg}
+              // style={{ width: '120px', height: '30px' }}
+            />
+            <p className={classes.nextLiveText}>
+              Live every Friday, Saturday and Sunday from <span className={classes.liveSpan}>6-10pm EST</span>, and Wednesdays from <span className={classes.liveSpan}>10-11pm EST</span>!
+            </p>
+          </div>
+        }
     </div>
   )
 }

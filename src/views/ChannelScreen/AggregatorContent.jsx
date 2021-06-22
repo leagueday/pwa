@@ -1,6 +1,6 @@
 import React from 'react'
 import cx from 'classnames'
-
+import NextLive from '../NextLive';
 import { makeStyles } from '@material-ui/core/styles'
 
 import useFacets from '../../api/useFacets'
@@ -87,8 +87,11 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
       {channel.title}
     </div>
     <div className={classes.headlineTitleRow}>
-      {hasBroadcasts ? 'Live AudioCasts and Replays' : 'Podcasts'}
+      {!hasBroadcasts && channel.title !== 'League of Legends' && 'Podcasts'}
+      {hasBroadcasts && channel.title !== 'League of Legends' && 'LCS Coverage'}
+      {channel.title === 'League of Legends' && 'Live AudioCasts and Replays'}
     </div>
+    <NextLive titleStart={channel.title}/>
   </div>
 )
 
