@@ -7,7 +7,7 @@ const HomeScreen = React.lazy(() => import('./views/HomeScreen'))
 const ProfileScreen =React.lazy(()=>import('./views/MyProfile'))
 const GoLive =React.lazy(()=>import('./views/GoLive'))
 const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'))
-const SetupScreen = React.lazy(() => import('./views/SetupScreen'));
+// const SetupScreen = React.lazy(() => import('./views/SetupScreen'));
 const GoToLiveData= React.lazy(() => import('./views/GoLive/GoLiveData'));
 const PreviewPage=React.lazy(()=>import('./views/GoLive/PreviewPage'))
 const DestributionPage=React.lazy(()=>import('./views/GoLive/DestributionPage'))
@@ -60,9 +60,9 @@ export const routesConfig = [
     }),
   ],
   [
-    matchFirstToken('setup'),
+    // matchFirstToken('setup'),
     isAdminUser,
-    SetupScreen,
+    // SetupScreen,
     pathTokens => ({
       subject: takeNextToken(pathTokens),
     }),
