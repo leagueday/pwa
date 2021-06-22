@@ -91,6 +91,10 @@ const useStyles = makeStyles(theme => ({
     height: '6vw',
     width: '6vw',
   },
+  eventImageFormobileView: {
+    height: '15vw',
+    width: '15vw',
+  },
   liveness: {
     display: 'flex',
     width: '600%',
@@ -137,7 +141,16 @@ const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
 const filterMockupData = tag =>
   mockupData.filter(({ tags }) => tags.find(thisTag => thisTag === tag))
 const EventImage = ({ classes, imageUrl }) => {
-  return <img className={cx(classes.eventImage)} src={imageUrl} />
+  return (
+    <img
+      className={cx(
+        window.innerWidth > 945
+          ? classes.eventImage
+          : classes.eventImageFormobileView
+      )}
+      src={imageUrl}
+    />
+  )
 }
 
 const EventTextplate = ({ channelColor, sectionData }) => {
@@ -264,8 +277,6 @@ const ComingSoon = ({ className, channel, channelColor }) => {
             response.records[0].fields.playbackUrl
           )
           seturl(response.records[0].fields.playbackUrl)
-        } else {
-          console.log('setlivestatus', liveStatus)
         }
       })
       .catch(error => {
@@ -286,7 +297,7 @@ const ComingSoon = ({ className, channel, channelColor }) => {
       })
         .then(response => response.json())
         .then(function (response) {
-          console.log('abc', response)
+          //console.log('abc',response)
           if (response.data.status == 'active') {
             setliveStatus(1)
           }
@@ -300,7 +311,8 @@ const ComingSoon = ({ className, channel, channelColor }) => {
   }
 
   const classes = useStyles()
-  console.log('checkchannel', checkChannel)
+
+  //console.log('checkchannel',liveStatus)
   return (
     <div className={cx(classes.comingSoon, className)}>
       {liveStatus == 0 ? (

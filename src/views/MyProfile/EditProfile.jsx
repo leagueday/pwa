@@ -106,6 +106,7 @@ const useStyles = makeStyles(theme => ({
     margin: "10px 10px 0px 0px"
   }
 }))
+
 const EditProfile = (props) => {
   const channels = useChannels().list
   const [state,setFile] = React.useState({
@@ -117,6 +118,7 @@ const EditProfile = (props) => {
     photoError:"",
     image:""
   });
+  
   const [image,setimage]=React.useState('')
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const [formInput, setFormInput] = React.useState(
@@ -132,12 +134,14 @@ const EditProfile = (props) => {
       userChannelImage:"",
     }
   );
+  
   const [userChannelnput,setuserChannelInput]=React.useState({
     userChannelName:"",
     userChannelImageSaved:"",
     streamKey:"",
     liveStreamId:""
   })
+  
   const [selectChannel,setselectChannel]=useState([])
   const [context, setContext] = React.useState([{ value: null }]);
   const [saveChannelImage,setsaveChannelImage]=useState('')
@@ -151,6 +155,7 @@ const EditProfile = (props) => {
     getuserChannelData();
     getProfileData();
   },[])
+  
   const getProfileData= async ()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     const userId=user['id']
@@ -199,6 +204,7 @@ const EditProfile = (props) => {
         console.log('error while data fetching',error)
       })
   }
+  
   const getuserChannelData= async ()=>{
     const baseId = 'appXoertP1WJjd4TQ'
     const userId=user['id']
@@ -220,6 +226,7 @@ const EditProfile = (props) => {
         console.log('error while data fetching',error)
       })
   }
+  
   const config = {
     bucketName:"leagueday-prod-images",
     dirName:"uploads",
@@ -242,8 +249,8 @@ const EditProfile = (props) => {
       imageUploaded: 1,
       photoError:""
     });
-  console.log('state',state.selectedFile)
-    const reader = new FileReader();
+  
+  const reader = new FileReader();
     reader.onloadend = function(e) {
       setFile({
         ...state,
@@ -255,6 +262,7 @@ const EditProfile = (props) => {
     reader.readAsDataURL(file)
     setimage(file)
   };
+  
   const handleChannelImage=async event=>{
     var channelImageSaved = event.target.files[0];
     setFormInput({
@@ -268,6 +276,7 @@ const EditProfile = (props) => {
                 console.log('datafile',JSON.stringify(data))})
               .catch(err => console.error(err))
   }
+  
   const validateForm=()=>{
     let formIsValid = true;
     if (formInput.name === "" || formInput.name===undefined||formInput.name === null ||!formInput.name ) {
@@ -286,13 +295,15 @@ const EditProfile = (props) => {
     return formIsValid;
 
   }
-  const dispatch = useDispatch()
+  
+const dispatch = useDispatch()
 function handleAdd() {
   const values = [...context];
-  console.log('values',values)
+  //console.log('values',values)
   values.push({ value: null });
   setContext(values);
 }
+
 function handleChange(i, event) {
   const values = [...context];
   values[i].value = event.target.value;
@@ -302,8 +313,9 @@ function handleChange(i, event) {
     arr.push(context[i].value);
   }
   setsaveContext(arr)
-  console.log('valueadded',arr)
+  //console.log('valueadded',arr)
 }
+
 const onChannelChanged=(e,channelFieldKey,tag)=>{
   const {value,checked}=e.target
   let channelSelect=value[channelFieldKey] 
@@ -323,6 +335,7 @@ const onChannelChanged=(e,channelFieldKey,tag)=>{
      setselectChannel(datasaved)
      setChannelTag(datasavedFortag)
 }
+
   const classes = useStyles({ primaryColor })
   const userName = user?.user_metadata?.full_name
  
@@ -358,8 +371,7 @@ const onChannelChanged=(e,channelFieldKey,tag)=>{
         ]
       }
       
-    const baseId = 'appXoertP1WJjd4TQ'
-    
+    const baseId = 'appXoertP1WJjd4TQ'    
     fetch('/.netlify/functions/airtable-update', {
       method: 'PUT',
       headers: {
@@ -396,6 +408,7 @@ const savedUserChannel=()=>{
       }
     ]
   }
+  
   const baseId = 'appXoertP1WJjd4TQ'
   fetch('/.netlify/functions/airtable-update', {
     method: 'PUT',
@@ -413,12 +426,14 @@ const savedUserChannel=()=>{
     })
   
 }
+
 var dataContext=[]
 context['value'] &&context['value'].map((item,i,arr)=>{
   if(item){
   dataContext.push(arr[i])
   }
 })
+
 const handleChanges=(i, e,arr)=> {
   let addArr = [...contextvalue];
   addArr[i] = e.target.value;
@@ -445,7 +460,7 @@ dataContext.map((item,index,arr)=>{
         </label>
     </div>
 )});
-console.log('userchar',formInput.userChannelName,formInput.channelImageSaved)
+
   return (
     <BasicLayout home>
       <ToastContainer/>
