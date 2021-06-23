@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
 import Loading from '../Loading'
 import { makeStyles } from '@material-ui/core/styles'
-import { Button } from "@material-ui/core";
+import { Button } from '@material-ui/core'
 import { actions, selectors } from '../../store'
 import { colors } from '../../styling'
 import { addScrollStyle } from '../util'
@@ -13,6 +13,7 @@ import MyChannels from './MyChannels'
 import MyPodcasts from './MyPodcasts'
 import SearchLozenge from './SearchLozenge'
 import SignInOutButton from './SignInOutButton'
+import { REACT_APP_BASE_ID } from '../../config'
 
 const useStyles = makeStyles(theme => ({
   clickable: {
@@ -77,9 +78,9 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.primary.active,
     },
     flex: 1.5,
-    color:"#ffffff",
-    marginTop:'5%',
-    marginLeft: "18%",
+    color: '#ffffff',
+    marginTop: '5%',
+    marginLeft: '18%',
     paddingBottom: '0.25vw',
     text: ({ skinny }) => ({
       flex: 1,
@@ -95,124 +96,113 @@ const useStyles = makeStyles(theme => ({
 const FatSideNav = ({ className, home }) => {
   const classes = useStyles({ home })
   const user = useSelector(selectors.getUser)
-  const [profileCreated,setProfileCreated]=React.useState(0)
-  React.useEffect(()=>{
-    getProfileData();
-  },[])
-  const getProfileData=()=>{
-    const baseId = 'appXoertP1WJjd4TQ'
-    let fetchSearch;
-    if(user){
-    const userId=user['id']
-     fetchSearch=`?filterByFormula=({userId}=${JSON.stringify(userId)})`
+  const [profileCreated, setProfileCreated] = React.useState(0)
+  React.useEffect(() => {
+    getProfileData()
+  }, [])
+  const getProfileData = () => {
+    const baseId = REACT_APP_BASE_ID
+    let fetchSearch
+    if (user) {
+      const userId = user['id']
+      fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
     }
     fetch('/.netlify/functions/airtable-getprofile', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({url: `${baseId}/UserProfile${fetchSearch}`})
-    }).then(response => response.json())
-      .then(
-        function(response){ 
-            if(response.records.length > 0){
-              //setProfileCreated(response.records[0].fields.profileCreated)
-              setProfileCreated(3)
-              localStorage.setItem('profilecreated',response.records[0].fields.profileCreated)
-            }
-            else
-            {
-                setProfileCreated(2)
-            }
+      body: JSON.stringify({ url: `${baseId}/UserProfile${fetchSearch}` }),
+    })
+      .then(response => response.json())
+      .then(function (response) {
+        if (response.records.length > 0) {
+          setProfileCreated(3)
+          localStorage.setItem(
+            'profilecreated',
+            response.records[0].fields.profileCreated
+          )
+        } else {
+          setProfileCreated(2)
         }
-      ).catch((error)=>{
-        console.log('error while data fetching',error)
+      })
+      .catch(error => {
+        console.log('error while data fetching', error)
         //setProfileCreated(2)
       })
   }
   const dispatch = useDispatch()
   const goHome = home ? null : () => dispatch(actions.pushHistory('/'))
-  const myprofile = () =>
-  {
-   dispatch(actions.pushHistory('/profile'))
+  const myprofile = () => {
+    dispatch(actions.pushHistory('/profile'))
   }
 
-const golive=() => dispatch(actions.pushHistory('/live'));
-const createProfile=()=>dispatch(actions.pushHistory('/create'))
+  const golive = () => dispatch(actions.pushHistory('/live'))
+  const createProfile = () => dispatch(actions.pushHistory('/create'))
   return (
     <div className={cx(classes.sideNav, className)}>
-        <React.Suspense fallback={<Loading />}>
-      <div className={classes.controls}>
-        <div className={classes.logoContainer}>
-          <img className={classes.logo} onClick={goHome} src="/img/logo.png" />
+      <React.Suspense fallback={<Loading />}>
+        <div className={classes.controls}>
+          <div className={classes.logoContainer}>
+            <img
+              className={classes.logo}
+              onClick={goHome}
+              src="/img/logo.png"
+            />
+          </div>
+          <div className={classes.signInOutButtonContainer}>
+            <SignInOutButton className={classes.signInOutButton} />
+          </div>
         </div>
-        <div className={classes.signInOutButtonContainer}>
-          <SignInOutButton className={classes.signInOutButton} />
-        </div>
-      </div>
-      <SearchLozenge />
-      <LiveAndUpcomingLozenge className={classes.lozenge} />
-      <div className={classes.scroller}>
-        <div className={classes.scrollerChild}>
-          <Expander className={classes.expander} text="MY CHANNELS" tag="chan">
-            <MyChannels />
-          </Expander>
-          {user && (
+        <SearchLozenge />
+        <LiveAndUpcomingLozenge className={classes.lozenge} />
+        <div className={classes.scroller}>
+          <div className={classes.scrollerChild}>
             <Expander
               className={classes.expander}
-              text="MY PODCASTS"
-              tag="poca"
+              text="MY CHANNELS"
+              tag="chan"
             >
-              <MyPodcasts />
+              <MyChannels />
             </Expander>
-          )}
-    {/* <React.Suspense fallback={<Loading />}>
-    {user &&(
-     <Button
-     className={classes.inNOutButton}
-     color="primary"
-     onClick={golive}
-     size="small"
-     variant="contained"
- >
-   GO LIVE
-   </Button>
-  )}
-    </React.Suspense> */}
-
-    <React.Suspense fallback={<Loading />}>
-    {user &&(    
-      
-      (profileCreated == 3)? ( 
-      <Button
-        className={classes.inNOutButton}
-        color="primary"
-        onClick={myprofile}
-        size="small"
-        variant="contained"
-    >
-      PROFILE
-      </Button>):(   
-      (profileCreated == 2)?(
-      <Button
-     className={classes.inNOutButton}
-     color="primary"
-     onClick={createProfile}
-     size="small"
-     variant="contained"
- >
-   CREATE PROFILE
-   </Button>
-   ):""
-    )
-  
-  )}
-  
-    </React.Suspense>
-
+            {user && (
+              <Expander
+                className={classes.expander}
+                text="MY PODCASTS"
+                tag="poca"
+              >
+                <MyPodcasts />
+              </Expander>
+            )}
+            <React.Suspense fallback={<Loading />}>
+              {user &&
+                (profileCreated == 3 ? (
+                  <Button
+                    className={classes.inNOutButton}
+                    color="primary"
+                    onClick={myprofile}
+                    size="small"
+                    variant="contained"
+                  >
+                    PROFILE
+                  </Button>
+                ) : profileCreated == 2 ? (
+                  <Button
+                    className={classes.inNOutButton}
+                    color="primary"
+                    onClick={createProfile}
+                    size="small"
+                    variant="contained"
+                  >
+                    CREATE PROFILE
+                  </Button>
+                ) : (
+                  ''
+                ))}
+            </React.Suspense>
+          </div>
         </div>
-      </div>
       </React.Suspense>
     </div>
   )
