@@ -162,6 +162,7 @@ const GoLiveData = (props) => {
     }
     return formIsValid;
   }
+
   const dispatch = useDispatch()
   const submit = (evt) => {
     evt.preventDefault()
@@ -180,6 +181,7 @@ const GoLiveData = (props) => {
   const classes = useStyles({ primaryColor })
   const user = useSelector(selectors.getUser)
   const userName = user?.user_metadata?.full_name
+
   return (
     <BasicLayout home>
       <ToastContainer/>
@@ -199,13 +201,14 @@ const GoLiveData = (props) => {
 
         <form  onSubmit={submit} >
           <TextField
-            label="Title"
+            label="Title (Max 27 Characters)"
             id="margin-normal"
             name="title"
             value={formInput.title}
             defaultValue={formInput.title}
             className={classes.textField}
             helperText="Enter your Title"
+            inputProps={{ maxLength: 27 }}
             onChange={(e) =>
               setFormInput({
                 ...formInput,
@@ -223,13 +226,14 @@ const GoLiveData = (props) => {
             <br/>
             <br/>
           <TextField
-            label="Description"
+            label="Description (Max 27 Characters)"
             id="margin-normal"
             name="description"
             value={formInput.description}
             defaultValue={formInput.description}
             className={classes.textField}
             helperText="Enter Your Description"
+            inputProps={{ maxLength: 27 }}
             onChange={(e) =>
               setFormInput({
                 ...formInput,
