@@ -7,7 +7,6 @@ const HomeScreen = React.lazy(() => import('./views/HomeScreen'))
 const ProfileScreen =React.lazy(()=>import('./views/MyProfile'))
 const GoLive =React.lazy(()=>import('./views/GoLive'))
 const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'))
-// const SetupScreen = React.lazy(() => import('./views/SetupScreen'));
 const GoToLiveData= React.lazy(() => import('./views/GoLive/GoLiveData'));
 const PreviewPage=React.lazy(()=>import('./views/GoLive/PreviewPage'))
 const DestributionPage=React.lazy(()=>import('./views/GoLive/DestributionPage'))
@@ -19,10 +18,6 @@ const matchFirstToken = match => pathTokens =>
 const takeNextToken = pathTokens =>
   pathTokens.length > 1 ? pathTokens[1] : null
 const isAdminUser = userData => (userData?.isAdmin ? true : false)
-
-//
-// routesConfig: Array<[testRoute, checkPermission, View, getViewProps]>
-//
 
 export const routesConfig = [
   [
