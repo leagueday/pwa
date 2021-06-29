@@ -91,7 +91,7 @@ const useStyles = makeStyles(theme => ({
   },
   buttonSelector: {
     display: 'flex',
-    width: '75%',
+    width: '100%',
     borderBottom: '1px solid #333',
   },
   sectionButton: {
@@ -127,11 +127,14 @@ const useStyles = makeStyles(theme => ({
     width: '75%',
   },
   goLiveButton: {
-    width: '28%',
-    background: 'transparent',
-    border: `1px solid ${colors.blue}`,
+    width: '15%',
+    height: '10%',
+    marginLeft: '18%',
+    background: colors.blue,
     borderRadius: '5px',
-    marginLeft: '16%',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
   },
   socials: {
     fontWeight: theme.typography.fontWeightBold,
@@ -148,7 +151,6 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '50%',
     width: '20%',
   },
-  channelName: {},
   channelsWrapper: {
     display: 'flex',
     width: '50%',
@@ -289,9 +291,9 @@ const MyProfile = () => {
                   <FontAwesomeIcon icon={faTwitch} />{' '}
                   <a
                     className={classes.socialLinks}
-                    href={currentUserCreds?.fields?.TwitterUrl}
+                    href={currentUserCreds?.fields?.TwitchUrl}
                   >
-                    {currentUserCreds?.fields?.TwitterUrl}
+                    {currentUserCreds?.fields?.TwitchUrl}
                   </a>
                 </p>
               </div>
@@ -332,6 +334,9 @@ const MyProfile = () => {
             >
               Trophies
             </span>
+            <Button onClick={golive} className={classes.goLiveButton}> 
+              Go Live
+            </Button>
           </div>
           <div className={classes.userContent}>
             {gamesSelected && (

@@ -105,27 +105,35 @@ const useStyles = makeStyles(theme => ({
   radiotext: {
     margin: '10px 10px 0px 0px',
   },
-}))
+}));
 
 const EditProfile = props => {
   const dispatch = useDispatch()
   const channels = useChannels().list
+  const [currentUserGames, setCurrentUserGames] = useState()
   const [profileInfo, setProfileInfo] = useState()
   const { data: userCreds } = useAirTable('appXoertP1WJjd4TQ', 'UserProfile')
+  const { data: userGames } = useAirTable('appXoertP1WJjd4TQ', 'UserGames')
   const [image, setimage] = useState()
   const [heroImg, setHeroImg] = useState()
+
   const getUserById = () => {
     const currentUserCred = userCreds?.filter(
       item => item.fields.userId === user.id
     )
+    const currentUserGames = userGames?.filter(
+      item => item.fields.userId === user.id
+    )
+    setCurrentUserGames(currentUserGames?.shift()?.fields?.channelName.split(','))
     setProfileInfo(currentUserCred?.shift())
   }
 
   console.log('user profile ', profileInfo)
+  console.log('hello ', currentUserGames)
 
   useEffect(() => {
     getUserById()
-  }, [userCreds])
+  }, [userCreds, userGames])
 
   const [state, setFile] = useState({
     mainState: 'initial',
@@ -181,6 +189,7 @@ const EditProfile = props => {
   const [contextvalue, setcontextvalue] = useState([])
   const [saveContext, setsaveContext] = useState([])
   const [userId, setuserId] = useState('')
+
   const [channelId, setChannelId] = useState('')
   const [channelTag, setChannelTag] = useState([])
   const user = useSelector(selectors.getUser)
@@ -588,10 +597,11 @@ const EditProfile = props => {
                         <tbody>
                           {channels.map((channel, index) => {
                             let data
-                            selectChannel.map((item, index) => {
+                            currentUserGames?.map((item, index) => {
                               if (channel.title == item) {
                                 data = item
                               }
+                              // console.log('checkbox debugging ',channel)
                             })
                             return (
                               <tr key={index}>
