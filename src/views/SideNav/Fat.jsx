@@ -83,7 +83,7 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     width: '45%',
     position: 'absolute',
-    color: 'white'
+    color: 'white',
   },
   signInOutButtonContainer: {
     paddingTop: '0.25vw',
@@ -185,7 +185,7 @@ const FatSideNav = ({ className, home }) => {
             <p className={classes.logoText}>BETA</p>
           </div>
           <div className={classes.signInOutButtonContainer}>
-          <SignInOutButton className={classes.signInOutButton} />
+            <SignInOutButton className={classes.signInOutButton} />
           </div>
         </div>
         <div className={classes.scroller}>
@@ -207,8 +207,9 @@ const FatSideNav = ({ className, home }) => {
               </Expander>
             )}
             <React.Suspense fallback={<Loading />}>
-              {user &&
-                (profileCreated == 3 ? (
+              {
+                user && (
+                  // (profileCreated == 3 ? (
                   <Button
                     className={classes.inNOutButton}
                     color="primary"
@@ -216,21 +217,24 @@ const FatSideNav = ({ className, home }) => {
                     size="small"
                     variant="contained"
                   >
-                    PROFILE
+                    {profileCreated == 3
+                      ? 'PROFILE'
+                      : profileCreated == 2 && 'CREATE PROFILE'}
                   </Button>
-                ) : profileCreated == 2 ? (
-                  <Button
-                    className={classes.inNOutButton}
-                    color="primary"
-                    onClick={createProfile}
-                    size="small"
-                    variant="contained"
-                  >
-                    CREATE PROFILE
-                  </Button>
-                ) : (
-                  ''
-                ))}
+                )
+                // ) : profileCreated == 2 ? (
+                //   <Button
+                //     className={classes.inNOutButton}
+                //     color="primary"
+                //     onClick={createProfile}
+                //     size="small"
+                //     variant="contained"
+                //   >
+                //     CREATE PROFILE
+                //   </Button>
+                // ) : (
+                //   ''
+              }
             </React.Suspense>
           </div>
         </div>
@@ -239,4 +243,4 @@ const FatSideNav = ({ className, home }) => {
   )
 }
 
-export default FatSideNav;
+export default FatSideNav

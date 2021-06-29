@@ -1,435 +1,407 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
-import useFacets from '../../api/useFacets'
 import { selectors } from '../../store'
 import { colors } from '../../styling'
 import BasicLayout from '../BasicLayout'
 import { actions } from '../../store'
-import Loading from '../Loading'
-import BottomBlock from '../BottomBlock'
-import IconButton from '@material-ui/core/IconButton'
-import { addScrollStyle } from '../util'
-import TitleBar from './TitleBar'
-import Grid from '@material-ui/core/Grid'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
+import useAirTable from '../../api/useAirtable'
+import useChannels from '../../api/useChannels'
+import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 
 const primaryColor = colors.magenta
 
 const useStyles = makeStyles(theme => ({
-  channelCategories: {
-    marginTop: '0.5em',
+  profileWrapper: {
+    marginTop: '5%',
+    height: '90%',
+    width: '95%',
+    marginLeft: '2.5%',
+    display: 'flex',
+    overflow: 'auto',
   },
-  homeContent: ({ primaryColor }) =>
-    addScrollStyle(
-      primaryColor,
-      theme
-    )({
-      display: 'flex',
-      flexDirection: 'column',
-      flex: 1,
-      height: '100%',
-      overflow: 'auto',
-      padding: '0.5em 0.5em 0 0.5em',
-      width: '100%',
-    }),
-  podcastTiles: {
+  heroImgCont: {},
+  heroImg: {
+    position: 'absolute',
+    top: 20,
+    height: '25%',
+    width: '100%',
+    objectFit: 'cover',
+    maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0))',
+  },
+  credInfo: {
+    width: '30%',
     height: '100%',
-    minHeight: 0,
-  },
-  live: {
-    fontSize: '95%',
-    marginLeft: 'auto',
-    position: 'absolute',
-    top: 60,
-    cursor: 'pointer',
-    right: 16,
-  },
-  root: {
-    marginTop: '0%',
-    '& > *': {
-      margin: theme.spacing(1),
-    },
-  },
-  primaryStripe: ({ primaryColor }) => ({
-    backgroundColor: primaryColor,
-    height: '0.25em',
-    width: '100%',
-  }),
-  titleBar: {
-    marginBottom: '0.25em',
-  },
-  name: {
-    marginTop: '0%',
-    top: '0',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     position: 'relative',
+    overflow: 'visible',
   },
-  scroller: addScrollStyle(
-    colors.blue,
-    theme
-  )({
-    flex: 1,
-    minHeight: 0,
-    overflowY: 'auto',
+  userImgContainer: {
     width: '100%',
-  }),
-  fb: {
+    height: '27%',
     display: 'flex',
     alignItems: 'center',
+    flexDirection: 'column',
   },
-  scrollerChild: {
-    minHeight: '100%',
+  userImg: {
+    borderRadius: '50%',
+    width: '18rem',
+    height: '18rem',
+    position: 'absolute',
+    top: 0,
+    border: '2px solid magenta',
+  },
+  userBio: {
     width: '100%',
-  },
-  desc: {
-    marginRight: '20%',
-    marginLeft: '0%',
-    marginTop: '10%',
-  },
-  userprofile: {
     display: 'flex',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    top: '20%',
-    marginLeft: '20%',
-    position: 'absolute',
-    buttom: '0',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    marginTop: '25%',
   },
-  userlink: {
-    display: 'flex',
-    alignItems: 'center',
-    top: '0%',
-    marginLeft: '30%',
-    position: 'absolute',
-    buttom: '40%',
-    justifyContent: 'center',
-  },
-  userChannel: {
-    display: 'flex',
-    alignItems: 'center',
-    top: '2%',
-    marginLeft: '67%',
-    position: 'absolute',
-    buttom: '40%',
-    justifyContent: 'center',
-  },
-  goliveButton: {
+  editProfile: {
+    background: colors.blue,
+    width: '100%',
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
-    flex: 1.5,
-    color: '#ffffff',
-    marginTop: '3%',
-    top: '25px',
+  },
+  userName: {
+    fontWeight: theme.typography.fontWeightBold,
+    fontSize: '150%',
+    height: 'auto',
+    marginTop: 0,
+  },
+  userEditName: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  userGamesWrapper: {
+    width: '100%',
+    marginTop: '15%',
+    marginLeft: '5%',
+  },
+  buttonSelector: {
+    display: 'flex',
+    width: '75%',
+    borderBottom: '1px solid #333',
+  },
+  sectionButton: {
+    cursor: 'pointer',
+    padding: 10,
+    marginRight: '4%',
+    opacity: '0.7',
+    fontWeight: theme.typography.fontWeightBold,
+    '&:hover': {
+      background: '#222',
+      borderBottom: '3px solid orange',
+    },
+  },
+  selectedButton: {
+    cursor: 'pointer',
+    padding: 10,
+    marginRight: '4%',
+    opacity: '1',
+    fontWeight: theme.typography.fontWeightBold,
+    background: '#222',
+    borderBottom: '3px solid orange',
+  },
+  userContent: {
+    disply: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'scroll',
+  },
+  placeHolder: {
+    opacity: 0.7,
+    fontSize: '200%',
+    width: '75%',
+  },
+  goLiveButton: {
+    width: '28%',
+    background: 'transparent',
+    border: `1px solid ${colors.blue}`,
+    borderRadius: '5px',
+    marginLeft: '16%',
+  },
+  socials: {
+    fontWeight: theme.typography.fontWeightBold,
+  },
+  socialLinks: {
+    display: 'flex',
+    fontSize: '90%',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    textDecoration: 'underline',
+    color: 'white',
+  },
+  channelImg: {
+    borderRadius: '50%',
+    width: '20%',
+  },
+  channelName: {},
+  channelsWrapper: {
+    display: 'flex',
+    width: '50%',
+    alignItems: 'center',
+    marginBottom: '5%',
+  },
+  channels: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  recordings: {
     marginTop: '2%',
-    position: 'absolute',
-    marginLeft: '80%',
-    paddingBottom: '0.25vw',
-    text: ({ skinny }) => ({
-      flex: 1,
-      fontSize: skinny ? '60%' : null,
-      fontWeight: theme.typography.weight.bold,
-      marginLeft: '0.25em',
-      userSelect: 'none',
-      whiteSpace: 'nowrap',
-    }),
   },
-  social: {
-    display: 'flex',
-    alignItems: 'center',
-    top: '20%',
-    marginLeft: '40%',
-    position: 'absolute',
-    buttom: '0',
-    justifyContent: 'center',
-  },
-  mycontext: {
-    marginTop: '10%',
-  },
-  awards: {
-    marginBottom: '0%',
-  },
-  editbuttons: {
-    '&:hover': {
-      backgroundColor: theme.palette.primary.active,
-    },
-    flex: 1,
-    color: '#ffffff',
-    marginTop: '-8%',
-    marginLeft: '80%',
-    position: 'absolute',
-    paddingBottom: '0.25vw',
-    text: ({ skinny }) => ({
-      flex: 1,
-      fontSize: skinny ? '60%' : null,
-      fontWeight: theme.typography.weight.bold,
-      marginLeft: '0.25em',
-      userSelect: 'none',
-      whiteSpace: 'nowrap',
-    }),
-  },
-  textdescription: {
-    display: 'flex',
-    top: '0%',
-    marginLeft: '15%',
-    position: 'absolute',
-    buttom: '0',
-  },
-  descriptionprofile: {
-    position: 'absolute',
-    top: '40%',
-    display: 'flex',
-  },
+  trophy: {
+    marginTop: '2%',
+    height: '120px'
+  }
 }))
 
 const MyProfile = () => {
-  const [userProfile, setUserProfile] = React.useState([])
-  const [userChannel, setUserChannel] = React.useState([])
+  const [currentUserCreds, setCurrentUserCreds] = useState()
+  const [currentUserGames, setCurrentUserGames] = useState()
+  const [userRecordings, setUserRecordings] = useState()
+  const [gamesSelected, setGamesSelected] = useState(false)
+  const [liveRecordings, setLiveRecordings] = useState(true)
+  const [channelSelected, setChannelSelected] = useState(false)
+  const [trophieSelected, setTrophieSelected] = useState(false)
+
   const user = useSelector(selectors.getUser)
-  React.useEffect(()=>{
-    getProfileData();
-    getuserChannelData();
-  },[])
-  
-  const getProfileData=()=>{
-    const baseId = 'appXoertP1WJjd4TQ'
-    const userId = user['id']
-    let fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
-    fetch('/.netlify/functions/airtable-getprofile', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/UserProfile${fetchSearch}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        if (response.records[0].fields) {
-          setUserProfile([response.records[0].fields])
-        }
-      })
-      .catch(error => {
-        console.log('error while data fetching', error)
-      })
+
+  const handleGamesClick = () => {
+    setGamesSelected(true)
+    setLiveRecordings(false)
+    setChannelSelected(false)
+    setTrophieSelected(false)
   }
-  
-  const getuserChannelData=()=>{
-    const baseId = 'appXoertP1WJjd4TQ'
-    const userId = user['id']
-    let fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
-    fetch('/.netlify/functions/airtable-getprofile', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/UserGames?${fetchSearch}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        if (response.records[0].fields) {
-          setUserChannel(response.records[0].fields.channelName.split(','))
-        }
-      })
-      .catch(error => {
-        console.log('error while data fetching', error)
-      })
+
+  const handleChannelClick = () => {
+    setGamesSelected(false)
+    setLiveRecordings(false)
+    setChannelSelected(true)
+    setTrophieSelected(false)
   }
-  
-  const facetedPodcasts = useFacets('Home')
+
+  const handleTrophyClick = () => {
+    setGamesSelected(false)
+    setLiveRecordings(false)
+    setChannelSelected(false)
+    setTrophieSelected(true)
+  }
+
+  const handleLiveClick = () => {
+    setGamesSelected(false)
+    setLiveRecordings(true)
+    setChannelSelected(false)
+    setTrophieSelected(false)
+  }
+
+  const { data: userCreds } = useAirTable('appXoertP1WJjd4TQ', 'UserProfile')
+  const { data: userGames } = useAirTable('appXoertP1WJjd4TQ', 'UserGames')
+  const { data: recordedStreams } = useAirTable(
+    'appXoertP1WJjd4TQ',
+    'ChannelLiveData'
+  )
+
+  const getUserById = () => {
+    const currentUserCred = userCreds?.filter(
+      item => item.fields.userId === user.id
+    )
+    const currentUserGames = userGames?.filter(
+      item => item.fields.userId === user.id
+    )
+    const currentUserRecordings = recordedStreams?.filter(
+      item => item.fields.userId === 'a339ba70-5026-431d-9d3d-bfe7d19dd534'
+    )
+    // const currentUserRecordings = recordedStreams?.filter(
+    //   item => item.fields.userId === user.id
+    // )
+    setCurrentUserCreds(currentUserCred?.shift())
+    setCurrentUserGames(currentUserGames?.shift())
+    setUserRecordings(currentUserRecordings)
+  }
+
+  useEffect(() => {
+    getUserById()
+  }, [userCreds, userGames, recordedStreams])
+
   const classes = useStyles({ primaryColor })
+
   const dispatch = useDispatch()
-  const userName = user?.user_metadata?.full_name
-  const golive=() => dispatch(actions.pushHistory('/live'));
-  const editProfile=()=>dispatch(actions.pushHistory('/editprofile'))
-  //console.log('channelname',userChannel)
+  const golive = () => dispatch(actions.pushHistory('/live'))
+  const editProfile = () => dispatch(actions.pushHistory('/editprofile'))
+  const myChannels = useChannels().myList
+  const gamesArray = currentUserGames?.fields?.channelName?.split(',')
+  let count = 1
+
   return (
     <BasicLayout home>
-      {user && (
-        <div className={classes.homeContent}>
-          <div className="clearfix">
-            <div className="row">
-              {userProfile &&
-                userProfile.map(data => (
-                  <div className="col-md-4 animated fadeIn" key={data.id}>
-                    <div className="card">
-                      <div className="card-body">
-                        <div className="avatar">
-                          <img
-                            src={data.image ? data.image : ''}
-                            className="card-img-top"
-                            width="15%"
-                            alt=""
-                          />
-                        </div>
-                        <div className={classes.textdescription}>
-                          <h5 className="card-text">{data.name}</h5>
-                          <div className={classes.descriptionprofile}>
-                            <p
-                              className="cart-text"
-                              style={{
-                                marginLeft: '0%',
-                                width: '21vmin',
-                                height: '21vmin',
-                                marginTop: '20px',
-                                wordWrap: 'break-word',
-                                fontSize: '2.0vmin',
-                                whiteSpace: 'normal',
-                              }}
-                            >
-                              About:
-                              {data.description}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={classes.userlink}>
-                      <div className="card-body">
-                        <h5 className="card-title">
-                          <label>
-                            <u>My Links</u>
-                          </label>
-                        </h5>
-                        <div style={{ marginTop: '-2%' }}>
-                          <p className="card-text">
-                            <span>Twitter :{data.TwitterUrl}</span>
-                          </p>
-                          <p className="card-text">
-                            <span>Twitch :{data.TwitchUrl}</span>
-                          </p>
-                          {/* <p className="card-text">
-                 <span>FaceBook :{data.FacebookUrl}</span>
-                 </p>
-                 <p className="card-text">
-                 <span>Instagram: {data.InstagramUrl}</span>
-                 </p> */}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className={classes.userChannel}>
-                      <table className="table table-striped table-bordered">
-                        <thead>
-                          <tr>
-                            <th>
-                              <div style={{ marginRight: '0%' }}>
-                                <u>My Games</u>
-                              </div>
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {userChannel &&
-                            userChannel.map((channel, index, tag) => {
-                              return (
-                                <tr key={index}>
-                                  <td>- {channel}</td>
-                                </tr>
-                              )
-                            })}
-                        </tbody>
-                      </table>
-                    </div>
-                    {/* <div className={classes.awards}>
-                <div className="card-body">
-                 <h5 className="card-title">
-                   <br></br><br></br>
-                 <label><u>My Awards</u></label>
-                 </h5>
-                 <p className="card-text">
-                 <span>My awards data in progress</span>
-                 </p>
-               </div>
-             </div> */}
-                    {/* <div className={classes.mycontext}>
-                <div className="card-body">
-                 <h5 className="card-title">
-                 <label><u>My Contexts</u></label>
-                 </h5>
-                 <p className="card-text">
-                 <span>{data.MyContext}</span>
-                 </p>
-               </div>
-             </div> */}
-                  </div>
-                ))}
+      <div className={classes.heroImgCont}>
+        <img
+          className={classes.heroImg}
+          src={currentUserCreds?.fields?.heroImg}
+          alt="Hero img"
+        />
+      </div>
+      <div className={classes.profileWrapper}>
+        <div className={classes.credInfo}>
+          <div className={classes.userImgContainer}>
+            <img
+              className={classes.userImg}
+              src={currentUserCreds?.fields?.image}
+              alt="User Profile Picture"
+            />
+          </div>
+          <div className={classes.userBio}>
+            <div className={classes.userEditName}>
+              <p className={classes.userName}>
+                {currentUserCreds?.fields?.name}
+              </p>
+              <Button onClick={editProfile} className={classes.editProfile}>
+                Edit profile
+              </Button>
             </div>
-            <div className={classes.scroller}>
-              <div className={classes.scrollerChild}>
-                <React.Suspense fallback={<Loading />}>
-                  <Button
-                    className={classes.goliveButton}
-                    color="primary"
-                    onClick={golive}
-                    size="small"
-                    variant="contained"
+            <div className={classes.description}>
+              <p>{currentUserCreds?.fields.description}</p>
+              <div>
+                <p className={classes.socials}>Social Links:</p>
+                <p className={classes.socialLinks}>
+                  <FontAwesomeIcon icon={faTwitter} />{' '}
+                  <a
+                    className={classes.socialLinks}
+                    href={currentUserCreds?.fields?.TwitterUrl}
                   >
-                    GO LIVE
-                  </Button>
-                </React.Suspense>
+                    {currentUserCreds?.fields?.TwitterUrl}
+                  </a>
+                </p>
+                <p className={classes.socialLinks}>
+                  <FontAwesomeIcon icon={faTwitch} />{' '}
+                  <a
+                    className={classes.socialLinks}
+                    href={currentUserCreds?.fields?.TwitterUrl}
+                  >
+                    {currentUserCreds?.fields?.TwitterUrl}
+                  </a>
+                </p>
               </div>
             </div>
-            <div className={classes.scroller}>
-              <div className={classes.scrollerChild}>
-                <React.Suspense fallback={<Loading />}>
-                  <Button
-                    className={classes.editbuttons}
-                    color="primary"
-                    onClick={editProfile}
-                    size="small"
-                    variant="contained"
-                  >
-                    Edit
-                  </Button>
-                </React.Suspense>
+          </div>
+        </div>
+        <div className={classes.userGamesWrapper}>
+          <div className={classes.buttonSelector}>
+            <span
+              className={
+                liveRecordings ? classes.selectedButton : classes.sectionButton
+              }
+              onClick={handleLiveClick}
+            >
+              Recorded Streams
+            </span>
+            <span
+              className={
+                gamesSelected ? classes.selectedButton : classes.sectionButton
+              }
+              onClick={handleGamesClick}
+            >
+              My Games
+            </span>
+            <span
+              className={
+                channelSelected ? classes.selectedButton : classes.sectionButton
+              }
+              onClick={handleChannelClick}
+            >
+              My Channels
+            </span>
+            <span
+              className={
+                trophieSelected ? classes.selectedButton : classes.sectionButton
+              }
+              onClick={handleTrophyClick}
+            >
+              Trophies
+            </span>
+          </div>
+          <div className={classes.userContent}>
+            {gamesSelected && (
+              <div>
+                {gamesArray?.map(game => {
+                  console.log(game)
+                  return <p>{game}</p>
+                })}
               </div>
-            </div>
-            {userProfile &&
-              userProfile.map(data => (
-                <Grid className={''} container>
-                  <br></br>
-                  <br></br>
-                  <Grid className={''} item xs={12}>
-                    {/* <BottomBlock
-                titleStart={data.name}
-                titleRest="Podcasts"
-                >
-              </BottomBlock> */}
-                  </Grid>
-                  <Grid className={''}>
-                    <BottomBlock titleStart={data.name} titleRest="Live">
-                      <div className="avatar">
-                        <img
-                          src={data.image ? data.image : ''}
-                          className="card-img-top"
-                          width="15%"
-                          alt=""
+            )}
+            {channelSelected && (
+              <div className={classes.channels}>
+                {myChannels?.map(item => {
+                  console.log(item)
+                  return (
+                    <div className={classes.channelsWrapper}>
+                      <img
+                        className={classes.channelImg}
+                        src={item.imageUrl}
+                        alt="channel image"
+                      />
+                      <p className={classes.channelName}>{item.title}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+            {liveRecordings && (
+              <div className={classes.recordings}>
+                {userRecordings?.length < 1 ? (
+                  <p className={classes.placeHolder}>No Recorded Streams yet</p>
+                ) : (
+                  userRecordings?.map((rec, index) => {
+                    console.log(rec)
+                    count += 1
+                    return (
+                      <>
+                        <Tracks1
+                          key={index}
+                          episodeData={rec}
+                          counter={count - 1}
+                          channelColor={colors.darkGray}
+                          indexdata={index}
                         />
-                      </div>
-                    </BottomBlock>
-                    <Grid className={''}>
-                      <BottomBlock titleStart={data.name} titleRest="Recorded">
-                        <div className="avatar">
-                          <img
-                            src={data.channelImage ? data.channelImage : ''}
-                            className="card-img-top"
-                            width="15%"
-                            alt=""
-                          />
-                        </div>
-                      </BottomBlock>
-                    </Grid>
-                  </Grid>
-                </Grid>
+                      </>
+                    )
+                  })
+                )}
+              </div>
+            )}
+            {trophieSelected &&
+              (userRecordings?.length === 0 ? (
+                <>
+                  <img
+                    className={classes.trophy}
+                    src="/img/noobTrophy1.png"
+                    alt=""
+                  />
+                  <p>Noob Award (first stream created)</p>
+                </>
+              ) : (
+                <div>
+                  <p className={classes.placeHolder}>Stream to earn trophies!</p>
+                </div>
               ))}
           </div>
         </div>
-      )}
+      </div>
     </BasicLayout>
   )
 }
 
-export default MyProfile
+export default MyProfile;
