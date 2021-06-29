@@ -383,7 +383,7 @@ const MyProfile = () => {
               </div>
             )}
             {trophieSelected &&
-              (userRecordings?.length === 0 ? (
+              (userRecordings?.length > 1 ? (
                 <>
                   <img
                     className={classes.trophy}
