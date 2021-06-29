@@ -12,7 +12,6 @@ import useAirTable from '../../api/useAirtable'
 import useChannels from '../../api/useChannels'
 import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
-
 const primaryColor = colors.magenta
 
 const useStyles = makeStyles(theme => ({
@@ -23,8 +22,15 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '2.5%',
     display: 'flex',
     overflow: 'auto',
+    [theme.breakpoints.down('md')]: {
+      marginTop: '0',
+      width: '100%',
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginLeft: '0',
+      height: '100%',
+    },
   },
-  heroImgCont: {},
   heroImg: {
     position: 'absolute',
     top: 20,
@@ -32,6 +38,13 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     objectFit: 'cover',
     maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0))',
+    [theme.breakpoints.down('md')]: {
+      height: '15%',
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: '15%',
+      top: 60
+    }
   },
   credInfo: {
     width: '30%',
@@ -41,6 +54,9 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     position: 'relative',
     overflow: 'visible',
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
   },
   userImgContainer: {
     width: '100%',
@@ -48,22 +64,44 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
+    [theme.breakpoints.down('sm')]: {
+      width: '75%',
+    },
   },
   userImg: {
     borderRadius: '50%',
-    width: '18rem',
-    height: '18rem',
+    width: '15rem',
+    height: '15rem',
     position: 'absolute',
-    top: 0,
+    top: 10,
     border: '2px solid magenta',
+    [theme.breakpoints.down('md')]: {
+      width: '12rem',
+      height: '12rem',
+    },
+    [theme.breakpoints.down('xs')]: {
+      top: 0,
+      left: 0,
+      width: '8rem',
+      height: '8rem',
+    },
   },
   userBio: {
     width: '100%',
     display: 'flex',
-    justifyContent: 'flex-end',
     alignItems: 'center',
     flexDirection: 'column',
     marginTop: '25%',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+      marginTop: '25%',
+      alignItems: 'stretch',
+      paddingLeft: '3%',
+      paddingRight: '3%',
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '35%',
+    }
   },
   editProfile: {
     background: colors.blue,
@@ -71,23 +109,43 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
+    [theme.breakpoints.down('md')]: {
+      width: '25%',
+      fontSize: '80%'
+    },
   },
   userName: {
     fontWeight: theme.typography.fontWeightBold,
     fontSize: '150%',
     height: 'auto',
     marginTop: 0,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '125%',
+    },
   },
   userEditName: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
   },
   userGamesWrapper: {
     width: '100%',
     marginTop: '15%',
     marginLeft: '5%',
+    [theme.breakpoints.down('md')]: {
+      marginTop: '5%',
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: '0',
+      marginTop: '5%',
+      height: '100%',
+      maxHeight: '375px',
+    },
   },
   buttonSelector: {
     display: 'flex',
@@ -98,11 +156,18 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     padding: 10,
     marginRight: '4%',
+    display: 'flex',
+    alignItems: 'center',
     opacity: '0.7',
     fontWeight: theme.typography.fontWeightBold,
     '&:hover': {
       background: '#222',
       borderBottom: '3px solid orange',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '35%',
+      padding: 5,
+      fontSize: '80%'
     },
   },
   selectedButton: {
@@ -113,6 +178,12 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.fontWeightBold,
     background: '#222',
     borderBottom: '3px solid orange',
+    [theme.breakpoints.down('sm')]: {
+      width: '35%',
+      padding: 5,
+      fontSize: '80%',
+      borderBottom: '1.5px solid orange',
+    },
   },
   userContent: {
     disply: 'flex',
@@ -127,13 +198,21 @@ const useStyles = makeStyles(theme => ({
     width: '75%',
   },
   goLiveButton: {
-    width: '15%',
-    height: '10%',
+    width: '40%',
+    height: '15%',
     marginLeft: '18%',
     background: colors.blue,
     borderRadius: '5px',
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
+    },
+    [theme.breakpoints.down('md')]: {
+      marginLeft: '0',
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: '2%',
+      width: '30%',
+    height: '15%',
     },
   },
   socials: {
@@ -146,6 +225,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     textDecoration: 'underline',
     color: 'white',
+    [theme.breakpoints.down('md')]: {
+      justifyContent: 'stretch',
+    alignItems: 'center',
+    marginLeft: '1%'
+    },
   },
   channelImg: {
     borderRadius: '50%',
@@ -163,11 +247,12 @@ const useStyles = makeStyles(theme => ({
   },
   recordings: {
     marginTop: '2%',
+    // height: '50rem',
   },
   trophy: {
     marginTop: '2%',
-    height: '120px'
-  }
+    height: '120px',
+  },
 }))
 
 const MyProfile = () => {
@@ -297,6 +382,9 @@ const MyProfile = () => {
                   </a>
                 </p>
               </div>
+              <Button onClick={golive} className={classes.goLiveButton}>
+              Go Live
+            </Button>
             </div>
           </div>
         </div>
@@ -334,15 +422,11 @@ const MyProfile = () => {
             >
               Trophies
             </span>
-            <Button onClick={golive} className={classes.goLiveButton}> 
-              Go Live
-            </Button>
           </div>
           <div className={classes.userContent}>
             {gamesSelected && (
               <div>
                 {gamesArray?.map(game => {
-                  console.log(game)
                   return <p>{game}</p>
                 })}
               </div>
@@ -350,7 +434,6 @@ const MyProfile = () => {
             {channelSelected && (
               <div className={classes.channels}>
                 {myChannels?.map(item => {
-                  console.log(item)
                   return (
                     <div className={classes.channelsWrapper}>
                       <img
@@ -399,7 +482,9 @@ const MyProfile = () => {
                 </>
               ) : (
                 <div>
-                  <p className={classes.placeHolder}>Stream to earn trophies!</p>
+                  <p className={classes.placeHolder}>
+                    Stream to earn trophies!
+                  </p>
                 </div>
               ))}
           </div>
@@ -409,4 +494,4 @@ const MyProfile = () => {
   )
 }
 
-export default MyProfile;
+export default MyProfile

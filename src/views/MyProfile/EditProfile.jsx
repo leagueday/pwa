@@ -105,12 +105,12 @@ const useStyles = makeStyles(theme => ({
   radiotext: {
     margin: '10px 10px 0px 0px',
   },
-}));
+}))
 
 const EditProfile = props => {
   const dispatch = useDispatch()
   const channels = useChannels().list
-  const [currentUserGames, setCurrentUserGames] = useState()
+  const [currentUserGames, setCurrentUserGames] = useState([])
   const [profileInfo, setProfileInfo] = useState()
   const { data: userCreds } = useAirTable('appXoertP1WJjd4TQ', 'UserProfile')
   const { data: userGames } = useAirTable('appXoertP1WJjd4TQ', 'UserGames')
@@ -124,12 +124,11 @@ const EditProfile = props => {
     const currentUserGames = userGames?.filter(
       item => item.fields.userId === user.id
     )
-    setCurrentUserGames(currentUserGames?.shift()?.fields?.channelName?.split(','))
+    setCurrentUserGames(
+      currentUserGames?.shift()?.fields?.channelName?.split(',')
+    )
     setProfileInfo(currentUserCred?.shift())
   }
-
-  console.log('user profile ', profileInfo)
-  console.log('hello ', currentUserGames)
 
   useEffect(() => {
     getUserById()
@@ -190,7 +189,7 @@ const EditProfile = props => {
   const [saveContext, setsaveContext] = useState([])
   const [userId, setuserId] = useState('')
 
-  const [channelId, setChannelId] = useState('')
+  const [channelId, setChannelId] = useState('recO33VCPMOJ6yWju')
   const [channelTag, setChannelTag] = useState([])
   const user = useSelector(selectors.getUser)
   useEffect(() => {
@@ -259,6 +258,7 @@ const EditProfile = props => {
       .then(response => response.json())
       .then(function (response) {
         setselectChannel(response.records[0].fields.channelName.split(','))
+        console.log('channel id function ', response.records[0])
         setChannelId(response.records[0].id)
       })
       .catch(error => {
@@ -374,23 +374,35 @@ const EditProfile = props => {
 
   const onChannelChanged = (e, channelFieldKey, tag) => {
     const { value, checked } = e.target
+    console.log('jjasfn  ',value, checked)
     let channelSelect = value[channelFieldKey]
     channelSelect = e.target.value
     let datasaved = selectChannel
     let datasavedFortag = channelTag
     if (checked) {
       datasaved.push(value)
-    } else {
+    } else if (!checked) {
+      datasaved.pop(value)
+    }
+    else {
       let index = datasaved.indexOf(value)
       let dataTagIndex = datasavedFortag.indexOf(tag['tag'].toLowerCase())
       datasaved.splice(index, 1)
       datasavedFortag.splice(tag['tag'], 1)
     }
+    // if(checked) {
+    //   if(!selectChannel.includes(value)) {
+    //     setselectChannel(...selectChannel, value)
+    //   }
+    // } else {
+    //   setselectChannel(selectChannel.filter(channel => channel !== value))
+    // }
     datasaved = [...new Set(datasaved)]
     setselectChannel(datasaved)
     setChannelTag(datasavedFortag)
   }
 
+  console.log('selected channels ',selectChannel)
   const classes = useStyles({ primaryColor })
   const userName = user?.user_metadata?.full_name
 
@@ -428,8 +440,6 @@ const EditProfile = props => {
             },
           ],
         }
-        console.log('state on submit ', data)
-
         const baseId = 'appXoertP1WJjd4TQ'
         fetch('/.netlify/functions/airtable-update', {
           method: 'PUT',
@@ -447,12 +457,10 @@ const EditProfile = props => {
             console.log('error while data fetching', error.type)
           })
         savedUserChannel()
-        dispatch(actions.pushHistory('/myprofile'))
+        // dispatch(actions.pushHistory('/myprofile'))
       }
     })
   }
-
-  console.log('state on page load ', state)
 
   const savedUserChannel = () => {
     let data = {
@@ -597,7 +605,7 @@ const EditProfile = props => {
                         <tbody>
                           {channels.map((channel, index) => {
                             let data
-                            currentUserGames?.map((item, index) => {
+                            selectChannel?.map((item, index) => {
                               if (channel.title == item) {
                                 data = item
                               }
