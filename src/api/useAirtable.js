@@ -1,6 +1,5 @@
 import Airtable from 'airtable'
 import useSWR, { cache as swrCache } from 'swr'
-
 import * as analytics from '../analytics'
 
 /*

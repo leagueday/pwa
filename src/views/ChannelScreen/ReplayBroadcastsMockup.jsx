@@ -95,13 +95,14 @@ const useStyles = makeStyles(theme => ({
   },
   episodeRow: ({ backgroundColor }) => ({
     position: 'relative',
-    backgroundColor,
+    backgroundColor: '#111',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: '1em',
     userSelect: 'none',
     height: '3rem',
+    marginBottom: '.5%',
     color: colors.white,
     [theme.breakpoints.only('xs')]: {
       height: '33%',
@@ -112,6 +113,7 @@ const useStyles = makeStyles(theme => ({
   episodeTitle: {
     color: colors.white80,
     minWidth: '12vw',
+    maxWidth: '70%'
   },
   episodeTitleAndData: {
     display: 'flex',
@@ -137,7 +139,7 @@ const useStyles = makeStyles(theme => ({
         background: '#222',
       },
       width: '40%',
-    }
+    },
   },
   eventTextplate: {
     display: 'flex',
@@ -326,12 +328,6 @@ const Track = ({
             }}
             onClick={onPopClick}
           />
-          {/* <IcoPlus
-            classes={{
-              inner: classes.episodePlus,
-              outer: classes.episodePOPCell,
-            }}
-          /> */}
         </div>
 
         <div className={classes.episodeTitleAndData}>
@@ -357,7 +353,7 @@ const Track = ({
   )
 }
 
-const Tracks = ({
+export const Tracks = ({
   sectionData,
   channelColor,
   assetid,
@@ -366,8 +362,8 @@ const Tracks = ({
   chanelEvent,
 }) => {
   const [liveUrl, setLiveUrl] = useState([])
-
   const classes = useStyles({ channelColor })
+
   return (
     <div className={classes.tracks}>
       <div className={classes.tracksContent}>
@@ -403,7 +399,7 @@ const Tracks = ({
   )
 }
 
-const Tracks1 = ({
+export const Tracks1 = ({
   episodeData,
   backgroundColor,
   counter,
