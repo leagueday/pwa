@@ -124,7 +124,7 @@ const EditProfile = props => {
     const currentUserGames = userGames?.filter(
       item => item.fields.userId === user.id
     )
-    setCurrentUserGames(currentUserGames?.shift()?.fields?.channelName.split(','))
+    setCurrentUserGames(currentUserGames?.shift()?.fields?.channelName?.split(','))
     setProfileInfo(currentUserCred?.shift())
   }
 
