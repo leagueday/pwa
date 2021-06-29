@@ -308,12 +308,12 @@ const MyProfile = () => {
     const currentUserGames = userGames?.filter(
       item => item.fields.userId === user.id
     )
-    const currentUserRecordings = recordedStreams?.filter(
-      item => item.fields.userId === 'a339ba70-5026-431d-9d3d-bfe7d19dd534'
-    )
     // const currentUserRecordings = recordedStreams?.filter(
-    //   item => item.fields.userId === user.id
+    //   item => item.fields.userId === 'a339ba70-5026-431d-9d3d-bfe7d19dd534'
     // )
+    const currentUserRecordings = recordedStreams?.filter(
+      item => item.fields.userId === user.id
+    )
     setCurrentUserCreds(currentUserCred?.shift())
     setCurrentUserGames(currentUserGames?.shift())
     setUserRecordings(currentUserRecordings)
