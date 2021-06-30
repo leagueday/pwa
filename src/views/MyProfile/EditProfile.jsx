@@ -457,7 +457,7 @@ const EditProfile = props => {
             console.log('error while data fetching', error.type)
           })
         savedUserChannel()
-        // dispatch(actions.pushHistory('/myprofile'))
+        dispatch(actions.pushHistory('/myprofile'))
       }
     })
   }
