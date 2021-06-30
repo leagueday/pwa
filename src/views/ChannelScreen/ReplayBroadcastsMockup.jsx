@@ -329,7 +329,6 @@ const Track = ({
             onClick={onPopClick}
           />
         </div>
-
         <div className={classes.episodeTitleAndData}>
           <div className={classes.episodeNumberAndTitle}>
             <div className={classes.episodeNumber}>
