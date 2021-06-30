@@ -75,6 +75,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: 10,
     border: '2px solid magenta',
+    objectFit: 'cover',
     [theme.breakpoints.down('md')]: {
       width: '12rem',
       height: '12rem',
