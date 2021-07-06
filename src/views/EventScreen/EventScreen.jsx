@@ -283,13 +283,16 @@ const EventScreen = ({ tag }) => {
         }
   // console.log('think I found the channels ', eventDataFetch)
 
-  const filterByDay = (e) => {
+  const filterByDay = e => {
     setCriteria(e.target.value)
     const filteredRecs = eventDataFetch.filter(rec =>
       rec.fields.title.toLowerCase().includes(criteria.toLowerCase())
     )
-    console.log('filtered recs ', filteredRecs.length)
-    setDisplayedRecords(criteria === '' ? eventDataFetch : filteredRecs)
+    setDisplayedRecords(
+      eventDataFetch.filter(rec =>
+        rec.fields.title.toLowerCase().includes(criteria.toLowerCase())
+      )
+    )
   }
 
   useEffect(() => {
@@ -318,41 +321,45 @@ const EventScreen = ({ tag }) => {
           onChange={filterByDay}
         />
         <>
-        <Button className={classes.searchBtn} onClick={filterByDay}>
-          Search
-        </Button>
-        { 
-          displayedRecords.length === 0 && (
-            <h1>No Results</h1>
-          )
-        }
+          <Button className={classes.searchBtn} onClick={filterByDay}>
+            Search
+          </Button>
         </>
         <>
           {loading == 1
             ? eventDataFetch.length &&
-              displayedRecords?.map((title, index) => (
-                <Item
-                  key={index}
-                  accentColor={color}
-                  className={classes.item}
-                  date={
-                    title.fields.liveDate
-                      ? title.fields.liveDate.split('T')[0]
-                      : ''
-                  }
-                  duration={''}
-                  itemIndex={index}
-                  key={index}
-                  title={title.fields.title}
-                  description={title.fields.description}
-                  itemAudioUrl={title.fields.playbackUrl}
-                  isExpanded={expandedIndex === index}
-                  toggleIsExpanded={makeToggleIsExpanded(index)}
-                  dataFetch={eventDataFetch}
-                />
-              ))
+              eventDataFetch
+                .filter(rec =>
+                  rec.fields.title
+                    .toLowerCase()
+                    .includes(criteria.toLowerCase())
+                )
+                .map((item, index) => {
+                  return (
+                    <Item
+                      key={index}
+                      accentColor={color}
+                      className={classes.item}
+                      date={
+                        item.fields.liveDate
+                          ? item.fields.liveDate.split('T')[0]
+                          : ''
+                      }
+                      duration={''}
+                      itemIndex={index}
+                      key={index}
+                      title={item.fields.title}
+                      description={item.fields.description}
+                      itemAudioUrl={item.fields.playbackUrl}
+                      isExpanded={expandedIndex === index}
+                      toggleIsExpanded={makeToggleIsExpanded(index)}
+                      dataFetch={eventDataFetch}
+                    />
+                  )
+                })
             : ''}
         </>
+        {displayedRecords.length === 0 ? <h1>No Results</h1> : null}
         <>
           {loading == 2
             ? eventDataFetchlCS &&
