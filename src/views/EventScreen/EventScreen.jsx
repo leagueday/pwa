@@ -153,11 +153,19 @@ const useStyles = makeStyles(theme => ({
     border: 'none',
     color: 'white',
     borderRadius: '5px',
-    padding: '12px 25px 12px 5px',
+    padding: '12px 50px 12px 5px',
+    width: '25%',
+    // fontSize: '120%',
+    fontFamily: theme.typography.family.primary,
     '&::placeholder': {
       color: 'white',
       fontFamily: theme.typography.family.primary,
+      fontSize: '120%',
+      opacity: 0.8
     },
+    [theme.breakpoints.down('sm')]: {
+      width: '80%',
+    }
   },
   searchBtn: {
     background: colors.blue,
@@ -281,19 +289,6 @@ const EventScreen = ({ tag }) => {
       : () => {
           setExpandedIndex(itemIndex)
         }
-  // console.log('think I found the channels ', eventDataFetch)
-
-  const filterByDay = e => {
-    setCriteria(e.target.value)
-    const filteredRecs = eventDataFetch.filter(rec =>
-      rec.fields.title.toLowerCase().includes(criteria.toLowerCase())
-    )
-    setDisplayedRecords(
-      eventDataFetch.filter(rec =>
-        rec.fields.title.toLowerCase().includes(criteria.toLowerCase())
-      )
-    )
-  }
 
   useEffect(() => {
     setDisplayedRecords(eventDataFetch)
@@ -318,13 +313,8 @@ const EventScreen = ({ tag }) => {
           type="text"
           placeholder="Search for Recordings..."
           value={criteria}
-          onChange={filterByDay}
+          onChange={e => setCriteria(e.target.value)}
         />
-        <>
-          <Button className={classes.searchBtn} onClick={filterByDay}>
-            Search
-          </Button>
-        </>
         <>
           {loading == 1
             ? eventDataFetch.length &&
