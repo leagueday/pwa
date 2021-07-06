@@ -70,7 +70,7 @@ function ListStateProvider(props) {
 
     useEffect(() => {
         getData();
-    }, [])
+    }, [activeUser])
 
     const addToList = (title, tag, img) => {
 
