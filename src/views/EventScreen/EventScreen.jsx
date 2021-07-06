@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import cx from 'classnames'
-
+import { colors } from '../../styling'
+import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import useChannels from '../../api/useChannels'
 import { actions } from '../../store'
@@ -145,6 +146,26 @@ const useStyles = makeStyles(theme => ({
   logoImageSquare: {
     width: '7em',
   },
+  searchBar: {
+    backgroundColor: colors.lightGray,
+    margin: '0.5vw',
+    outline: 'none',
+    border: 'none',
+    color: 'white',
+    borderRadius: '5px',
+    padding: '12px 25px 12px 5px',
+    '&::placeholder': {
+      color: 'white',
+      fontFamily: theme.typography.family.primary,
+    },
+  },
+  searchBtn: {
+    background: colors.blue,
+    borderRadius: '5px',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+  },
 }))
 
 const Logo = ({ imageUrl, classes }) => (
@@ -173,6 +194,7 @@ const EventScreen = ({ tag }) => {
   const data = mockData[tag] ?? mockData['lcs']
   const [eventDataFetch, seteventDataFetch] = useState([])
   const [eventDataFetchlCS, seteventDataFetchlCS] = useState([])
+  const [displayedRecords, setDisplayedRecords] = useState([])
   const [loading, setisloading] = useState(0)
   const [rescentAsscetid, setrescentAsscetId] = useState([])
   const [criteria, setCriteria] = useState('')
@@ -210,6 +232,7 @@ const EventScreen = ({ tag }) => {
         if (response.records.length) {
           setisloading(1)
           seteventDataFetch(response.records)
+          setDisplayedRecords(eventDataFetch)
         } else {
           setisloading(2)
         }
@@ -244,6 +267,7 @@ const EventScreen = ({ tag }) => {
         console.log('error while data fetching', error.type)
       })
   }
+
   const color = data?.color
   const imageUrl = data?.imageUrl
   const subTitle = data?.subTitle
@@ -258,17 +282,20 @@ const EventScreen = ({ tag }) => {
           setExpandedIndex(itemIndex)
         }
   // console.log('think I found the channels ', eventDataFetch)
-  const filterByDay = () => {
-    eventDataFetch.map((rec) => {
-      if (rec.fields.title.includes("Day 15")) {
-        console.log('from map  ',rec)
-      }
-    })
+
+  const filterByDay = (e) => {
+    setCriteria(e.target.value)
+    const filteredRecs = eventDataFetch.filter(rec =>
+      rec.fields.title.toLowerCase().includes(criteria.toLowerCase())
+    )
+    console.log('filtered recs ', filteredRecs.length)
+    setDisplayedRecords(criteria === '' ? eventDataFetch : filteredRecs)
   }
 
   useEffect(() => {
-    filterByDay();
-  },[eventDataFetch])
+    setDisplayedRecords(eventDataFetch)
+  }, [eventDataFetch])
+
   return (
     <BasicLayout>
       <ContentLayout
@@ -283,10 +310,27 @@ const EventScreen = ({ tag }) => {
           />
         )}
       >
+        <input
+          className={classes.searchBar}
+          type="text"
+          placeholder="Search for Recordings..."
+          value={criteria}
+          onChange={filterByDay}
+        />
+        <>
+        <Button className={classes.searchBtn} onClick={filterByDay}>
+          Search
+        </Button>
+        { 
+          displayedRecords.length === 0 && (
+            <h1>No Results</h1>
+          )
+        }
+        </>
         <>
           {loading == 1
             ? eventDataFetch.length &&
-              eventDataFetch?.map((title, index) => (
+              displayedRecords?.map((title, index) => (
                 <Item
                   key={index}
                   accentColor={color}
