@@ -349,7 +349,6 @@ const EventScreen = ({ tag }) => {
                 })
             : ''}
         </>
-        {displayedRecords.length === 0 ? <h1>No Results</h1> : null}
         <>
           {loading == 2
             ? eventDataFetchlCS &&
