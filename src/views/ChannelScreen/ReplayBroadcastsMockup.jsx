@@ -95,21 +95,14 @@ const useStyles = makeStyles(theme => ({
   },
   episodeRow: ({ backgroundColor }) => ({
     position: 'relative',
-<<<<<<< HEAD
-    backgroundColor,
-=======
     backgroundColor: '#111',
->>>>>>> a14bd710eabf004ff1e3d4459c45f51edf6ce77a
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: '1em',
     userSelect: 'none',
     height: '3rem',
-<<<<<<< HEAD
-=======
     marginBottom: '.5%',
->>>>>>> a14bd710eabf004ff1e3d4459c45f51edf6ce77a
     color: colors.white,
     [theme.breakpoints.only('xs')]: {
       height: '33%',
@@ -120,10 +113,7 @@ const useStyles = makeStyles(theme => ({
   episodeTitle: {
     color: colors.white80,
     minWidth: '12vw',
-<<<<<<< HEAD
-=======
     maxWidth: '70%'
->>>>>>> a14bd710eabf004ff1e3d4459c45f51edf6ce77a
   },
   episodeTitleAndData: {
     display: 'flex',
@@ -149,11 +139,7 @@ const useStyles = makeStyles(theme => ({
         background: '#222',
       },
       width: '40%',
-<<<<<<< HEAD
-    }
-=======
     },
->>>>>>> a14bd710eabf004ff1e3d4459c45f51edf6ce77a
   },
   eventTextplate: {
     display: 'flex',
@@ -342,15 +328,6 @@ const Track = ({
             }}
             onClick={onPopClick}
           />
-<<<<<<< HEAD
-          {/* <IcoPlus
-            classes={{
-              inner: classes.episodePlus,
-              outer: classes.episodePOPCell,
-            }}
-          /> */}
-=======
->>>>>>> a14bd710eabf004ff1e3d4459c45f51edf6ce77a
         </div>
         <div className={classes.episodeTitleAndData}>
           <div className={classes.episodeNumberAndTitle}>
@@ -384,10 +361,6 @@ export const Tracks = ({
   chanelEvent,
 }) => {
   const [liveUrl, setLiveUrl] = useState([])
-<<<<<<< HEAD
-
-=======
->>>>>>> a14bd710eabf004ff1e3d4459c45f51edf6ce77a
   const classes = useStyles({ channelColor })
 
   return (
