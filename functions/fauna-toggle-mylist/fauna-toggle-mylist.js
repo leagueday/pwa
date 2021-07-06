@@ -98,7 +98,7 @@ const handler = async (event, context) => {
   )
 
   if (status !== STATUS_OK) {
-    if (process.env.NODE_ENV === 'development') console.error(diagnostic)
+    if (process.env.NODE_ENV === 'development') console.error('diagnostic  ',diagnostic)
 
     return {
       body: 'Internal Server Error',
@@ -112,4 +112,4 @@ const handler = async (event, context) => {
   }
 }
 
-module.exports = { handler }
+module.exports = { handler };

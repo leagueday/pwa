@@ -19,10 +19,6 @@ const takeNextToken = pathTokens =>
   pathTokens.length > 1 ? pathTokens[1] : null
 const isAdminUser = userData => (userData?.isAdmin ? true : false)
 
-//
-// routesConfig: Array<[testRoute, checkPermission, View, getViewProps]>
-//
-
 export const routesConfig = [
   [
     matchFirstToken('channel'),
@@ -59,7 +55,7 @@ export const routesConfig = [
     }),
   ],
   [
-    matchFirstToken('setup'),
+    // matchFirstToken('setup'),
     isAdminUser,
     // SetupScreen,
     pathTokens => ({
