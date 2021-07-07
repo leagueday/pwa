@@ -18,7 +18,6 @@ function ListStateProvider(props) {
     const [globalList, setGlobalList] = useState([]);
     const currentUser = data?.filter((user) => user?.fields?.userId === activeUser?.id)
     const currentUserId = currentUser?.shift()?.id
-    const [filteredListRecords, setFilteredListRecords] = useState([])
     let result = []
 
     const getData = async () => {
