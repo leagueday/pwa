@@ -100,9 +100,9 @@ function ListStateProvider(props) {
 
     const getIsOnMyList = (title, tag) => {
 
-        if (!filteredListRecords.concat(globalList)) return false
+        if (!globalList) return false
 
-        return !!filteredListRecords.concat(globalList).find(
+        return !!globalList.find(
             (channel) => channel?.fields?.channelName === title && channel?.fields?.channelTag === tag
         )
     }
