@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Airtable from 'airtable'
-import { getMyList } from '../api/getUserList';
-import useMyList from '../api/useMyList';
 import useAirTable from '../api/useAirtable';
 import { selectors } from '../store'
 import { useSelector } from 'react-redux';
@@ -17,7 +15,6 @@ function ListStateProvider(props) {
     let listPlaceholder = [];
     const activeUser = useSelector(selectors.getUser)
     const { data } = useAirTable(baseId, 'UserProfile');
-    const userList = getMyList();
     const [globalList, setGlobalList] = useState([]);
     const currentUser = data?.filter((user) => user?.fields?.userId === activeUser?.id)
     const currentUserId = currentUser?.shift()?.id
@@ -43,14 +40,11 @@ function ListStateProvider(props) {
             }
         })
 
-        // setFilteredListRecords(result)
         const filteredUserRecords = data.records.filter((item) => item.fields.userId.shift() === activeUser?.id)
         await Promise.all(filteredUserRecords)
         setGlobalList(filteredUserRecords)
-        console.log('user list ', result, globalList)
     }
 
-    console.log('data from getData ', globalList)
     useEffect(() => {
         getData();
     }, [activeUser])
@@ -58,7 +52,6 @@ function ListStateProvider(props) {
     const addToList = (title, tag, img) => {
         listPlaceholder.push({ fields: { channelName: title, channelTag: tag, channelImg: img } })
         setGlobalList(listPlaceholder.concat(globalList))
-        // console.log('add  ', filteredListRecords.concat(globalList));
 
         base('UserList').create([
             {
@@ -80,32 +73,21 @@ function ListStateProvider(props) {
                 console.log('created new myList entry  ', record);
             });
         });
+
         getData();
     }
 
 
-    // console.log('outside add ', globalList)
-
     const removeFromList = async (tag) => {
 
         const recordToDelete = globalList?.filter((item) => item.fields.channelTag === tag)
-        // console.log('record to delete ', recordToDelete, userList, tag)
 
         await Promise.all(recordToDelete)
         const id = recordToDelete?.shift()?.id
 
         const newList = globalList?.filter((item) => item.fields.channelTag !== tag)
-        // setFilteredListRecords(globalList?.map((item) => {
-        //     console.log(item)
-        //     if (item.fields.channelTag === tag) {
-        //         console.log('inside if ', globalList.pop(item))
-        //     }
-        // }))
-        setGlobalList(newList)
-        console.log('delete  ', newList)
 
-        // setGlobalList(filteredPlaceholder)/
-        // console.log('deleting records  ', id)
+        setGlobalList(newList)
 
         base('UserList').destroy([id], function (err, deletedRecords) {
             if (err) {
@@ -116,7 +98,6 @@ function ListStateProvider(props) {
         });
     }
 
-    console.log('delete from function body  ', filteredListRecords)
     const getIsOnMyList = (title, tag) => {
 
         if (!filteredListRecords.concat(globalList)) return false
@@ -125,8 +106,6 @@ function ListStateProvider(props) {
             (channel) => channel?.fields?.channelName === title && channel?.fields?.channelTag === tag
         )
     }
-
-    // console.log('state from provider  ', listPlaceholder, globalList)
 
     return (
         <MyListProvider value={[globalList, getIsOnMyList, addToList, removeFromList, setGlobalList]}>

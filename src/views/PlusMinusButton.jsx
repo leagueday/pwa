@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import Color from 'color'
-import {useMyList} from '../api/useMyList'
 import { MyListContext } from '../store/listState'
 import { selectors } from '../store'
 import { colors } from '../styling'
@@ -32,9 +31,6 @@ const PlusMinusButton = ({
     removeFromList,
     setGlobalList,
   ] = useContext(MyListContext)
-  // const [ removeFromList] = useMyList(
-  //   user?.token?.access_token
-  // )
 
   const isOnMyList = getIsOnMyList(channel?.title, channelTag)
 
@@ -44,10 +40,6 @@ const PlusMinusButton = ({
         () => addToList(channel?.title, channelTag, channel?.imageUrl),
         PlusButton,
       ]
-
-  // const [onClick, Button] = isOnMyList
-  // ? [() => removeFromMyList(subjectKind, channelTag), MinusButton]
-  // : [() => addToMyList(channel?.title, channelTag, channel?.imageUrl), PlusButton]
 
   const handler = stopEventPropagation(onClick)
 

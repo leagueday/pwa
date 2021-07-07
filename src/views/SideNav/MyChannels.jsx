@@ -33,25 +33,15 @@ const MyChannels = ({ skinny }) => {
     MyListContext
   )
 
-  // const [
-  //   getIsOnMyList,
-  //   addToList,
-  //   removeFromList,
-  //   globalList,
-  //   isMyListEmpty,
-  // ] = useMyList(user?.token?.access_token)
-
   const dispatch = useDispatch()
   const makeGotoThisChannel = channelTag => () =>
     dispatch(actions.pushHistory(`/channel/${channelTag}`))
 
   const locationPathname = useLocationPathname()
-  // const placeholderState = globalList.concat(myList)
-    console.log('my channels ',globalList)
+
   return (
     <div className={classes.myChannels}>
       {globalList?.map((channel, ind) => {
-        // const { tag, title, imageUrl } = channel
         return (
           <Item
             key={ind}
@@ -74,4 +64,4 @@ MyChannels.defaultProps = {
   cutoff: DEFAULT_CHANNELS_CUTOFF,
 }
 
-export default MyChannels;
+export default MyChannels
