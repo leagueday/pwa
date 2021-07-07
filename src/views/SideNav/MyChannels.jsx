@@ -58,6 +58,7 @@ const MyChannels = ({ skinny }) => {
       })}
     </div>
   )
+
 }
 
 MyChannels.defaultProps = {
