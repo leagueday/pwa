@@ -59,27 +59,31 @@ function ListStateProvider(props) {
         listPlaceholder.push({ fields: { channelName: title, channelTag: tag, channelImg: img } })
         setGlobalList(listPlaceholder.concat(globalList))
 
-        base('UserList').create([
-            {
-                "fields": {
-                    "channelName": title,
-                    "user": [
-                        currentUserId
-                    ],
-                    "channelTag": tag,
-                    "channelImg": img
+        if (globalList.includes({ fields: { channelName: title, channelTag: tag, channelImg: img } })) {
+            return
+        } else {
+            base('UserList').create([
+                {
+                    "fields": {
+                        "channelName": title,
+                        "user": [
+                            currentUserId
+                        ],
+                        "channelTag": tag,
+                        "channelImg": img
+                    }
                 }
-            }
-        ], function (err, records) {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            records.forEach(function (record) {
-                console.log('created new myList entry  ', record);
-                getData();
+            ], function (err, records) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                records.forEach(function (record) {
+                    console.log('created new myList entry  ', record);
+                    getData();
+                });
             });
-        });
+        }
     }
 
     const removeFromList = async (tag) => {
