@@ -45,7 +45,7 @@ module.exports = {
       ],
     }),
     new webpack.DefinePlugin({
-      AIRTABLE_API_KEY: JSON.stringify(process.env.REACT_APP_AIRTABLE_API_KEY),
+      AIRTABLE_API_KEY: JSON.stringify(keymd23kpZ12EriVi),
       NODE_ENV: JSON.stringify('production'),
       'process.env': JSON.stringify({}),
     }),

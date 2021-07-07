@@ -13,7 +13,7 @@ If you anticipate a higher read volume, we recommend using a caching proxy. This
 and increased limits are not currently available.
 */
 
-const apiKey = "keymd23kpZ12EriVi"
+const apiKey = AIRTABLE_API_KEY
 
 const fetcher = (base, table, view = 'Grid view') => () =>
   new Promise((res, rej) => {
