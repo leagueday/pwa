@@ -1,6 +1,6 @@
 const fetch = require('node-fetch')
 
-const apiKey = "keymd23kpZ12EriVi"
+const apiKey = 'keyEcVKWAxBoB9kuq'
 const headers = {
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Allow-Origin': '*',
