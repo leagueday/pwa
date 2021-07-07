@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Airtable from 'airtable'
+import { getMyList } from '../api/getUserList';
+import useMyList from '../api/useMyList';
 import useAirTable from '../api/useAirtable';
 import { selectors } from '../store'
 import { useSelector } from 'react-redux';
@@ -15,9 +17,11 @@ function ListStateProvider(props) {
     let listPlaceholder = [];
     const activeUser = useSelector(selectors.getUser)
     const { data } = useAirTable(baseId, 'UserProfile');
+    const userList = getMyList();
     const [globalList, setGlobalList] = useState([]);
     const currentUser = data?.filter((user) => user?.fields?.userId === activeUser?.id)
     const currentUserId = currentUser?.shift()?.id
+    const [filteredListRecords, setFilteredListRecords] = useState([])
     let result = []
 
     const getData = async () => {
@@ -42,8 +46,10 @@ function ListStateProvider(props) {
         const filteredUserRecords = data.records.filter((item) => item.fields.userId.shift() === activeUser?.id)
         await Promise.all(filteredUserRecords)
         setGlobalList(filteredUserRecords)
+        console.log('user list ', result, globalList)
     }
 
+    console.log('data from getData ', globalList)
     useEffect(() => {
         getData();
     }, [activeUser])
@@ -72,7 +78,6 @@ function ListStateProvider(props) {
                 console.log('created new myList entry  ', record);
             });
         });
-
         getData();
     }
 
@@ -87,6 +92,7 @@ function ListStateProvider(props) {
         const newList = globalList?.filter((item) => item.fields.channelTag !== tag)
 
         setGlobalList(newList)
+        console.log('delete  ', newList)
 
         base('UserList').destroy([id], function (err, deletedRecords) {
             if (err) {
@@ -97,11 +103,13 @@ function ListStateProvider(props) {
         });
     }
 
+    console.log('delete from function body  ', filteredListRecords)
+
     const getIsOnMyList = (title, tag) => {
 
-        if (!globalList) return false
+        if (!filteredListRecords.concat(globalList)) return false
 
-        return !!globalList.find(
+        return !!filteredListRecords.concat(globalList).find(
             (channel) => channel?.fields?.channelName === title && channel?.fields?.channelTag === tag
         )
     }
