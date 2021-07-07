@@ -77,9 +77,9 @@ function ListStateProvider(props) {
             }
             records.forEach(function (record) {
                 console.log('created new myList entry  ', record);
+                getData();
             });
         });
-        getData();
     }
 
 
