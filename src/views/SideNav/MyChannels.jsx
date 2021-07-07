@@ -1,11 +1,12 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
-
+import React, { useContext } from 'react'
+import { MyListContext } from '../../store/listState'
+import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-
+import { getMyList } from '../../api/getUserList'
+import useMyList from '../../api/useMyList'
 import useChannels from '../../api/useChannels'
+import { selectors } from '../../store'
 import { actions, useLocationPathname } from '../../store'
-
 import Item from './Item'
 
 const DEFAULT_CHANNELS_CUTOFF = 6
@@ -26,8 +27,11 @@ const isChannelSelected = (locationPathname, channelTag) => {
 
 const MyChannels = ({ skinny }) => {
   const classes = useStyles()
-
-  const myChannels = useChannels().myList
+  const myList = getMyList()
+  const user = useSelector(selectors.getUser)
+  const [globalList, addToState, removeFromState, setGlobalState] = useContext(
+    MyListContext
+  )
 
   const dispatch = useDispatch()
   const makeGotoThisChannel = channelTag => () =>
@@ -37,21 +41,24 @@ const MyChannels = ({ skinny }) => {
 
   return (
     <div className={classes.myChannels}>
-      {myChannels.map(channel => {
-        const { tag, title, imageUrl } = channel
+      {globalList?.map((channel, ind) => {
         return (
           <Item
-            key={tag}
-            title={title}
-            imageUrl={imageUrl}
-            isSelected={isChannelSelected(locationPathname, tag)}
-            onClick={makeGotoThisChannel(tag)}
+            key={ind}
+            title={channel?.fields?.channelName}
+            imageUrl={channel?.fields?.channelImg}
+            isSelected={isChannelSelected(
+              locationPathname,
+              channel?.fields?.channelTag
+            )}
+            onClick={makeGotoThisChannel(channel?.fields?.channelTag)}
             skinny={skinny}
           />
         )
       })}
     </div>
   )
+
 }
 
 MyChannels.defaultProps = {

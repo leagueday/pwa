@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import Color from 'color'
-
-import useMyList from '../api/useMyList'
+import { MyListContext } from '../store/listState'
 import { selectors } from '../store'
 import { colors } from '../styling'
 import { makeIconButton } from './IconButton'
@@ -16,18 +15,31 @@ const stopEventPropagation = handler => event => {
   event.stopPropagation()
 }
 
-const PlusMinusButton = ({ className, size, subjectId, subjectKind }) => {
+const PlusMinusButton = ({
+  className,
+  size,
+  subjectId: channelTag,
+  subjectKind,
+  channel,
+}) => {
   const user = useSelector(selectors.getUser)
   const isAuthenticated = !!user
+  const [
+    globalList,
+    getIsOnMyList,
+    addToList,
+    removeFromList,
+    setGlobalList,
+  ] = useContext(MyListContext)
 
-  const [getIsOnMyList, addToMyList, removeFromMyList] = useMyList(
-    user?.token?.access_token
-  )
-  const isOnMyList = getIsOnMyList(subjectKind, subjectId)
+  const isOnMyList = getIsOnMyList(channel?.title, channelTag)
 
   const [onClick, Button] = isOnMyList
-    ? [() => removeFromMyList(subjectKind, subjectId), MinusButton]
-    : [() => addToMyList(subjectKind, subjectId), PlusButton]
+    ? [() => removeFromList(channelTag), MinusButton]
+    : [
+        () => addToList(channel?.title, channelTag, channel?.imageUrl),
+        PlusButton,
+      ]
 
   const handler = stopEventPropagation(onClick)
 

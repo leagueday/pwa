@@ -56,7 +56,7 @@ module.exports = {
       patterns: [{ from: 'public/img', to: 'img' }, 'public/manifest.json'],
     }),
     new webpack.DefinePlugin({
-      AIRTABLE_API_KEY: JSON.stringify(process.env.AIRTABLE_API_KEY),
+      AIRTABLE_API_KEY: JSON.stringify(process.env.REACT_APP_AIRTABLE_API_KEY),
       NODE_ENV: JSON.stringify('development'),
       'process.env': JSON.stringify({}),
     }),
