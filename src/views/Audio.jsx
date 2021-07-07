@@ -341,6 +341,4 @@ let sourceurl;
   ) : null
 }
 
-export default Audio
-
- 
+export default Audio;

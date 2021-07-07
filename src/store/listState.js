@@ -22,6 +22,7 @@ function ListStateProvider(props) {
 
     const getData = async () => {
         let urladd = `filterByFormula=[userId]=${activeUser?.id}`
+
         const response = await fetch('/.netlify/functions/airtable-getprofile', {
             method: 'POST',
             headers: {
@@ -95,6 +96,7 @@ function ListStateProvider(props) {
             }
             console.log('Deleted', deletedRecords.length, 'records');
         });
+
     }
 
     const getIsOnMyList = (title, tag) => {
@@ -102,6 +104,7 @@ function ListStateProvider(props) {
         if (!globalList) return false
 
         return !!globalList.find(
+
             (channel) => channel?.fields?.channelName === title && channel?.fields?.channelTag === tag
         )
     }
