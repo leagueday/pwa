@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import { selectors } from '../../store'
 import { colors } from '../../styling'
+import { getMyList } from '../../api/getUserList'
 import BasicLayout from '../BasicLayout'
 import { actions } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -264,7 +265,7 @@ const MyProfile = () => {
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [channelSelected, setChannelSelected] = useState(false)
   const [trophieSelected, setTrophieSelected] = useState(false)
-
+  const userList = getMyList();
   const user = useSelector(selectors.getUser)
 
   const handleGamesClick = () => {
@@ -434,15 +435,15 @@ const MyProfile = () => {
             )}
             {channelSelected && (
               <div className={classes.channels}>
-                {myChannels?.map(item => {
+                {userList?.map(item => {
                   return (
                     <div className={classes.channelsWrapper}>
                       <img
                         className={classes.channelImg}
-                        src={item.imageUrl}
+                        src={item.fields.channelImg}
                         alt="channel image"
                       />
-                      <p className={classes.channelName}>{item.title}</p>
+                      <p className={classes.channelName}>{item.fields.channelName}</p>
                     </div>
                   )
                 })}

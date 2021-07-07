@@ -1,13 +1,11 @@
 import React from 'react'
 import { hot } from 'react-hot-loader/root'
-
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Paper from '@material-ui/core/Paper'
-
+import ListStateProvider from './store/listState'
 import * as Sentry from '@sentry/react'
 import { Integrations } from '@sentry/tracing'
-
 import useChronicle from './api/useChronicle'
 import { Provider as StoreProvider } from './store'
 import ThemeProvider from './styling/ThemeProvider'
@@ -82,14 +80,16 @@ const Chronicle = () => {
 const App = () => (
   <Sentry.ErrorBoundary fallback={'An error has occurred'}>
     <StoreProvider>
-      <Audio />
-      <Auth />
-      <Chronicle />
-      <CssBaseline />
-      <ThemeProvider>
-        <StyledAppContent />
-      </ThemeProvider>
-      <UserData />
+      <ListStateProvider>
+        <Audio />
+        <Auth />
+        <Chronicle />
+        <CssBaseline />
+        <ThemeProvider>
+          <StyledAppContent />
+        </ThemeProvider>
+        <UserData />
+      </ListStateProvider>
     </StoreProvider>
   </Sentry.ErrorBoundary>
 )

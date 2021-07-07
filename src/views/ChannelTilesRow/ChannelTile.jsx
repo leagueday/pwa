@@ -76,6 +76,7 @@ const ChannelTile = ({ channel }) => {
           className={classes.plusMinusButton}
           subjectId={channel.tag}
           subjectKind="channel"
+          channel={channel}
         />
       </Square>
       <div className={classes.textBox}>
