@@ -26,6 +26,7 @@ function ListStateProvider(props) {
 
     const getData = async () => {
         let urladd = `filterByFormula=[userId]=${activeUser?.id}`
+
         const response = await fetch('/.netlify/functions/airtable-getprofile', {
             method: 'POST',
             headers: {
@@ -101,6 +102,7 @@ function ListStateProvider(props) {
             }
             console.log('Deleted', deletedRecords.length, 'records');
         });
+
     }
 
     console.log('delete from function body  ', filteredListRecords)
