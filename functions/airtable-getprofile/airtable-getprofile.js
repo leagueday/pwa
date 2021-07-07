@@ -1,6 +1,6 @@
 const fetch = require('node-fetch')
 
-const apiKey = 'keyEcVKWAxBoB9kuq'
+const apiKey = "keymd23kpZ12EriVi"
 const headers = {
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Allow-Origin': '*',
@@ -12,7 +12,7 @@ const headers = {
 const handler = async (event, context) => {
   const { url, body } = JSON.parse(event.body)
   // console.log('body',body)
-  
+
   const response = await fetch(`https://api.airtable.com/v0/${url}`, {
     method: 'GET',
     headers,
