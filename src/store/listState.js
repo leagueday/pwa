@@ -82,7 +82,6 @@ function ListStateProvider(props) {
         });
     }
 
-
     const removeFromList = async (tag) => {
 
         const recordToDelete = globalList?.filter((item) => item.fields.channelTag === tag)

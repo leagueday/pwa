@@ -333,7 +333,7 @@ const MyProfile = () => {
   const myChannels = useChannels().myList
   const gamesArray = currentUserGames?.fields?.channelName?.split(',')
   let count = 1
-
+  
   return (
     <BasicLayout home>
       <div className={classes.heroImgCont}>
