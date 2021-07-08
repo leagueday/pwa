@@ -44,8 +44,8 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.down('xs')]: {
       height: '15%',
-      top: 60
-    }
+      top: 60,
+    },
   },
   credInfo: {
     width: '30%',
@@ -103,7 +103,7 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.down('sm')]: {
       marginTop: '35%',
-    }
+    },
   },
   editProfile: {
     background: colors.blue,
@@ -113,7 +113,7 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.down('md')]: {
       width: '25%',
-      fontSize: '80%'
+      fontSize: '80%',
     },
   },
   userName: {
@@ -132,7 +132,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     [theme.breakpoints.down('md')]: {
       flexDirection: 'row',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
     },
   },
   userGamesWrapper: {
@@ -169,7 +169,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       width: '35%',
       padding: 5,
-      fontSize: '80%'
+      fontSize: '80%',
     },
   },
   selectedButton: {
@@ -214,7 +214,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       marginLeft: '2%',
       width: '30%',
-    height: '15%',
+      height: '15%',
     },
   },
   socials: {
@@ -229,8 +229,8 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     [theme.breakpoints.down('md')]: {
       justifyContent: 'stretch',
-    alignItems: 'center',
-    marginLeft: '1%'
+      alignItems: 'center',
+      marginLeft: '1%',
     },
   },
   channelImg: {
@@ -265,7 +265,7 @@ const MyProfile = () => {
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [channelSelected, setChannelSelected] = useState(false)
   const [trophieSelected, setTrophieSelected] = useState(false)
-  const userList = getMyList();
+  const userList = getMyList()
   const user = useSelector(selectors.getUser)
 
   const handleGamesClick = () => {
@@ -333,13 +333,17 @@ const MyProfile = () => {
   const myChannels = useChannels().myList
   const gamesArray = currentUserGames?.fields?.channelName?.split(',')
   let count = 1
-  
+
   return (
     <BasicLayout home>
       <div className={classes.heroImgCont}>
         <img
           className={classes.heroImg}
-          src={currentUserCreds?.fields?.heroImg}
+          src={
+            currentUserCreds?.fields?.heroImg
+              ? currentUserCreds?.fields?.heroImg
+              : 'https://fasttechnologies.com/wp-content/uploads/2017/01/placeholder-banner.png'
+          }
           alt="Hero img"
         />
       </div>
@@ -348,7 +352,11 @@ const MyProfile = () => {
           <div className={classes.userImgContainer}>
             <img
               className={classes.userImg}
-              src={currentUserCreds?.fields?.image}
+              src={
+                currentUserCreds?.fields?.image
+                  ? currentUserCreds?.fields?.image
+                  : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues='
+              }
               alt="User Profile Picture"
             />
           </div>
@@ -385,8 +393,8 @@ const MyProfile = () => {
                 </p>
               </div>
               <Button onClick={golive} className={classes.goLiveButton}>
-              Go Live
-            </Button>
+                Go Live
+              </Button>
             </div>
           </div>
         </div>
@@ -443,7 +451,9 @@ const MyProfile = () => {
                         src={item.fields.channelImg}
                         alt="channel image"
                       />
-                      <p className={classes.channelName}>{item.fields.channelName}</p>
+                      <p className={classes.channelName}>
+                        {item.fields.channelName}
+                      </p>
                     </div>
                   )
                 })}
@@ -496,4 +506,4 @@ const MyProfile = () => {
   )
 }
 
-export default MyProfile;
+export default MyProfile
