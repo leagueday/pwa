@@ -73,7 +73,7 @@ const useStyles = makeStyles({
   },
 })
 
-export const makeIconButton = Icon => {
+export const makeIconButton = (Icon, disabled) => {
   const Component = ({
     backgroundColor,
     className,
@@ -94,14 +94,15 @@ export const makeIconButton = Icon => {
     })
 
     return (
-      <Icon
-        classes={{
-          outer: cx(classes.iconButton, classes.ripple, className),
-          inner: cx(classes.icon, iconClassName),
-        }}
-        onClick={onClick}
-        strokeWidth={strokeWidth}
-      />
+      <button style={{ background: 'transparent', outline: 'none', border: 'none' }} onClick={onClick} disabled={disabled}>
+        <Icon
+          classes={{
+            outer: cx(classes.iconButton, classes.ripple, className),
+            inner: cx(classes.icon, iconClassName),
+          }}
+          strokeWidth={strokeWidth}
+        />
+      </button>
     )
   }
 

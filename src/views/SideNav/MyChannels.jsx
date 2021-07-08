@@ -31,6 +31,7 @@ const MyChannels = ({ skinny }) => {
   const user = useSelector(selectors.getUser)
   const [arrayToMap, setArrayToMap] = useState([])
   const [
+    disabled,
     listPlaceholder,
     setListPlaceholder,
     globalList,
@@ -47,14 +48,7 @@ const MyChannels = ({ skinny }) => {
 
   const locationPathname = useLocationPathname();
   const list = myList.concat(listPlaceholder);
-  // setListPlaceholder(myList);
 
-  // if (globalList.length > 0) {
-  //   setArrayToMap(globalList)
-  // } else {
-  //   setArrayToMap(listPlaceholder)
-  // }
-  
   return (
     <div className={classes.myChannels}>
       {globalList?.map((channel, ind) => {

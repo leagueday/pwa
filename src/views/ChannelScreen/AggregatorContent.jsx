@@ -75,6 +75,7 @@ const Logo = ({ channel, classes }) => (
       <PlusMinusButton
         className={classes.plusMinusButton}
         subjectId={channel.tag}
+        channel={channel}
         subjectKind="channel"
       />
     </div>
