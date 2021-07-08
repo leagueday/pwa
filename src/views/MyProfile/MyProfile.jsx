@@ -93,7 +93,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    marginTop: '25%',
+    marginTop: '75px',
     [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
       marginTop: '25%',

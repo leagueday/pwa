@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { MyListContext } from '../../store/listState'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
@@ -29,16 +29,31 @@ const MyChannels = ({ skinny }) => {
   const classes = useStyles()
   const myList = getMyList()
   const user = useSelector(selectors.getUser)
-  const [globalList, addToState, removeFromState, setGlobalState] = useContext(
-    MyListContext
-  )
+  const [arrayToMap, setArrayToMap] = useState([])
+  const [
+    listPlaceholder,
+    setListPlaceholder,
+    globalList,
+    getIsOnMyList,
+    addToList,
+    removeFromList,
+    setGlobalList,
+  ] = useContext(MyListContext);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const makeGotoThisChannel = channelTag => () =>
     dispatch(actions.pushHistory(`/channel/${channelTag}`))
 
-  const locationPathname = useLocationPathname()
+  const locationPathname = useLocationPathname();
+  const list = myList.concat(listPlaceholder);
+  // setListPlaceholder(myList);
 
+  // if (globalList.length > 0) {
+  //   setArrayToMap(globalList)
+  // } else {
+  //   setArrayToMap(listPlaceholder)
+  // }
+  
   return (
     <div className={classes.myChannels}>
       {globalList?.map((channel, ind) => {
@@ -58,7 +73,6 @@ const MyChannels = ({ skinny }) => {
       })}
     </div>
   )
-
 }
 
 MyChannels.defaultProps = {
