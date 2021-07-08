@@ -14,14 +14,13 @@ const apiKey = "keymd23kpZ12EriVi"
 function ListStateProvider(props) {
 
     const base = new Airtable({ apiKey }).base(baseId)
-    let listPlaceholder = [];
+    const [listPlaceholder, setListPlaceholder] = useState([]);
     const activeUser = useSelector(selectors.getUser)
     const { data } = useAirTable(baseId, 'UserProfile');
     const userList = getMyList();
     const [globalList, setGlobalList] = useState([]);
     const currentUser = data?.filter((user) => user?.fields?.userId === activeUser?.id)
     const currentUserId = currentUser?.shift()?.id
-    const [filteredListRecords, setFilteredListRecords] = useState([])
     let result = []
 
     const getData = async () => {
@@ -47,10 +46,8 @@ function ListStateProvider(props) {
         const filteredUserRecords = data.records.filter((item) => item.fields.userId.shift() === activeUser?.id)
         await Promise.all(filteredUserRecords)
         setGlobalList(filteredUserRecords)
-        console.log('user list ', result, globalList)
     }
 
-    console.log('data from getData ', globalList)
     useEffect(() => {
         getData();
     }, [activeUser])
@@ -86,6 +83,8 @@ function ListStateProvider(props) {
         }
     }
 
+    console.log('raw state ', listPlaceholder)
+
     const removeFromList = async (tag) => {
 
         const recordToDelete = globalList?.filter((item) => item.fields.channelTag === tag)
@@ -94,9 +93,8 @@ function ListStateProvider(props) {
         const id = recordToDelete?.shift()?.id
 
         const newList = globalList?.filter((item) => item.fields.channelTag !== tag)
-
+        const newChannels = listPlaceholder?.filter((item) => item.fields.channelTag !== tag)
         setGlobalList(newList)
-        console.log('delete  ', newList)
 
         base('UserList').destroy([id], function (err, deletedRecords) {
             if (err) {
@@ -105,22 +103,23 @@ function ListStateProvider(props) {
             }
             console.log('Deleted', deletedRecords.length, 'records');
         });
+        setListPlaceholder(newChannels)
+        console.log('delete  ', listPlaceholder)
 
     }
 
-    console.log('delete from function body  ', filteredListRecords)
-
     const getIsOnMyList = (title, tag) => {
 
-        if (!filteredListRecords.concat(globalList)) return false
+        if (!globalList) return false
 
-        return !!filteredListRecords.concat(globalList).find(
+        return !!globalList?.find(
+
             (channel) => channel?.fields?.channelName === title && channel?.fields?.channelTag === tag
         )
     }
 
     return (
-        <MyListProvider value={[globalList, getIsOnMyList, addToList, removeFromList, setGlobalList]}>
+        <MyListProvider value={[listPlaceholder, setListPlaceholder, globalList, getIsOnMyList, addToList, removeFromList, setGlobalList]}>
             {props?.children}
         </MyListProvider>
     )

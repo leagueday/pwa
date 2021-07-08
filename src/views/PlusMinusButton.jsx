@@ -25,6 +25,8 @@ const PlusMinusButton = ({
   const user = useSelector(selectors.getUser)
   const isAuthenticated = !!user
   const [
+    listPlaceholder,
+    setListPlaceholder,
     globalList,
     getIsOnMyList,
     addToList,
