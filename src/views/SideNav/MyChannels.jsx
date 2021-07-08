@@ -41,6 +41,7 @@ const MyChannels = ({ skinny }) => {
   ] = useContext(MyListContext);
 
   const dispatch = useDispatch();
+
   const makeGotoThisChannel = channelTag => () =>
     dispatch(actions.pushHistory(`/channel/${channelTag}`))
 
@@ -73,6 +74,7 @@ const MyChannels = ({ skinny }) => {
       })}
     </div>
   )
+
 }
 
 MyChannels.defaultProps = {

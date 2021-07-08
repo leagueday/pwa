@@ -95,6 +95,7 @@ function ListStateProvider(props) {
         const newList = globalList?.filter((item) => item.fields.channelTag !== tag)
         const newChannels = listPlaceholder?.filter((item) => item.fields.channelTag !== tag)
         setGlobalList(newList)
+
         base('UserList').destroy([id], function (err, deletedRecords) {
             if (err) {
                 console.error(err);
@@ -104,13 +105,17 @@ function ListStateProvider(props) {
         });
         setListPlaceholder(newChannels)
         console.log('delete  ', listPlaceholder)
+
     }
+
+    console.log('delete from function body  ', filteredListRecords)
 
     const getIsOnMyList = (title, tag) => {
 
         if (!globalList) return false
 
         return !!globalList?.find(
+
             (channel) => channel?.fields?.channelName === title && channel?.fields?.channelTag === tag
         )
     }
