@@ -20,7 +20,7 @@ export const getMyList = () => {
     const user = useSelector(selectors.getUser)
     const [filteredListRecords, setFilteredListRecords] = useState([])
     let result = []
-
+    //sad
     const getListData = async () => {
         const baseId = 'appXoertP1WJjd4TQ'
         await fetch('/.netlify/functions/airtable-getprofile', {
