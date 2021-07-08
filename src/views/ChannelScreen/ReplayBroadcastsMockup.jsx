@@ -260,7 +260,7 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
       >
         <div className={classes.textEllipsisOverflow}>{variety}</div>
       </div>
-      <div className={classes.viewAll}>View All Replays</div>
+      <div onClick={onClick} className={classes.viewAll}>View All Replays</div>
     </div>
   )
 }

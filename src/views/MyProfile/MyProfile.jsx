@@ -339,7 +339,7 @@ const MyProfile = () => {
       <div className={classes.heroImgCont}>
         <img
           className={classes.heroImg}
-          src={currentUserCreds?.fields?.heroImg}
+          src={currentUserCreds?.fields?.heroImg ? currentUserCreds?.fields?.heroImg : "https://fasttechnologies.com/wp-content/uploads/2017/01/placeholder-banner.png"}
           alt="Hero img"
         />
       </div>
