@@ -31,6 +31,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: '0.5em',
     paddingRight: '0.5em',
     paddingTop: '0.5em',
+    marginBottom: '1rem'
   },
   logo: {
     cursor: 'pointer',
@@ -197,7 +198,7 @@ const FatSideNav = ({ className, home }) => {
             >
               <MyChannels />
             </Expander>
-            {user && (
+            {/* {user && (
               <Expander
                 className={classes.expander}
                 text="MY PODCASTS"
@@ -205,7 +206,7 @@ const FatSideNav = ({ className, home }) => {
               >
                 <MyPodcasts />
               </Expander>
-            )}
+            )} */}
             <React.Suspense fallback={<Loading />}>
               {
                 user && (
