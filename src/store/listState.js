@@ -108,8 +108,6 @@ function ListStateProvider(props) {
 
     }
 
-    console.log('delete from function body  ', filteredListRecords)
-
     const getIsOnMyList = (title, tag) => {
 
         if (!globalList) return false
