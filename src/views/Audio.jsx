@@ -1,19 +1,19 @@
 import React, { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Hls from 'hls.js';
+import Hls from 'hls.js'
 import ReactHlsPlayer from 'react-hls-player'
 
 /**
-* views/Audio
-*
-* react wrapper of `<audio />`
-*
-* renders from redux into dom, so it's decoupled from the
-* controller but the way they both use redux is hardwired
-*/
- 
+ * views/Audio
+ *
+ * react wrapper of `<audio />`
+ *
+ * renders from redux into dom, so it's decoupled from the
+ * controller but the way they both use redux is hardwired
+ */
+
 import { actions, constants as storeConsts, selectors, thunks } from '../store'
- 
+
 const debugAudio = false
 const addDebugEventListeners = debugAudio
   ? audioDomNode => {
@@ -85,9 +85,9 @@ const addDebugEventListeners = debugAudio
 // See https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
 // The article explains this pattern of "ref callback" allows setup logic to run
 // when the ref is bound to the dom node
-let ref;
+let ref
 const useAudioRef = () => {
-   ref = React.useRef()
+  ref = React.useRef()
   const dispatch = useDispatch()
 
   const getRef = React.useCallback(() => ref.current, [])
@@ -153,10 +153,10 @@ const useAudioRef = () => {
 
   return [getRef, setRef]
 }
-let playerRef;
+let playerRef
 const useAudioPlayerRef = () => {
-    playerRef = React.useRef();
-  const dispatch = useDispatch();
+  playerRef = React.useRef()
+  const dispatch = useDispatch()
   const getRef = React.useCallback(() => playerRef.current, [])
   const setRef = React.useCallback(node => {
     if (node) {
@@ -169,21 +169,21 @@ const useAudioPlayerRef = () => {
     }
     playerRef.current = node
   }, [])
-  return [getRef, setRef];
+  return [getRef, setRef]
 }
 // one off hack
 const nonsecBlubrryPrefix = 'http://media.blubrry.com/'
- 
+
 const Audio = () => {
   const [getAudioRef, setAudioRef] = useAudioRef()
   const [getAudioPlayerRef, setAudioPlayerRef] = useAudioPlayerRef()
   const [hlsMediaPlayer, setHlsMediaPlayer] = React.useState(null)
-  const [isSetAdio,setisAudio]=React.useState(false)
+  const [isSetAdio, setisAudio] = React.useState(false)
   const audioMode = useSelector(selectors.getAudioMode)
   const audioUrl = useSelector(selectors.getAudioUrl)
   const volume = useSelector(selectors.getAudioVolume)
 
-  console.log('finding a trigger ',audioUrl)
+  console.log('finding a trigger ', audioUrl)
   // const events = useSelector(selectors.getAudioEvents)
   const position = useSelector(selectors.getAudioPosition)
   const taps = useSelector(selectors.getAudioTaps)
@@ -197,14 +197,14 @@ const Audio = () => {
     // play: playTaps,
     replay: replayTaps,
   } = taps
-let sourceurl;
+  let sourceurl
   const scrubbedAudioUrl = React.useMemo(() => {
     if (audioUrl && audioUrl.startsWith(nonsecBlubrryPrefix)) {
       const embeddedUrlOffset = audioUrl.indexOf(
         'http',
         nonsecBlubrryPrefix.length
       )
-      sourceurl=embeddedUrlOffset;
+      sourceurl = embeddedUrlOffset
       if (embeddedUrlOffset > 0) {
         return audioUrl.substr(embeddedUrlOffset)
       }
@@ -222,8 +222,8 @@ let sourceurl;
       audioDomNode.volue = formattedVolume
     } else {
       if (ref.current) {
-              ref.current.volume = formattedVolume
-            }
+        ref.current.volume = formattedVolume
+      }
     }
   }, [volume, scrubbedAudioUrl])
 
@@ -247,9 +247,15 @@ let sourceurl;
   React.useEffect(() => {
     const audioPlayerDomNode = getAudioPlayerRef()
     if (!audioPlayerDomNode || !audioPlayerDomNode.src) return
-    if (audioMode === storeConsts.AUDIO_MODE_PAUSE && !audioPlayerDomNode.paused) {
+    if (
+      audioMode === storeConsts.AUDIO_MODE_PAUSE &&
+      !audioPlayerDomNode.paused
+    ) {
       audioPlayerDomNode.pause()
-    } else if (audioMode === storeConsts.AUDIO_MODE_PLAY && audioPlayerDomNode.paused) {
+    } else if (
+      audioMode === storeConsts.AUDIO_MODE_PLAY &&
+      audioPlayerDomNode.paused
+    ) {
       audioPlayerDomNode.play()
     }
   }, [audioMode, scrubbedAudioUrl])
@@ -275,34 +281,33 @@ let sourceurl;
 
     audioDomNode.currentTime = seekPosition
   }, [seekPosition])
-  let srcUrl=scrubbedAudioUrl&&scrubbedAudioUrl.startsWith('https://stream.mux.com')
+  let srcUrl =
+    scrubbedAudioUrl && scrubbedAudioUrl.startsWith('https://stream.mux.com')
   React.useEffect(() => {
-    if (srcUrl && audioUrl && window.innerWidth>945) {
-      let video = document.getElementById('audioPlayer');
+    if (srcUrl && audioUrl && window.innerWidth > 945) {
+      let video = document.getElementById('audioPlayer')
       if (Hls.isSupported()) {
-        
         if (hlsMediaPlayer) {
           hlsMediaPlayer.destroy()
         }
         if (video) {
-          var hls = new Hls();
+          var hls = new Hls()
           // bind them together
-          hls.detachMedia();
-          hls.attachMedia(video);
+          hls.detachMedia()
+          hls.attachMedia(video)
           hls.on(Hls.Events.MEDIA_ATTACHED, function () {
-            hls.loadSource(scrubbedAudioUrl);
-          });
+            hls.loadSource(scrubbedAudioUrl)
+          })
           setHlsMediaPlayer(hls)
         }
-      }
-      else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = srcUrl;
-        video.addEventListener('audioPlayer', function() {
-          video.play();
-        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = srcUrl
+        video.addEventListener('audioPlayer', function () {
+          video.play()
+        })
       }
     }
-    return () => true;
+    return () => true
   }, [srcUrl, audioUrl])
   React.useEffect(() => {
     let formattedVolume = volume / 100
@@ -314,31 +319,35 @@ let sourceurl;
       audioDomNode.volue = formattedVolume
     } else {
       if (playerRef.current) {
-              playerRef.current.volume = formattedVolume
-            }
+        playerRef.current.volume = formattedVolume
+      }
     }
   }, [volume, scrubbedAudioUrl])
   return audioUrl ? (
     <span>
-     {!srcUrl ? (
+      {!srcUrl ? (
         <audio ref={setAudioRef} src={scrubbedAudioUrl} />
-      ):
-      (/* Player Element */ 
-         (window.innerWidth>945?
-            (/* Player Element */ 
-              <video ref={setAudioPlayerRef} id="audioPlayer" autoPlay={true} format="m3u8" type="m3u8" />
-            ):(
-              <ReactHlsPlayer
-              src={scrubbedAudioUrl}
-              autoPlay={true}
-              controls={false}
-              width="20%"
-              height="auto"
-            />
-            ))
+      ) : /* Player Element */
+      window.innerWidth > 945 ? (
+        /* Player Element */
+        <video
+          ref={setAudioPlayerRef}
+          id="audioPlayer"
+          autoPlay={true}
+          format="m3u8"
+          type="m3u8"
+        />
+      ) : (
+        <ReactHlsPlayer
+          src={scrubbedAudioUrl}
+          autoPlay={true}
+          controls={false}
+          width="20%"
+          height="auto"
+        />
       )}
     </span>
   ) : null
 }
 
-export default Audio;
+export default Audio
