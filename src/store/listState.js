@@ -87,6 +87,8 @@ function ListStateProvider(props) {
         console.log('should happen second ', globalList);
     }
 
+    console.log('raw state ', listPlaceholder)
+
     const removeFromList = async (tag) => {
         setDisabled(true)
 
