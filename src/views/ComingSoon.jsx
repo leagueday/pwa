@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import cx from 'classnames'
 import Color from 'color'
 import { makeStyles } from '@material-ui/core'
 import ToggleImageButton from './ToggleImageButton'
 import { colors } from '../styling'
+import { IcoPlay, IcoPause } from './icons'
 import { useSelector, useDispatch } from 'react-redux'
 import { actions, selectors, constants as storeConstants } from '../store'
+import { makeIconButton } from './IconButton'
 const useStyles = makeStyles(theme => ({
   comingSoon: {
     alignItems: 'flex-start',
@@ -173,18 +175,17 @@ const EventTextplate = ({ channelColor, sectionData }) => {
 }
 
 const Track = ({ classes, playbackurl }) => {
-  const [isPlaying, setIsPlaying] = React.useState(false)
-  const [plyerOn, setPlayerOn] = React.useState(false)
+  const PlayBtn = makeIconButton(IcoPlay)
+  const PauseBtn = makeIconButton(IcoPause)
+
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [plyerOn, setPlayerOn] = useState(false)
   const dispatch = useDispatch()
-  const playerRef = React.useRef()
+  const playerRef = useRef()
   const onClick = isPlaying
     ? () => setIsPlaying(false)
     : () => setIsPlaying(true)
-  // const playVideo=()=> {
-  //   playerRef.current.play();
-  //   setPlayerOn(true)
-  //   console.log("palyref",playerRef)
-  // }
+
   const audioMode = useSelector(selectors.getAudioMode)
   const isSelectedAudio = playbackurl && playbackurl
   const isPlayings =
@@ -242,12 +243,12 @@ const Track = ({ classes, playbackurl }) => {
 
 const ComingSoon = ({ className, channel, channelColor }) => {
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
-  const [fetchLiveData, setFetchLiveData] = React.useState([])
-  const [liveStatus, setliveStatus] = React.useState(0)
-  const [liveurlcheck, setliveurlchk] = React.useState('')
+  const [fetchLiveData, setFetchLiveData] = useState([])
+  const [liveStatus, setliveStatus] = useState(0)
+  const [liveurlcheck, setliveurlchk] = useState('')
 
-  const [url, setUrl] = React.useState('')
-  React.useEffect(() => {
+  const [url, setUrl] = useState('')
+  useEffect(() => {
     liveData(channel['liveStreamId'])
     // return sleep(3000).then(() => {
     // muxliveData();

@@ -18,9 +18,6 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    [theme.breakpoints.down('xs')]: {
-      flexDirection: 'column',
-    },
   },
   sliderColor: {
     color: colors.blue,
