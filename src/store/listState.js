@@ -22,6 +22,7 @@ function ListStateProvider(props) {
     const currentUser = data?.filter((user) => user?.fields?.userId === activeUser?.id)
     const currentUserId = currentUser?.shift()?.id
     const [disabled, setDisabled] = useState(false);
+  
     let result = []
 
     const getData = async () => {
@@ -86,6 +87,8 @@ function ListStateProvider(props) {
         setGlobalList(result.concat(globalList))
         console.log('should happen second ', globalList);
     }
+
+    console.log('raw state ', listPlaceholder)
 
     const removeFromList = async (tag) => {
         setDisabled(true)
