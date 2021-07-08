@@ -465,7 +465,6 @@ const MyProfile = () => {
                   <p className={classes.placeHolder}>No Recorded Streams yet</p>
                 ) : (
                   userRecordings?.map((rec, index) => {
-                    console.log(rec)
                     count += 1
                     return (
                       <>

@@ -51,14 +51,14 @@ const useStyles = makeStyles(theme => ({
   logoImageContainer: {
     paddingTop: '0.5em',
     position: 'relative',
-    width: '10.5em',
+    width: '12em',
     [theme.breakpoints.only('xs')]: {
       paddingTop: '2vw',
       width: '20vw',
     },
   },
   plusMinusButton: {
-    bottom: '0.5em',
+    bottom: '2.5em',
     position: 'absolute',
     right: '0.5em',
     [theme.breakpoints.only('xs')]: {
@@ -75,6 +75,8 @@ const Logo = ({ channel, classes }) => (
       <PlusMinusButton
         className={classes.plusMinusButton}
         subjectId={channel.tag}
+        channel={channel}
+        size={'2rem'}
         subjectKind="channel"
       />
     </div>
@@ -100,6 +102,7 @@ const AggregatorContent = ({ channel }) => {
   const facets = useFacets(channel.tag)
   const hasLive = hasLiveMockupData(channel)
   const hasReplay = hasReplayMockupData(channel)
+  console.log('channel from aggregator  ', channel)
 
   return (
     <ContentLayout
@@ -156,4 +159,4 @@ const AggregatorContent = ({ channel }) => {
   )
 }
 
-export default AggregatorContent
+export default AggregatorContent;

@@ -374,7 +374,7 @@ const EditProfile = props => {
 
   const onChannelChanged = (e, channelFieldKey, tag) => {
     const { value, checked } = e.target
-    console.log('jjasfn  ',value, checked)
+    console.log('jjasfn  ', value, checked)
     let channelSelect = value[channelFieldKey]
     channelSelect = e.target.value
     let datasaved = selectChannel
@@ -383,8 +383,7 @@ const EditProfile = props => {
       datasaved.push(value)
     } else if (!checked) {
       datasaved.pop(value)
-    }
-    else {
+    } else {
       let index = datasaved.indexOf(value)
       let dataTagIndex = datasavedFortag.indexOf(tag['tag'].toLowerCase())
       datasaved.splice(index, 1)
@@ -402,7 +401,7 @@ const EditProfile = props => {
     setChannelTag(datasavedFortag)
   }
 
-  console.log('selected channels ',selectChannel)
+  console.log('selected channels ', selectChannel)
   const classes = useStyles({ primaryColor })
   const userName = user?.user_metadata?.full_name
 
@@ -796,4 +795,4 @@ const EditProfile = props => {
   )
 }
 
-export default EditProfile;
+export default EditProfile

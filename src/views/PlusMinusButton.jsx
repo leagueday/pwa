@@ -7,9 +7,6 @@ import { colors } from '../styling'
 import { makeIconButton } from './IconButton'
 import { IcoMinus, IcoPlus } from './icons'
 
-const MinusButton = makeIconButton(IcoMinus)
-const PlusButton = makeIconButton(IcoPlus)
-
 const stopEventPropagation = handler => event => {
   handler(event)
   event.stopPropagation()
@@ -25,6 +22,7 @@ const PlusMinusButton = ({
   const user = useSelector(selectors.getUser)
   const isAuthenticated = !!user
   const [
+    disabled,
     listPlaceholder,
     setListPlaceholder,
     globalList,
@@ -33,6 +31,9 @@ const PlusMinusButton = ({
     removeFromList,
     setGlobalList,
   ] = useContext(MyListContext)
+
+  const MinusButton = makeIconButton(IcoMinus, disabled)
+  const PlusButton = makeIconButton(IcoPlus, disabled)
 
   const isOnMyList = getIsOnMyList(channel?.title, channelTag)
 

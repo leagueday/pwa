@@ -68,21 +68,21 @@ const ChannelTile = ({ channel }) => {
     dispatch(actions.pushHistory(`/channel/${channel.tag}`))
 
   return (
-    <div className={classes.channelTile} onClick={gotoThisChannel}>
-      <Square className={classes.imageSquare}>
-        <img className={classes.image} src={channel.imageUrl} />
-        <PlusMinusButton
-          size="25%"
-          className={classes.plusMinusButton}
-          subjectId={channel.tag}
-          subjectKind="channel"
-          channel={channel}
-        />
-      </Square>
-      <div className={classes.textBox}>
-        <div className={classes.text}>{channel.title}</div>
-      </div>
+    <div className={classes.channelTile}>
+    <Square className={classes.imageSquare}>
+      <img className={classes.image} src={channel.imageUrl} onClick={gotoThisChannel} />
+      <PlusMinusButton
+        size="25%"
+        className={classes.plusMinusButton}
+        subjectId={channel.tag}
+        subjectKind="channel"
+        channel={channel}
+      />
+    </Square>
+    <div className={classes.textBox} onClick={gotoThisChannel}>
+      <div className={classes.text}>{channel.title}</div>
     </div>
+  </div>
   )
 }
 

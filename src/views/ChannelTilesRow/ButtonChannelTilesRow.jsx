@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
   },
   slideContainer: {
-    overflowX: 'hidden',
+    overflow: 'hidden',
     position: 'relative',
   },
   tile: {

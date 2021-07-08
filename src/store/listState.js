@@ -21,6 +21,7 @@ function ListStateProvider(props) {
     const [globalList, setGlobalList] = useState([]);
     const currentUser = data?.filter((user) => user?.fields?.userId === activeUser?.id)
     const currentUserId = currentUser?.shift()?.id
+    const [disabled, setDisabled] = useState(false);
     let result = []
 
     const getData = async () => {
@@ -37,14 +38,9 @@ function ListStateProvider(props) {
 
         const data = await response.json()
 
-        response?.records?.map(item => {
-            if (item?.fields?.userId?.shift() === activeUser?.id) {
-                result.push(item)
-            }
-        })
-
-        const filteredUserRecords = data.records.filter((item) => item.fields.userId.shift() === activeUser?.id)
+        const filteredUserRecords = data?.records?.filter((item) => item?.fields?.userId?.shift() === activeUser?.id)
         await Promise.all(filteredUserRecords)
+
         setGlobalList(filteredUserRecords)
     }
 
@@ -52,60 +48,70 @@ function ListStateProvider(props) {
         getData();
     }, [activeUser])
 
-    const addToList = (title, tag, img) => {
-        listPlaceholder.push({ fields: { channelName: title, channelTag: tag, channelImg: img } })
-        setGlobalList(listPlaceholder.concat(globalList))
+    const addToList = async (title, tag, img) => {
+
+        setDisabled(true)
+
+        setTimeout(() => (setDisabled(false)), 500)
+
+        console.log('disabled state ', disabled)
 
         if (globalList.includes({ fields: { channelName: title, channelTag: tag, channelImg: img } })) {
             return
         } else {
-            base('UserList').create([
-                {
-                    "fields": {
-                        "channelName": title,
-                        "user": [
-                            currentUserId
-                        ],
-                        "channelTag": tag,
-                        "channelImg": img
+                base('UserList').create([
+                    {
+                        "fields": {
+                            "channelName": title,
+                            "user": [
+                                currentUserId
+                            ],
+                            "channelTag": tag,
+                            "channelImg": img
+                        }
                     }
-                }
-            ], function (err, records) {
-                if (err) {
-                    console.error(err);
-                    return;
-                }
-                records.forEach(function (record) {
-                    console.log('created new myList entry  ', record);
-                    getData();
+                ], function (err, records) {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+                    records.forEach(function (record) {
+                        console.log('created new myList entry  ', record);
+                        getData();
+                    });
                 });
-            });
         }
+
+        result.push({ fields: { channelName: title, channelTag: tag, channelImg: img } })
+        setGlobalList(result.concat(globalList))
+        console.log('should happen second ', globalList);
     }
 
     console.log('raw state ', listPlaceholder)
 
     const removeFromList = async (tag) => {
+        setDisabled(true)
+
+        setTimeout(() => (setDisabled(false)), 500)
 
         const recordToDelete = globalList?.filter((item) => item.fields.channelTag === tag)
-
-        await Promise.all(recordToDelete)
-        const id = recordToDelete?.shift()?.id
-
         const newList = globalList?.filter((item) => item.fields.channelTag !== tag)
         const newChannels = listPlaceholder?.filter((item) => item.fields.channelTag !== tag)
         setGlobalList(newList)
 
-        base('UserList').destroy([id], function (err, deletedRecords) {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            console.log('Deleted', deletedRecords.length, 'records');
-        });
         setListPlaceholder(newChannels)
-        console.log('delete  ', listPlaceholder)
 
+        await Promise.all(recordToDelete)
+        const id = recordToDelete?.shift()?.id
+            base('UserList').destroy([id], function (err, deletedRecords) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.log('Deleted', deletedRecords.length, 'records');
+            });
+
+        console.log('delete  ', globalList)
     }
 
     const getIsOnMyList = (title, tag) => {
@@ -119,7 +125,7 @@ function ListStateProvider(props) {
     }
 
     return (
-        <MyListProvider value={[listPlaceholder, setListPlaceholder, globalList, getIsOnMyList, addToList, removeFromList, setGlobalList]}>
+        <MyListProvider value={[disabled, listPlaceholder, setListPlaceholder, globalList, getIsOnMyList, addToList, removeFromList, setGlobalList]}>
             {props?.children}
         </MyListProvider>
     )
