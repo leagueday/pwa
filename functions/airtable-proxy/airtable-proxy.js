@@ -24,5 +24,5 @@ const handler = async (event, context) => {
     statusCode: response.status,
   }
 }
-
+//fixed
 module.exports = { handler }
