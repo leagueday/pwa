@@ -68,6 +68,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+
 const Logo = ({ channel, classes }) => (
   <div className={classes.logoImageContainer}>
     <img className={classes.logoImage} src={channel?.imageUrl} />
