@@ -400,6 +400,7 @@ const CreateProfile = props => {
         console.log('error while data fetching', error.type)
       })
   }
+  
   return (
     <BasicLayout home>
       <ToastContainer />
