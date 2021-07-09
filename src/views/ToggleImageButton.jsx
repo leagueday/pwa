@@ -5,23 +5,21 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { colors } from '../styling'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   image: {
-    width: '70%',
-    height: '70%',
+    width: '30%',
   },
   imageButton: ({ backgroundColor, shadowColor, size }) => ({
     alignItems: 'center',
     backgroundColor: backgroundColor,
-    borderRadius: '50%',
+    borderRadius: '60px',
     borderWidth: 0,
+    width: '60%',
     cursor: 'pointer',
     display: 'flex',
     filter: `drop-shadow(1px 1px 4px ${shadowColor})`,
     flexDirection: 'row',
-    height: size,
-    justifyContent: 'center',
-    width: size,
+    justifyContent: 'space-around',
     '&:hover': {
       backgroundColor: Color(backgroundColor).lighten(0.25).string(),
     },
@@ -30,33 +28,12 @@ const useStyles = makeStyles({
       backgroundColor: Color(backgroundColor).lighten(0.35).string(),
     },
   }),
-  ripple: {
-    position: 'relative',
-    overflow: 'hidden',
-    transform: 'translate3d(0, 0, 0)',
-    '&:after': {
-      content: '""',
-      display: 'block',
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-      top: 0,
-      left: 0,
-      pointerEvents: 'none',
-      backgroundImage: 'radial-gradient(circle, #000 10%, transparent 10.01%)',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: '50%',
-      transform: 'scale(10,10)',
-      opacity: 0,
-      transition: 'transform .5s, opacity 1s',
-    },
-    '&:active:after': {
-      transform: 'scale(0,0)',
-      opacity: 0.2,
-      transition: '0s',
-    },
+  playPause: {
+    fontSize: '150%',
+    fontWeight: theme.typography.fontWeightBold
   },
-})
+
+}))
 
 const ToggleImageButton = ({
   className,
@@ -76,7 +53,7 @@ const ToggleImageButton = ({
         src={on ? onImage : offImage}
         draggable="false"
       />
-      {/* {on ? onImage : offImage} */}
+      {on ? <p className={classes.playPause}>Pause</p> : <p className={classes.playPause}>Play</p>}
     </div>
   )
 }
@@ -88,4 +65,4 @@ ToggleImageButton.defaultProps = {
   size: '2em',
 }
 
-export default ToggleImageButton
+export default ToggleImageButton;
