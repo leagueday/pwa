@@ -14,13 +14,13 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
   },
-
   comingSoonRow: {
     alignItems: 'center',
     borderRadius: '1em',
     display: 'flex',
     height: '2em',
     minWidth: 0,
+    justifyContent: 'space-evenly',
     padding: '0.35em 0.35em',
     [theme.breakpoints.up('sm')]: {
       backgroundColor: colors.brandBlack,
@@ -42,6 +42,7 @@ const useStyles = makeStyles(theme => ({
   eventImageAndText: {
     display: 'flex',
     width: '100%',
+    // alignItems: 'center'
   },
   text: {
     fontFamily: theme.typography.family.primary,
@@ -75,7 +76,6 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
   },
   liveBroadcasts: {
-    alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
@@ -92,6 +92,7 @@ const useStyles = makeStyles(theme => ({
   eventImage: {
     height: '6vw',
     width: '6vw',
+    objectFit: 'cover'
   },
   eventImageFormobileView: {
     height: '15vw',
@@ -109,24 +110,13 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
   },
   livenessContent: {
-    backgroundColor: '#070709',
     display: 'flex',
     flex: 4,
-    padding: '1em 0 1em 1em',
+    paddingLeft: '1em',
+    paddingBottom: '2em',
     [theme.breakpoints.only('xs')]: {
       padding: '2vw 0 2vw 2vw',
     },
-  },
-  trackText: {
-    color: colors.white80,
-    flex: 1,
-    top: '-99%',
-    position: 'relative',
-    minWidth: '12vw',
-    paddingLeft: '2.0vw',
-    paddingTop: '0.5vw',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
   },
 }))
 
@@ -225,7 +215,6 @@ const Track = ({ classes, playbackurl }) => {
         offImage="/img/logo_live_play.png"
         shadowColor={buttonShadowColor}
       />
-      <div className={classes.trackText}>Stream</div>
       {/* {isPlaying &&(
            <ReactHlsPlayer
            playerRef={playerRef}

@@ -18,7 +18,7 @@ import {
   IcoRewindStop,
 } from '../icons'
 import { makeIconButton } from '../IconButton'
-import ToggleImageButton from '../ToggleImageButton'
+import ToggleImageButtonSmall from '../ToggleImageButtonSmall'
 import Connector from './Connector'
 import ProgressBox from './ProgressBox'
 
@@ -220,7 +220,7 @@ const ExtraSmallExpanded = () => {
                       onClick={replayButtonOnclick}
                       shadowColor={buttonShadowColor}
                     />
-                    <ToggleImageButton
+                    <ToggleImageButtonSmall
                       className={classes.mainButton}
                       size="15vw"
                       on={isPlaying}

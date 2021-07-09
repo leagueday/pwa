@@ -17,7 +17,6 @@ function ListStateProvider(props) {
     const [listPlaceholder, setListPlaceholder] = useState([]);
     const activeUser = useSelector(selectors.getUser)
     const { data } = useAirTable(baseId, 'UserProfile');
-    const userList = getMyList();
     const [globalList, setGlobalList] = useState([]);
     const currentUser = data?.filter((user) => user?.fields?.userId === activeUser?.id)
     const currentUserId = currentUser?.shift()?.id
@@ -25,23 +24,17 @@ function ListStateProvider(props) {
     let result = []
 
     const getData = async () => {
-        let urladd = `filterByFormula=[userId]=${activeUser?.id}`
+        base('UserList').select({
+            view: "Grid view"
+        }).eachPage(async function page(records, fetchNextPage) {
+            const filteredUserRecords = records?.filter((item) => item?.fields?.userId?.shift() === activeUser?.id)
+            await Promise.all(filteredUserRecords)
+            console.log('records ', filteredUserRecords)
+            setGlobalList(filteredUserRecords)
 
-        const response = await fetch('/.netlify/functions/airtable-getprofile', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ url: `${baseId}/UserList?${urladd}` }),
-        })
-
-        const data = await response.json()
-
-        const filteredUserRecords = data?.records?.filter((item) => item?.fields?.userId?.shift() === activeUser?.id)
-        await Promise.all(filteredUserRecords)
-
-        setGlobalList(filteredUserRecords)
+        }, function done(err) {
+            if (err) { console.error(err); return; }
+        });
     }
 
     useEffect(() => {
@@ -53,8 +46,6 @@ function ListStateProvider(props) {
         setDisabled(true)
 
         setTimeout(() => (setDisabled(false)), 500)
-
-        console.log('disabled state ', disabled)
 
         if (globalList.includes({ fields: { channelName: title, channelTag: tag, channelImg: img } })) {
             return
@@ -103,14 +94,13 @@ function ListStateProvider(props) {
 
         await Promise.all(recordToDelete)
         const id = recordToDelete?.shift()?.id
-            base('UserList').destroy([id], function (err, deletedRecords) {
-                if (err) {
-                    console.error(err);
-                    return;
-                }
-                console.log('Deleted', deletedRecords.length, 'records');
-            });
-
+        base('UserList').destroy([id], function (err, deletedRecords) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            console.log('Deleted', deletedRecords.length, 'records');
+        });
         console.log('delete  ', globalList)
     }
 
