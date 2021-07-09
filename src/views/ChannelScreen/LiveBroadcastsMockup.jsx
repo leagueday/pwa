@@ -4,7 +4,7 @@ import Color from 'color'
 import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '../../styling'
 import ComingSoon from '../ComingSoon'
-import ToggleImageButton from '../ToggleImageButton'
+import ToggleImageButtonSmall from '../ToggleImageButtonSmall'
 import ReplayLiveBroadCast from './ReplayLiveBroadCast';
 
 const useStyles = makeStyles(theme => ({
@@ -139,7 +139,7 @@ const Track = ({ classes }) => {
 
   return (
     <div className={classes.track}>
-      <ToggleImageButton
+      <ToggleImageButtonSmall
         className={classes.logoButton}
         size="8vw"
         on={isPlaying}

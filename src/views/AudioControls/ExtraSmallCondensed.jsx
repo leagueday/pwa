@@ -21,7 +21,7 @@ import Connector from './Connector'
 import ExtraSmallHidden from './ExtraSmallHidden'
 import ProgressBox from './ProgressBox'
 import VolumeBox from './VolumeBox'
-import ToggleImageButton from '../ToggleImageButton'
+import ToggleImageButtonSmall from '../ToggleImageButtonSmall'
 import XsTitle from './XsTitle'
 
 const DownButton = makeIconButton(IcoDown)
@@ -149,7 +149,7 @@ const XsCondensedAudioControls = ({ className, primaryColor }) => {
                 primaryColor={primaryColor}
                 title={itemTitle}
               >
-                <ToggleImageButton
+                <ToggleImageButtonSmall
                   className={classes.logoButton}
                   size="20vw"
                   on={isPlaying}

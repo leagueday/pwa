@@ -16,7 +16,7 @@ import {
 import { selectors } from '../../store'
 import { colors } from '../../styling'
 import { makeIconButton } from '../IconButton'
-import ToggleImageButton from '../ToggleImageButton'
+import ToggleImageButtonSmall from '../ToggleImageButtonSmall'
 import Connector from './Connector'
 import ProgressBox from './ProgressBox'
 import Title from './Title'
@@ -144,7 +144,7 @@ const SmUpAudioControls = () => {
         ((PlusOrMinusButton, buttonColor) => (
           <div className={classes.audioControlsRow}>
             <div className={classes.logoButtonCenter}>
-              <ToggleImageButton
+              <ToggleImageButtonSmall
                 className={classes.logoButton}
                 size={isMd ? '3.5em' : '5em'}
                 on={isPlaying}
