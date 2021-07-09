@@ -118,16 +118,13 @@ const EditProfile = props => {
   const [heroImg, setHeroImg] = useState()
 
   const getUserById = () => {
-    const currentUserCred = userCreds?.filter(
-      item => item.fields.userId === user.id
-    )
     const currentUserGames = userGames?.filter(
       item => item.fields.userId === user.id
     )
     setCurrentUserGames(
       currentUserGames?.shift()?.fields?.channelName?.split(',')
     )
-    setProfileInfo(currentUserCred?.shift())
+    
   }
 
   useEffect(() => {
@@ -186,7 +183,6 @@ const EditProfile = props => {
   const [context, setContext] = useState([{ value: null }])
   const [saveChannelImage, setsaveChannelImage] = useState('')
   const [contextvalue, setcontextvalue] = useState([])
-  const [saveContext, setsaveContext] = useState([])
   const [userId, setuserId] = useState('')
 
   const [channelId, setChannelId] = useState('recO33VCPMOJ6yWju')
@@ -212,6 +208,8 @@ const EditProfile = props => {
     })
       .then(response => response.json())
       .then(function (response) {
+        setProfileInfo(response.records[0])
+        console.log('user info  ', profileInfo)
         if (response.records[0].fields) {
           setFormInput({
             ...formInput,
@@ -389,19 +387,11 @@ const EditProfile = props => {
       datasaved.splice(index, 1)
       datasavedFortag.splice(tag['tag'], 1)
     }
-    // if(checked) {
-    //   if(!selectChannel.includes(value)) {
-    //     setselectChannel(...selectChannel, value)
-    //   }
-    // } else {
-    //   setselectChannel(selectChannel.filter(channel => channel !== value))
-    // }
     datasaved = [...new Set(datasaved)]
     setselectChannel(datasaved)
     setChannelTag(datasavedFortag)
   }
 
-  console.log('selected channels ', selectChannel)
   const classes = useStyles({ primaryColor })
   const userName = user?.user_metadata?.full_name
 
@@ -434,6 +424,7 @@ const EditProfile = props => {
                 rtmpLink: 'rtmps://global-live.mux.com:443/app',
                 liveStreamId: userChannelnput.liveStreamId,
                 streamKey: userChannelnput.streamKey,
+                UserList: !!profileInfo.fields.UserList ? profileInfo.fields.UserList : [],
                 profileCreated: 'yes',
               },
             },
