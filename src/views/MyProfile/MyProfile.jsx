@@ -200,7 +200,7 @@ const useStyles = makeStyles(theme => ({
     width: '75%',
   },
   goLiveButton: {
-    width: '40%',
+    width: '110px',
     height: '15%',
     marginLeft: '18%',
     background: colors.blue,
