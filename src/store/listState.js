@@ -101,7 +101,6 @@ function ListStateProvider(props) {
             }
             console.log('Deleted', deletedRecords.length, 'records');
         });
-
         console.log('delete  ', globalList)
     }
 
