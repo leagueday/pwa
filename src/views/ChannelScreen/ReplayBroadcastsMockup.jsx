@@ -113,7 +113,7 @@ const useStyles = makeStyles(theme => ({
   episodeTitle: {
     color: colors.white80,
     minWidth: '12vw',
-    maxWidth: '70%'
+    maxWidth: '70%',
   },
   episodeTitleAndData: {
     display: 'flex',
@@ -260,7 +260,9 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
       >
         <div className={classes.textEllipsisOverflow}>{variety}</div>
       </div>
-      <div onClick={onClick} className={classes.viewAll}>View All Replays</div>
+      <div onClick={onClick} className={classes.viewAll}>
+        View All Replays
+      </div>
     </div>
   )
 }
@@ -572,8 +574,30 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
   }
 
   const leagueNightshowRecordedData = () => {
+    const apiKey = 'keymd23kpZ12EriVi'
+    const base = new Airtable({ apiKey }).base(baseId)
     const baseId = 'appXoertP1WJjd4TQ'
-    let urladd = `maxRecords=3&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    let urladd = `maxRecords=300&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+
+    // base('UserList')
+    //   .select({
+    //     view: 'Grid view',
+    //   })
+    //   .eachPage(
+    //     async function page(records, fetchNextPage) {
+    //       const filteredUserRecords = records?.filter(
+    //         item => item?.fields?.userId?.shift() === activeUser?.id
+    //       )
+    //       // await Promise.all(filteredUserRecords)
+    //       // setGlobalList(filteredUserRecords)
+    //     },
+    //     function done(err) {
+    //       if (err) {
+    //         console.error(err)
+    //         return
+    //       }
+    //     }
+    //   )
 
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',

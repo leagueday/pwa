@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Airtable from 'airtable'
-import { getMyList } from '../api/getUserList';
-import useMyList from '../api/useMyList';
 import useAirTable from '../api/useAirtable';
 import { selectors } from '../store'
 import { useSelector } from 'react-redux';
@@ -29,7 +27,6 @@ function ListStateProvider(props) {
         }).eachPage(async function page(records, fetchNextPage) {
             const filteredUserRecords = records?.filter((item) => item?.fields?.userId?.shift() === activeUser?.id)
             await Promise.all(filteredUserRecords)
-            console.log('records ', filteredUserRecords)
             setGlobalList(filteredUserRecords)
 
         }, function done(err) {
@@ -75,10 +72,8 @@ function ListStateProvider(props) {
 
         result.push({ fields: { channelName: title, channelTag: tag, channelImg: img } })
         setGlobalList(result.concat(globalList))
-        console.log('should happen second ', globalList);
     }
 
-    console.log('raw state ', listPlaceholder)
 
     const removeFromList = async (tag) => {
         setDisabled(true)
@@ -101,7 +96,6 @@ function ListStateProvider(props) {
             }
             console.log('Deleted', deletedRecords.length, 'records');
         });
-        console.log('delete  ', globalList)
     }
 
     const getIsOnMyList = (title, tag) => {
