@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, Icon, TextField, Paper, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -14,6 +14,8 @@ import TitleBar from './TitleBar'
 import useAirTable from '../../api/useAirtable'
 import blue from '@material-ui/core/colors/blue'
 import { uploadFile } from 'react-s3'
+import CameraAltIcon from '@material-ui/icons/CameraAlt'
+
 import('buffer').then(({ Buffer }) => {
   global.Buffer = Buffer
 })
@@ -105,6 +107,58 @@ const useStyles = makeStyles(theme => ({
   radiotext: {
     margin: '10px 10px 0px 0px',
   },
+  heroImgCont: {
+    position: 'relative',
+    height: '50%',
+    width: '100%',
+  },
+  heroImg: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    filter: 'brightness(75%)',
+  },
+  heroEdit: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    transform: 'translateY(-50%)',
+    cursor: 'pointer',
+    borderRadius: '50%',
+    fontSize: '300%',
+  },
+  herBtn: {
+    borderRadius: '50%',
+    backgroundColor: 'white',
+    '&:hover': {
+      filter: 'brightness(100)',
+    },
+  },
+  imageUpload: {
+    display: 'none',
+  },
+  profileImgCont: {
+    position: 'relative',
+    marginLeft: '5%',
+    // border: '5px solid orange',
+    width: '20%',
+    height: '25%',
+    fontSize: '225%',
+  },
+  userImg: {
+    position: 'absolute',
+    top: -50,
+    borderRadius: '50%',
+    width: '100%',
+    zIndex: 0,
+    objectFit: 'cover',
+    border: '5px solid black',
+  },
+  images: {
+    height: '50%',
+  },
+  userCreds: {},
 }))
 
 const EditProfile = props => {
@@ -124,7 +178,7 @@ const EditProfile = props => {
     setCurrentUserGames(
       currentUserGames?.shift()?.fields?.channelName?.split(',')
     )
-    
+
   }
 
   useEffect(() => {
@@ -372,7 +426,7 @@ const EditProfile = props => {
 
   const onChannelChanged = (e, channelFieldKey, tag) => {
     const { value, checked } = e.target
-    console.log('jjasfn  ', value, checked)
+    console.log('game checked  ', value, checked)
     let channelSelect = value[channelFieldKey]
     channelSelect = e.target.value
     let datasaved = selectChannel
@@ -424,7 +478,10 @@ const EditProfile = props => {
                 rtmpLink: 'rtmps://global-live.mux.com:443/app',
                 liveStreamId: userChannelnput.liveStreamId,
                 streamKey: userChannelnput.streamKey,
-                UserList: !!profileInfo.fields.UserList ? profileInfo.fields.UserList : [],
+                UserList: !!profileInfo.fields.UserList
+                  ? profileInfo.fields.UserList
+                  : [],
+
                 profileCreated: 'yes',
               },
             },
@@ -518,9 +575,149 @@ const EditProfile = props => {
     )
   })
 
+  const hiddenHeroInput = useRef(null)
+  const hiddenProfileInput = useRef(null)
+
+  const handleHeroClick = e => {
+    hiddenHeroInput.current.click()
+  }
+
+  const handleProfileClick = e => {
+    hiddenProfileInput.current.click()
+  }
+
   return (
     <BasicLayout home>
-      <ToastContainer />
+      {/* <form onSubmit={submit}> */}
+      <div className={classes.images}>
+        <div className={classes.heroImgCont}>
+          <img
+            className={classes.heroImg}
+            src={
+              profileInfo?.fields?.heroImg
+                ? profileInfo?.fields?.heroImg
+                : 'https://fasttechnologies.com/wp-content/uploads/2017/01/placeholder-banner.png'
+            }
+            alt="Hero img"
+          />
+          <div className={classes.heroEdit}>
+            <div className={classes.heroBtn} onClick={handleHeroClick}>
+              <CameraAltIcon
+                fontSize="inherit"
+                style={{
+                  color: 'white',
+                  border: '2px solid white',
+                  borderRadius: '50%',
+                  padding: 5,
+                  zIndex: 5,
+                }}
+              />
+            </div>
+            <input
+              ref={hiddenHeroInput}
+              className={classes.imageUpload}
+              accept="image/*"
+              id="contained-button-file"
+              multiple
+              name="heroImg"
+              type="file"
+              accept=".png, .jpg, .jpeg"
+              onChange={handleHeroImg}
+            />
+          </div>
+        </div>
+        <div className={classes.profileImgCont}>
+          <img
+            className={classes.userImg}
+            src={
+              profileInfo?.fields?.image
+                ? profileInfo?.fields?.image
+                : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues='
+            }
+            alt="User Profile Picture"
+          />
+          <CameraAltIcon
+            fontSize="inherit"
+            style={{
+              color: 'white',
+              zIndex: 5,
+              position: 'absolute',
+              bottom: 15,
+              right: 30,
+              border: '2px solid white',
+              borderRadius: '50%',
+              padding: 5,
+              cursor: 'pointer',
+            }}
+            onClick={handleProfileClick}
+          />
+          <input
+            ref={hiddenProfileInput}
+            className={classes.imageUpload}
+            accept="image/*"
+            id="contained-button-file"
+            multiple
+            name="heroImg"
+            type="file"
+            accept=".png, .jpg, .jpeg"
+            onChange={handleUploadClick}
+          />
+        </div>
+      </div>
+      <div className={classes.userCreds}>
+        <Paper className={classes.root}>
+          <Typography variant="h5" component="h3">
+            {props.formName}
+          </Typography>
+          <Typography component="p">{props.formDescription}</Typography>
+          <form onSubmit={submit}>
+            <TextField
+              label="Name"
+              id="margin-normal"
+              name="name"
+              value={formInput.name}
+              defaultValue={formInput.name}
+              className={classes.textField}
+              helperText="Enter your Name"
+              onChange={e =>
+                setFormInput({
+                  ...formInput,
+                  name: e.target.value,
+                  nameError: '',
+                })
+              }
+            />
+            <br />
+            {formInput.nameError.length > 0 && (
+              <span style={{ color: 'red' }}>{formInput.nameError}</span>
+            )}
+            <br />
+            <TextField
+              label="Description"
+              id="margin-normal"
+              name="description"
+              value={formInput.description}
+              defaultValue={formInput.description}
+              className={classes.textField}
+              helperText="Enter Your Description"
+              onChange={e =>
+                setFormInput({
+                  ...formInput,
+                  description: e.target.value,
+                  descriptionError: '',
+                })
+              }
+            />
+            <br></br>
+            {formInput.descriptionError.length > 0 && (
+              <span style={{ color: 'red' }}>{formInput.descriptionError}</span>
+            )}
+          </form>
+        </Paper>
+      </div>
+      
+      {/* </form> */}
+      {/* <ToastContainer />
       {user ? (
         <div className={classes.homeContent}>
           <React.Suspense fallback={<Loading />}>
@@ -781,9 +978,9 @@ const EditProfile = props => {
         </div>
       ) : (
         (window.location.href = '/')
-      )}
+      )} */}
     </BasicLayout>
   )
 }
 
-export default EditProfile
+export default EditProfile;

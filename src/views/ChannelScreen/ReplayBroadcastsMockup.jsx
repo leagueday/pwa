@@ -113,7 +113,7 @@ const useStyles = makeStyles(theme => ({
   episodeTitle: {
     color: colors.white80,
     minWidth: '12vw',
-    maxWidth: '70%'
+    maxWidth: '70%',
   },
   episodeTitleAndData: {
     display: 'flex',
@@ -260,7 +260,9 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
       >
         <div className={classes.textEllipsisOverflow}>{variety}</div>
       </div>
-      <div onClick={onClick} className={classes.viewAll}>View All Replays</div>
+      <div onClick={onClick} className={classes.viewAll}>
+        View All Replays
+      </div>
     </div>
   )
 }
@@ -574,7 +576,6 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
   const leagueNightshowRecordedData = () => {
     const baseId = 'appXoertP1WJjd4TQ'
     let urladd = `maxRecords=3&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
-
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
