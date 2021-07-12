@@ -108,15 +108,15 @@ const EventScreen = ({ tag }) => {
   const classes = useStyles()
   const [expandedIndex, setExpandedIndex] = useState()
 
-  // useEffect(() => {
-  //   if (tag == 'leaguenight') {
-  //     EvenScreeDatalCS()
-  //   }
+  useEffect(() => {
+    if (tag == 'leaguenight') {
+      EvenScreeDatalCS()
+    }
 
-  //   if (tag == 'lcs') {
-  //     EvenScreeDatalOL()
-  //   }
-  // }, [tag])
+    if (tag == 'lcs') {
+      EvenScreeDatalOL()
+    }
+  }, [tag])
 
   
   let allRecords = []
@@ -176,7 +176,7 @@ const EventScreen = ({ tag }) => {
       })
   }
 
-  const color = colors.charcoal
+  const color = colors.yellow
   const imageUrl =
     tag === 'lcs'
       ? '/img/restyle_demo/lcs.png'
@@ -195,12 +195,6 @@ const EventScreen = ({ tag }) => {
       : () => {
           setExpandedIndex(itemIndex)
         }
-
-  useEffect(() => {
-    ;(async () => {
-      await EvenScreeDatalOL()
-    })()
-  }, [])
 
   console.log('length  ', eventDataFetch?.length)
 
