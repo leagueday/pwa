@@ -135,8 +135,8 @@ const EventScreen = ({ tag }) => {
           // records.forEach(rec => {
           //   allRecords.push(rec)
           // })
-          allRecords = [...allRecords, ...records]
-          seteventDataFetch(allRecords)
+          allRecords = [...allRecords.reverse(), ...records]
+          seteventDataFetch(allRecords.reverse())
           // setSecondPage(records)
           fetchNextPage();
           console.log('records  ', allRecords)
