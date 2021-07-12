@@ -178,6 +178,7 @@ const EditProfile = props => {
     setCurrentUserGames(
       currentUserGames?.shift()?.fields?.channelName?.split(',')
     )
+
   }
 
   useEffect(() => {
@@ -480,6 +481,7 @@ const EditProfile = props => {
                 UserList: !!profileInfo.fields.UserList
                   ? profileInfo.fields.UserList
                   : [],
+
                 profileCreated: 'yes',
               },
             },
