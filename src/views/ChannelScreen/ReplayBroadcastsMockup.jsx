@@ -574,30 +574,8 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
   }
 
   const leagueNightshowRecordedData = () => {
-    const apiKey = 'keymd23kpZ12EriVi'
-    const base = new Airtable({ apiKey }).base(baseId)
     const baseId = 'appXoertP1WJjd4TQ'
     let urladd = `maxRecords=300&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
-
-    // base('UserList')
-    //   .select({
-    //     view: 'Grid view',
-    //   })
-    //   .eachPage(
-    //     async function page(records, fetchNextPage) {
-    //       const filteredUserRecords = records?.filter(
-    //         item => item?.fields?.userId?.shift() === activeUser?.id
-    //       )
-    //       // await Promise.all(filteredUserRecords)
-    //       // setGlobalList(filteredUserRecords)
-    //     },
-    //     function done(err) {
-    //       if (err) {
-    //         console.error(err)
-    //         return
-    //       }
-    //     }
-    //   )
 
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
