@@ -118,7 +118,6 @@ const EventScreen = ({ tag }) => {
     }
   }, [tag])
 
-  
   let allRecords = []
   const EvenScreeDatalOL = async () => {
     const apiKey = 'keymd23kpZ12EriVi'
@@ -138,7 +137,7 @@ const EventScreen = ({ tag }) => {
           allRecords = [...allRecords.reverse(), ...records]
           seteventDataFetch(allRecords.reverse())
           // setSecondPage(records)
-          fetchNextPage();
+          fetchNextPage()
           console.log('records  ', allRecords)
         },
         function done(err) {
@@ -152,7 +151,7 @@ const EventScreen = ({ tag }) => {
 
   const EvenScreeDatalCS = () => {
     const baseId = 'appXoertP1WJjd4TQ'
-    let urladd = `filterByFormula={channelTag}='lolnight'`
+    let urladd = `filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
@@ -184,8 +183,8 @@ const EventScreen = ({ tag }) => {
   const subTitle =
     tag === 'lcs'
       ? 'LCS Spring Replays 2021'
-      : 'LeagueNight Spring Replays 2021'
-  const title = tag === 'lcs' ? 'LCS Replays' : 'LeagueNigh Replays'
+      : ''
+  const title = tag === 'lcs' ? 'LCS Replays' : 'LeagueNight'
 
   const makeToggleIsExpanded = itemIndex =>
     expandedIndex === itemIndex
@@ -196,16 +195,14 @@ const EventScreen = ({ tag }) => {
           setExpandedIndex(itemIndex)
         }
 
-  console.log('length  ', eventDataFetch?.length)
-
   return (
     <BasicLayout>
       <ContentLayout
-        accentColor={colors.charcoal}
+        accentColor={color}
         renderTopLeft={() => <Logo imageUrl={imageUrl} classes={classes} />}
         renderTopRight={() => (
           <Headline
-            color={colors.charcoal}
+            color={color}
             classes={classes}
             subTitle={subTitle}
             title={title}
@@ -220,7 +217,7 @@ const EventScreen = ({ tag }) => {
           onChange={e => setCriteria(e.target.value)}
         />
         <>
-          {eventDataFetch?.length &&
+          {eventDataFetch?.length > 0 &&
             eventDataFetch
               ?.filter(rec =>
                 rec.fields.title
