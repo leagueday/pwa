@@ -575,7 +575,7 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
 
   const leagueNightshowRecordedData = () => {
     const baseId = 'appXoertP1WJjd4TQ'
-    let urladd = `maxRecords=300&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    let urladd = `maxRecords=3&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
 
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
