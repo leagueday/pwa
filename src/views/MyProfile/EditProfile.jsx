@@ -735,6 +735,9 @@ const EditProfile = props => {
                 }
               />
               <br></br>
+              <br></br>
+              <h3>Socials</h3>
+              <br></br>
               {formInput.descriptionError.length > 0 && (
                 <span style={{ color: 'red' }}>
                   {formInput.descriptionError}
@@ -772,52 +775,6 @@ const EditProfile = props => {
                   })
                 }
               />
-
-              <h3>Channel Info</h3>
-              <TextField
-                label="ChannelName"
-                id="margin-normal"
-                name="channelName"
-                value={userChannelnput.userChannelName}
-                defaultValue={userChannelnput.userChannelName}
-                className={classes.textField}
-                helperText="Enter Your channel Name"
-                onChange={e =>
-                  setuserChannelInput({
-                    ...userChannelnput,
-                    userChannelName: e.target.value,
-                  })
-                }
-              />
-              <br></br>
-              <br></br>
-              <div className={classes.root}>
-                <p>Upload Channel Image:</p>
-                <br></br>
-                <br></br>
-                <input
-                  accept="image/*"
-                  id="contained-button-file"
-                  multiple
-                  type="file"
-                  onChange={handleChannelImage}
-                />
-                {formInput.userChannelImage ? (
-                  <img
-                    src={URL.createObjectURL(formInput.userChannelImage)}
-                    width="5%"
-                  />
-                ) : (
-                  <img
-                    src={
-                      userChannelnput.userChannelImageSaved
-                        ? userChannelnput.userChannelImageSaved
-                        : ''
-                    }
-                    width="5%"
-                  />
-                )}
-              </div>
               <br></br>
               <br></br>
               <Button
@@ -837,4 +794,4 @@ const EditProfile = props => {
   )
 }
 
-export default EditProfile;
+export default EditProfile
