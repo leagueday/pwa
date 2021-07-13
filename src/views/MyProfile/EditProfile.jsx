@@ -36,7 +36,6 @@ const useStyles = makeStyles(theme => ({
       flex: 1,
       height: '100%',
       overflow: 'auto',
-      padding: '0.5em 0.5em 0 0.5em',
       width: '100%',
     }),
   podcastTiles: {
@@ -143,7 +142,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '5%',
     // border: '5px solid orange',
     width: '20%',
-    height: '25%',
+    height: '50%',
     fontSize: '225%',
   },
   userImg: {
@@ -158,7 +157,10 @@ const useStyles = makeStyles(theme => ({
   images: {
     height: '50%',
   },
-  userCreds: {},
+  userCreds: {
+    marginTop: '%',
+    marginLeft: '10%',
+  },
 }))
 
 const EditProfile = props => {
@@ -178,7 +180,6 @@ const EditProfile = props => {
     setCurrentUserGames(
       currentUserGames?.shift()?.fields?.channelName?.split(',')
     )
-
   }
 
   useEffect(() => {
@@ -589,32 +590,87 @@ const EditProfile = props => {
   return (
     <BasicLayout home>
       {/* <form onSubmit={submit}> */}
-      <div className={classes.images}>
-        <div className={classes.heroImgCont}>
-          <img
-            className={classes.heroImg}
-            src={
-              profileInfo?.fields?.heroImg
-                ? profileInfo?.fields?.heroImg
-                : 'https://fasttechnologies.com/wp-content/uploads/2017/01/placeholder-banner.png'
-            }
-            alt="Hero img"
-          />
-          <div className={classes.heroEdit}>
-            <div className={classes.heroBtn} onClick={handleHeroClick}>
-              <CameraAltIcon
-                fontSize="inherit"
-                style={{
-                  color: 'white',
-                  border: '2px solid white',
-                  borderRadius: '50%',
-                  padding: 5,
-                  zIndex: 5,
-                }}
+      <div className={classes.homeContent}>
+        <div className={classes.images}>
+          <div className={classes.heroImgCont}>
+            {state.selectedHero ? (
+              <img
+                className={classes.heroImg}
+                src={state.selectedHero}
+                alt="Hero img"
+              />
+            ) : (
+              <img
+                className={classes.heroImg}
+                src={
+                  profileInfo?.fields?.heroImg
+                    ? profileInfo?.fields?.heroImg
+                    : 'https://fasttechnologies.com/wp-content/uploads/2017/01/placeholder-banner.png'
+                }
+                alt="Hero img"
+              />
+            )}
+            <div className={classes.heroEdit}>
+              <div className={classes.heroBtn} onClick={handleHeroClick}>
+                <CameraAltIcon
+                  fontSize="inherit"
+                  style={{
+                    color: 'white',
+                    border: '2px solid white',
+                    borderRadius: '50%',
+                    padding: 5,
+                    zIndex: 5,
+                  }}
+                />
+              </div>
+              <input
+                ref={hiddenHeroInput}
+                className={classes.imageUpload}
+                accept="image/*"
+                id="contained-button-file"
+                multiple
+                name="heroImg"
+                type="file"
+                accept=".png, .jpg, .jpeg"
+                onChange={handleHeroImg}
               />
             </div>
+          </div>
+          <div className={classes.profileImgCont}>
+          {state.selectedFile ? (
+              <img
+                className={classes.userImg}
+                src={state.selectedFile}
+                alt="Hero img"
+              />
+            ) : (
+              <img
+                className={classes.userImg}
+                src={
+                  profileInfo?.fields?.image
+                    ? profileInfo?.fields?.image
+                    : 'https://fasttechnologies.com/wp-content/uploads/2017/01/placeholder-banner.png'
+                }
+                alt="Hero img"
+              />
+            )}
+            <CameraAltIcon
+              fontSize="inherit"
+              style={{
+                color: 'white',
+                zIndex: 5,
+                position: 'absolute',
+                bottom: 15,
+                right: 30,
+                border: '2px solid white',
+                borderRadius: '50%',
+                padding: 5,
+                cursor: 'pointer',
+              }}
+              onClick={handleProfileClick}
+            />
             <input
-              ref={hiddenHeroInput}
+              ref={hiddenProfileInput}
               className={classes.imageUpload}
               accept="image/*"
               id="contained-button-file"
@@ -622,100 +678,153 @@ const EditProfile = props => {
               name="heroImg"
               type="file"
               accept=".png, .jpg, .jpeg"
-              onChange={handleHeroImg}
+              onChange={handleUploadClick}
             />
           </div>
         </div>
-        <div className={classes.profileImgCont}>
-          <img
-            className={classes.userImg}
-            src={
-              profileInfo?.fields?.image
-                ? profileInfo?.fields?.image
-                : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues='
-            }
-            alt="User Profile Picture"
-          />
-          <CameraAltIcon
-            fontSize="inherit"
-            style={{
-              color: 'white',
-              zIndex: 5,
-              position: 'absolute',
-              bottom: 15,
-              right: 30,
-              border: '2px solid white',
-              borderRadius: '50%',
-              padding: 5,
-              cursor: 'pointer',
-            }}
-            onClick={handleProfileClick}
-          />
-          <input
-            ref={hiddenProfileInput}
-            className={classes.imageUpload}
-            accept="image/*"
-            id="contained-button-file"
-            multiple
-            name="heroImg"
-            type="file"
-            accept=".png, .jpg, .jpeg"
-            onChange={handleUploadClick}
-          />
+        <div className={classes.userCreds}>
+          <Paper className={classes.root}>
+            <Typography variant="h5" component="h3">
+              {props.formName}
+            </Typography>
+            <Typography component="p">{props.formDescription}</Typography>
+            <form>
+              <h3>Credentials</h3>
+              <TextField
+                label="Name"
+                id="margin-normal"
+                name="name"
+                value={formInput.name}
+                defaultValue={formInput.name}
+                className={classes.textField}
+                helperText="Enter your Name"
+                onChange={e =>
+                  setFormInput({
+                    ...formInput,
+                    name: e.target.value,
+                    nameError: '',
+                  })
+                }
+              />
+              <br />
+              {formInput.nameError.length > 0 && (
+                <span style={{ color: 'red' }}>{formInput.nameError}</span>
+              )}
+              <br />
+              <TextField
+                label="Description"
+                id="margin-normal"
+                name="description"
+                value={formInput.description}
+                defaultValue={formInput.description}
+                className={classes.textField}
+                helperText="Enter Your Description"
+                onChange={e =>
+                  setFormInput({
+                    ...formInput,
+                    description: e.target.value,
+                    descriptionError: '',
+                  })
+                }
+              />
+              <br></br>
+              {formInput.descriptionError.length > 0 && (
+                <span style={{ color: 'red' }}>
+                  {formInput.descriptionError}
+                </span>
+              )}
+              <TextField
+                label="TwitterUrl"
+                id="margin-normal"
+                name="TwitterUrl"
+                value={formInput.TwitterUrl}
+                defaultValue={formInput.TwitterUrl}
+                className={classes.textField}
+                helperText="Enter Your Twitter url"
+                onChange={e =>
+                  setFormInput({
+                    ...formInput,
+                    TwitterUrl: e.target.value,
+                  })
+                }
+              />
+              <br></br>
+              <br></br>
+              <TextField
+                label="TwitchUrl"
+                id="margin-normal"
+                name="TwitterUrl"
+                value={formInput.TwitchUrl}
+                defaultValue={formInput.TwitchUrl}
+                className={classes.textField}
+                helperText="Enter Your Twitch url"
+                onChange={e =>
+                  setFormInput({
+                    ...formInput,
+                    TwitchUrl: e.target.value,
+                  })
+                }
+              />
+
+              <h3>Channel Info</h3>
+              <TextField
+                label="ChannelName"
+                id="margin-normal"
+                name="channelName"
+                value={userChannelnput.userChannelName}
+                defaultValue={userChannelnput.userChannelName}
+                className={classes.textField}
+                helperText="Enter Your channel Name"
+                onChange={e =>
+                  setuserChannelInput({
+                    ...userChannelnput,
+                    userChannelName: e.target.value,
+                  })
+                }
+              />
+              <br></br>
+              <br></br>
+              <div className={classes.root}>
+                Upload Channel Image: <br></br>
+                <br></br>
+                <input
+                  accept="image/*"
+                  id="contained-button-file"
+                  multiple
+                  type="file"
+                  onChange={handleChannelImage}
+                />
+                {formInput.userChannelImage ? (
+                  <img
+                    src={URL.createObjectURL(formInput.userChannelImage)}
+                    width="5%"
+                  />
+                ) : (
+                  <img
+                    src={
+                      userChannelnput.userChannelImageSaved
+                        ? userChannelnput.userChannelImageSaved
+                        : ''
+                    }
+                    width="5%"
+                  />
+                )}
+              </div>
+              <br></br>
+              <br></br>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={submit}
+              >
+                Update Profile
+              </Button>
+            </form>
+          </Paper>
         </div>
       </div>
-      <div className={classes.userCreds}>
-        <Paper className={classes.root}>
-          <Typography variant="h5" component="h3">
-            {props.formName}
-          </Typography>
-          <Typography component="p">{props.formDescription}</Typography>
-          <form onSubmit={submit}>
-            <TextField
-              label="Name"
-              id="margin-normal"
-              name="name"
-              value={formInput.name}
-              defaultValue={formInput.name}
-              className={classes.textField}
-              helperText="Enter your Name"
-              onChange={e =>
-                setFormInput({
-                  ...formInput,
-                  name: e.target.value,
-                  nameError: '',
-                })
-              }
-            />
-            <br />
-            {formInput.nameError.length > 0 && (
-              <span style={{ color: 'red' }}>{formInput.nameError}</span>
-            )}
-            <br />
-            <TextField
-              label="Description"
-              id="margin-normal"
-              name="description"
-              value={formInput.description}
-              defaultValue={formInput.description}
-              className={classes.textField}
-              helperText="Enter Your Description"
-              onChange={e =>
-                setFormInput({
-                  ...formInput,
-                  description: e.target.value,
-                  descriptionError: '',
-                })
-              }
-            />
-            <br></br>
-            {formInput.descriptionError.length > 0 && (
-              <span style={{ color: 'red' }}>{formInput.descriptionError}</span>
-            )}
-          </form>
-        </Paper>
-      </div>
-      
       {/* </form> */}
       {/* <ToastContainer />
       {user ? (
@@ -983,4 +1092,4 @@ const EditProfile = props => {
   )
 }
 
-export default EditProfile;
+export default EditProfile

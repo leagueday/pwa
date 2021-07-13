@@ -408,14 +408,14 @@ const MyProfile = () => {
             >
               Recorded Streams
             </span>
-            <span
+            {/* <span
               className={
                 gamesSelected ? classes.selectedButton : classes.sectionButton
               }
               onClick={handleGamesClick}
             >
               My Games
-            </span>
+            </span> */}
             <span
               className={
                 channelSelected ? classes.selectedButton : classes.sectionButton
