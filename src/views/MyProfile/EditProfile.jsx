@@ -837,4 +837,4 @@ const EditProfile = props => {
   )
 }
 
-export default EditProfile
+export default EditProfile;
