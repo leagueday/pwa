@@ -107,7 +107,7 @@ const useStyles = makeStyles(theme => ({
   },
   editProfile: {
     background: colors.blue,
-    width: '100%',
+    width: '150px',
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
@@ -268,13 +268,6 @@ const MyProfile = () => {
   const userList = getMyList()
   const user = useSelector(selectors.getUser)
 
-  const handleGamesClick = () => {
-    setGamesSelected(true)
-    setLiveRecordings(false)
-    setChannelSelected(false)
-    setTrophieSelected(false)
-  }
-
   const handleChannelClick = () => {
     setGamesSelected(false)
     setLiveRecordings(false)
@@ -408,14 +401,14 @@ const MyProfile = () => {
             >
               Recorded Streams
             </span>
-            <span
+            {/* <span
               className={
                 gamesSelected ? classes.selectedButton : classes.sectionButton
               }
               onClick={handleGamesClick}
             >
               My Games
-            </span>
+            </span> */}
             <span
               className={
                 channelSelected ? classes.selectedButton : classes.sectionButton
