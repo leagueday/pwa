@@ -465,39 +465,6 @@ const CreateProfile = props => {
                 )}
                 <br />
                 <br />
-                <div className="table_inner">
-                  <div className="table-responsive">
-                    <table className="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th className={classes.leftBar}>
-                            <u>Choose preferred games</u>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {channels.map((channel, index, tag) => {
-                          return (
-                            <tr key={index}>
-                              <td rowSpan={3}>
-                                <input
-                                  type="checkbox"
-                                  className={classes.radiotext}
-                                  onChange={e =>
-                                    onChannelChanged(e, index, channel)
-                                  }
-                                  value={channel.title}
-                                  name="channel"
-                                />
-                                {channel.title}
-                              </td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
                 <br />
                 <br />
                 <br></br>

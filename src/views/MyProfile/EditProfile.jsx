@@ -35,7 +35,8 @@ const useStyles = makeStyles(theme => ({
       flexDirection: 'column',
       flex: 1,
       height: '100%',
-      overflow: 'auto',
+      overflowY: 'auto',
+      overflowX: 'hidden',
       width: '100%',
     }),
   podcastTiles: {
@@ -67,9 +68,6 @@ const useStyles = makeStyles(theme => ({
   iconSmall: {
     fontSize: 20,
   },
-  root: {
-    padding: theme.spacing(3, 2),
-  },
   input: {
     display: 'none',
   },
@@ -85,9 +83,19 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: 400,
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 0,
+      width: 300,
+    },
   },
   root: {
     display: 'flex',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    padding: theme.spacing(3, 2),
     '& > *': {
       margin: theme.spacing(1),
     },
@@ -126,6 +134,9 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     borderRadius: '50%',
     fontSize: '300%',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '280%',
+    },
   },
   herBtn: {
     borderRadius: '50%',
@@ -140,10 +151,13 @@ const useStyles = makeStyles(theme => ({
   profileImgCont: {
     position: 'relative',
     marginLeft: '5%',
-    // border: '5px solid orange',
     width: '20%',
     height: '50%',
     fontSize: '225%',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '180%',
+      width: '35%',
+    },
   },
   userImg: {
     position: 'absolute',
@@ -154,37 +168,42 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
     border: '5px solid black',
   },
+  profileEdit: {
+    color: 'white',
+    zIndex: 5,
+    position: 'absolute',
+    bottom: '15%',
+    right: '4%',
+    border: '2px solid white',
+    borderRadius: '50%',
+    padding: 5,
+    cursor: 'pointer',
+    [theme.breakpoints.down('sm')]: {
+      bottom: '40%',
+      right: '3%',
+    },
+  },
   images: {
     height: '50%',
   },
   userCreds: {
-    marginTop: '%',
     marginLeft: '10%',
+    padding: 0,
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 0,
+      textAlign: 'center',
+    },
+  },
+  form: {
+    margin: 0,
   },
 }))
 
 const EditProfile = props => {
   const dispatch = useDispatch()
-  const channels = useChannels().list
-  const [currentUserGames, setCurrentUserGames] = useState([])
   const [profileInfo, setProfileInfo] = useState()
-  const { data: userCreds } = useAirTable('appXoertP1WJjd4TQ', 'UserProfile')
-  const { data: userGames } = useAirTable('appXoertP1WJjd4TQ', 'UserGames')
   const [image, setimage] = useState()
   const [heroImg, setHeroImg] = useState()
-
-  const getUserById = () => {
-    const currentUserGames = userGames?.filter(
-      item => item.fields.userId === user.id
-    )
-    setCurrentUserGames(
-      currentUserGames?.shift()?.fields?.channelName?.split(',')
-    )
-  }
-
-  useEffect(() => {
-    getUserById()
-  }, [userCreds, userGames])
 
   const [state, setFile] = useState({
     mainState: 'initial',
@@ -451,7 +470,6 @@ const EditProfile = props => {
   const userName = user?.user_metadata?.full_name
 
   const submit = evt => {
-    evt.preventDefault()
     return sleep(3).then(() => {
       if (validateForm()) {
         let data = {
@@ -589,7 +607,6 @@ const EditProfile = props => {
 
   return (
     <BasicLayout home>
-      {/* <form onSubmit={submit}> */}
       <div className={classes.homeContent}>
         <div className={classes.images}>
           <div className={classes.heroImgCont}>
@@ -637,7 +654,7 @@ const EditProfile = props => {
             </div>
           </div>
           <div className={classes.profileImgCont}>
-          {state.selectedFile ? (
+            {state.selectedFile ? (
               <img
                 className={classes.userImg}
                 src={state.selectedFile}
@@ -656,17 +673,7 @@ const EditProfile = props => {
             )}
             <CameraAltIcon
               fontSize="inherit"
-              style={{
-                color: 'white',
-                zIndex: 5,
-                position: 'absolute',
-                bottom: 15,
-                right: 30,
-                border: '2px solid white',
-                borderRadius: '50%',
-                padding: 5,
-                cursor: 'pointer',
-              }}
+              className={classes.profileEdit}
               onClick={handleProfileClick}
             />
             <input
@@ -688,7 +695,7 @@ const EditProfile = props => {
               {props.formName}
             </Typography>
             <Typography component="p">{props.formDescription}</Typography>
-            <form>
+            <form className={classes.form}>
               <h3>Credentials</h3>
               <TextField
                 label="Name"
@@ -785,7 +792,8 @@ const EditProfile = props => {
               <br></br>
               <br></br>
               <div className={classes.root}>
-                Upload Channel Image: <br></br>
+                <p>Upload Channel Image:</p>
+                <br></br>
                 <br></br>
                 <input
                   accept="image/*"
@@ -825,269 +833,6 @@ const EditProfile = props => {
           </Paper>
         </div>
       </div>
-      {/* </form> */}
-      {/* <ToastContainer />
-      {user ? (
-        <div className={classes.homeContent}>
-          <React.Suspense fallback={<Loading />}>
-            <TitleBar
-              className={classes.titleBar}
-              primaryColor={primaryColor}
-              text={userName ? `Welcome back, ${userName}!` : 'Home'}
-            />
-            <div>
-              <Paper className={classes.root}>
-                <Typography variant="h5" component="h3">
-                  {props.formName}
-                </Typography>
-                <Typography component="p">{props.formDescription}</Typography>
-
-                <form onSubmit={submit}>
-                  <TextField
-                    label="Name"
-                    id="margin-normal"
-                    name="name"
-                    value={formInput.name}
-                    defaultValue={formInput.name}
-                    className={classes.textField}
-                    helperText="Enter your Name"
-                    onChange={e =>
-                      setFormInput({
-                        ...formInput,
-                        name: e.target.value,
-                        nameError: '',
-                      })
-                    }
-                  />
-                  <br />
-                  {formInput.nameError.length > 0 && (
-                    <span style={{ color: 'red' }}>{formInput.nameError}</span>
-                  )}
-                  <br />
-                  <TextField
-                    label="Description"
-                    id="margin-normal"
-                    name="description"
-                    value={formInput.description}
-                    defaultValue={formInput.description}
-                    className={classes.textField}
-                    helperText="Enter Your Description"
-                    onChange={e =>
-                      setFormInput({
-                        ...formInput,
-                        description: e.target.value,
-                        descriptionError: '',
-                      })
-                    }
-                  />
-                  <br></br>
-                  {formInput.descriptionError.length > 0 && (
-                    <span style={{ color: 'red' }}>
-                      {formInput.descriptionError}
-                    </span>
-                  )}
-                  <br />
-                  <br />
-                  <div className="table_inner">
-                    <div className="table-responsive">
-                      <table className="table table-striped table-bordered">
-                        <thead>
-                          <tr>
-                            <th className={classes.leftBar}>
-                              <u>Choose preferred games</u>
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {channels.map((channel, index) => {
-                            let data
-                            selectChannel?.map((item, index) => {
-                              if (channel.title == item) {
-                                data = item
-                              }
-                              // console.log('checkbox debugging ',channel)
-                            })
-                            return (
-                              <tr key={index}>
-                                <td rowSpan={3}>
-                                  <input
-                                    type="checkbox"
-                                    className={classes.radiotext}
-                                    onChange={e =>
-                                      onChannelChanged(e, index, channel)
-                                    }
-                                    defaultChecked={data}
-                                    value={channel.title}
-                                    name="channel"
-                                  />
-                                  {channel.title}
-                                </td>
-                              </tr>
-                            )
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <br />
-                  <br />
-                  <br></br>
-                  <br></br>
-                  <div className={classes.root}>
-                    Upload Profile Image: <br></br>
-                    <br></br>
-                    <input
-                      accept="image/*"
-                      id="contained-button-file"
-                      name="profilePic"
-                      multiple
-                      type="file"
-                      accept=".png, .jpg, .jpeg"
-                      onChange={handleUploadClick}
-                    />
-                    {state.selectedFile ? (
-                      <img
-                        src={state.selectedFile ? state.selectedFile : ''}
-                        width="5%"
-                      />
-                    ) : (
-                      <img
-                        src={image ? image : state.selectedFile}
-                        width="10%"
-                      />
-                    )}
-                    <br></br>
-                    <br></br>
-                  </div>
-                  <div className={classes.root}>
-                    Upload Profile Hero Image: <br></br>
-                    <br></br>
-                    <input
-                      accept="image/*"
-                      id="contained-button-file"
-                      multiple
-                      name="heroImg"
-                      type="file"
-                      accept=".png, .jpg, .jpeg"
-                      onChange={handleHeroImg}
-                    />
-                    {state.selectedHero ? (
-                      <img
-                        src={state.selectedHero ? state.selectedHero : ''}
-                        width="5%"
-                      />
-                    ) : (
-                      <img
-                        src={heroImg ? heroImg : state.selectedHero}
-                        width="10%"
-                      />
-                    )}
-                    <br></br>
-                    <br></br>
-                  </div>
-                  <Fragment>
-                    <br></br>
-                    <label for="My Context">
-                      <u>Link Your Socials</u>
-                    </label>
-                    <br></br>
-                    <br></br>
-                    <TextField
-                      label="TwitterUrl"
-                      id="margin-normal"
-                      name="TwitterUrl"
-                      value={formInput.TwitterUrl}
-                      defaultValue={formInput.TwitterUrl}
-                      className={classes.textField}
-                      helperText="Enter Your Twitter url"
-                      onChange={e =>
-                        setFormInput({
-                          ...formInput,
-                          TwitterUrl: e.target.value,
-                        })
-                      }
-                    />
-                    <br></br>
-                    <br></br>
-                    <TextField
-                      label="TwitchUrl"
-                      id="margin-normal"
-                      name="TwitterUrl"
-                      value={formInput.TwitchUrl}
-                      defaultValue={formInput.TwitchUrl}
-                      className={classes.textField}
-                      helperText="Enter Your Twitch url"
-                      onChange={e =>
-                        setFormInput({
-                          ...formInput,
-                          TwitchUrl: e.target.value,
-                        })
-                      }
-                    />
-                    <br></br>
-                    <br></br>
-                    <TextField
-                      label="ChannelName"
-                      id="margin-normal"
-                      name="channelName"
-                      value={userChannelnput.userChannelName}
-                      defaultValue={userChannelnput.userChannelName}
-                      className={classes.textField}
-                      helperText="Enter Your channel Name"
-                      onChange={e =>
-                        setuserChannelInput({
-                          ...userChannelnput,
-                          userChannelName: e.target.value,
-                        })
-                      }
-                    />
-                    <br></br>
-                    <br></br>
-                    <div className={classes.root}>
-                      Upload Channel Image: <br></br>
-                      <br></br>
-                      <input
-                        accept="image/*"
-                        id="contained-button-file"
-                        multiple
-                        type="file"
-                        onChange={handleChannelImage}
-                      />
-                      {formInput.userChannelImage ? (
-                        <img
-                          src={URL.createObjectURL(formInput.userChannelImage)}
-                          width="5%"
-                        />
-                      ) : (
-                        <img
-                          src={
-                            userChannelnput.userChannelImageSaved
-                              ? userChannelnput.userChannelImageSaved
-                              : ''
-                          }
-                          width="5%"
-                        />
-                      )}
-                    </div>
-                    <br></br>
-                    <br></br>
-                  </Fragment>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                  >
-                    Update Profile
-                  </Button>
-                </form>
-              </Paper>
-            </div>
-          </React.Suspense>
-        </div>
-      ) : (
-        (window.location.href = '/')
-      )} */}
     </BasicLayout>
   )
 }

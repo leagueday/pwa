@@ -107,7 +107,7 @@ const useStyles = makeStyles(theme => ({
   },
   editProfile: {
     background: colors.blue,
-    width: '100%',
+    width: '150px',
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
@@ -267,13 +267,6 @@ const MyProfile = () => {
   const [trophieSelected, setTrophieSelected] = useState(false)
   const userList = getMyList()
   const user = useSelector(selectors.getUser)
-
-  const handleGamesClick = () => {
-    setGamesSelected(true)
-    setLiveRecordings(false)
-    setChannelSelected(false)
-    setTrophieSelected(false)
-  }
 
   const handleChannelClick = () => {
     setGamesSelected(false)
