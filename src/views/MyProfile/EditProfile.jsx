@@ -180,6 +180,7 @@ const EditProfile = props => {
     setCurrentUserGames(
       currentUserGames?.shift()?.fields?.channelName?.split(',')
     )
+
   }
 
   useEffect(() => {
@@ -1092,4 +1093,4 @@ const EditProfile = props => {
   )
 }
 
-export default EditProfile
+export default EditProfile;

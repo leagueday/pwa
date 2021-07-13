@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'nowrap',
     height: '100%',
     justifyContent: 'flex-start',
-    overflowY: 'hidden',
+    // overflowY: 'hidden',
     width: '100%',
   },
   sideNav: {},
