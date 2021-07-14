@@ -21,16 +21,12 @@ const PlusMinusButton = ({
 }) => {
   const user = useSelector(selectors.getUser)
   const isAuthenticated = !!user
-  const [
+  const {
     disabled,
-    listPlaceholder,
-    setListPlaceholder,
-    globalList,
     getIsOnMyList,
     addToList,
     removeFromList,
-    setGlobalList,
-  ] = useContext(MyListContext)
+  } = useContext(MyListContext)
 
   const MinusButton = makeIconButton(IcoMinus, disabled)
   const PlusButton = makeIconButton(IcoPlus, disabled)

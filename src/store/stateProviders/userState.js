@@ -15,7 +15,7 @@ function UserProfileProvider(props) {
     const [userData, setUserData] = useState([])
 
     const getData = async () => {
-        const id = activeUser.id
+        const id = activeUser?.id
 
         base('UserProfile').select({
             filterByFormula: `{userId} = '${id}'`,
@@ -31,8 +31,6 @@ function UserProfileProvider(props) {
     const refreshData = () => {
         getData();
     }
-
-    console.log('user info from context ', userData);
 
     useEffect(() => {
         getData();
