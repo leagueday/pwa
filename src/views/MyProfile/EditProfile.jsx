@@ -224,7 +224,7 @@ const EditProfile = props => {
   const [profileInfo, setProfileInfo] = useState()
   const [image, setimage] = useState()
   const [heroImg, setHeroImg] = useState()
-  const { refreshData } = useContext(UserStateContext)
+  const { refreshData, getData } = useContext(UserStateContext)
   const [state, setFile] = useState({
     mainState: 'initial',
     imageUploaded: 0,
@@ -510,7 +510,8 @@ const EditProfile = props => {
         savedUserChannel()
       }
       dispatch(actions.pushHistory('/myprofile'))
-      refreshData()
+      refreshData();
+      getData();
     })
   }
 

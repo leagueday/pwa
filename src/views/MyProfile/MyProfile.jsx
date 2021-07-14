@@ -262,7 +262,7 @@ const MyProfile = () => {
   const [currentUserGames, setCurrentUserGames] = useState()
   const [userRecordings, setUserRecordings] = useState()
   const { globalList } = useContext(MyListContext)
-  const { refreshData, userData, loading } = useContext(UserStateContext)
+  const { userData, loading, refreshData, getData } = useContext(UserStateContext)
 
   const [gamesSelected, setGamesSelected] = useState(false)
   const [liveRecordings, setLiveRecordings] = useState(true)
@@ -317,6 +317,9 @@ const MyProfile = () => {
   useEffect(() => {
     console.log('am i a dumbass? ');
     refreshData();
+    setTimeout(() => {
+      getData();
+    },1000)
   },[])
 
   const classes = useStyles({ primaryColor })
