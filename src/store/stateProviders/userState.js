@@ -11,7 +11,6 @@ const apiKey = "keymd23kpZ12EriVi"
 function UserProfileProvider(props) {
     const base = new Airtable({ apiKey }).base(baseId)
     const activeUser = useSelector(selectors.getUser)
-    const [updateData, setUpdateData] = useState(false);
     const [userData, setUserData] = useState([])
 
     const getData = async () => {
@@ -37,7 +36,7 @@ function UserProfileProvider(props) {
     }, [activeUser])
 
     return (
-        <UserStateProvider value={{updateData, setUpdateData, userData, setUserData, refreshData, getData}}>
+        <UserStateProvider value={{userData, setUserData, refreshData, getData}}>
             {props?.children}
         </UserStateProvider>
     )

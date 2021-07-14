@@ -208,7 +208,7 @@ const EditProfile = props => {
   const [profileInfo, setProfileInfo] = useState()
   const [image, setimage] = useState()
   const [heroImg, setHeroImg] = useState()
-  const {setUpdateData, refreshData} = useContext(UserStateContext);
+  const { refreshData } = useContext(UserStateContext)
   const [state, setFile] = useState({
     mainState: 'initial',
     imageUploaded: 0,
@@ -219,7 +219,7 @@ const EditProfile = props => {
     selectedFileError: '',
     photoError: '',
     image: image,
-  });
+  })
 
   useEffect(() => {
     setimage(profileInfo?.fields?.image)
@@ -268,9 +268,9 @@ const EditProfile = props => {
   const user = useSelector(selectors.getUser)
 
   useEffect(() => {
-    getuserChannelData();
-    getProfileData();
-  }, []);
+    getuserChannelData()
+    getProfileData()
+  }, [])
 
   const getProfileData = async () => {
     const baseId = 'appXoertP1WJjd4TQ'
@@ -435,11 +435,10 @@ const EditProfile = props => {
     return formIsValid
   }
 
-
   const classes = useStyles({ primaryColor })
 
   const submit = evt => {
-    evt.preventDefault();
+    evt.preventDefault()
     return sleep(3).then(() => {
       if (validateForm()) {
         let data = {
@@ -495,8 +494,7 @@ const EditProfile = props => {
         savedUserChannel()
       }
       dispatch(actions.pushHistory('/myprofile'))
-      setUpdateData('updated')
-      refreshData();
+      refreshData()
     })
   }
 
@@ -684,8 +682,7 @@ const EditProfile = props => {
                     name: e.target.value,
                     nameError: '',
                   })
-                }
-                }
+                }}
               />
               <br />
               {formInput.nameError.length > 0 && (
@@ -707,8 +704,7 @@ const EditProfile = props => {
                     description: e.target.value,
                     descriptionError: '',
                   })
-                }
-                }
+                }}
               />
               <br></br>
               <br></br>
@@ -727,14 +723,13 @@ const EditProfile = props => {
                 defaultValue={formInput.TwitterUrl}
                 className={classes.textField}
                 helperText="Enter Your Twitter url"
-                onChange={e =>{
+                onChange={e => {
                   setFormChanged(true)
                   setFormInput({
                     ...formInput,
                     TwitterUrl: e.target.value,
                   })
-                }
-                }
+                }}
               />
               <br></br>
               <br></br>
