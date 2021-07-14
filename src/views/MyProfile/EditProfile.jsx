@@ -368,6 +368,7 @@ const EditProfile = props => {
       photoError: '',
     })
 
+    
     const reader = new FileReader()
     reader.onloadend = function (e) {
       setFile({
