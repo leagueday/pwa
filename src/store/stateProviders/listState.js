@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import Airtable from 'airtable'
-import useAirTable from '../api/useAirtable';
-import { selectors } from '../store'
+import useAirTable from '../../api/useAirtable';
+import { selectors } from '..'
 import { useSelector } from 'react-redux';
 
 export const MyListContext = createContext();
@@ -19,15 +19,15 @@ function ListStateProvider(props) {
     const currentUser = data?.filter((user) => user?.fields?.userId === activeUser?.id)
     const currentUserId = currentUser?.shift()?.id
     const [disabled, setDisabled] = useState(false);
+    const id = activeUser?.id
     let result = []
 
     const getData = async () => {
         base('UserList').select({
+            filterByFormula: `{userId} = '${id}'`,
             view: "Grid view"
         }).eachPage(async function page(records, fetchNextPage) {
-            const filteredUserRecords = records?.filter((item) => item?.fields?.userId?.shift() === activeUser?.id)
-            await Promise.all(filteredUserRecords)
-            setGlobalList(filteredUserRecords)
+            setGlobalList(records)
 
         }, function done(err) {
             if (err) { console.error(err); return; }
@@ -109,7 +109,7 @@ function ListStateProvider(props) {
     }
 
     return (
-        <MyListProvider value={[disabled, listPlaceholder, setListPlaceholder, globalList, getIsOnMyList, addToList, removeFromList, setGlobalList]}>
+        <MyListProvider value={{disabled, listPlaceholder, setListPlaceholder, globalList, getIsOnMyList, addToList, removeFromList, setGlobalList}}>
             {props?.children}
         </MyListProvider>
     )

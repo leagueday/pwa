@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, Icon, TextField, Paper, Typography } from '@material-ui/core'
+import { UserStateContext } from '../../store/stateProviders/userState'
 import { makeStyles } from '@material-ui/core/styles'
 import 'react-h5-audio-player/lib/styles.css'
 import { ToastContainer, toast } from 'react-toastify'
@@ -108,8 +109,11 @@ const useStyles = makeStyles(theme => ({
     height: theme.spacing(7),
   },
   button: {
-    color: blue[900],
+    color: 'white',
     margin: 10,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
   },
   radiotext: {
     margin: '10px 10px 0px 0px',
@@ -204,7 +208,7 @@ const EditProfile = props => {
   const [profileInfo, setProfileInfo] = useState()
   const [image, setimage] = useState()
   const [heroImg, setHeroImg] = useState()
-
+  const {setUpdateData, refreshData} = useContext(UserStateContext);
   const [state, setFile] = useState({
     mainState: 'initial',
     imageUploaded: 0,
@@ -215,7 +219,7 @@ const EditProfile = props => {
     selectedFileError: '',
     photoError: '',
     image: image,
-  })
+  });
 
   useEffect(() => {
     setimage(profileInfo?.fields?.image)
@@ -258,14 +262,15 @@ const EditProfile = props => {
   const [saveChannelImage, setsaveChannelImage] = useState('')
   const [contextvalue, setcontextvalue] = useState([])
   const [userId, setuserId] = useState('')
-
+  const [formChanged, setFormChanged] = useState(false)
   const [channelId, setChannelId] = useState('recO33VCPMOJ6yWju')
   const [channelTag, setChannelTag] = useState([])
   const user = useSelector(selectors.getUser)
+
   useEffect(() => {
-    getuserChannelData()
-    getProfileData()
-  }, [])
+    getuserChannelData();
+    getProfileData();
+  }, []);
 
   const getProfileData = async () => {
     const baseId = 'appXoertP1WJjd4TQ'
@@ -283,7 +288,6 @@ const EditProfile = props => {
       .then(response => response.json())
       .then(function (response) {
         setProfileInfo(response.records[0])
-        console.log('user info  ', profileInfo)
         if (response.records[0].fields) {
           setFormInput({
             ...formInput,
@@ -347,6 +351,7 @@ const EditProfile = props => {
   }
 
   const handleUploadClick = event => {
+    setFormChanged(true)
     const file = event.target.files[0]
     uploadFile(file, config)
       .then(data => {
@@ -377,6 +382,7 @@ const EditProfile = props => {
   }
 
   const handleHeroImg = e => {
+    setFormChanged(true)
     const file = e.target.files[0]
     uploadFile(file, config)
       .then(data => {
@@ -405,21 +411,6 @@ const EditProfile = props => {
     setHeroImg(file)
   }
 
-  const handleChannelImage = async event => {
-    var channelImageSaved = event.target.files[0]
-    setFormInput({
-      ...formInput,
-      userChannelImage: channelImageSaved,
-    })
-    let newFileName = channelImageSaved.name.replace(/\..+$/, '')
-    uploadFile(channelImageSaved, config)
-      .then(data => {
-        setsaveChannelImage(data['location'])
-        console.log('datafile', JSON.stringify(data))
-      })
-      .catch(err => console.error(err))
-  }
-
   const validateForm = () => {
     let formIsValid = true
     if (
@@ -444,32 +435,11 @@ const EditProfile = props => {
     return formIsValid
   }
 
-  const onChannelChanged = (e, channelFieldKey, tag) => {
-    const { value, checked } = e.target
-    console.log('game checked  ', value, checked)
-    let channelSelect = value[channelFieldKey]
-    channelSelect = e.target.value
-    let datasaved = selectChannel
-    let datasavedFortag = channelTag
-    if (checked) {
-      datasaved.push(value)
-    } else if (!checked) {
-      datasaved.pop(value)
-    } else {
-      let index = datasaved.indexOf(value)
-      let dataTagIndex = datasavedFortag.indexOf(tag['tag'].toLowerCase())
-      datasaved.splice(index, 1)
-      datasavedFortag.splice(tag['tag'], 1)
-    }
-    datasaved = [...new Set(datasaved)]
-    setselectChannel(datasaved)
-    setChannelTag(datasavedFortag)
-  }
 
   const classes = useStyles({ primaryColor })
-  const userName = user?.user_metadata?.full_name
 
   const submit = evt => {
+    evt.preventDefault();
     return sleep(3).then(() => {
       if (validateForm()) {
         let data = {
@@ -523,8 +493,10 @@ const EditProfile = props => {
             console.log('error while data fetching', error.type)
           })
         savedUserChannel()
-        dispatch(actions.pushHistory('/myprofile'))
       }
+      dispatch(actions.pushHistory('/myprofile'))
+      setUpdateData('updated')
+      refreshData();
     })
   }
 
@@ -705,12 +677,14 @@ const EditProfile = props => {
                 defaultValue={formInput.name}
                 className={classes.textField}
                 helperText="Enter your Name"
-                onChange={e =>
+                onChange={e => {
+                  setFormChanged(true)
                   setFormInput({
                     ...formInput,
                     name: e.target.value,
                     nameError: '',
                   })
+                }
                 }
               />
               <br />
@@ -726,12 +700,14 @@ const EditProfile = props => {
                 defaultValue={formInput.description}
                 className={classes.textField}
                 helperText="Enter Your Description"
-                onChange={e =>
+                onChange={e => {
+                  setFormChanged(true)
                   setFormInput({
                     ...formInput,
                     description: e.target.value,
                     descriptionError: '',
                   })
+                }
                 }
               />
               <br></br>
@@ -751,11 +727,13 @@ const EditProfile = props => {
                 defaultValue={formInput.TwitterUrl}
                 className={classes.textField}
                 helperText="Enter Your Twitter url"
-                onChange={e =>
+                onChange={e =>{
+                  setFormChanged(true)
                   setFormInput({
                     ...formInput,
                     TwitterUrl: e.target.value,
                   })
+                }
                 }
               />
               <br></br>
@@ -768,12 +746,13 @@ const EditProfile = props => {
                 defaultValue={formInput.TwitchUrl}
                 className={classes.textField}
                 helperText="Enter Your Twitch url"
-                onChange={e =>
+                onChange={e => {
+                  setFormChanged(true)
                   setFormInput({
                     ...formInput,
                     TwitchUrl: e.target.value,
                   })
-                }
+                }}
               />
               <br></br>
               <br></br>
@@ -783,6 +762,7 @@ const EditProfile = props => {
                 color="primary"
                 className={classes.button}
                 onClick={submit}
+                disabled={!formChanged}
               >
                 Update Profile
               </Button>

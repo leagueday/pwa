@@ -1,8 +1,7 @@
 import React, { useContext, useState } from 'react'
-import { MyListContext } from '../../store/listState'
+import { MyListContext } from '../../store/stateProviders/listState'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { getMyList } from '../../api/getUserList'
 import useMyList from '../../api/useMyList'
 import useChannels from '../../api/useChannels'
 import { selectors } from '../../store'
@@ -27,10 +26,9 @@ const isChannelSelected = (locationPathname, channelTag) => {
 
 const MyChannels = ({ skinny }) => {
   const classes = useStyles()
-  const myList = getMyList()
   const user = useSelector(selectors.getUser)
   const [arrayToMap, setArrayToMap] = useState([])
-  const [
+  const {
     disabled,
     listPlaceholder,
     setListPlaceholder,
@@ -39,7 +37,7 @@ const MyChannels = ({ skinny }) => {
     addToList,
     removeFromList,
     setGlobalList,
-  ] = useContext(MyListContext);
+   } = useContext(MyListContext);
 
   const dispatch = useDispatch();
 
@@ -47,7 +45,6 @@ const MyChannels = ({ skinny }) => {
     dispatch(actions.pushHistory(`/channel/${channelTag}`))
 
   const locationPathname = useLocationPathname();
-  const list = myList.concat(listPlaceholder);
 
   return (
     <div className={classes.myChannels}>
