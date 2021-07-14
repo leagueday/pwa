@@ -255,16 +255,14 @@ const useStyles = makeStyles(theme => ({
     marginTop: '2%',
     height: '120px',
   },
-}));
+}))
 
 const MyProfile = () => {
   const [currentUserCreds, setCurrentUserCreds] = useState()
   const [currentUserGames, setCurrentUserGames] = useState()
   const [userRecordings, setUserRecordings] = useState()
   const { globalList } = useContext(MyListContext)
-  const { userData } = useContext(
-    UserStateContext
-  );
+  const { refreshData, userData, loading } = useContext(UserStateContext)
 
   const [gamesSelected, setGamesSelected] = useState(false)
   const [liveRecordings, setLiveRecordings] = useState(true)
@@ -313,15 +311,26 @@ const MyProfile = () => {
   }
 
   useEffect(() => {
-    getUserById();
-  }, [userCreds, userGames, recordedStreams]);
+    getUserById()
+  }, [userCreds, userGames, recordedStreams])
 
-  const classes = useStyles({ primaryColor });
-  const dispatch = useDispatch();
-  const golive = () => dispatch(actions.pushHistory('/live'));
-  const editProfile = () => dispatch(actions.pushHistory('/editprofile'));
-  const gamesArray = currentUserGames?.fields?.channelName?.split(',');
+  useEffect(() => {
+    console.log('am i a dumbass? ');
+    refreshData();
+  },[])
+
+  const classes = useStyles({ primaryColor })
+  const dispatch = useDispatch()
+  const golive = () => dispatch(actions.pushHistory('/live'))
+  const editProfile = () => dispatch(actions.pushHistory('/editprofile'))
+  const gamesArray = currentUserGames?.fields?.channelName?.split(',')
   let count = 1
+
+  if (loading) {
+    return (
+      <h1>Loading...</h1>
+    )
+  }
 
   return (
     <BasicLayout home>

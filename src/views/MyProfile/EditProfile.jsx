@@ -155,8 +155,11 @@ const useStyles = makeStyles(theme => ({
   profileImgCont: {
     position: 'relative',
     marginLeft: '5%',
-    width: '20%',
-    height: '50%',
+    width: '15rem',
+    height: '15rem',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     fontSize: '225%',
     [theme.breakpoints.down('sm')]: {
       fontSize: '180%',
@@ -167,24 +170,37 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: -50,
     borderRadius: '50%',
-    width: '100%',
+    width: '15rem',
+    height: '15rem',
     zIndex: 0,
     objectFit: 'cover',
     border: '5px solid black',
+    filter: 'brightness(75%)',
+    [theme.breakpoints.down('md')]: {
+      width: '12rem',
+      height: '12rem',
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '8rem',
+      height: '8rem',
+    },
   },
   profileEdit: {
     color: 'white',
     zIndex: 5,
     position: 'absolute',
-    bottom: '15%',
-    right: '4%',
+    bottom: '60%',
+    right: '50%',
+    transform: 'translateX(50%)',
     border: '2px solid white',
     borderRadius: '50%',
     padding: 5,
     cursor: 'pointer',
-    [theme.breakpoints.down('sm')]: {
-      bottom: '40%',
-      right: '3%',
+    [theme.breakpoints.down('md')]: {
+      bottom: '72%'
+    },
+    [theme.breakpoints.down('xs')]: {
+        bottom: '85%'
     },
   },
   images: {
