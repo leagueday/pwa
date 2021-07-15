@@ -249,7 +249,6 @@ const useStyles = makeStyles(theme => ({
   },
   recordings: {
     marginTop: '2%',
-    // height: '50rem',
   },
   trophy: {
     marginTop: '2%',
@@ -258,13 +257,10 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const MyProfile = () => {
-  const [currentUserCreds, setCurrentUserCreds] = useState()
-  const [currentUserGames, setCurrentUserGames] = useState()
-  const [userRecordings, setUserRecordings] = useState()
   const { globalList } = useContext(MyListContext)
   const { userData, loading, refreshData, getData } = useContext(UserStateContext)
-
   const [gamesSelected, setGamesSelected] = useState(false)
+  const [userRecordings, setUserRecordings] = useState()
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [channelSelected, setChannelSelected] = useState(false)
   const [trophieSelected, setTrophieSelected] = useState(false)
@@ -291,45 +287,37 @@ const MyProfile = () => {
     setTrophieSelected(false)
   }
 
-  const { data: userCreds } = useAirTable('appXoertP1WJjd4TQ', 'UserProfile')
-  const { data: userGames } = useAirTable('appXoertP1WJjd4TQ', 'UserGames')
   const { data: recordedStreams } = useAirTable(
     'appXoertP1WJjd4TQ',
     'ChannelLiveData'
   )
 
   const getUserById = () => {
-    const currentUserCred = userCreds?.filter(
-      item => item.fields.userId === user.id
-    )
     const currentUserRecordings = recordedStreams?.filter(
       item => item.fields.userId === user.id
     )
-    setCurrentUserCreds(currentUserCred?.shift())
-    setCurrentUserGames(currentUserGames?.shift())
     setUserRecordings(currentUserRecordings)
   }
 
   useEffect(() => {
     getUserById()
-  }, [userCreds, userGames, recordedStreams])
+  }, [recordedStreams])
 
   useEffect(() => {
-    console.log('am i a dumbass? ');
     refreshData();
     setTimeout(() => {
       getData();
-    },1000)
+    },750)
     setTimeout(() => {
       getData();
-    },2500)
+    },1500)
   },[])
 
   const classes = useStyles({ primaryColor })
   const dispatch = useDispatch()
   const golive = () => dispatch(actions.pushHistory('/live'))
   const editProfile = () => dispatch(actions.pushHistory('/editprofile'))
-  const gamesArray = currentUserGames?.fields?.channelName?.split(',')
+  // const gamesArray = currentUserGames?.fields?.channelName?.split(',')
   let count = 1
 
   if (loading) {

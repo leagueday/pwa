@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { makeStyles } from '@material-ui/core/styles'
 import { actions } from '../../store'
 import useChannels from '../../api/useChannels'

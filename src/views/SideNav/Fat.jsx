@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: '0.5em',
     paddingRight: '0.5em',
     paddingTop: '0.5em',
-    marginBottom: '1rem'
+    marginBottom: '1rem',
   },
   logo: {
     cursor: 'pointer',
@@ -146,13 +146,13 @@ const FatSideNav = ({ className, home }) => {
       .then(function (response) {
         if (response.records.length > 0) {
           //setProfileCreated(response.records[0].fields.profileCreated)
-          setProfileCreated(3)
+          setProfileCreated(true)
           localStorage.setItem(
             'profilecreated',
             response.records[0].fields.profileCreated
           )
         } else {
-          setProfileCreated(2)
+          setProfileCreated(false)
         }
       })
       .catch(error => {
@@ -218,9 +218,7 @@ const FatSideNav = ({ className, home }) => {
                     size="small"
                     variant="contained"
                   >
-                    {profileCreated == 3
-                      ? 'PROFILE'
-                      : profileCreated == 2 && 'CREATE PROFILE'}
+                    {profileCreated ? 'PROFILE' : 'CREATE PROFILE'}
                   </Button>
                 )
                 // ) : profileCreated == 2 ? (

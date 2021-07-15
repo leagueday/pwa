@@ -4,15 +4,15 @@ const ChannelScreen = React.lazy(() => import('./views/ChannelScreen'))
 const EventScreen = React.lazy(() => import('./views/EventScreen'))
 const IconDump = React.lazy(() => import('./views/IconDump'))
 const HomeScreen = React.lazy(() => import('./views/HomeScreen'))
-const ProfileScreen =React.lazy(()=>import('./views/MyProfile'))
-const GoLive =React.lazy(()=>import('./views/GoLive'))
+const ProfileScreen = React.lazy(() => import('./views/MyProfile'))
+const GoLive = React.lazy(() => import('./views/GoLive'))
 const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'))
-const GoToLiveData= React.lazy(() => import('./views/GoLive/GoLiveData'));
-const PreviewPage=React.lazy(()=>import('./views/GoLive/PreviewPage'))
-const DestributionPage=React.lazy(()=>import('./views/GoLive/DestributionPage'))
-const CreateProfile =React.lazy(()=>import('./views/MyProfile/CreateProfile'));
-const MyProfile=React.lazy(()=>import('./views/MyProfile/MyProfile'));
-const EditProfile=React.lazy(()=>import('./views/MyProfile/EditProfile'))
+const GoToLiveData = React.lazy(() => import('./views/GoLive/GoLiveData'));
+const PreviewPage = React.lazy(() => import('./views/GoLive/PreviewPage'))
+const DestributionPage = React.lazy(() => import('./views/GoLive/DestributionPage'))
+const CreateProfile = React.lazy(() => import('./views/MyProfile/CreateProfile'));
+const MyProfile = React.lazy(() => import('./views/MyProfile/MyProfile'));
+const EditProfile = React.lazy(() => import('./views/MyProfile/EditProfile'))
 const matchFirstToken = match => pathTokens =>
   pathTokens?.length > 0 && pathTokens[0] === match
 const takeNextToken = pathTokens =>
@@ -36,7 +36,6 @@ export const routesConfig = [
       channelTag: 'lcs',
     }),
   ],
-
   [
     matchFirstToken('event'),
     () => true,
@@ -62,13 +61,13 @@ export const routesConfig = [
       subject: takeNextToken(pathTokens),
     }),
   ],
-  [matchFirstToken('profile'),() => true, ProfileScreen, () => ({})],
-  [matchFirstToken('live'),() => true, GoLive, () => ({})],
-  [matchFirstToken('gotolive'),() => true, GoToLiveData, () => ({})],
-  [matchFirstToken('preview'),() => true, PreviewPage, () => ({})],
-  [matchFirstToken('channelist'),() => true, DestributionPage, () => ({})],
-  [matchFirstToken('create'),() => true, CreateProfile, () => ({})],
-  [matchFirstToken('myprofile'),() => true, MyProfile, () => ({})],
-  [matchFirstToken('editprofile'),() => true, EditProfile, () => ({})],
+  [matchFirstToken('profile'), () => true, ProfileScreen, () => ({})],
+  [matchFirstToken('myprofile'), () => true, MyProfile, () => ({})],
+  [matchFirstToken('live'), () => true, GoLive, () => ({})],
+  [matchFirstToken('gotolive'), () => true, GoToLiveData, () => ({})],
+  [matchFirstToken('preview'), () => true, PreviewPage, () => ({})],
+  [matchFirstToken('channelist'), () => true, DestributionPage, () => ({})],
+  [matchFirstToken('create'), () => true, CreateProfile, () => ({})],
+  [matchFirstToken('editprofile'), () => true, EditProfile, () => ({})],
   [() => true, () => true, HomeScreen, () => ({})],
-]
+];

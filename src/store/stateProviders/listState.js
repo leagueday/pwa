@@ -10,7 +10,6 @@ const baseId = 'appXoertP1WJjd4TQ'
 const apiKey = "keymd23kpZ12EriVi"
 
 function ListStateProvider(props) {
-
     const base = new Airtable({ apiKey }).base(baseId)
     const [listPlaceholder, setListPlaceholder] = useState([]);
     const activeUser = useSelector(selectors.getUser)
