@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import Color from 'color'
-import { MyListContext } from '../store/listState'
+import { MyListContext } from '../store/stateProviders/listState'
 import { selectors } from '../store'
 import { colors } from '../styling'
 import { makeIconButton } from './IconButton'
@@ -21,16 +21,12 @@ const PlusMinusButton = ({
 }) => {
   const user = useSelector(selectors.getUser)
   const isAuthenticated = !!user
-  const [
+  const {
     disabled,
-    listPlaceholder,
-    setListPlaceholder,
-    globalList,
     getIsOnMyList,
     addToList,
     removeFromList,
-    setGlobalList,
-  ] = useContext(MyListContext)
+  } = useContext(MyListContext)
 
   const MinusButton = makeIconButton(IcoMinus, disabled)
   const PlusButton = makeIconButton(IcoPlus, disabled)

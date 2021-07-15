@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import { selectors } from '../../store'
+import { MyListContext } from '../../store/stateProviders/listState'
+import { UserStateContext } from '../../store/stateProviders/userState'
 import { colors } from '../../styling'
-import { getMyList } from '../../api/getUserList'
 import BasicLayout from '../BasicLayout'
 import { actions } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import useAirTable from '../../api/useAirtable'
-import useChannels from '../../api/useChannels'
 import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 const primaryColor = colors.magenta
@@ -261,11 +261,13 @@ const MyProfile = () => {
   const [currentUserCreds, setCurrentUserCreds] = useState()
   const [currentUserGames, setCurrentUserGames] = useState()
   const [userRecordings, setUserRecordings] = useState()
+  const { globalList } = useContext(MyListContext)
+  const { userData, loading, refreshData, getData } = useContext(UserStateContext)
+
   const [gamesSelected, setGamesSelected] = useState(false)
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [channelSelected, setChannelSelected] = useState(false)
   const [trophieSelected, setTrophieSelected] = useState(false)
-  const userList = getMyList()
   const user = useSelector(selectors.getUser)
 
   const handleChannelClick = () => {
@@ -300,12 +302,6 @@ const MyProfile = () => {
     const currentUserCred = userCreds?.filter(
       item => item.fields.userId === user.id
     )
-    const currentUserGames = userGames?.filter(
-      item => item.fields.userId === user.id
-    )
-    // const currentUserRecordings = recordedStreams?.filter(
-    //   item => item.fields.userId === 'a339ba70-5026-431d-9d3d-bfe7d19dd534'
-    // )
     const currentUserRecordings = recordedStreams?.filter(
       item => item.fields.userId === user.id
     )
@@ -318,14 +314,29 @@ const MyProfile = () => {
     getUserById()
   }, [userCreds, userGames, recordedStreams])
 
-  const classes = useStyles({ primaryColor })
+  useEffect(() => {
+    console.log('am i a dumbass? ');
+    refreshData();
+    setTimeout(() => {
+      getData();
+    },1000)
+    setTimeout(() => {
+      getData();
+    },2500)
+  },[])
 
+  const classes = useStyles({ primaryColor })
   const dispatch = useDispatch()
   const golive = () => dispatch(actions.pushHistory('/live'))
   const editProfile = () => dispatch(actions.pushHistory('/editprofile'))
-  const myChannels = useChannels().myList
   const gamesArray = currentUserGames?.fields?.channelName?.split(',')
   let count = 1
+
+  if (loading) {
+    return (
+      <h1>Loading...</h1>
+    )
+  }
 
   return (
     <BasicLayout home>
@@ -333,8 +344,8 @@ const MyProfile = () => {
         <img
           className={classes.heroImg}
           src={
-            currentUserCreds?.fields?.heroImg
-              ? currentUserCreds?.fields?.heroImg
+            userData?.fields?.heroImg
+              ? userData?.fields?.heroImg
               : 'https://fasttechnologies.com/wp-content/uploads/2017/01/placeholder-banner.png'
           }
           alt="Hero img"
@@ -346,8 +357,8 @@ const MyProfile = () => {
             <img
               className={classes.userImg}
               src={
-                currentUserCreds?.fields?.image
-                  ? currentUserCreds?.fields?.image
+                userData?.fields?.image
+                  ? userData?.fields?.image
                   : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues='
               }
               alt="User Profile Picture"
@@ -355,33 +366,31 @@ const MyProfile = () => {
           </div>
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
-              <p className={classes.userName}>
-                {currentUserCreds?.fields?.name}
-              </p>
+              <p className={classes.userName}>{userData?.fields?.name}</p>
               <Button onClick={editProfile} className={classes.editProfile}>
                 Edit profile
               </Button>
             </div>
             <div className={classes.description}>
-              <p>{currentUserCreds?.fields.description}</p>
+              <p>{userData?.fields?.description}</p>
               <div>
                 <p className={classes.socials}>Social Links:</p>
                 <p className={classes.socialLinks}>
                   <FontAwesomeIcon icon={faTwitter} />{' '}
                   <a
                     className={classes.socialLinks}
-                    href={currentUserCreds?.fields?.TwitterUrl}
+                    href={userData?.fields?.TwitterUrl}
                   >
-                    {currentUserCreds?.fields?.TwitterUrl}
+                    {userData?.fields?.TwitterUrl}
                   </a>
                 </p>
                 <p className={classes.socialLinks}>
                   <FontAwesomeIcon icon={faTwitch} />{' '}
                   <a
                     className={classes.socialLinks}
-                    href={currentUserCreds?.fields?.TwitchUrl}
+                    href={userData?.fields?.TwitchUrl}
                   >
-                    {currentUserCreds?.fields?.TwitchUrl}
+                    {userData?.fields?.TwitchUrl}
                   </a>
                 </p>
               </div>
@@ -401,14 +410,6 @@ const MyProfile = () => {
             >
               Recorded Streams
             </span>
-            {/* <span
-              className={
-                gamesSelected ? classes.selectedButton : classes.sectionButton
-              }
-              onClick={handleGamesClick}
-            >
-              My Games
-            </span> */}
             <span
               className={
                 channelSelected ? classes.selectedButton : classes.sectionButton
@@ -436,9 +437,9 @@ const MyProfile = () => {
             )}
             {channelSelected && (
               <div className={classes.channels}>
-                {userList?.map(item => {
+                {globalList?.map((item, index) => {
                   return (
-                    <div className={classes.channelsWrapper}>
+                    <div className={classes.channelsWrapper} key={index}>
                       <img
                         className={classes.channelImg}
                         src={item.fields.channelImg}
@@ -498,4 +499,4 @@ const MyProfile = () => {
   )
 }
 
-export default MyProfile;
+export default MyProfile
