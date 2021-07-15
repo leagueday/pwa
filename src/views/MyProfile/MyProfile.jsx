@@ -320,6 +320,9 @@ const MyProfile = () => {
     setTimeout(() => {
       getData();
     },1000)
+    setTimeout(() => {
+      getData();
+    },2500)
   },[])
 
   const classes = useStyles({ primaryColor })

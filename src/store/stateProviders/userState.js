@@ -22,6 +22,7 @@ function UserProfileProvider(props) {
             filterByFormula: `{userId} = '${id}'`,
             view: "Grid view"
         }).eachPage(async function page(records, fetchNextPage) {
+            console.log(records)
             setUserData(records.shift())
 
         }, function done(err) {
