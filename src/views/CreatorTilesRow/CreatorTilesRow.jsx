@@ -9,6 +9,7 @@ import SwipeChannelTilesRow from './SwipeChannelTilesRow'
 const ChannelTilesRow = props => {
   const theme = useTheme()
   const isXs = useMediaQuery(theme.breakpoints.only('xs'))
+  console.log(props)
   return isXs ? (
     <SwipeChannelTilesRow {...props} />
   ) : (
@@ -16,4 +17,4 @@ const ChannelTilesRow = props => {
   )
 }
 
-export default ChannelTilesRow;
+export default ChannelTilesRow

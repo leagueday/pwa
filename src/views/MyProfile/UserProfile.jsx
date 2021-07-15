@@ -257,35 +257,24 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const MyProfile = () => {
-  const { globalList } = useContext(MyListContext)
   const { userData, loading, refreshData, getData } = useContext(
     UserStateContext
   )
   const [gamesSelected, setGamesSelected] = useState(false)
   const [userRecordings, setUserRecordings] = useState()
   const [liveRecordings, setLiveRecordings] = useState(true)
-  const [channelSelected, setChannelSelected] = useState(false)
   const [trophieSelected, setTrophieSelected] = useState(false)
   const user = useSelector(selectors.getUser)
-
-  const handleChannelClick = () => {
-    setGamesSelected(false)
-    setLiveRecordings(false)
-    setChannelSelected(true)
-    setTrophieSelected(false)
-  }
 
   const handleTrophyClick = () => {
     setGamesSelected(false)
     setLiveRecordings(false)
-    setChannelSelected(false)
     setTrophieSelected(true)
   }
 
   const handleLiveClick = () => {
     setGamesSelected(false)
     setLiveRecordings(true)
-    setChannelSelected(false)
     setTrophieSelected(false)
   }
 
@@ -306,17 +295,13 @@ const MyProfile = () => {
   }, [recordedStreams])
 
   useEffect(() => {
-    refreshData()
-    // if (globalList.length === 0) {
-      // getData()
-    // }
-  }, [])
+    refreshData();
+    setTimeout(() => {
+        getData();  
+    },750);
+  },[])
 
   const classes = useStyles({ primaryColor })
-  const dispatch = useDispatch()
-  const golive = () => dispatch(actions.pushHistory('/live'))
-  const editProfile = () => dispatch(actions.pushHistory('/editprofile'))
-  // const gamesArray = currentUserGames?.fields?.channelName?.split(',')
   let count = 1
 
   if (loading) {
@@ -352,9 +337,6 @@ const MyProfile = () => {
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
               <p className={classes.userName}>{userData?.fields?.name}</p>
-              <Button onClick={editProfile} className={classes.editProfile}>
-                Edit profile
-              </Button>
             </div>
             <div className={classes.description}>
               <p>{userData?.fields?.description}</p>
@@ -379,9 +361,6 @@ const MyProfile = () => {
                   </a>
                 </p>
               </div>
-              <Button onClick={golive} className={classes.goLiveButton}>
-                Go Live
-              </Button>
             </div>
           </div>
         </div>
@@ -397,14 +376,6 @@ const MyProfile = () => {
             </span>
             <span
               className={
-                channelSelected ? classes.selectedButton : classes.sectionButton
-              }
-              onClick={handleChannelClick}
-            >
-              My Channels
-            </span>
-            <span
-              className={
                 trophieSelected ? classes.selectedButton : classes.sectionButton
               }
               onClick={handleTrophyClick}
@@ -417,24 +388,6 @@ const MyProfile = () => {
               <div>
                 {gamesArray?.map(game => {
                   return <p>{game}</p>
-                })}
-              </div>
-            )}
-            {channelSelected && (
-              <div className={classes.channels}>
-                {globalList?.map((item, index) => {
-                  return (
-                    <div className={classes.channelsWrapper} key={index}>
-                      <img
-                        className={classes.channelImg}
-                        src={item.fields.channelImg}
-                        alt="channel image"
-                      />
-                      <p className={classes.channelName}>
-                        {item.fields.channelName}
-                      </p>
-                    </div>
-                  )
                 })}
               </div>
             )}

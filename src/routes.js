@@ -1,18 +1,17 @@
-import React from 'react'
+import React from 'react';
 
 const ChannelScreen = React.lazy(() => import('./views/ChannelScreen'))
 const EventScreen = React.lazy(() => import('./views/EventScreen'))
 const IconDump = React.lazy(() => import('./views/IconDump'))
 const HomeScreen = React.lazy(() => import('./views/HomeScreen'))
 const ProfileScreen = React.lazy(() => import('./views/MyProfile'))
-const GoLive = React.lazy(() => import('./views/GoLive'))
-const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'))
+const GoLive = React.lazy(() => import('./views/GoLive'));
+const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'));
 const GoToLiveData = React.lazy(() => import('./views/GoLive/GoLiveData'));
-const PreviewPage = React.lazy(() => import('./views/GoLive/PreviewPage'))
-const DestributionPage = React.lazy(() => import('./views/GoLive/DestributionPage'))
+const PreviewPage = React.lazy(() => import('./views/GoLive/PreviewPage'));
+const DestributionPage = React.lazy(() => import('./views/GoLive/DestributionPage'));
 const CreateProfile = React.lazy(() => import('./views/MyProfile/CreateProfile'));
-const MyProfile = React.lazy(() => import('./views/MyProfile/MyProfile'));
-const EditProfile = React.lazy(() => import('./views/MyProfile/EditProfile'))
+const EditProfile = React.lazy(() => import('./views/MyProfile/EditProfile'));
 const matchFirstToken = match => pathTokens =>
   pathTokens?.length > 0 && pathTokens[0] === match
 const takeNextToken = pathTokens =>
@@ -20,6 +19,16 @@ const takeNextToken = pathTokens =>
 const isAdminUser = userData => (userData?.isAdmin ? true : false)
 
 export const routesConfig = [
+  [
+    matchFirstToken('profile'),
+    () => true,
+    ProfileScreen,
+    pathTokens => (
+      console.log('path ', pathTokens),
+      {
+        userId: takeNextToken(pathTokens),
+      }),
+  ],
   [
     matchFirstToken('channel'),
     () => true,
@@ -53,16 +62,6 @@ export const routesConfig = [
       podcastId: takeNextToken(pathTokens),
     }),
   ],
-  [
-    // matchFirstToken('setup'),
-    isAdminUser,
-    // SetupScreen,
-    pathTokens => ({
-      subject: takeNextToken(pathTokens),
-    }),
-  ],
-  [matchFirstToken('profile'), () => true, ProfileScreen, () => ({})],
-  [matchFirstToken('myprofile'), () => true, MyProfile, () => ({})],
   [matchFirstToken('live'), () => true, GoLive, () => ({})],
   [matchFirstToken('gotolive'), () => true, GoToLiveData, () => ({})],
   [matchFirstToken('preview'), () => true, PreviewPage, () => ({})],
@@ -70,4 +69,5 @@ export const routesConfig = [
   [matchFirstToken('create'), () => true, CreateProfile, () => ({})],
   [matchFirstToken('editprofile'), () => true, EditProfile, () => ({})],
   [() => true, () => true, HomeScreen, () => ({})],
+
 ];

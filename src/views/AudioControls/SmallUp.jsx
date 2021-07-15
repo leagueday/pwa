@@ -210,4 +210,4 @@ const SmUpAudioControls = () => {
   )
 }
 
-export default SmUpAudioControls
+export default SmUpAudioControls;

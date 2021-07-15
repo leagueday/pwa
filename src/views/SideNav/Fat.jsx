@@ -1,4 +1,5 @@
 import React from 'react'
+import MyCreators from './MyCreators'
 import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
 import Loading from '../Loading'
@@ -166,7 +167,7 @@ const FatSideNav = ({ className, home }) => {
   const goHome = () => dispatch(actions.pushHistory('/'))
 
   const myprofile = () => {
-    dispatch(actions.pushHistory('/profile'))
+    dispatch(actions.pushHistory(`/profile/${user.id}`))
   }
 
   const golive = () => dispatch(actions.pushHistory('/live'))
@@ -198,19 +199,17 @@ const FatSideNav = ({ className, home }) => {
             >
               <MyChannels />
             </Expander>
-            {/* {user && (
               <Expander
-                className={classes.expander}
-                text="MY PODCASTS"
-                tag="poca"
+              className={classes.expander}
+              text="MY CREATORS"
+              tag="poca"
               >
-                <MyPodcasts />
+              <MyCreators />
               </Expander>
-            )} */}
+            <MyPodcasts />
             <React.Suspense fallback={<Loading />}>
-              {
-                user && (
-                  // (profileCreated == 3 ? (
+              {user &&
+                (profileCreated ? (
                   <Button
                     className={classes.inNOutButton}
                     color="primary"
@@ -218,22 +217,19 @@ const FatSideNav = ({ className, home }) => {
                     size="small"
                     variant="contained"
                   >
-                    {profileCreated ? 'PROFILE' : 'CREATE PROFILE'}
+                    PROFILE
                   </Button>
-                )
-                // ) : profileCreated == 2 ? (
-                //   <Button
-                //     className={classes.inNOutButton}
-                //     color="primary"
-                //     onClick={createProfile}
-                //     size="small"
-                //     variant="contained"
-                //   >
-                //     CREATE PROFILE
-                //   </Button>
-                // ) : (
-                //   ''
-              }
+                ) : (
+                  <Button
+                    className={classes.inNOutButton}
+                    color="primary"
+                    onClick={createProfile}
+                    size="small"
+                    variant="contained"
+                  >
+                    CREATE PROFILE
+                  </Button>
+                ))}
             </React.Suspense>
           </div>
         </div>
