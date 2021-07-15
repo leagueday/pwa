@@ -36,6 +36,9 @@ function ListStateProvider(props) {
 
     useEffect(() => {
         getData();
+        setTimeout(() => {
+            getData();
+        }, 1000)
     }, [activeUser])
 
     const addToList = async (title, tag, img) => {
@@ -47,27 +50,27 @@ function ListStateProvider(props) {
         if (globalList.includes({ fields: { channelName: title, channelTag: tag, channelImg: img } })) {
             return
         } else {
-                base('UserList').create([
-                    {
-                        "fields": {
-                            "channelName": title,
-                            "user": [
-                                currentUserId
-                            ],
-                            "channelTag": tag,
-                            "channelImg": img
-                        }
+            base('UserList').create([
+                {
+                    "fields": {
+                        "channelName": title,
+                        "user": [
+                            currentUserId
+                        ],
+                        "channelTag": tag,
+                        "channelImg": img
                     }
-                ], function (err, records) {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
-                    records.forEach(function (record) {
-                        console.log('created new myList entry  ', record);
-                        getData();
-                    });
+                }
+            ], function (err, records) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                records.forEach(function (record) {
+                    console.log('created new myList entry  ', record);
+                    getData();
                 });
+            });
         }
 
         result.push({ fields: { channelName: title, channelTag: tag, channelImg: img } })
@@ -109,7 +112,7 @@ function ListStateProvider(props) {
     }
 
     return (
-        <MyListProvider value={{disabled, listPlaceholder, setListPlaceholder, globalList, getIsOnMyList, addToList, removeFromList, setGlobalList}}>
+        <MyListProvider value={{ disabled, listPlaceholder, setListPlaceholder, globalList, getIsOnMyList, addToList, removeFromList, setGlobalList }}>
             {props?.children}
         </MyListProvider>
     )
