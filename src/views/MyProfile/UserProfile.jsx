@@ -17,6 +17,18 @@ const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 const primaryColor = colors.magenta
 
 const useStyles = makeStyles(theme => ({
+  content: () =>
+    addScrollStyle(
+      primaryColor,
+      theme
+    )({
+      alignItems: 'stretch',
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+      overflowX: 'hidden',
+      overflowY: 'auto',
+    }),
   profileWrapper: {
     marginTop: '5%',
     height: '90vh',
@@ -99,7 +111,6 @@ const useStyles = makeStyles(theme => ({
     marginTop: '75px',
     [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
-      marginTop: '25%',
       alignItems: 'stretch',
       paddingLeft: '3%',
       paddingRight: '3%',
@@ -138,20 +149,20 @@ const useStyles = makeStyles(theme => ({
       justifyContent: 'space-between',
     },
   },
-  // userGamesWrapper: {
-  //   width: '100%',
-  //   marginTop: '15%',
-  //   marginLeft: '5%',
-  //   [theme.breakpoints.down('md')]: {
-  //     marginTop: '5%',
-  //   },
-  //   [theme.breakpoints.down('sm')]: {
-  //     marginLeft: '0',
-  //     marginTop: '5%',
-  //     height: '100%',
-  //     maxHeight: '375px',
-  //   },
-  // },
+  userGamesWrapper: {
+    width: '100%',
+    marginTop: '15%',
+    marginLeft: '5%',
+    [theme.breakpoints.down('md')]: {
+      marginTop: '5%',
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: '0',
+      marginTop: '5%',
+      height: '100%',
+      maxHeight: '375px',
+    },
+  },
   buttonSelector: {
     display: 'flex',
     width: '100%',
@@ -252,36 +263,18 @@ const useStyles = makeStyles(theme => ({
   },
   recordings: {
     marginTop: '2%',
-    zIndex: '-1'
+    zIndex: '-1',
   },
   trophy: {
     marginTop: '2%',
     height: '120px',
   },
-  userGamesWrapper: ({ primaryColor }) =>
-    addScrollStyle(
-      primaryColor,
-      theme
-    )({
-      width: '100%',
-      marginTop: '15%',
-      marginLeft: '5%',
-      [theme.breakpoints.down('md')]: {
-        marginTop: '5%',
-      },
-      [theme.breakpoints.down('sm')]: {
-        marginLeft: '0',
-        marginTop: '5%',
-        height: '100%',
-        maxHeight: '375px',
-      },
-    }),
 }))
 
-const MyProfile = ({userId}) => {
+const MyProfile = ({ userId }) => {
   const { userData, loading, refreshData, getData } = useContext(
     UserStateContext
-  );
+  )
 
   const [gamesSelected, setGamesSelected] = useState(false)
   const [userRecordings, setUserRecordings] = useState()
@@ -317,11 +310,11 @@ const MyProfile = ({userId}) => {
   }, [recordedStreams])
 
   useEffect(() => {
-    refreshData();
+    refreshData()
     setTimeout(() => {
-        getData();  
-    },750);
-  },[])
+      getData()
+    }, 750)
+  }, [])
 
   const classes = useStyles({ primaryColor })
   let count = 1
@@ -331,7 +324,7 @@ const MyProfile = ({userId}) => {
   }
 
   return (
-    <div>
+    <div className={classes.content}>
       <div className={classes.heroImgCont}>
         <img
           className={classes.heroImg}

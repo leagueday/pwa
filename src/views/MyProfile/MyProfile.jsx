@@ -7,6 +7,8 @@ import { MyListContext } from '../../store/stateProviders/listState'
 import { UserStateContext } from '../../store/stateProviders/userState'
 import { colors } from '../../styling'
 import BasicLayout from '../BasicLayout'
+import ContentLayout from '../ContentLayout'
+import { addScrollStyle } from '../util'
 import { actions } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
@@ -16,14 +18,28 @@ const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 const primaryColor = colors.magenta
 
 const useStyles = makeStyles(theme => ({
+  content: () =>
+    addScrollStyle(
+      primaryColor,
+      theme
+    )({
+      alignItems: 'stretch',
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+      overflowX: 'hidden',
+      overflowY: 'auto',
+    }),
   profileWrapper: {
+    background: 'black',
     marginTop: '5%',
     height: '90vh',
     width: '95%',
     marginLeft: '2.5%',
     display: 'flex',
-    overflow: 'auto',
+    // overflow: 'scroll',
     [theme.breakpoints.down('md')]: {
+      // overflow: 'scroll',
       marginTop: '0',
       width: '100%',
       flexDirection: 'column',
@@ -55,8 +71,9 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     position: 'relative',
-    overflow: 'visible',
+    // overflow: 'scroll',
     [theme.breakpoints.down('md')]: {
+      // overflow: 'scroll',
       width: '100%',
     },
   },
@@ -98,7 +115,6 @@ const useStyles = makeStyles(theme => ({
     marginTop: '75px',
     [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
-      marginTop: '25%',
       alignItems: 'stretch',
       paddingLeft: '3%',
       paddingRight: '3%',
@@ -141,6 +157,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     marginTop: '15%',
     marginLeft: '5%',
+    minHeight: '400px',
     [theme.breakpoints.down('md')]: {
       marginTop: '5%',
     },
@@ -194,7 +211,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'scroll',
+    // overflow: 'scroll',
   },
   placeHolder: {
     opacity: 0.7,
@@ -251,7 +268,7 @@ const useStyles = makeStyles(theme => ({
   },
   recordings: {
     marginTop: '2%',
-    zIndex: '-1'
+    zIndex: '-1',
   },
   trophy: {
     marginTop: '2%',
@@ -304,10 +321,8 @@ const MyProfile = () => {
     setUserRecordings(currentUserRecordings)
   }
 
-
   useEffect(() => {
     getUserById()
-    
   }, [recordedStreams])
 
   useEffect(() => {
@@ -317,7 +332,7 @@ const MyProfile = () => {
     // }
   }, [])
 
-  const classes = useStyles({ primaryColor })
+  const classes = useStyles()
   const dispatch = useDispatch()
   const golive = () => dispatch(actions.pushHistory('/live'))
   const editProfile = () => dispatch(actions.pushHistory('/editprofile'))
@@ -329,7 +344,7 @@ const MyProfile = () => {
   }
 
   return (
-    <div>
+    <div className={classes.content}>
       <div className={classes.heroImgCont}>
         <img
           className={classes.heroImg}
