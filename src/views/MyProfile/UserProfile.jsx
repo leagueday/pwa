@@ -249,6 +249,7 @@ const useStyles = makeStyles(theme => ({
   },
   recordings: {
     marginTop: '2%',
+    zIndex: '-1'
   },
   trophy: {
     marginTop: '2%',
@@ -256,15 +257,15 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const MyProfile = () => {
+const MyProfile = ({userId}) => {
   const { userData, loading, refreshData, getData } = useContext(
     UserStateContext
-  )
+  );
+
   const [gamesSelected, setGamesSelected] = useState(false)
   const [userRecordings, setUserRecordings] = useState()
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [trophieSelected, setTrophieSelected] = useState(false)
-  const user = useSelector(selectors.getUser)
 
   const handleTrophyClick = () => {
     setGamesSelected(false)
@@ -285,9 +286,9 @@ const MyProfile = () => {
 
   const getUserById = () => {
     const currentUserRecordings = recordedStreams?.filter(
-      item => item.fields.userId === user.id
+      item => item.fields.userId === userId
     )
-    setUserRecordings(currentUserRecordings)
+    setUserRecordings(currentUserRecordings?.reverse())
   }
 
   useEffect(() => {

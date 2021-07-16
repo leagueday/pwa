@@ -12,24 +12,24 @@ const useStyles = makeStyles(theme => ({
   channelTile: {
     cursor: 'pointer',
     display: 'flex',
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
-    maxHeight: '100%',
-    maxWidth: '100%',
+    // height: '100%',
+    width: '16%',
     minHeight: 0,
     minWidth: 0,
     userSelect: 'none',
-    width: '100%',
+    marginBottom: '2.5%'
   },
-  image: ({ textColor }) => ({
-    border: `0.25em solid ${textColor ?? colors.white80}`,
+  image: {
+    border: `0.25em solid ${colors.white80}`,
     borderRadius: '50%',
     height: '100%',
     width: '100%',
     [theme.breakpoints.only('xs')]: {
-      border: `0.5vw solid ${textColor ?? colors.white80}`,
+      border: `0.5vw solid ${colors.white80}`,
     },
-  }),
+  },
   imageSquare: {
     width: '80%',
   },
@@ -41,15 +41,15 @@ const useStyles = makeStyles(theme => ({
     right: '0.25em',
     zIndex: 3,
   },
-  text: ({ textColor }) => ({
-    color: textColor ?? colors.white80,
+  text: {
+    color: colors.white80,
     fontSize: '75%',
     fontWeight: theme.typography.weight.bold,
     height: '100%',
     textOverflow: 'ellipsis',
     width: '100%',
     display: 'inline-flex',
-  }),
+  },
   textBox: {
     display: 'flex',
     flexDirection: 'column',
@@ -60,30 +60,34 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ChannelTile = ({ channel }) => {
-  const classes = useStyles({ textColor: channel.color })
-
+const CreatorTile = ({ user }) => {
+  const classes = useStyles()
+    
   const dispatch = useDispatch()
-  const gotoThisChannel = () =>
-    dispatch(actions.pushHistory(`/channel/${channel.tag}`))
+  const gotoThisCreator = () =>
+   dispatch(actions.pushHistory(`/profile/${user.userId}`))
 
   return (
     <div className={classes.channelTile}>
-    <Square className={classes.imageSquare}>
-      <img className={classes.image} src={channel.imageUrl} onClick={gotoThisChannel} />
-      <PlusMinusButton
-        size="25%"
-        className={classes.plusMinusButton}
-        subjectId={channel.tag}
-        subjectKind="channel"
-        channel={channel}
-      />
-    </Square>
-    <div className={classes.textBox} onClick={gotoThisChannel}>
-      <div className={classes.text}>{channel.title}</div>
+      <Square className={classes.imageSquare}>
+        <img
+          className={classes.image}
+          src={user.image}
+          onClick={gotoThisCreator}
+        />
+        {/* <PlusMinusButton
+          size="25%"
+          className={classes.plusMinusaButton}
+          subjectId={channel.tag}
+          subjectKind="channel"
+          channel={channel}
+        /> */}
+      </Square>
+      <div className={classes.textBox} onClick={gotoThisCreator}>
+        <div className={classes.text}>{user.name}</div>
+      </div>
     </div>
-  </div>
   )
 }
 
-export default ChannelTile;
+export default CreatorTile;
