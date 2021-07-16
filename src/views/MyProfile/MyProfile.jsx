@@ -296,7 +296,7 @@ const MyProfile = () => {
 
   const getUserById = () => {
     const currentUserRecordings = recordedStreams?.filter(
-      item => item.fields.userId === user.id
+      item => item.fields.userId === user?.id
     )
     setUserRecordings(currentUserRecordings)
   }
