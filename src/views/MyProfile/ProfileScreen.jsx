@@ -13,7 +13,10 @@ const ProfileScreen = ({ userId }) => {
 
   useEffect(() => {
     setUserId(userId)
-    if (user.id !== userId) {
+    if (!user) {
+      setAuth(false)
+    }
+    else if (user.id !== userId) {
       setAuth(false)
     } else {
       setAuth(true)
