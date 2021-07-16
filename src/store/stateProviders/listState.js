@@ -35,6 +35,9 @@ function ListStateProvider(props) {
 
     useEffect(() => {
         getData();
+        setTimeout(() => {
+            getData();
+        }, 1000)
     }, [activeUser])
 
     const addToList = async (title, tag, img) => {
