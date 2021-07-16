@@ -191,7 +191,7 @@ const DestributionPage = () => {
       body: JSON.stringify({ url: `video/v1/live-streams/${livestreamingId}` })
     }).then(response => response.json())
       .then(function (streamData) {
-        //console.log(streamData.data);
+        console.log('ola ',streamData.data);
         setplaybackChannel(streamData.data.playback_ids[0].id)
         setStreamkey({
           streamkey: streamData.data.stream_key
@@ -208,7 +208,6 @@ const DestributionPage = () => {
       ).catch((error) => {
         toast.error(error.type)
       })
-
   }
 
   let playId = playback.playback;
@@ -264,6 +263,7 @@ const DestributionPage = () => {
   function toggleControls() {
     playerRef.current.controls = !playerRef.current.controls;
   }
+  
   channelsData && channelsData.map((channel, index) => {
     userProfile && userProfile.map((item) => {
       if (channel.title === item) {
@@ -271,6 +271,7 @@ const DestributionPage = () => {
       }
     })
   })
+
   const dispatch = useDispatch()
   const audioMode = useSelector(selectors.getAudioMode)
   const isSelectedAudio = playbackUrl && playbackUrl

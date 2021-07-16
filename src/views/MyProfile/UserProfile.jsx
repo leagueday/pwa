@@ -6,6 +6,7 @@ import { selectors } from '../../store'
 import { MyListContext } from '../../store/stateProviders/listState'
 import { UserStateContext } from '../../store/stateProviders/userState'
 import { colors } from '../../styling'
+import { addScrollStyle } from '../util'
 import BasicLayout from '../BasicLayout'
 import { actions } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -36,6 +37,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: 20,
     height: '25%',
+    minHeight: '200px',
     width: '100%',
     objectFit: 'cover',
     maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0))',
@@ -54,13 +56,14 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     position: 'relative',
-    overflow: 'visible',
+    // overflow: 'visible',
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
   userImgContainer: {
     width: '100%',
+    minHeight: '200px',
     height: '27%',
     display: 'flex',
     alignItems: 'center',
@@ -71,15 +74,15 @@ const useStyles = makeStyles(theme => ({
   },
   userImg: {
     borderRadius: '50%',
-    width: '15rem',
-    height: '15rem',
+    width: '12rem',
+    height: '12rem',
     position: 'absolute',
     top: 10,
     border: '2px solid magenta',
     objectFit: 'cover',
     [theme.breakpoints.down('md')]: {
-      width: '12rem',
-      height: '12rem',
+      width: '10rem',
+      height: '10rem',
     },
     [theme.breakpoints.down('xs')]: {
       top: 0,
@@ -135,20 +138,20 @@ const useStyles = makeStyles(theme => ({
       justifyContent: 'space-between',
     },
   },
-  userGamesWrapper: {
-    width: '100%',
-    marginTop: '15%',
-    marginLeft: '5%',
-    [theme.breakpoints.down('md')]: {
-      marginTop: '5%',
-    },
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: '0',
-      marginTop: '5%',
-      height: '100%',
-      maxHeight: '375px',
-    },
-  },
+  // userGamesWrapper: {
+  //   width: '100%',
+  //   marginTop: '15%',
+  //   marginLeft: '5%',
+  //   [theme.breakpoints.down('md')]: {
+  //     marginTop: '5%',
+  //   },
+  //   [theme.breakpoints.down('sm')]: {
+  //     marginLeft: '0',
+  //     marginTop: '5%',
+  //     height: '100%',
+  //     maxHeight: '375px',
+  //   },
+  // },
   buttonSelector: {
     display: 'flex',
     width: '100%',
@@ -192,7 +195,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'scroll',
+    // overflow: 'scroll',
   },
   placeHolder: {
     opacity: 0.7,
@@ -255,6 +258,24 @@ const useStyles = makeStyles(theme => ({
     marginTop: '2%',
     height: '120px',
   },
+  userGamesWrapper: ({ primaryColor }) =>
+    addScrollStyle(
+      primaryColor,
+      theme
+    )({
+      width: '100%',
+      marginTop: '15%',
+      marginLeft: '5%',
+      [theme.breakpoints.down('md')]: {
+        marginTop: '5%',
+      },
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: '0',
+        marginTop: '5%',
+        height: '100%',
+        maxHeight: '375px',
+      },
+    }),
 }))
 
 const MyProfile = ({userId}) => {
@@ -415,7 +436,7 @@ const MyProfile = ({userId}) => {
               </div>
             )}
             {trophieSelected &&
-              (userRecordings?.length > 1 ? (
+              (userRecordings?.length > 0 ? (
                 <>
                   <img
                     className={classes.trophy}

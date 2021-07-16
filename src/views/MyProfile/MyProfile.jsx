@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: 20,
     height: '25%',
+    minHeight: '200px',
     width: '100%',
     objectFit: 'cover',
     maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0))',
@@ -61,6 +62,7 @@ const useStyles = makeStyles(theme => ({
   },
   userImgContainer: {
     width: '100%',
+    minHeight: '200px',
     height: '27%',
     display: 'flex',
     alignItems: 'center',
@@ -71,15 +73,15 @@ const useStyles = makeStyles(theme => ({
   },
   userImg: {
     borderRadius: '50%',
-    width: '15rem',
-    height: '15rem',
+    width: '12rem',
+    height: '12rem',
     position: 'absolute',
     top: 10,
     border: '2px solid magenta',
     objectFit: 'cover',
     [theme.breakpoints.down('md')]: {
-      width: '12rem',
-      height: '12rem',
+      width: '10rem',
+      height: '10rem',
     },
     [theme.breakpoints.down('xs')]: {
       top: 0,
@@ -249,6 +251,7 @@ const useStyles = makeStyles(theme => ({
   },
   recordings: {
     marginTop: '2%',
+    zIndex: '-1'
   },
   trophy: {
     marginTop: '2%',
@@ -301,14 +304,16 @@ const MyProfile = () => {
     setUserRecordings(currentUserRecordings)
   }
 
+
   useEffect(() => {
     getUserById()
+    
   }, [recordedStreams])
 
   useEffect(() => {
     refreshData()
     // if (globalList.length === 0) {
-      // getData()
+    // getData()
     // }
   }, [])
 
@@ -461,7 +466,7 @@ const MyProfile = () => {
               </div>
             )}
             {trophieSelected &&
-              (userRecordings?.length > 1 ? (
+              (userRecordings?.length > 0 ? (
                 <>
                   <img
                     className={classes.trophy}
