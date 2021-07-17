@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { actions } from '../../store'
 import { colors } from '../../styling'
-import PlusMinusButton from '../PlusMinusButton'
+import PlusMinusBtn from './PlusMinusBtn'
 import Square from '../Square'
 
 const useStyles = makeStyles(theme => ({
@@ -62,10 +62,9 @@ const useStyles = makeStyles(theme => ({
 
 const CreatorTile = ({ user }) => {
   const classes = useStyles()
-    
   const dispatch = useDispatch()
   const gotoThisCreator = () =>
-   dispatch(actions.pushHistory(`/profile/${user.userId}`))
+  dispatch(actions.pushHistory(`/profile/${user.userId}`))
 
   return (
     <div className={classes.channelTile}>
@@ -75,13 +74,12 @@ const CreatorTile = ({ user }) => {
           src={user.image}
           onClick={gotoThisCreator}
         />
-        {/* <PlusMinusButton
+        <PlusMinusBtn
           size="25%"
-          className={classes.plusMinusaButton}
-          subjectId={channel.tag}
-          subjectKind="channel"
-          channel={channel}
-        /> */}
+          className={classes.plusMinusButton}
+          userId={user.userId}
+          creator={user}
+        />
       </Square>
       <div className={classes.textBox} onClick={gotoThisCreator}>
         <div className={classes.text}>{user.name}</div>
