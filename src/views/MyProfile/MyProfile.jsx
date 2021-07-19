@@ -272,6 +272,12 @@ const useStyles = makeStyles(theme => ({
     marginTop: '2%',
     height: '120px',
   },
+  trophys: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
 }));
 
 const MyProfile = () => {
@@ -339,6 +345,46 @@ const MyProfile = () => {
 
   if (loading) {
     return <h1>Loading...</h1>
+  }
+
+  const NoobTrophy = ({ classes }) => {
+    return (
+      <div className={classes.trophyCont}>
+        <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
+        <p>
+          {' '}
+          <span className={classes.trophyName}>Noob Award</span> <br></br> (first
+          stream created)
+        </p>
+      </div>
+    )
+  }
+  
+  const PentaTrophy = ({ classes }) => {
+    return (
+      <div className={classes.trophyCont}>
+        <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
+        <p>
+          {' '}
+          <span className={classes.trophyName}>Penta Cast</span> <br></br> (5
+          streams created)
+        </p>
+      </div>
+    )
+  }
+  
+  const TitanTrophy = ({ classes }) => {
+    return (
+      <div className={classes.trophyCont}>
+        <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
+        <p>
+          {' '}
+          <span className={classes.trophyName}>
+            Gamer Audio Titan
+          </span> <br></br> (10 streams created)
+        </p>
+      </div>
+    )
   }
 
   return (
@@ -497,23 +543,31 @@ const MyProfile = () => {
                 )}
               </div>
             )}
-            {trophieSelected &&
-              (userRecordings?.length > 0 ? (
-                <>
-                  <img
-                    className={classes.trophy}
-                    src="/img/noobTrophy1.png"
-                    alt=""
-                  />
-                  <p>Noob Award (first stream created)</p>
-                </>
-              ) : (
-                <div>
-                  <p className={classes.placeHolder}>
-                    Stream to earn trophies!
-                  </p>
-                </div>
-              ))}
+            <div className={classes.trophys}>
+              {trophieSelected &&
+                (userRecordings?.length === 0 ? (
+                  <div>
+                    <p className={classes.placeHolder}>
+                      Stream to earn trophies!
+                    </p>
+                  </div>
+                ) : userRecordings?.length > 10 ? (
+                  <>
+                    <NoobTrophy classes={classes} />
+                    <PentaTrophy classes={classes} />
+                    <TitanTrophy classes={classes} />
+                  </>
+                ) : userRecordings?.length > 5 ? (
+                  <>
+                    <PentaTrophy classes={classes} />
+                    <NoobTrophy classes={classes} />
+                  </>
+                ) : userRecordings?.length > 1 ? (
+                  <NoobTrophy classes={classes} />
+                ) : (
+                  <p>error</p>
+                ))}
+            </div>
           </div>
         </div>
       </div>
