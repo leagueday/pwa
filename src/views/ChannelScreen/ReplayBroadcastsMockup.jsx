@@ -117,7 +117,6 @@ const useStyles = makeStyles(theme => ({
   },
   episodeTitleAndData: {
     display: 'flex',
-    // flexDirection: 'row',
     width: '100%',
     [theme.breakpoints.only('xs')]: {
       flexDirection: 'column',
