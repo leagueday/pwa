@@ -6,15 +6,12 @@ import { selectors } from '../../store'
 import { MyListContext } from '../../store/stateProviders/listState'
 import { UserStateContext } from '../../store/stateProviders/userState'
 import { colors } from '../../styling'
-import BasicLayout from '../BasicLayout'
-import ContentLayout from '../ContentLayout'
 import { addScrollStyle } from '../util'
 import { actions } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import useAirTable from '../../api/useAirtable'
 import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
-const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 const primaryColor = colors.magenta
 
 const useStyles = makeStyles(theme => ({
@@ -32,15 +29,11 @@ const useStyles = makeStyles(theme => ({
     }),
   profileWrapper: {
     background: 'black',
-    marginTop: '5%',
     height: '90vh',
     width: '95%',
     marginLeft: '2.5%',
     display: 'flex',
-    // overflow: 'scroll',
     [theme.breakpoints.down('md')]: {
-      // overflow: 'scroll',
-      marginTop: '0',
       width: '100%',
       flexDirection: 'column',
       alignItems: 'center',
@@ -48,14 +41,14 @@ const useStyles = makeStyles(theme => ({
       height: '100%',
     },
   },
+  heroImgCont: {
+    height: '25%'
+  },
   heroImg: {
-    position: 'absolute',
-    top: 20,
-    height: '25%',
     minHeight: '200px',
     width: '100%',
+    height: '100%',
     objectFit: 'cover',
-    maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0))',
     [theme.breakpoints.down('md')]: {
       height: '15%',
     },
@@ -65,22 +58,20 @@ const useStyles = makeStyles(theme => ({
     },
   },
   credInfo: {
-    width: '30%',
+    width: '35%',
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     position: 'relative',
-    // overflow: 'scroll',
     [theme.breakpoints.down('md')]: {
-      // overflow: 'scroll',
       width: '100%',
     },
   },
   userImgContainer: {
     width: '100%',
-    minHeight: '200px',
-    height: '27%',
+    minHeight: '150px',
+    height: '20%',
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
@@ -93,16 +84,15 @@ const useStyles = makeStyles(theme => ({
     width: '12rem',
     height: '12rem',
     position: 'absolute',
-    top: 10,
-    border: '2px solid magenta',
+    top: -80,
+    border: '5px solid black',
     objectFit: 'cover',
     [theme.breakpoints.down('md')]: {
       width: '10rem',
       height: '10rem',
     },
     [theme.breakpoints.down('xs')]: {
-      top: 0,
-      left: 0,
+      top: -80,
       width: '8rem',
       height: '8rem',
     },
@@ -112,15 +102,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    marginTop: '75px',
     [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
       alignItems: 'stretch',
       paddingLeft: '3%',
       paddingRight: '3%',
-    },
-    [theme.breakpoints.down('sm')]: {
-      marginTop: '35%',
     },
   },
   editProfile: {
@@ -154,8 +140,9 @@ const useStyles = makeStyles(theme => ({
     },
   },
   userGamesWrapper: {
+    background: 'black',
     width: '100%',
-    marginTop: '15%',
+    marginTop: '5%',
     marginLeft: '5%',
     minHeight: '400px',
     [theme.breakpoints.down('md')]: {
@@ -211,6 +198,9 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: '2%',
+    width: '100%',
+    paddingLeft: '5%',
     // overflow: 'scroll',
   },
   placeHolder: {
@@ -221,7 +211,6 @@ const useStyles = makeStyles(theme => ({
   goLiveButton: {
     width: '110px',
     height: '30px',
-    marginLeft: '20%',
     background: colors.blue,
     borderRadius: '5px',
     '&:hover': {
@@ -257,10 +246,19 @@ const useStyles = makeStyles(theme => ({
     width: '20%',
   },
   channelsWrapper: {
+    background: colors.darkGray,
+    cursor: 'pointer',
     display: 'flex',
-    width: '50%',
+    justifyContent: 'space-evenly',
+    width: '35%',
+    padding: '5px 0',
+    borderRadius: '70px',
     alignItems: 'center',
     marginBottom: '5%',
+    marginRight: '5%',
+    '&:hover': {
+      background: colors.lightGray
+    }
   },
   channels: {
     display: 'flex',
@@ -274,36 +272,43 @@ const useStyles = makeStyles(theme => ({
     marginTop: '2%',
     height: '120px',
   },
-}))
+}));
 
 const MyProfile = () => {
-  const { globalList } = useContext(MyListContext)
+  const { globalList, creatorList } = useContext(MyListContext)
   const { userData, loading, refreshData, getData } = useContext(
     UserStateContext
   )
-  const [gamesSelected, setGamesSelected] = useState(false)
-  const [userRecordings, setUserRecordings] = useState()
+  const [userRecordings, setUserRecordings] = useState([])
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [channelSelected, setChannelSelected] = useState(false)
   const [trophieSelected, setTrophieSelected] = useState(false)
+  const [creatorsSelected, setCreatorsSelected] = useState(false);
   const user = useSelector(selectors.getUser)
 
+  const handleCreatorClick = () => {
+    setCreatorsSelected(true)
+    setLiveRecordings(false)
+    setChannelSelected(false)
+    setTrophieSelected(false)
+  }
+
   const handleChannelClick = () => {
-    setGamesSelected(false)
+    setCreatorsSelected(false)
     setLiveRecordings(false)
     setChannelSelected(true)
     setTrophieSelected(false)
   }
 
   const handleTrophyClick = () => {
-    setGamesSelected(false)
+    setCreatorsSelected(false)
     setLiveRecordings(false)
     setChannelSelected(false)
     setTrophieSelected(true)
   }
 
   const handleLiveClick = () => {
-    setGamesSelected(false)
+    setCreatorsSelected(false)
     setLiveRecordings(true)
     setChannelSelected(false)
     setTrophieSelected(false)
@@ -324,13 +329,6 @@ const MyProfile = () => {
   useEffect(() => {
     getUserById()
   }, [recordedStreams])
-
-  useEffect(() => {
-    refreshData()
-    // if (globalList.length === 0) {
-    // getData()
-    // }
-  }, [])
 
   const classes = useStyles()
   const dispatch = useDispatch()
@@ -399,10 +397,10 @@ const MyProfile = () => {
                   </a>
                 </p>
               </div>
+            </div>
               <Button onClick={golive} className={classes.goLiveButton}>
                 Go Live
               </Button>
-            </div>
           </div>
         </div>
         <div className={classes.userGamesWrapper}>
@@ -425,6 +423,14 @@ const MyProfile = () => {
             </span>
             <span
               className={
+                creatorsSelected ? classes.selectedButton : classes.sectionButton
+              }
+              onClick={handleCreatorClick}
+            >
+              My Creators
+            </span>
+            <span
+              className={
                 trophieSelected ? classes.selectedButton : classes.sectionButton
               }
               onClick={handleTrophyClick}
@@ -433,18 +439,11 @@ const MyProfile = () => {
             </span>
           </div>
           <div className={classes.userContent}>
-            {gamesSelected && (
-              <div>
-                {gamesArray?.map(game => {
-                  return <p>{game}</p>
-                })}
-              </div>
-            )}
             {channelSelected && (
               <div className={classes.channels}>
                 {globalList?.map((item, index) => {
                   return (
-                    <div className={classes.channelsWrapper} key={index}>
+                    <div className={classes.channelsWrapper} onClick={() => dispatch(actions.pushHistory(`/channel/${item.fields.channelTag}`))} key={index}>
                       <img
                         className={classes.channelImg}
                         src={item.fields.channelImg}
@@ -452,6 +451,24 @@ const MyProfile = () => {
                       />
                       <p className={classes.channelName}>
                         {item.fields.channelName}
+                      </p>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+            {creatorsSelected && (
+              <div className={classes.channels}>
+                {creatorList?.map((item, index) => {
+                  return (
+                    <div className={classes.channelsWrapper} onClick={() => dispatch(actions.pushHistory(`/profile/${item.fields.creatorId}`))} key={index}>
+                      <img
+                        className={classes.channelImg}
+                        src={item.fields.creatorImg}
+                        alt="creator image"
+                      />
+                      <p className={classes.channelName}>
+                        {item.fields.creatorName}
                       </p>
                     </div>
                   )

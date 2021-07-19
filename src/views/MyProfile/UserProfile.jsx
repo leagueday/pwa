@@ -30,14 +30,12 @@ const useStyles = makeStyles(theme => ({
       overflowY: 'auto',
     }),
   profileWrapper: {
-    marginTop: '5%',
+    background: 'black',
     height: '90vh',
     width: '95%',
     marginLeft: '2.5%',
     display: 'flex',
-    overflow: 'auto',
     [theme.breakpoints.down('md')]: {
-      marginTop: '0',
       width: '100%',
       flexDirection: 'column',
       alignItems: 'center',
@@ -45,14 +43,14 @@ const useStyles = makeStyles(theme => ({
       height: '100%',
     },
   },
-  heroImg: {
-    position: 'absolute',
-    top: 20,
+  heroImgCont: {
     height: '25%',
+  },
+  heroImg: {
     minHeight: '200px',
     width: '100%',
+    height: '100%',
     objectFit: 'cover',
-    maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0))',
     [theme.breakpoints.down('md')]: {
       height: '15%',
     },
@@ -62,21 +60,20 @@ const useStyles = makeStyles(theme => ({
     },
   },
   credInfo: {
-    width: '30%',
+    width: '35%',
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     position: 'relative',
-    // overflow: 'visible',
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
   userImgContainer: {
     width: '100%',
-    minHeight: '200px',
-    height: '27%',
+    minHeight: '150px',
+    height: '20%',
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
@@ -89,16 +86,15 @@ const useStyles = makeStyles(theme => ({
     width: '12rem',
     height: '12rem',
     position: 'absolute',
-    top: 10,
-    border: '2px solid magenta',
+    top: -80,
+    border: '5px solid black',
     objectFit: 'cover',
     [theme.breakpoints.down('md')]: {
       width: '10rem',
       height: '10rem',
     },
     [theme.breakpoints.down('xs')]: {
-      top: 0,
-      left: 0,
+      top: -80,
       width: '8rem',
       height: '8rem',
     },
@@ -108,15 +104,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    marginTop: '75px',
     [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
       alignItems: 'stretch',
       paddingLeft: '3%',
       paddingRight: '3%',
-    },
-    [theme.breakpoints.down('sm')]: {
-      marginTop: '35%',
     },
   },
   editProfile: {
@@ -134,7 +126,6 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.fontWeightBold,
     fontSize: '150%',
     height: 'auto',
-    marginTop: 0,
     [theme.breakpoints.down('sm')]: {
       fontSize: '125%',
     },
@@ -150,9 +141,11 @@ const useStyles = makeStyles(theme => ({
     },
   },
   userGamesWrapper: {
+    background: 'black',
     width: '100%',
-    marginTop: '15%',
+    marginTop: '5%',
     marginLeft: '5%',
+    minHeight: '400px',
     [theme.breakpoints.down('md')]: {
       marginTop: '5%',
     },
@@ -206,6 +199,11 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: '20px',
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: '5%',
+    },
     // overflow: 'scroll',
   },
   placeHolder: {
@@ -216,7 +214,6 @@ const useStyles = makeStyles(theme => ({
   goLiveButton: {
     width: '110px',
     height: '30px',
-    marginLeft: '20%',
     background: colors.blue,
     borderRadius: '5px',
     '&:hover': {
@@ -252,10 +249,19 @@ const useStyles = makeStyles(theme => ({
     width: '20%',
   },
   channelsWrapper: {
+    background: colors.darkGray,
+    cursor: 'pointer',
     display: 'flex',
-    width: '50%',
+    justifyContent: 'space-evenly',
+    width: '35%',
+    padding: '5px 0',
+    borderRadius: '70px',
     alignItems: 'center',
     marginBottom: '5%',
+    marginRight: '5%',
+    '&:hover': {
+      background: colors.lightGray,
+    },
   },
   channels: {
     display: 'flex',
@@ -269,7 +275,64 @@ const useStyles = makeStyles(theme => ({
     marginTop: '2%',
     height: '120px',
   },
+  trophyCont: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    textAlign: 'center',
+  },
+  trophyName: {
+    fontWeight: theme.typography.fontWeightBold,
+    fontSize: '150%',
+  },
+  trophys: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
 }))
+
+const NoobTrophy = ({ classes }) => {
+  return (
+    <div className={classes.trophyCont}>
+      <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
+      <p>
+        {' '}
+        <span className={classes.trophyName}>Noob Award</span> <br></br> (first
+        stream created)
+      </p>
+    </div>
+  )
+}
+
+const PentaTrophy = ({ classes }) => {
+  return (
+    <div className={classes.trophyCont}>
+      <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
+      <p>
+        {' '}
+        <span className={classes.trophyName}>Penta Cast</span> <br></br> (5
+        streams created)
+      </p>
+    </div>
+  )
+}
+
+const TitanTrophy = ({ classes }) => {
+  return (
+    <div className={classes.trophyCont}>
+      <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
+      <p>
+        {' '}
+        <span className={classes.trophyName}>
+          Gamer Audio Titan
+        </span> <br></br> (10 streams created)
+      </p>
+    </div>
+  )
+}
 
 const MyProfile = ({ userId }) => {
   const { userData, loading, refreshData, getData } = useContext(
@@ -308,13 +371,6 @@ const MyProfile = ({ userId }) => {
   useEffect(() => {
     getUserById()
   }, [recordedStreams])
-
-  useEffect(() => {
-    refreshData()
-    setTimeout(() => {
-      getData()
-    }, 750)
-  }, [])
 
   const classes = useStyles({ primaryColor })
   let count = 1
@@ -428,23 +484,31 @@ const MyProfile = ({ userId }) => {
                 )}
               </div>
             )}
-            {trophieSelected &&
-              (userRecordings?.length > 0 ? (
-                <>
-                  <img
-                    className={classes.trophy}
-                    src="/img/noobTrophy1.png"
-                    alt=""
-                  />
-                  <p>Noob Award (first stream created)</p>
-                </>
-              ) : (
-                <div>
-                  <p className={classes.placeHolder}>
-                    Stream to earn trophies!
-                  </p>
-                </div>
-              ))}
+            <div className={classes.trophys}>
+              {trophieSelected &&
+                (userRecordings?.length === 0 ? (
+                  <div>
+                    <p className={classes.placeHolder}>
+                      Stream to earn trophies!
+                    </p>
+                  </div>
+                ) : userRecordings?.length > 10 ? (
+                  <>
+                    <NoobTrophy classes={classes} />
+                    <PentaTrophy classes={classes} />
+                    <TitanTrophy classes={classes} />
+                  </>
+                ) : userRecordings?.length > 5 ? (
+                  <>
+                    <PentaTrophy classes={classes} />
+                    <NoobTrophy classes={classes} />
+                  </>
+                ) : userRecordings?.length > 1 ? (
+                  <NoobTrophy classes={classes} />
+                ) : (
+                  <p>error</p>
+                ))}
+            </div>
           </div>
         </div>
       </div>

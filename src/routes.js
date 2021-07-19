@@ -23,9 +23,7 @@ export const routesConfig = [
     matchFirstToken('profile'),
     () => true,
     ProfileScreen,
-    pathTokens => (
-      console.log('path ', pathTokens),
-      {
+    pathTokens => ({
         userId: takeNextToken(pathTokens),
       }),
   ],

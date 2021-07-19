@@ -71,7 +71,6 @@ function ListStateProvider(props) {
         setGlobalList(result.concat(globalList))
     }
 
-
     const removeFromList = async (tag) => {
         setDisabled(true)
 

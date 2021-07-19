@@ -37,9 +37,6 @@ function UserProfileProvider(props) {
 
     useEffect(() => {
         getData();
-        setTimeout(() => {
-            getData();
-        }, 1000)
     }, [userId])
 
     return (
