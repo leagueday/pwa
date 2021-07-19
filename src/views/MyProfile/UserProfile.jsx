@@ -443,7 +443,6 @@ const MyProfile = ({ userId }) => {
     getCreatorData();
     getData();
   }, [])
-
   return (
     <div className={classes.content}>
       <div className={classes.heroImgCont}>
