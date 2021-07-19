@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { makeStyles } from '@material-ui/core/styles'
 import { actions } from '../../store'
 import useChannels from '../../api/useChannels'
@@ -20,9 +19,11 @@ const ChannelScreen = ({ channelTag }) => {
   const classes = useStyles()
   
   const dispatch = useDispatch()
+
   if(channelTag=='lcs'){
     dispatch(actions.pushHistory(`/channel/lol`))
   }
+
   const channels = useChannels().list
 
   const channel = channels?.find(channel => channel?.tag === channelTag)
@@ -56,4 +57,4 @@ const ChannelScreen = ({ channelTag }) => {
   )
 }
 
-export default ChannelScreen
+export default ChannelScreen;

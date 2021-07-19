@@ -9,9 +9,11 @@ const baseId = 'appXoertP1WJjd4TQ'
 const apiKey = "keymd23kpZ12EriVi"
 
 function UserProfileProvider(props) {
+    
     const base = new Airtable({ apiKey }).base(baseId)
     const activeUser = useSelector(selectors.getUser)
     const [userData, setUserData] = useState([])
+    const [userId, setUserId] = useState('')
     const [loading, setLoading] = useState(false);
 
     const getData = async () => {
@@ -19,12 +21,10 @@ function UserProfileProvider(props) {
         const id = activeUser?.id
 
         base('UserProfile').select({
-            filterByFormula: `{userId} = '${id}'`,
+            filterByFormula: `{userId} = '${userId}'`,
             view: "Grid view"
         }).eachPage(async function page(records, fetchNextPage) {
-            console.log(records)
             setUserData(records.shift())
-
         }, function done(err) {
             if (err) { console.error(err); return; }
         });
@@ -37,13 +37,10 @@ function UserProfileProvider(props) {
 
     useEffect(() => {
         getData();
-        setTimeout(() => {
-            getData();
-        }, 1000)
-    }, [activeUser])
+    }, [userId])
 
     return (
-        <UserStateProvider value={{ loading, userData, setUserData, refreshData, getData }}>
+        <UserStateProvider value={{ loading, userData, setUserData, refreshData, getData, setUserId }}>
             {props?.children}
         </UserStateProvider>
     )

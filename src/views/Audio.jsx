@@ -183,7 +183,6 @@ const Audio = () => {
   const audioUrl = useSelector(selectors.getAudioUrl)
   const volume = useSelector(selectors.getAudioVolume)
 
-  console.log('finding a trigger ', audioUrl)
   // const events = useSelector(selectors.getAudioEvents)
   const position = useSelector(selectors.getAudioPosition)
   const taps = useSelector(selectors.getAudioTaps)

@@ -26,25 +26,14 @@ const isChannelSelected = (locationPathname, channelTag) => {
 
 const MyChannels = ({ skinny }) => {
   const classes = useStyles()
-  const user = useSelector(selectors.getUser)
-  const [arrayToMap, setArrayToMap] = useState([])
-  const {
-    disabled,
-    listPlaceholder,
-    setListPlaceholder,
-    globalList,
-    getIsOnMyList,
-    addToList,
-    removeFromList,
-    setGlobalList,
-   } = useContext(MyListContext);
+  const { globalList } = useContext(MyListContext)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const makeGotoThisChannel = channelTag => () =>
     dispatch(actions.pushHistory(`/channel/${channelTag}`))
 
-  const locationPathname = useLocationPathname();
+  const locationPathname = useLocationPathname()
 
   return (
     <div className={classes.myChannels}>
@@ -65,7 +54,6 @@ const MyChannels = ({ skinny }) => {
       })}
     </div>
   )
-
 }
 
 MyChannels.defaultProps = {

@@ -30,6 +30,8 @@ const RewindStopButton = makeIconButton(IcoRewindStop)
 
 const useStyles = makeStyles(theme => ({
   audioControlsRow: {
+    position: 'relative',
+    zIndex: 100,
     alignItems: 'stretch',
     backgroundColor: colors.brandBlack,
     display: 'flex',
@@ -210,4 +212,4 @@ const SmUpAudioControls = () => {
   )
 }
 
-export default SmUpAudioControls
+export default SmUpAudioControls;

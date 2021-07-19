@@ -1,4 +1,5 @@
 import React from 'react'
+import MyCreators from './MyCreators'
 import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
 import Loading from '../Loading'
@@ -31,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: '0.5em',
     paddingRight: '0.5em',
     paddingTop: '0.5em',
-    marginBottom: '1rem'
+    marginBottom: '1rem',
   },
   logo: {
     cursor: 'pointer',
@@ -146,13 +147,13 @@ const FatSideNav = ({ className, home }) => {
       .then(function (response) {
         if (response.records.length > 0) {
           //setProfileCreated(response.records[0].fields.profileCreated)
-          setProfileCreated(3)
+          setProfileCreated(true)
           localStorage.setItem(
             'profilecreated',
             response.records[0].fields.profileCreated
           )
         } else {
-          setProfileCreated(2)
+          setProfileCreated(false)
         }
       })
       .catch(error => {
@@ -166,7 +167,7 @@ const FatSideNav = ({ className, home }) => {
   const goHome = () => dispatch(actions.pushHistory('/'))
 
   const myprofile = () => {
-    dispatch(actions.pushHistory('/profile'))
+    dispatch(actions.pushHistory(`/profile/${user.id}`))
   }
 
   const golive = () => dispatch(actions.pushHistory('/live'))
@@ -198,19 +199,17 @@ const FatSideNav = ({ className, home }) => {
             >
               <MyChannels />
             </Expander>
-            {/* {user && (
               <Expander
-                className={classes.expander}
-                text="MY PODCASTS"
-                tag="poca"
+              className={classes.expander}
+              text="MY CREATORS"
+              tag="poca"
               >
-                <MyPodcasts />
+              <MyCreators />
               </Expander>
-            )} */}
+            <MyPodcasts />
             <React.Suspense fallback={<Loading />}>
-              {
-                user && (
-                  // (profileCreated == 3 ? (
+              {user &&
+                (profileCreated ? (
                   <Button
                     className={classes.inNOutButton}
                     color="primary"
@@ -218,24 +217,19 @@ const FatSideNav = ({ className, home }) => {
                     size="small"
                     variant="contained"
                   >
-                    {profileCreated == 3
-                      ? 'PROFILE'
-                      : profileCreated == 2 && 'CREATE PROFILE'}
+                    PROFILE
                   </Button>
-                )
-                // ) : profileCreated == 2 ? (
-                //   <Button
-                //     className={classes.inNOutButton}
-                //     color="primary"
-                //     onClick={createProfile}
-                //     size="small"
-                //     variant="contained"
-                //   >
-                //     CREATE PROFILE
-                //   </Button>
-                // ) : (
-                //   ''
-              }
+                ) : (
+                  <Button
+                    className={classes.inNOutButton}
+                    color="primary"
+                    onClick={createProfile}
+                    size="small"
+                    variant="contained"
+                  >
+                    CREATE PROFILE
+                  </Button>
+                ))}
             </React.Suspense>
           </div>
         </div>

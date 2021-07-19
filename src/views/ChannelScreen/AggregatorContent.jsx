@@ -96,13 +96,12 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
     <NextLive titleStart={channel.title}/>
   </div>
 )
-// ll
+
 const AggregatorContent = ({ channel }) => {
   const classes = useStyles({ channelColor: channel.color })
   const facets = useFacets(channel.tag)
   const hasLive = hasLiveMockupData(channel)
   const hasReplay = hasReplayMockupData(channel)
-  console.log('channel from aggregator  ', channel)
 
   return (
     <ContentLayout
