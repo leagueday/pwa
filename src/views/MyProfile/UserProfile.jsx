@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { Button } from '@material-ui/core'
 import { selectors } from '../../store'
 import { MyListContext } from '../../store/stateProviders/listState'
+import Airtable from 'airtable'
 import { UserStateContext } from '../../store/stateProviders/userState'
 import { colors } from '../../styling'
 import { addScrollStyle } from '../util'
-import BasicLayout from '../BasicLayout'
 import { actions } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import useAirTable from '../../api/useAirtable'
 import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
-const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 const primaryColor = colors.magenta
 
 const useStyles = makeStyles(theme => ({
@@ -71,10 +69,12 @@ const useStyles = makeStyles(theme => ({
     },
   },
   userImgContainer: {
-    width: '100%',
+    background: 'black',
+    width: '12rem',
     minHeight: '150px',
-    height: '20%',
+    height: '12rem',
     display: 'flex',
+    borderRadius: '50%',
     alignItems: 'center',
     flexDirection: 'column',
     [theme.breakpoints.down('sm')]: {
@@ -209,7 +209,7 @@ const useStyles = makeStyles(theme => ({
   placeHolder: {
     opacity: 0.7,
     fontSize: '200%',
-    width: '75%',
+    width: '100%',
   },
   goLiveButton: {
     width: '110px',
@@ -299,7 +299,7 @@ const NoobTrophy = ({ classes }) => {
     <div className={classes.trophyCont}>
       <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
       <p>
-        <span className={classes.trophyName}>Noob Award</span> <br></br> 
+        <span className={classes.trophyName}>Noob Award</span> <br></br>
         <i>first stream created</i>
       </p>
     </div>
@@ -311,7 +311,7 @@ const PentaTrophy = ({ classes }) => {
     <div className={classes.trophyCont}>
       <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
       <p>
-        <span className={classes.trophyName}>Penta Cast</span> <br></br> 
+        <span className={classes.trophyName}>Penta Cast</span> <br></br>
         <i>5 streams created</i>
       </p>
     </div>
@@ -325,7 +325,7 @@ const TitanTrophy = ({ classes }) => {
       <p>
         {' '}
         <span className={classes.trophyName}>Gamer Audio Titan</span>
-        <br></br> <i>10 streams created</i> 
+        <br></br> <i>10 streams created</i>
       </p>
     </div>
   )
@@ -335,21 +335,43 @@ const MyProfile = ({ userId }) => {
   const { userData, loading, refreshData, getData } = useContext(
     UserStateContext
   )
-
-  const [gamesSelected, setGamesSelected] = useState(false)
-  const [userRecordings, setUserRecordings] = useState()
+  const dispatch = useDispatch();
+  const baseId = 'appXoertP1WJjd4TQ'
+  const apiKey = 'keymd23kpZ12EriVi'
+  const base = new Airtable({ apiKey }).base(baseId)
+  const [userRecordings, setUserRecordings] = useState([])
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [trophieSelected, setTrophieSelected] = useState(false)
+  const [creatorsSelected, setCreatorsSelected] = useState(false)
+  const [channelSelected, setChannelSelected] = useState(false)
+  const [channelList, setChannelList] = useState([])
+  const [creatorList, setCreatorList] = useState([])
+
+  const handleCreatorClick = () => {
+    setCreatorsSelected(true)
+    setLiveRecordings(false)
+    setChannelSelected(false)
+    setTrophieSelected(false)
+  }
+
+  const handleChannelClick = () => {
+    setCreatorsSelected(false)
+    setLiveRecordings(false)
+    setChannelSelected(true)
+    setTrophieSelected(false)
+  }
 
   const handleTrophyClick = () => {
-    setGamesSelected(false)
+    setCreatorsSelected(false)
     setLiveRecordings(false)
+    setChannelSelected(false)
     setTrophieSelected(true)
   }
 
   const handleLiveClick = () => {
-    setGamesSelected(false)
+    setCreatorsSelected(false)
     setLiveRecordings(true)
+    setChannelSelected(false)
     setTrophieSelected(false)
   }
 
@@ -375,6 +397,52 @@ const MyProfile = ({ userId }) => {
   if (loading) {
     return <h1>Loading...</h1>
   }
+
+  const getCreatorData = () => {
+    base('UserCreatorsList')
+      .select({
+        filterByFormula: `{userId} = '${userId}'`,
+        view: 'Grid view',
+      })
+      .eachPage(
+        async function page(records, fetchNextPage) {
+          setCreatorList(records)
+        },
+        function done(err) {
+          if (err) {
+            console.error(err)
+            return
+          }
+        }
+      )
+    }
+    console.log('creator ', creatorList)
+
+  const getListData = () => {
+    base('UserList')
+      .select({
+        filterByFormula: `{userId} = '${userId}'`,
+        view: 'Grid view',
+      })
+      .eachPage(
+        async function page(records, fetchNextPage) {
+          setChannelList(records)
+        },
+        function done(err) {
+          if (err) {
+            console.error(err)
+            return
+          }
+        }
+      )
+    }
+    console.log('channels ', channelList)
+
+  useEffect(() => {
+    getListData();
+    getCreatorData();
+    getData();
+  }, [])
 
   return (
     <div className={classes.content}>
@@ -440,7 +508,25 @@ const MyProfile = ({ userId }) => {
               }
               onClick={handleLiveClick}
             >
-              Recorded Streams
+              Audiocasts
+            </span>
+            <span
+              className={
+                channelSelected ? classes.selectedButton : classes.sectionButton
+              }
+              onClick={handleChannelClick}
+            >
+              Followed Channels
+            </span>
+            <span
+              className={
+                creatorsSelected
+                  ? classes.selectedButton
+                  : classes.sectionButton
+              }
+              onClick={handleCreatorClick}
+            >
+              Followed Creators
             </span>
             <span
               className={
@@ -452,17 +538,10 @@ const MyProfile = ({ userId }) => {
             </span>
           </div>
           <div className={classes.userContent}>
-            {gamesSelected && (
-              <div>
-                {gamesArray?.map(game => {
-                  return <p>{game}</p>
-                })}
-              </div>
-            )}
             {liveRecordings && (
               <div className={classes.recordings}>
                 {userRecordings?.length < 1 ? (
-                  <p className={classes.placeHolder}>No Recorded Streams yet</p>
+                  <p className={classes.placeHolder}>No Audiocasts yet</p>
                 ) : (
                   userRecordings?.map((rec, index) => {
                     count += 1
@@ -481,12 +560,68 @@ const MyProfile = ({ userId }) => {
                 )}
               </div>
             )}
+            {channelSelected && (
+              <div className={classes.channels}>
+                {channelList?.map((item, index) => {
+                  return (
+                    <div
+                      className={classes.channelsWrapper}
+                      onClick={() =>
+                        dispatch(
+                          actions.pushHistory(
+                            `/channel/${item.fields.channelTag}`
+                          )
+                        )
+                      }
+                      key={index}
+                    >
+                      <img
+                        className={classes.channelImg}
+                        src={item.fields.channelImg}
+                        alt="channel image"
+                      />
+                      <p className={classes.channelName}>
+                        {item.fields.channelName}
+                      </p>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+            {creatorsSelected && (
+              <div className={classes.channels}>
+                {creatorList?.map((item, index) => {
+                  return (
+                    <div
+                      className={classes.channelsWrapper}
+                      onClick={() =>
+                        dispatch(
+                          actions.pushHistory(
+                            `/profile/${item.fields.creatorId}`
+                          )
+                        )
+                      }
+                      key={index}
+                    >
+                      <img
+                        className={classes.channelImg}
+                        src={item.fields.creatorImg}
+                        alt="creator image"
+                      />
+                      <p className={classes.channelName}>
+                        {item.fields.creatorName}
+                      </p>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
             <div className={classes.trophys}>
               {trophieSelected &&
                 (userRecordings?.length === 0 ? (
                   <div>
                     <p className={classes.placeHolder}>
-                      Stream to earn trophies!
+                      No trophies
                     </p>
                   </div>
                 ) : userRecordings?.length > 10 ? (
@@ -502,9 +637,7 @@ const MyProfile = ({ userId }) => {
                   </>
                 ) : userRecordings?.length > 1 ? (
                   <NoobTrophy classes={classes} />
-                ) : (
-                  null
-                ))}
+                ) : null)}
             </div>
           </div>
         </div>

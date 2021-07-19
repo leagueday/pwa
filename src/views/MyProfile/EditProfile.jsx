@@ -485,6 +485,9 @@ const EditProfile = props => {
                 UserList: !!profileInfo.fields.UserList
                   ? profileInfo.fields.UserList
                   : [],
+                UserCreatorsList: !!profileInfo.fields.UserCreatorsList
+                  ? profileInfo.fields.UserCreatorsList
+                  : [],
 
                 profileCreated: 'yes',
               },
@@ -509,8 +512,7 @@ const EditProfile = props => {
           })
         savedUserChannel()
       }
-      dispatch(actions.pushHistory('/myprofile'))
-      refreshData();
+      dispatch(actions.pushHistory(`/profile/${user.id}`))
       getData();
     })
   }

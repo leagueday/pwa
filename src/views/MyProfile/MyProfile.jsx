@@ -69,6 +69,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   userImgContainer: {
+    background: 'black',
     width: '100%',
     minHeight: '150px',
     height: '20%',
