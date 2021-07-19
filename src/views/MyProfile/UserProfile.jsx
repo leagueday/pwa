@@ -276,6 +276,7 @@ const useStyles = makeStyles(theme => ({
     height: '120px',
   },
   trophyCont: {
+    marginRight: '4%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -290,7 +291,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-around',
   },
 }))
 
@@ -631,8 +632,8 @@ const MyProfile = ({ userId }) => {
                   </>
                 ) : userRecordings?.length > 5 ? (
                   <>
-                    <PentaTrophy classes={classes} />
                     <NoobTrophy classes={classes} />
+                    <PentaTrophy classes={classes} />
                   </>
                 ) : userRecordings?.length > 1 ? (
                   <NoobTrophy classes={classes} />
