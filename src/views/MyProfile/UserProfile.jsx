@@ -503,7 +503,7 @@ const MyProfile = ({ userId }) => {
                 ) : userRecordings?.length > 1 ? (
                   <NoobTrophy classes={classes} />
                 ) : (
-                  <p>error</p>
+                  null
                 ))}
             </div>
           </div>
