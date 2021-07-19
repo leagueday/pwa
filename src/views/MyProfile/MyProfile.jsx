@@ -575,7 +575,7 @@ const MyProfile = () => {
             )}
             <div className={classes.trophys}>
               {trophieSelected &&
-                (userRecordings?.length === -1 ? (
+                (userRecordings?.length === 0 ? (
                   <div>
                     <p className={classes.placeHolder}>
                       Stream to earn trophies!
@@ -592,7 +592,7 @@ const MyProfile = () => {
                     <PentaTrophy classes={classes} />
                     <NoobTrophy classes={classes} />
                   </>
-                ) : userRecordings?.length === 0 ? (
+                ) : userRecordings?.length > 1 ? (
                   <NoobTrophy classes={classes} />
                 ) : (
                   <p>error</p>
