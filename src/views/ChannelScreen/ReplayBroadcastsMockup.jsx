@@ -113,7 +113,7 @@ const useStyles = makeStyles(theme => ({
   episodeTitle: {
     color: colors.white80,
     minWidth: '12vw',
-    maxWidth: '90%',
+    maxWidth: '100%',
   },
   episodeTitleAndData: {
     display: 'flex',
