@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   heroImgCont: {
-    height: '25%'
+    height: '25%',
   },
   heroImg: {
     minHeight: '200px',
@@ -257,8 +257,8 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '5%',
     marginRight: '5%',
     '&:hover': {
-      background: colors.lightGray
-    }
+      background: colors.lightGray,
+    },
   },
   channels: {
     display: 'flex',
@@ -272,13 +272,24 @@ const useStyles = makeStyles(theme => ({
     marginTop: '2%',
     height: '120px',
   },
+  trophyCont: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+  },
+  trophyName: {
+    fontWeight: theme.typography.fontWeightBold,
+    fontSize: '150%',
+  },
   trophys: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
-}));
+}))
 
 const MyProfile = () => {
   const { globalList, creatorList } = useContext(MyListContext)
@@ -289,7 +300,7 @@ const MyProfile = () => {
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [channelSelected, setChannelSelected] = useState(false)
   const [trophieSelected, setTrophieSelected] = useState(false)
-  const [creatorsSelected, setCreatorsSelected] = useState(false);
+  const [creatorsSelected, setCreatorsSelected] = useState(false)
   const user = useSelector(selectors.getUser)
 
   const handleCreatorClick = () => {
@@ -352,36 +363,33 @@ const MyProfile = () => {
       <div className={classes.trophyCont}>
         <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
         <p>
-          {' '}
-          <span className={classes.trophyName}>Noob Award</span> <br></br> (first
-          stream created)
+          <span className={classes.trophyName}>Noob Award</span> <br></br> 
+          <i>first stream created</i>
         </p>
       </div>
     )
   }
-  
+
   const PentaTrophy = ({ classes }) => {
     return (
       <div className={classes.trophyCont}>
         <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
         <p>
-          {' '}
-          <span className={classes.trophyName}>Penta Cast</span> <br></br> (5
-          streams created)
+          <span className={classes.trophyName}>Penta Cast</span> <br></br> 
+          <i>5 streams created</i>
         </p>
       </div>
     )
   }
-  
+
   const TitanTrophy = ({ classes }) => {
     return (
       <div className={classes.trophyCont}>
         <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
         <p>
           {' '}
-          <span className={classes.trophyName}>
-            Gamer Audio Titan
-          </span> <br></br> (10 streams created)
+          <span className={classes.trophyName}>Gamer Audio Titan</span>
+          <br></br> <i>10 streams created</i> 
         </p>
       </div>
     )
@@ -444,9 +452,9 @@ const MyProfile = () => {
                 </p>
               </div>
             </div>
-              <Button onClick={golive} className={classes.goLiveButton}>
-                Go Live
-              </Button>
+            <Button onClick={golive} className={classes.goLiveButton}>
+              Go Live
+            </Button>
           </div>
         </div>
         <div className={classes.userGamesWrapper}>
@@ -469,7 +477,9 @@ const MyProfile = () => {
             </span>
             <span
               className={
-                creatorsSelected ? classes.selectedButton : classes.sectionButton
+                creatorsSelected
+                  ? classes.selectedButton
+                  : classes.sectionButton
               }
               onClick={handleCreatorClick}
             >
@@ -489,7 +499,17 @@ const MyProfile = () => {
               <div className={classes.channels}>
                 {globalList?.map((item, index) => {
                   return (
-                    <div className={classes.channelsWrapper} onClick={() => dispatch(actions.pushHistory(`/channel/${item.fields.channelTag}`))} key={index}>
+                    <div
+                      className={classes.channelsWrapper}
+                      onClick={() =>
+                        dispatch(
+                          actions.pushHistory(
+                            `/channel/${item.fields.channelTag}`
+                          )
+                        )
+                      }
+                      key={index}
+                    >
                       <img
                         className={classes.channelImg}
                         src={item.fields.channelImg}
@@ -507,7 +527,17 @@ const MyProfile = () => {
               <div className={classes.channels}>
                 {creatorList?.map((item, index) => {
                   return (
-                    <div className={classes.channelsWrapper} onClick={() => dispatch(actions.pushHistory(`/profile/${item.fields.creatorId}`))} key={index}>
+                    <div
+                      className={classes.channelsWrapper}
+                      onClick={() =>
+                        dispatch(
+                          actions.pushHistory(
+                            `/profile/${item.fields.creatorId}`
+                          )
+                        )
+                      }
+                      key={index}
+                    >
                       <img
                         className={classes.channelImg}
                         src={item.fields.creatorImg}
@@ -545,7 +575,7 @@ const MyProfile = () => {
             )}
             <div className={classes.trophys}>
               {trophieSelected &&
-                (userRecordings?.length === 0 ? (
+                (userRecordings?.length === -1 ? (
                   <div>
                     <p className={classes.placeHolder}>
                       Stream to earn trophies!
@@ -562,7 +592,7 @@ const MyProfile = () => {
                     <PentaTrophy classes={classes} />
                     <NoobTrophy classes={classes} />
                   </>
-                ) : userRecordings?.length > 1 ? (
+                ) : userRecordings?.length === 0 ? (
                   <NoobTrophy classes={classes} />
                 ) : (
                   <p>error</p>

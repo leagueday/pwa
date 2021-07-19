@@ -279,7 +279,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     textAlign: 'center',
   },
   trophyName: {
@@ -299,9 +299,8 @@ const NoobTrophy = ({ classes }) => {
     <div className={classes.trophyCont}>
       <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
       <p>
-        {' '}
-        <span className={classes.trophyName}>Noob Award</span> <br></br> (first
-        stream created)
+        <span className={classes.trophyName}>Noob Award</span> <br></br> 
+        <i>first stream created</i>
       </p>
     </div>
   )
@@ -312,9 +311,8 @@ const PentaTrophy = ({ classes }) => {
     <div className={classes.trophyCont}>
       <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
       <p>
-        {' '}
-        <span className={classes.trophyName}>Penta Cast</span> <br></br> (5
-        streams created)
+        <span className={classes.trophyName}>Penta Cast</span> <br></br> 
+        <i>5 streams created</i>
       </p>
     </div>
   )
@@ -326,9 +324,8 @@ const TitanTrophy = ({ classes }) => {
       <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
       <p>
         {' '}
-        <span className={classes.trophyName}>
-          Gamer Audio Titan
-        </span> <br></br> (10 streams created)
+        <span className={classes.trophyName}>Gamer Audio Titan</span>
+        <br></br> <i>10 streams created</i> 
       </p>
     </div>
   )
