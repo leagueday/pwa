@@ -113,11 +113,10 @@ const useStyles = makeStyles(theme => ({
   episodeTitle: {
     color: colors.white80,
     minWidth: '12vw',
-    maxWidth: '70%',
+    maxWidth: '100%',
   },
   episodeTitleAndData: {
     display: 'flex',
-    // flexDirection: 'row',
     width: '100%',
     [theme.breakpoints.only('xs')]: {
       flexDirection: 'column',
