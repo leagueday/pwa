@@ -6,6 +6,7 @@ const IconDump = React.lazy(() => import('./views/IconDump'))
 const HomeScreen = React.lazy(() => import('./views/HomeScreen'))
 const ProfileScreen = React.lazy(() => import('./views/MyProfile'))
 const GoLive = React.lazy(() => import('./views/GoLive'));
+const UploadAudio = React.lazy(() => import('./views/Upload'))
 const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'));
 const GoToLiveData = React.lazy(() => import('./views/GoLive/GoLiveData'));
 const PreviewPage = React.lazy(() => import('./views/GoLive/PreviewPage'));
@@ -24,8 +25,8 @@ export const routesConfig = [
     () => true,
     ProfileScreen,
     pathTokens => ({
-        userId: takeNextToken(pathTokens),
-      }),
+      userId: takeNextToken(pathTokens),
+    }),
   ],
   [
     matchFirstToken('channel'),
@@ -60,6 +61,7 @@ export const routesConfig = [
       podcastId: takeNextToken(pathTokens),
     }),
   ],
+  [matchFirstToken('upload'), () => true, UploadAudio, () => ({})],
   [matchFirstToken('live'), () => true, GoLive, () => ({})],
   [matchFirstToken('gotolive'), () => true, GoToLiveData, () => ({})],
   [matchFirstToken('preview'), () => true, PreviewPage, () => ({})],
@@ -67,5 +69,4 @@ export const routesConfig = [
   [matchFirstToken('create'), () => true, CreateProfile, () => ({})],
   [matchFirstToken('editprofile'), () => true, EditProfile, () => ({})],
   [() => true, () => true, HomeScreen, () => ({})],
-
 ];

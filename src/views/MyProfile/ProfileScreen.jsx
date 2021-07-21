@@ -26,6 +26,7 @@ const ProfileScreen = ({ userId }) => {
   return (
     <BasicLayout home>{auth ? <MyProfile /> : <UserProfile userId={userId} />}</BasicLayout>
   )
+
 }
 
 export default ProfileScreen

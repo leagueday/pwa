@@ -443,7 +443,8 @@ const MyProfile = ({ userId }) => {
     getListData();
     getCreatorData();
     getData();
-  }, [])
+  }, [userId]);
+
   return (
     <div className={classes.content}>
       <div className={classes.heroImgCont}>

@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: '150%',
     fontWeight: theme.typography.fontWeightBold
   },
-}))
+}));
 
 const ToggleImageButton = ({
   className,
