@@ -63,8 +63,6 @@ const AudioCard = ({ audio, indexData }) => {
 
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY
 
-    console.log('audio ',audioUrl, audioMode)
-
   const onPopClick = isPlayings
     ? ev => {
         dispatch(actions.pauseAudio())
