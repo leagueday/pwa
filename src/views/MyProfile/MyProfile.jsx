@@ -351,12 +351,12 @@ const MyProfile = () => {
 
   const { data: recordedStreams } = useAirTable(
     'appXoertP1WJjd4TQ',
-    'ChannelLiveData'
+    'UserAudiocasts'
   )
-
+    console.log(recordedStreams)
   const getUserById = () => {
     const currentUserRecordings = recordedStreams?.filter(
-      item => item.fields.userId === user?.id
+      item => item.fields.userId.shift() === user?.id
     )
     setUserRecordings(currentUserRecordings)
   }

@@ -22,7 +22,6 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
   },
   select: {
     width: '50%',
@@ -36,7 +35,7 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     width: '50%',
-    marginBottom: '10%',
+    marginBottom: '5%',
   },
   submitBtn: {
     marginTop: '6%',
@@ -51,6 +50,17 @@ const useStyles = makeStyles(theme => ({
       width: '35%',
       height: '10%',
     },
+  },
+  recordRecs: {
+    width: '30%',
+    margin: '1%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  recHeader: {
+    borderBottom: '2px solid white',
+    textAlign: 'center',
   },
 }))
 
@@ -118,7 +128,7 @@ const UploadAudiocast = () => {
             title: formValues.title,
             user: [currentUserId],
             thumbnail: thumbnail,
-            audiocastUrl: audiocast,
+            playbackUrl: audiocast,
             channelTag: selectedChannel,
             description: formValues.description,
             creatorImg: userData?.fields?.image
@@ -208,6 +218,12 @@ const UploadAudiocast = () => {
           <Button className={classes.submitBtn} onClick={handleSubmit}>
             Submit Audiocast
           </Button>
+        </div>
+        <div className={classes.recordRecs}>
+          <h2 className={classes.recHeader}>Recording Reccomendations</h2>
+            <p>PC & Mac OS: OBS (<a href="https://obsproject.com/download" target="_blank" style={{ color: 'blue' }}>Download here</a>)</p>
+            <p>iOS Mobile: Voice Memos app</p>
+            <p>Android Mobile: Voice Recorder (<a href="https://play.google.com/store/apps/details?id=com.media.bestrecorder.audiorecorder&hl=en_US&gl=US" target="_blank" style={{ color: 'blue' }}>Download here</a>) </p>
         </div>
       </div>
     </BasicLayout>

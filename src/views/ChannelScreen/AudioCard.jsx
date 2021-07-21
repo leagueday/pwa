@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     border: '.5px solid white',
     borderRadius: '5px',
     marginLeft: '35px',
-    marginRIght: '35px',
+    marginBottom: '40px',
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
@@ -57,7 +57,7 @@ const AudioCard = ({ audio, indexData }) => {
   const audioUrl = useSelector(selectors.getAudioUrl)
 
   const isSelectedAudio =
-    audioUrl && audioUrl === audio.fields.audiocastUrl
+    audioUrl && audioUrl === audio.fields.playbackUrl
 
   const audioMode = useSelector(selectors.getAudioMode)
 
@@ -76,7 +76,7 @@ const AudioCard = ({ audio, indexData }) => {
               '',
               '',
               '',
-              audio.fields.audiocastUrl,
+              audio.fields.playbackUrl,
               indexData,
               '',
               ''

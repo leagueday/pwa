@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     width: '100%',
   },
-}))
+}));
 
 const Audiocast = ({ channelTag }) => {
   const classes = useStyles()

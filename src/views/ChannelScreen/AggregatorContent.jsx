@@ -1,8 +1,8 @@
 import React from 'react'
 import cx from 'classnames'
-import NextLive from '../NextLive';
+import NextLive from '../NextLive'
 import { makeStyles } from '@material-ui/core/styles'
-import Audiocast from './Audiocast';
+import Audiocast from './Audiocast'
 import useFacets from '../../api/useFacets'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
@@ -93,7 +93,7 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
       {hasBroadcasts && channel.title !== 'League of Legends' && 'LCS Coverage'}
       {channel.title === 'League of Legends' && 'Live AudioCasts and Replays'}
     </div>
-    <NextLive titleStart={channel.title}/>
+    <NextLive titleStart={channel.title} />
   </div>
 )
 
@@ -128,7 +128,6 @@ const AggregatorContent = ({ channel }) => {
           />
         </BottomBlock>
       )}
-
       {hasReplay && (
         <BottomBlock
           accentColor={channel.color}
@@ -142,21 +141,15 @@ const AggregatorContent = ({ channel }) => {
           />
         </BottomBlock>
       )}
-     
-     {channel.tag != 'lol' ? (
-         <BottomBlock
-            accentColor={channel.color}
-            titleStart={channel.title}
-            titleRest="Audiocasts"
-          >
-            <Audiocast channelTag={channel.tag}/>
-            {/* <FacetedPodcastTiles data={facets} /> */}
-          </BottomBlock>   
-    ):''
-     }
-      
+      <BottomBlock
+        accentColor={channel.color}
+        titleStart={channel.title}
+        titleRest="Audiocasts"
+      >
+        <Audiocast channelTag={channel.tag} />
+      </BottomBlock>
     </ContentLayout>
   )
 }
 
-export default AggregatorContent;
+export default AggregatorContent
