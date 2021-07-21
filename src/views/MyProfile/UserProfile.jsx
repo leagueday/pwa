@@ -444,7 +444,6 @@ const MyProfile = ({ userId }) => {
     getCreatorData();
     getData();
   }, [userId]);
-
   return (
     <div className={classes.content}>
       <div className={classes.heroImgCont}>
