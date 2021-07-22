@@ -19,6 +19,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    background: 'black',
+    [theme.breakpoints.down('sm')]: {
+      background: 'inherit'
+    },
   },
   creator: {
     textAlign: 'center',
@@ -122,4 +126,4 @@ const ChannelCategories = ({ className }) => {
   )
 }
 
-export default ChannelCategories
+export default ChannelCategories;

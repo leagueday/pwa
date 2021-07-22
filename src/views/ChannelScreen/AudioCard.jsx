@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
   },
   creatorImg: {
+    cursor: 'pointer',
     position: 'absolute',
     borderRadius: '50%',
     width: '30%',
@@ -56,8 +57,7 @@ const AudioCard = ({ audio, indexData }) => {
 
   const audioUrl = useSelector(selectors.getAudioUrl)
 
-  const isSelectedAudio =
-    audioUrl && audioUrl === audio.fields.playbackUrl
+  const isSelectedAudio = audioUrl && audioUrl === audio.fields.playbackUrl
 
   const audioMode = useSelector(selectors.getAudioMode)
 
@@ -108,15 +108,18 @@ const AudioCard = ({ audio, indexData }) => {
         <div>
           <h4 className={classes.title}>{audio?.fields?.title}</h4>
         </div>
-        <ToggleImageButton
-          className={classes.playBtn}
-          size="5vw"
-          on={isPlayings}
-          onClick={onPopClick}
-          onImage="/img/logo_live_pause.png"
-          offImage="/img/logo_live_play.png"
-          shadowColor={colors.lightGray}
-        />
+        {/* <div className={classes.playLike}> */}
+          <ToggleImageButton
+            className={classes.playBtn}
+            size="5vw"
+            on={isPlayings}
+            onClick={onPopClick}
+            onImage="/img/logo_live_pause.png"
+            offImage="/img/logo_live_play.png"
+            shadowColor={colors.lightGray}
+          />
+          
+        {/* </div> */}
       </div>
     </div>
   )

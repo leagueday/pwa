@@ -8,20 +8,44 @@ import { options } from './options'
 import Select from 'react-select'
 import Airtable from 'airtable'
 import { colors } from '../../styling'
+import { addScrollStyle } from '../util'
 import { Button } from '@material-ui/core'
 import { UserStateContext } from '../../store/stateProviders/userState'
 import { uploadFile } from 'react-s3'
+const primaryColor = colors.magenta
 
 import('buffer').then(({ Buffer }) => {
   global.Buffer = Buffer
 })
 
 const useStyles = makeStyles(theme => ({
+  content: () =>
+    addScrollStyle(
+      primaryColor,
+      theme
+    )({
+      alignItems: 'stretch',
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+      minHeight: '920px',
+      overflowX: 'hidden',
+      overflowY: 'auto',
+      background: 'black',
+    }),
   wrapper: {
+    marginBottom: '10%',
     width: '100%',
     height: '100%',
+    background: 'black',
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '10%',
+      flexDirection: 'column-reverse',
+      alignItems: 'center',
+    },
   },
   select: {
     width: '50%',
@@ -32,6 +56,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+      minHeight: '700px',
+    },
   },
   text: {
     width: '50%',
@@ -52,15 +81,23 @@ const useStyles = makeStyles(theme => ({
     },
   },
   recordRecs: {
+    overflow: 'scroll',
     width: '30%',
     margin: '1%',
-    height: '40%',
+    height: 'auto',
     borderRadius: '5px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     border: '1px solid white',
     padding: '10px',
+    minHeight: '300px',
+    [theme.breakpoints.up('lg')]: {
+      minWidth: '420px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
   },
   recHeader: {
     borderBottom: '2px solid white',
@@ -113,7 +150,7 @@ const UploadAudiocast = () => {
         setAudiocast(res.location)
       })
       .catch(err => console.log(err))
-      console.log(audiocast)
+    console.log(audiocast)
   }
 
   const handleImageUpload = e => {
@@ -135,7 +172,7 @@ const UploadAudiocast = () => {
             playbackUrl: audiocast,
             channelTag: selectedChannel,
             description: formValues.description,
-            creatorImg: userData?.fields?.image
+            creatorImg: userData?.fields?.image,
           },
         },
       ],
@@ -149,8 +186,8 @@ const UploadAudiocast = () => {
           getCreatorData()
         })
       }
-      )
-      dispatch(actions.pushHistory(`/profile/${user?.id}`))
+    )
+    dispatch(actions.pushHistory(`/profile/${user?.id}`))
   }
 
   const customStyles = {
@@ -178,56 +215,77 @@ const UploadAudiocast = () => {
 
   return (
     <BasicLayout>
-      <div className={classes.wrapper}>
-        <div className={classes.inputs}>
-          <h1>Upload Audiocast</h1>
+      <div className={classes.content}>
+        <div className={classes.wrapper}>
+          <div className={classes.inputs}>
+            <h1>Upload Audiocast</h1>
+            <TextField
+              label="Title of your audiocast"
+              name="title"
+              value={formValues.title}
+              onChange={handleChange}
+              className={classes.text}
+            />
+            <TextField
+              label="Description of your audiocast"
+              name="description"
+              value={formValues.description}
+              onChange={handleChange}
+              className={classes.text}
+            />
+            <h4>Select Channel to upload Audiocast</h4>
+            <Select
+              options={options}
+              className={classes.select}
+              styles={customStyles}
+              onChange={val => setSelectedChannel(val.value)}
+            />
+            <h4>Upload Audiocast Thumbnail</h4>
+            <input
+              aria-label="Select a thumbnail to upload"
+              type="file"
+              name="image"
+              onChange={handleImageUpload}
+            />
 
-          <TextField
-            label="Title of your audiocast"
-            name="title"
-            value={formValues.title}
-            onChange={handleChange}
-            className={classes.text}
-          />
-          <TextField
-            label="Description of your audiocast"
-            name="description"
-            value={formValues.description}
-            onChange={handleChange}
-            className={classes.text}
-          />
-          <h4>Select Channel to upload Audiocast</h4>
-          <Select
-            options={options}
-            className={classes.select}
-            styles={customStyles}
-            onChange={val => setSelectedChannel(val.value)}
-          />
-          <h4>Upload Audiocast Thumbnail</h4>
-          <input
-            aria-label="Select a thumbnail to upload"
-            type="file"
-            name="image"
-            onChange={handleImageUpload}
-          />
+            <h4>Upload .mp3 file</h4>
+            <input
+              aria-label="Select an .mp3 file to upload"
+              accept="audio/MPEG"
+              type="file"
+              onChange={handleAudioUpload}
+            />
 
-          <h4>Upload .mp3 file</h4>
-          <input
-            aria-label="Select an .mp3 file to upload"
-            accept="audio/MPEG"
-            type="file"
-            onChange={handleAudioUpload}
-          />
-
-          <Button className={classes.submitBtn} onClick={handleSubmit}>
-            Submit Audiocast
-          </Button>
-        </div>
-        <div className={classes.recordRecs}>
-          <h2 className={classes.recHeader}>Recording Reccomendations</h2>
-            <p>PC & Mac: OBS (<a href="https://obsproject.com/download" target="_blank" style={{ color: 'blue' }}>Download here</a>)</p>
+            <Button className={classes.submitBtn} onClick={handleSubmit}>
+              Submit Audiocast
+            </Button>
+          </div>
+          <div className={classes.recordRecs}>
+            <h2 className={classes.recHeader}>Recording Reccomendations</h2>
+            <p>
+              PC & Mac: OBS (
+              <a
+                href="https://obsproject.com/download"
+                target="_blank"
+                style={{ color: 'blue' }}
+              >
+                Download
+              </a>
+              )
+            </p>
             <p>iOS Mobile: Voice Memos app</p>
-            <p>Android Mobile: Voice Recorder (<a href="https://play.google.com/store/apps/details?id=com.media.bestrecorder.audiorecorder&hl=en_US&gl=US" target="_blank" style={{ color: 'blue' }}>Download here</a>) </p>
+            <p>
+              Android Mobile: Voice Recorder (
+              <a
+                href="https://play.google.com/store/apps/details?id=com.media.bestrecorder.audiorecorder&hl=en_US&gl=US"
+                target="_blank"
+                style={{ color: 'blue' }}
+              >
+                Download
+              </a>
+              ){' '}
+            </p>
+          </div>
         </div>
       </div>
     </BasicLayout>

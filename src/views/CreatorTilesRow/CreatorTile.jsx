@@ -19,7 +19,10 @@ const useStyles = makeStyles(theme => ({
     minHeight: 0,
     minWidth: 0,
     userSelect: 'none',
-    marginBottom: '2.5%'
+    marginBottom: '2.5%',
+    [theme.breakpoints.down('sm')]: {
+      width: '33%'
+    },
   },
   image: {
     border: `0.25em solid ${colors.white80}`,
