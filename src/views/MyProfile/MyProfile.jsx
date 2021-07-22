@@ -144,7 +144,6 @@ const useStyles = makeStyles(theme => ({
     background: 'black',
     width: '100%',
     marginTop: '5%',
-    marginLeft: '5%',
     minHeight: '400px',
     [theme.breakpoints.down('md')]: {
       marginTop: '5%',
@@ -212,18 +211,30 @@ const useStyles = makeStyles(theme => ({
   goLiveButton: {
     width: '110px',
     height: '30px',
+    marginBottom: '5%',
     background: colors.blue,
     borderRadius: '5px',
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
-    [theme.breakpoints.down('md')]: {
-      marginLeft: '0',
-    },
+    [theme.breakpoints.down('md')]: {},
     [theme.breakpoints.down('sm')]: {
-      marginLeft: '2%',
       width: '30%',
       height: '15%',
+    },
+  },
+  uploadButton: {
+    width: '180px',
+    height: '40px',
+    background: colors.blue,
+    borderRadius: '5px',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+    [theme.breakpoints.down('md')]: {},
+    [theme.breakpoints.down('sm')]: {
+      width: '35%',
+      height: '10%',
     },
   },
   socials: {
@@ -290,6 +301,12 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
+  audioButtons: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
 }))
 
 const MyProfile = () => {
@@ -303,7 +320,6 @@ const MyProfile = () => {
   const [trophieSelected, setTrophieSelected] = useState(false)
   const [creatorsSelected, setCreatorsSelected] = useState(false)
   const user = useSelector(selectors.getUser)
-
   const handleCreatorClick = () => {
     setCreatorsSelected(true)
     setLiveRecordings(false)
@@ -332,17 +348,26 @@ const MyProfile = () => {
     setTrophieSelected(false)
   }
 
+  const { data: audiocasts } = useAirTable(
+    'appXoertP1WJjd4TQ',
+    'UserAudiocasts'
+  )
   const { data: recordedStreams } = useAirTable(
     'appXoertP1WJjd4TQ',
     'ChannelLiveData'
   )
 
   const getUserById = () => {
-    const currentUserRecordings = recordedStreams?.filter(
+    const currentUserRecordings = audiocasts?.filter(
+      item => item.fields.userId.shift() === user?.id
+    )
+    const userAudiocasts = recordedStreams?.filter(
       item => item.fields.userId === user?.id
     )
-    setUserRecordings(currentUserRecordings)
+    setUserRecordings(currentUserRecordings?.concat(userAudiocasts))
   }
+
+  console.log('all recordings together ', userRecordings)
 
   useEffect(() => {
     getUserById()
@@ -364,7 +389,7 @@ const MyProfile = () => {
       <div className={classes.trophyCont}>
         <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
         <p>
-          <span className={classes.trophyName}>Noob Award</span> <br></br> 
+          <span className={classes.trophyName}>Noob Award</span> <br></br>
           <i>first stream created</i>
         </p>
       </div>
@@ -376,7 +401,7 @@ const MyProfile = () => {
       <div className={classes.trophyCont}>
         <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
         <p>
-          <span className={classes.trophyName}>Penta Cast</span> <br></br> 
+          <span className={classes.trophyName}>Penta Cast</span> <br></br>
           <i>5 streams created</i>
         </p>
       </div>
@@ -390,7 +415,7 @@ const MyProfile = () => {
         <p>
           {' '}
           <span className={classes.trophyName}>Gamer Audio Titan</span>
-          <br></br> <i>10 streams created</i> 
+          <br></br> <i>10 streams created</i>
         </p>
       </div>
     )
@@ -453,9 +478,19 @@ const MyProfile = () => {
                 </p>
               </div>
             </div>
-            <Button onClick={golive} className={classes.goLiveButton}>
-              Go Live
-            </Button>
+            <div className={classes.audioButtons}>
+              {userData?.fields?.admin === 'true' && (
+                <Button onClick={golive} className={classes.goLiveButton}>
+                  Go Live
+                </Button>
+              )}
+              <Button
+                onClick={() => dispatch(actions.pushHistory('/upload'))}
+                className={classes.uploadButton}
+              >
+                Upload Audiocast
+              </Button>
+            </div>
           </div>
         </div>
         <div className={classes.userGamesWrapper}>
@@ -466,7 +501,7 @@ const MyProfile = () => {
               }
               onClick={handleLiveClick}
             >
-              Recorded Streams
+              Audiocasts
             </span>
             <span
               className={
@@ -595,9 +630,7 @@ const MyProfile = () => {
                   </>
                 ) : userRecordings?.length > 1 ? (
                   <NoobTrophy classes={classes} />
-                ) : (
-                  null
-                ))}
+                ) : null)}
             </div>
           </div>
         </div>
@@ -606,4 +639,4 @@ const MyProfile = () => {
   )
 }
 
-export default MyProfile
+export default MyProfile;

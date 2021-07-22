@@ -217,7 +217,7 @@ const useStyles = makeStyles(theme => ({
   form: {
     margin: 0,
   },
-}))
+}));
 
 const EditProfile = props => {
   const dispatch = useDispatch()
@@ -271,7 +271,7 @@ const EditProfile = props => {
     userChannelImageSaved: '',
     streamKey: '',
     liveStreamId: '',
-  })
+  });
 
   const [selectChannel, setselectChannel] = useState([])
   const [context, setContext] = useState([{ value: null }])
@@ -425,6 +425,7 @@ const EditProfile = props => {
     }
     reader.readAsDataURL(file)
     setHeroImg(file)
+    console.log('hero ', image)
   }
 
   const validateForm = () => {
@@ -488,7 +489,8 @@ const EditProfile = props => {
                 UserCreatorsList: !!profileInfo.fields.UserCreatorsList
                   ? profileInfo.fields.UserCreatorsList
                   : [],
-
+                admin: profileInfo.fields.admin,
+                UserAudiocasts: profileInfo.fields.UserAudiocasts,
                 profileCreated: 'yes',
               },
             },

@@ -336,7 +336,7 @@ const MyProfile = ({ userId }) => {
   const { userData, loading, refreshData, getData } = useContext(
     UserStateContext
   )
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const baseId = 'appXoertP1WJjd4TQ'
   const apiKey = 'keymd23kpZ12EriVi'
   const base = new Airtable({ apiKey }).base(baseId)
@@ -376,16 +376,23 @@ const MyProfile = ({ userId }) => {
     setTrophieSelected(false)
   }
 
+  const { data: audiocasts } = useAirTable(
+    'appXoertP1WJjd4TQ',
+    'UserAudiocasts'
+  )
   const { data: recordedStreams } = useAirTable(
     'appXoertP1WJjd4TQ',
     'ChannelLiveData'
   )
 
   const getUserById = () => {
-    const currentUserRecordings = recordedStreams?.filter(
+    const currentUserRecordings = audiocasts?.filter(
+      item => item.fields.userId.shift() === userId
+    )
+    const userAudiocasts = recordedStreams?.filter(
       item => item.fields.userId === userId
     )
-    setUserRecordings(currentUserRecordings?.reverse())
+    setUserRecordings(currentUserRecordings?.concat(userAudiocasts))
   }
 
   useEffect(() => {
@@ -416,8 +423,8 @@ const MyProfile = ({ userId }) => {
           }
         }
       )
-    }
-    console.log('creator ', creatorList)
+  }
+  console.log('creator ', creatorList)
 
   const getListData = () => {
     base('UserList')
@@ -436,14 +443,14 @@ const MyProfile = ({ userId }) => {
           }
         }
       )
-    }
-    console.log('channels ', channelList)
+  }
+  console.log('channels ', channelList)
 
   useEffect(() => {
-    getListData();
-    getCreatorData();
-    getData();
-  }, [])
+    getListData()
+    getCreatorData()
+    getData()
+  }, [userId])
   return (
     <div className={classes.content}>
       <div className={classes.heroImgCont}>
@@ -620,9 +627,7 @@ const MyProfile = ({ userId }) => {
               {trophieSelected &&
                 (userRecordings?.length === 0 ? (
                   <div>
-                    <p className={classes.placeHolder}>
-                      No trophies
-                    </p>
+                    <p className={classes.placeHolder}>No trophies</p>
                   </div>
                 ) : userRecordings?.length > 10 ? (
                   <>

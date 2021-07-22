@@ -16,7 +16,7 @@ function UserProfileProvider(props) {
     const [userId, setUserId] = useState('')
     const [loading, setLoading] = useState(false);
 
-    const getData = async () => {
+    const getData = async (idx) => {
         setLoading(true)
         const id = activeUser?.id
 
