@@ -221,7 +221,7 @@ const UploadAudiocast = () => {
         </div>
         <div className={classes.recordRecs}>
           <h2 className={classes.recHeader}>Recording Reccomendations</h2>
-            <p>PC & Mac OS: OBS (<a href="https://obsproject.com/download" target="_blank" style={{ color: 'blue' }}>Download here</a>)</p>
+            <p>PC & Mac: OBS (<a href="https://obsproject.com/download" target="_blank" style={{ color: 'blue' }}>Download here</a>)</p>
             <p>iOS Mobile: Voice Memos app</p>
             <p>Android Mobile: Voice Recorder (<a href="https://play.google.com/store/apps/details?id=com.media.bestrecorder.audiorecorder&hl=en_US&gl=US" target="_blank" style={{ color: 'blue' }}>Download here</a>) </p>
         </div>

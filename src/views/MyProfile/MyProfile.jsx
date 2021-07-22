@@ -144,7 +144,6 @@ const useStyles = makeStyles(theme => ({
     background: 'black',
     width: '100%',
     marginTop: '5%',
-    marginLeft: '5%',
     minHeight: '400px',
     [theme.breakpoints.down('md')]: {
       marginTop: '5%',
@@ -349,17 +348,26 @@ const MyProfile = () => {
     setTrophieSelected(false)
   }
 
-  const { data: recordedStreams } = useAirTable(
+  const { data: audiocasts } = useAirTable(
     'appXoertP1WJjd4TQ',
     'UserAudiocasts'
   )
-    console.log(recordedStreams)
+  const { data: recordedStreams } = useAirTable(
+    'appXoertP1WJjd4TQ',
+    'ChannelLiveData'
+  )
+
   const getUserById = () => {
-    const currentUserRecordings = recordedStreams?.filter(
+    const currentUserRecordings = audiocasts?.filter(
       item => item.fields.userId.shift() === user?.id
     )
-    setUserRecordings(currentUserRecordings)
+    const userAudiocasts = recordedStreams?.filter(
+      item => item.fields.userId === user?.id
+    )
+    setUserRecordings(currentUserRecordings?.concat(userAudiocasts))
   }
+
+  console.log('all recordings together ', userRecordings)
 
   useEffect(() => {
     getUserById()
@@ -476,7 +484,10 @@ const MyProfile = () => {
                   Go Live
                 </Button>
               )}
-              <Button onClick={() => dispatch(actions.pushHistory('/upload'))} className={classes.uploadButton}>
+              <Button
+                onClick={() => dispatch(actions.pushHistory('/upload'))}
+                className={classes.uploadButton}
+              >
                 Upload Audiocast
               </Button>
             </div>
