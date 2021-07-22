@@ -54,9 +54,13 @@ const useStyles = makeStyles(theme => ({
   recordRecs: {
     width: '30%',
     margin: '1%',
+    height: '40%',
+    borderRadius: '5px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    border: '1px solid white',
+    padding: '10px',
   },
   recHeader: {
     borderBottom: '2px solid white',
@@ -144,9 +148,9 @@ const UploadAudiocast = () => {
           console.log('created new myList entry  ', record)
           getCreatorData()
         })
-        dispatch(actions.pushHistory(`/profile/${user?.id}`))
       }
-    )
+      )
+      dispatch(actions.pushHistory(`/profile/${user?.id}`))
   }
 
   const customStyles = {
