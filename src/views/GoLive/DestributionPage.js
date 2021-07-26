@@ -227,8 +227,7 @@ const DestributionPage = () => {
             channelTag: channelList.channelTag,
             playbackUrl: `${playbackStream}/${play_id}.m3u8`,
             userId: user.id,
-            userEmail: user.email,
-            type: 'livestream'
+            userEmail: user.email
           }
         }
       ]
