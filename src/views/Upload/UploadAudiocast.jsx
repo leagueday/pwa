@@ -153,7 +153,6 @@ const UploadAudiocast = () => {
     console.log(audiocast)
   }
 
-  console.log('dubegger', audiocast)
   const handleImageUpload = e => {
     const file = e.target.files[0]
     uploadFile(file, config).then(res => {
