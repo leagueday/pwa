@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
+import Airtable from 'airtable'
 import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import { selectors } from '../../store'
+import Modal from '@material-ui/core/Modal'
 import { MyListContext } from '../../store/stateProviders/listState'
 import { UserStateContext } from '../../store/stateProviders/userState'
 import { colors } from '../../styling'
@@ -12,6 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import useAirTable from '../../api/useAirtable'
 import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
+
 const primaryColor = colors.magenta
 
 const useStyles = makeStyles(theme => ({
@@ -31,13 +34,11 @@ const useStyles = makeStyles(theme => ({
     background: 'black',
     height: '90vh',
     width: '95%',
-    marginLeft: '2.5%',
     display: 'flex',
     [theme.breakpoints.down('md')]: {
       width: '100%',
       flexDirection: 'column',
       alignItems: 'center',
-      marginLeft: '0',
       height: '100%',
     },
   },
@@ -121,6 +122,26 @@ const useStyles = makeStyles(theme => ({
       fontSize: '80%',
     },
   },
+  deleteBtn: {
+    background: 'transparent',
+    border: '1px solid red',
+    color: 'red',
+    width: '150px',
+    '&:hover': {
+      transition: 'all .2s ease-in-out',
+      backgroundColor: 'red',
+      color: 'white',
+    },
+    [theme.breakpoints.down('md')]: {
+      width: '25%',
+      fontSize: '80%',
+    },
+  },
+  buttons: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-evenly',
+  },
   userName: {
     fontWeight: theme.typography.fontWeightBold,
     fontSize: '150%',
@@ -149,7 +170,6 @@ const useStyles = makeStyles(theme => ({
       marginTop: '5%',
     },
     [theme.breakpoints.down('sm')]: {
-      marginLeft: '0',
       marginTop: '5%',
       height: '100%',
       maxHeight: '375px',
@@ -200,7 +220,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     marginTop: '2%',
     width: '100%',
-    paddingLeft: '5%',
     // overflow: 'scroll',
   },
   placeHolder: {
@@ -307,19 +326,61 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     flexDirection: 'column',
   },
+  track: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  xBtn: {
+    marginLeft: '1%',
+    cursor: 'pointer',
+    color: 'red',
+    fontWeight: theme.typography.fontWeightBold,
+    opacity: 0.6,
+    '&:hover': {
+      opacity: 1,
+      transform: 'scale(1.2)',
+    },
+  },
+  modalWrapper: {
+    position: 'absolute',
+    width: 500,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: colors.darkGray,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    color: 'white',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    outline: 'none',
+    borderRadius: '5px',
+    height: 250,
+  },
 }))
 
-const MyProfile = () => {
+const MyProfile = ({ userId }) => {
   const { globalList, creatorList } = useContext(MyListContext)
   const { userData, loading, refreshData, getData } = useContext(
     UserStateContext
   )
+  const baseId = 'appXoertP1WJjd4TQ'
+  const apiKey = 'keymd23kpZ12EriVi'
+  const base = new Airtable({ apiKey }).base(baseId)
   const [userRecordings, setUserRecordings] = useState([])
   const [liveRecordings, setLiveRecordings] = useState(true)
+  const [audiocasts, setAudiocasts] = useState([])
+  const [combinedRecordings, setCombinedRecordings] = useState([])
   const [channelSelected, setChannelSelected] = useState(false)
   const [trophieSelected, setTrophieSelected] = useState(false)
   const [creatorsSelected, setCreatorsSelected] = useState(false)
+  const [recordToDelete, setRecordToDelete] = useState({})
+  const [open, setOpen] = useState(false)
   const user = useSelector(selectors.getUser)
+
   const handleCreatorClick = () => {
     setCreatorsSelected(true)
     setLiveRecordings(false)
@@ -348,7 +409,11 @@ const MyProfile = () => {
     setTrophieSelected(false)
   }
 
-  const { data: audiocasts } = useAirTable(
+  const handleModalClose = () => {
+    setOpen(false)
+  }
+
+  const { data: audiocastss } = useAirTable(
     'appXoertP1WJjd4TQ',
     'UserAudiocasts'
   )
@@ -358,20 +423,91 @@ const MyProfile = () => {
   )
 
   const getUserById = () => {
-    const currentUserRecordings = audiocasts?.filter(
+    const currentUserRecordings = audiocastss?.filter(
       item => item.fields.userId.shift() === user?.id
     )
     const userAudiocasts = recordedStreams?.filter(
       item => item.fields.userId === user?.id
     )
-    setUserRecordings(currentUserRecordings?.concat(userAudiocasts))
+    // setUserRecordings(currentUserRecordings?.concat(userAudiocasts))
   }
 
-  console.log('all recordings together ', userRecordings)
+  const getUserRecordings = () => {
+    base('UserAudiocasts')
+      .select({
+        filterByFormula: `{userId} = '${user?.id}'`,
+        view: 'Grid view',
+      })
+      .eachPage(
+        async function page(records, fetchNextPage) {
+          setAudiocasts(records)
+        },
+        function done(err) {
+          if (err) {
+            console.error(err)
+            return
+          }
+        }
+      )
+
+    base('ChannelLiveData')
+      .select({
+        filterByFormula: `{userId} = '${user?.id}'`,
+        view: 'Grid view',
+      })
+      .eachPage(
+        async function page(records, fetchNextPage) {
+          setUserRecordings(records)
+        },
+        function done(err) {
+          if (err) {
+            console.error(err)
+            return
+          }
+        }
+      )
+  }
+
+  const deleteAudiocast = audio => {
+    setOpen(true)
+    setRecordToDelete(audio)
+  }
+
+  const deleteRecord = () => {
+    if (recordToDelete.fields.type === 'audiocast') {
+      base('UserAudiocasts').destroy(
+        [recordToDelete.id],
+        function (err, deletedRecords) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          console.log('Deleted', deletedRecords.length, 'records')
+        }
+      )
+    } else if (recordToDelete.fields.type === 'livestream') {
+      base('ChannelLiveData').destroy(
+        [recordToDelete.id],
+        function (err, deletedRecords) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          console.log('Deleted', deletedRecords.length, 'records')
+        }
+      )
+    }
+    setOpen(false)
+    getUserRecordings()
+  }
 
   useEffect(() => {
     getUserById()
   }, [recordedStreams])
+
+  useEffect(() => {
+    getUserRecordings()
+  }, [open, userId])
 
   const classes = useStyles()
   const dispatch = useDispatch()
@@ -493,6 +629,29 @@ const MyProfile = () => {
             </div>
           </div>
         </div>
+        <Modal
+          open={open}
+          onClose={handleModalClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          <div className={classes.modalWrapper}>
+            <div>
+              <p>Are you sure you want to delete this audiocast?</p>
+            </div>
+            <div className={classes.buttons}>
+              <Button
+                onClick={handleModalClose}
+                className={classes.editProfile}
+              >
+                No, cancel
+              </Button>
+              <Button onClick={deleteRecord} className={classes.deleteBtn}>
+                Yes, delete
+              </Button>
+            </div>
+          </div>
+        </Modal>
         <div className={classes.userGamesWrapper}>
           <div className={classes.buttonSelector}>
             <span
@@ -589,13 +748,13 @@ const MyProfile = () => {
             )}
             {liveRecordings && (
               <div className={classes.recordings}>
-                {userRecordings?.length < 1 ? (
+                {audiocasts.concat(userRecordings)?.length < 1 ? (
                   <p className={classes.placeHolder}>No Recorded Streams yet</p>
                 ) : (
-                  userRecordings?.map((rec, index) => {
+                  audiocasts?.concat(userRecordings)?.map((rec, index) => {
                     count += 1
                     return (
-                      <>
+                      <div className={classes.track}>
                         <Tracks1
                           key={index}
                           episodeData={rec}
@@ -603,7 +762,13 @@ const MyProfile = () => {
                           channelColor={colors.darkGray}
                           indexdata={index}
                         />
-                      </>
+                        <p
+                          onClick={() => deleteAudiocast(rec)}
+                          className={classes.xBtn}
+                        >
+                          &#10005;
+                        </p>
+                      </div>
                     )
                   })
                 )}
@@ -611,24 +776,24 @@ const MyProfile = () => {
             )}
             <div className={classes.trophys}>
               {trophieSelected &&
-                (userRecordings?.length === 0 ? (
+                (audiocasts.concat(userRecordings)?.length === 0 ? (
                   <div>
                     <p className={classes.placeHolder}>
                       Stream to earn trophies!
                     </p>
                   </div>
-                ) : userRecordings?.length > 10 ? (
+                ) : audiocasts.concat(userRecordings)?.length > 10 ? (
                   <>
                     <NoobTrophy classes={classes} />
                     <PentaTrophy classes={classes} />
                     <TitanTrophy classes={classes} />
                   </>
-                ) : userRecordings?.length > 5 ? (
+                ) : audiocasts.concat(userRecordings)?.length > 5 ? (
                   <>
                     <PentaTrophy classes={classes} />
                     <NoobTrophy classes={classes} />
                   </>
-                ) : userRecordings?.length > 1 ? (
+                ) : audiocasts.concat(userRecordings)?.length > 1 ? (
                   <NoobTrophy classes={classes} />
                 ) : null)}
             </div>
@@ -639,4 +804,4 @@ const MyProfile = () => {
   )
 }
 
-export default MyProfile;
+export default MyProfile

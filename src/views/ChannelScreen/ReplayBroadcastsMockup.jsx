@@ -103,6 +103,7 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
     height: '3rem',
     marginBottom: '.5%',
+    width: '100%',
     color: colors.white,
     [theme.breakpoints.only('xs')]: {
       height: '33%',
@@ -409,12 +410,10 @@ export const Tracks1 = ({
   const classes = useStyles({ backgroundColor, channelColor })
   const dispatch = useDispatch()
 
-  const { fakeDateLabel, fakeDurationLabel } = episodeData
-
   const audioUrl = useSelector(selectors.getAudioUrl)
 
   const isSelectedAudio =
-    audioUrl && audioUrl === episodeData.fields.playbackUrl
+    audioUrl && audioUrl === episodeData?.fields?.playbackUrl
 
   const audioMode = useSelector(selectors.getAudioMode)
 
@@ -436,10 +435,10 @@ export const Tracks1 = ({
               '',
               '',
               '',
-              episodeData.fields.playbackUrl,
+              episodeData?.fields?.playbackUrl,
               '',
               '',
-              episodeData.fields.title
+              episodeData?.fields?.title
             )
           )
           dispatch(actions.playAudio())
@@ -472,14 +471,14 @@ export const Tracks1 = ({
               {counter < 10 ? `0${counter}` : counter}
             </div>
             <div className={classes.episodeTitle}>
-              {episodeData.fields.title ? episodeData.fields.title : ''}
+              {episodeData?.fields?.title ? episodeData?.fields?.title : ''}
             </div>
           </div>
           <div className={classes.episodeDateAndDuration}>
             <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
             <div className={classes.episodeDate}>
-              {episodeData.fields.liveDate
-                ? episodeData.fields.liveDate.split('T')[0]
+              {episodeData?.fields?.liveDate
+                ? episodeData?.fields?.liveDate.split('T')[0]
                 : ''}
             </div>
           </div>
