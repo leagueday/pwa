@@ -341,6 +341,8 @@ const MyProfile = ({ userId }) => {
   const apiKey = 'keymd23kpZ12EriVi'
   const base = new Airtable({ apiKey }).base(baseId)
   const [userRecordings, setUserRecordings] = useState([])
+  const [audiocasts, setAudiocasts] = useState([])
+  const [combinedRecordings, setCombinedRecordings] = useState([])
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [trophieSelected, setTrophieSelected] = useState(false)
   const [creatorsSelected, setCreatorsSelected] = useState(false)
@@ -376,7 +378,7 @@ const MyProfile = ({ userId }) => {
     setTrophieSelected(false)
   }
 
-  const { data: audiocasts } = useAirTable(
+  const { data: audiocastss } = useAirTable(
     'appXoertP1WJjd4TQ',
     'UserAudiocasts'
   )
@@ -386,13 +388,49 @@ const MyProfile = ({ userId }) => {
   )
 
   const getUserById = () => {
-    const currentUserRecordings = audiocasts?.filter(
+    const currentUserRecordings = audiocastss?.filter(
       item => item.fields.userId.shift() === userId
     )
     const userAudiocasts = recordedStreams?.filter(
       item => item.fields.userId === userId
     )
     setUserRecordings(currentUserRecordings?.concat(userAudiocasts))
+  }
+
+  const getUserRecordings = () => {
+    base('UserAudiocasts')
+      .select({
+        filterByFormula: `{userId} = '${userId}'`,
+        view: 'Grid view',
+      })
+      .eachPage(
+        async function page(records, fetchNextPage) {
+          setAudiocasts(records)
+        },
+        function done(err) {
+          if (err) {
+            console.error(err)
+            return
+          }
+        }
+      )
+
+    base('ChannelLiveData')
+      .select({
+        filterByFormula: `{userId} = '${userId}'`,
+        view: 'Grid view',
+      })
+      .eachPage(
+        async function page(records, fetchNextPage) {
+          setUserRecordings(records)
+        },
+        function done(err) {
+          if (err) {
+            console.error(err)
+            return
+          }
+        }
+      )
   }
 
   useEffect(() => {
@@ -424,7 +462,6 @@ const MyProfile = ({ userId }) => {
         }
       )
   }
-  console.log('creator ', creatorList)
 
   const getListData = () => {
     base('UserList')
@@ -449,7 +486,9 @@ const MyProfile = ({ userId }) => {
     getListData()
     getCreatorData()
     getData()
+    getUserRecordings()
   }, [userId])
+
   return (
     <div className={classes.content}>
       <div className={classes.heroImgCont}>
@@ -546,10 +585,10 @@ const MyProfile = ({ userId }) => {
           <div className={classes.userContent}>
             {liveRecordings && (
               <div className={classes.recordings}>
-                {userRecordings?.length < 1 ? (
+                {audiocasts?.concat(userRecordings)?.length < 1 ? (
                   <p className={classes.placeHolder}>No Audiocasts yet</p>
                 ) : (
-                  userRecordings?.map((rec, index) => {
+                  audiocasts?.concat(userRecordings)?.map((rec, index) => {
                     count += 1
                     return (
                       <>
@@ -624,22 +663,22 @@ const MyProfile = ({ userId }) => {
             )}
             <div className={classes.trophys}>
               {trophieSelected &&
-                (userRecordings?.length === 0 ? (
+                (audiocasts?.concat(userRecordings)?.length === 0 ? (
                   <div>
                     <p className={classes.placeHolder}>No trophies</p>
                   </div>
-                ) : userRecordings?.length > 10 ? (
+                ) : audiocasts?.concat(userRecordings)?.length > 10 ? (
                   <>
                     <NoobTrophy classes={classes} />
                     <PentaTrophy classes={classes} />
                     <TitanTrophy classes={classes} />
                   </>
-                ) : userRecordings?.length > 5 ? (
+                ) : audiocasts?.concat(userRecordings)?.length > 5 ? (
                   <>
                     <NoobTrophy classes={classes} />
                     <PentaTrophy classes={classes} />
                   </>
-                ) : userRecordings?.length > 1 ? (
+                ) : audiocasts?.concat(userRecordings)?.length > 1 ? (
                   <NoobTrophy classes={classes} />
                 ) : null)}
             </div>

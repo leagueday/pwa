@@ -24,7 +24,7 @@ const ProfileScreen = ({ userId }) => {
   }, [userId]);
 
   return (
-    <BasicLayout home>{auth ? <MyProfile /> : <UserProfile userId={userId} />}</BasicLayout>
+    <BasicLayout home>{auth ? <MyProfile userId={userId}/> : <UserProfile userId={userId} />}</BasicLayout>
   )
 
 }
