@@ -79,7 +79,7 @@ const useStyles = makeStyles(theme => ({
     outline: 'none',
     border: 'none',
   },
-}))
+}));
 
 const baseId = 'appXoertP1WJjd4TQ'
 const apiKey = 'keymd23kpZ12EriVi'
@@ -140,9 +140,9 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
           id: audio.id,
           fields: {
             upvotes: audio.fields.upvotes + 1,
-            userProfile: [currentUserId],
-              // audio?.fields?.userProfile?.length > 0
-              //   ? [...audio?.fields?.userProfile, currentUserId]
+            userProfile: !!audio?.fields?.userProfile
+              ? [...audio?.fields?.userProfile, currentUserId]
+              : [currentUserId],
           },
         },
       ],
@@ -161,18 +161,18 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
   const index = userData?.fields?.likedAudio?.indexOf(audio?.id)
   const toggleUnLike = () => {
     // handleUnLike(audio, currentUserId)
-    setLiked(false);
-    setCount(count - 1);
-    const filtered = votedAudio?.filter(item => item !== currentUserId);
-    console.log('avoiding user profiles ',filtered);
-    
+    setLiked(false)
+    setCount(count - 1)
+    const filtered = votedAudio?.filter(item => item !== currentUserId)
+    console.log('avoiding user profiles ', filtered)
+
     base('UserAudiocasts').update(
       [
         {
           id: audio.id,
           fields: {
             upvotes: audio.fields.upvotes - 1,
-            userProfile: !!filtered ? filtered : []
+            userProfile: !!filtered ? filtered : [],
           },
         },
       ],
@@ -190,7 +190,7 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
 
   useEffect(() => {
     setUserId(activeUser.id)
-  }, [])
+  }, []);
 
   useEffect(() => {
     setCount(audio.fields.upvotes)
@@ -198,7 +198,7 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
       setLiked(true)
     }
     setVotedAudio(audio?.fields?.userProfile)
-  }, [channelTag])
+  }, [channelTag, audio])
 
   return (
     <div>
