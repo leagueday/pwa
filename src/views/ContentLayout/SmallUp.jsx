@@ -26,7 +26,8 @@ const useStyles = makeStyles(theme => ({
       height: '100%',
       marginLeft: '0.25em',
       overflowX: 'hidden',
-      overflowY: 'auto',
+      overflowY: 'scroll',
+      background: 'black'
     }),
   topSection: {
     flexShrink: 0,

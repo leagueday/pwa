@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import ToggleImageButton from '../ToggleImageButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions, constants, selectors } from '../../store'
 import { colors } from '../../styling'
 import { makeStyles } from '@material-ui/styles'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsUp as ThumbsUp } from '@fortawesome/free-regular-svg-icons'
+import Airtable from 'airtable'
+import useAirtable from '../../api/useAirtable'
+import { UserStateContext } from '../../store/stateProviders/userState'
 
 const useStyles = makeStyles(theme => ({
   audioCard: {
@@ -44,21 +50,59 @@ const useStyles = makeStyles(theme => ({
     fontSize: '100%',
   },
   playBtn: {
-    position: 'absolute',
-    bottom: -26,
     width: '50%',
     height: '50px',
   },
-}))
+  playLike: {
+    position: 'absolute',
+    bottom: -86,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  like: {
+    width: '20%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  count: {
+    fontWeight: 900,
+  },
+  thumbsup: {
+    cursor: 'pointer',
+    color: colors.blue,
+  },
+  likeBtn: {
+    background: 'transparent',
+    outline: 'none',
+    border: 'none',
+  },
+}));
 
-const AudioCard = ({ audio, indexData }) => {
+const baseId = 'appXoertP1WJjd4TQ'
+const apiKey = 'keymd23kpZ12EriVi'
+const base = new Airtable({ apiKey }).base(baseId)
+
+const AudioCard = ({ audio, indexData, channelTag }) => {
+  const { userData, setUserId, handleUnLike, userLikedAudio } = useContext(
+    UserStateContext
+  )
   const dispatch = useDispatch()
   const classes = useStyles()
-
+  const activeUser = useSelector(selectors.getUser)
+  const [count, setCount] = useState()
+  const { data } = useAirtable(baseId, 'UserProfile')
+  const currentUser = data?.filter(
+    user => user?.fields?.userId === activeUser?.id
+  )
+  const currentUserId = currentUser?.shift()?.id
+  const [liked, setLiked] = useState(false)
+  const [votedAudio, setVotedAudio] = useState([])
   const audioUrl = useSelector(selectors.getAudioUrl)
 
   const isSelectedAudio = audioUrl && audioUrl === audio.fields.playbackUrl
-
   const audioMode = useSelector(selectors.getAudioMode)
 
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY
@@ -87,6 +131,75 @@ const AudioCard = ({ audio, indexData }) => {
         ev.stopPropagation()
       }
 
+  const handleLike = () => {
+    setLiked(true)
+    setCount(count + 1)
+    base('UserAudiocasts').update(
+      [
+        {
+          id: audio.id,
+          fields: {
+            upvotes: audio.fields.upvotes + 1,
+            userProfile: !!audio?.fields?.userProfile
+              ? [...audio?.fields?.userProfile, currentUserId]
+              : [currentUserId],
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log('liked record  ', record)
+        })
+      }
+    )
+  }
+
+  const index = userData?.fields?.likedAudio?.indexOf(audio?.id)
+  const toggleUnLike = () => {
+    // handleUnLike(audio, currentUserId)
+    setLiked(false)
+    setCount(count - 1)
+    const filtered = votedAudio?.filter(item => item !== currentUserId)
+    console.log('avoiding user profiles ', filtered)
+
+    base('UserAudiocasts').update(
+      [
+        {
+          id: audio.id,
+          fields: {
+            upvotes: audio.fields.upvotes - 1,
+            userProfile: !!filtered ? filtered : [],
+          },
+        },
+      ],
+      function (err, records) {
+        if (err) {
+          console.error(err)
+          return
+        }
+        records.forEach(function (record) {
+          console.log('unliked record  ', record)
+        })
+      }
+    )
+  }
+
+  useEffect(() => {
+    setUserId(activeUser.id)
+  }, []);
+
+  useEffect(() => {
+    setCount(audio.fields.upvotes)
+    if (audio?.fields?.userProfile?.includes(currentUserId)) {
+      setLiked(true)
+    }
+    setVotedAudio(audio?.fields?.userProfile)
+  }, [channelTag, audio])
+
   return (
     <div>
       <div className={classes.audioCard}>
@@ -108,7 +221,7 @@ const AudioCard = ({ audio, indexData }) => {
         <div>
           <h4 className={classes.title}>{audio?.fields?.title}</h4>
         </div>
-        {/* <div className={classes.playLike}> */}
+        <div className={classes.playLike}>
           <ToggleImageButton
             className={classes.playBtn}
             size="5vw"
@@ -118,8 +231,35 @@ const AudioCard = ({ audio, indexData }) => {
             offImage="/img/logo_live_play.png"
             shadowColor={colors.lightGray}
           />
-          
-        {/* </div> */}
+          <div className={classes.like}>
+            {liked ? (
+              <button
+                onClick={toggleUnLike}
+                className={classes.likeBtn}
+                disabled={false}
+              >
+                <FontAwesomeIcon
+                  icon={faThumbsUp}
+                  size={'2x'}
+                  className={classes.thumbsup}
+                />
+              </button>
+            ) : (
+              <button
+                onClick={handleLike}
+                className={classes.likeBtn}
+                disabled={false}
+              >
+                <FontAwesomeIcon
+                  icon={ThumbsUp}
+                  size={'2x'}
+                  className={classes.thumbsup}
+                />
+              </button>
+            )}
+            <p className={classes.count}>{count}</p>
+          </div>
+        </div>
       </div>
     </div>
   )
