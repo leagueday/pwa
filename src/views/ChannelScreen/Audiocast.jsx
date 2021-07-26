@@ -16,14 +16,13 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     width: '100%',
   },
-}));
+}))
 
 const Audiocast = ({ channelTag }) => {
   const classes = useStyles()
   const user = useSelector(selectors.getUser)
   const [userAudio, setUserAudio] = useState([])
   const disptach = useDispatch()
-  console.log('channel tag ', channelTag)
   const baseId = 'appXoertP1WJjd4TQ'
   const apiKey = 'keymd23kpZ12EriVi'
   const base = new Airtable({ apiKey }).base(baseId)
@@ -47,6 +46,8 @@ const Audiocast = ({ channelTag }) => {
       )
   }
 
+  // console.log('where tf are the userProfiles ', userAudio)
+  
   useEffect(() => {
     getUserAudio()
   }, [user, channelTag])
@@ -54,7 +55,14 @@ const Audiocast = ({ channelTag }) => {
   return (
     <div className={classes.wrapper}>
       {userAudio?.map((audio, key) => {
-        return <AudioCard audio={audio} indexData={key} key={key} />
+        return (
+          <AudioCard
+            audio={audio}
+            indexData={key}
+            key={key}
+            channelTag={channelTag}
+          />
+        )
       })}
     </div>
   )

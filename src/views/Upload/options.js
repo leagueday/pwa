@@ -187,4 +187,12 @@ export const options = [
         value: 'esportsbets',
         label: 'Esports Betting'
     },
+    {
+        value: 'nba',
+        label: 'NBA',
+    },
+    {
+        value: 'smash',
+        label: 'Super Smash',
+    }
 ]

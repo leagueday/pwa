@@ -444,7 +444,6 @@ const MyProfile = ({ userId }) => {
         }
       )
   }
-  console.log('channels ', channelList)
 
   useEffect(() => {
     getListData()

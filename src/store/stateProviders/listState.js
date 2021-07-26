@@ -8,9 +8,9 @@ export const MyListContext = createContext();
 const MyListProvider = MyListContext.Provider;
 const baseId = 'appXoertP1WJjd4TQ'
 const apiKey = "keymd23kpZ12EriVi"
+const base = new Airtable({ apiKey }).base(baseId)
 
 function ListStateProvider(props) {
-    const base = new Airtable({ apiKey }).base(baseId)
     const activeUser = useSelector(selectors.getUser)
     const { data } = useAirTable(baseId, 'UserProfile');
     const [globalList, setGlobalList] = useState([]);
@@ -29,7 +29,6 @@ function ListStateProvider(props) {
             view: "Grid view"
         }).eachPage(async function page(records, fetchNextPage) {
             setGlobalList(records)
-            console.log('channels ', records[0])
         }, function done(err) {
             if (err) { console.error(err); return; }
         });

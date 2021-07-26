@@ -350,7 +350,6 @@ const EditProfile = props => {
       .then(response => response.json())
       .then(function (response) {
         setselectChannel(response.records[0].fields.channelName.split(','))
-        console.log('channel id function ', response.records[0])
         setChannelId(response.records[0].id)
       })
       .catch(error => {

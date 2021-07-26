@@ -65,7 +65,6 @@ const NextLive = ({ titleStart, titleRest }) => {
 
   const [channelData, setChannelData] = useState(data)
 
-  // console.log('channel data ', data)
 
   // const getChannelData = () => {
   //   setChannelData(data)

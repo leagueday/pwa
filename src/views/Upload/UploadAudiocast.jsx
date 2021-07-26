@@ -144,7 +144,7 @@ const UploadAudiocast = () => {
   const handleAudioUpload = e => {
     const file = e.target.files[0]
     console.log(file)
-    uploadFile(file, config)
+    uploadFile(e.target.files[0], config)
       .then(res => {
         console.log(res.location)
         setAudiocast(res.location)
@@ -153,6 +153,7 @@ const UploadAudiocast = () => {
     console.log(audiocast)
   }
 
+  console.log('dubegger', audiocast)
   const handleImageUpload = e => {
     const file = e.target.files[0]
     uploadFile(file, config).then(res => {
@@ -173,6 +174,7 @@ const UploadAudiocast = () => {
             channelTag: selectedChannel,
             description: formValues.description,
             creatorImg: userData?.fields?.image,
+            upvotes: 0
           },
         },
       ],
@@ -189,6 +191,8 @@ const UploadAudiocast = () => {
     )
     dispatch(actions.pushHistory(`/profile/${user?.id}`))
   }
+
+  console.log('file  ',audiocast)
 
   const customStyles = {
     dropdownIndicator: () => ({
@@ -210,9 +214,6 @@ const UploadAudiocast = () => {
       color: 'white',
     }),
   }
-
-  console.log('channel tag  ', selectedChannel)
-
   return (
     <BasicLayout>
       <div className={classes.content}>
