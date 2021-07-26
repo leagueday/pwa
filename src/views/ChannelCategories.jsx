@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     background: 'black',
     [theme.breakpoints.down('sm')]: {
       background: 'inherit'
