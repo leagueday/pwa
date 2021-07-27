@@ -7,7 +7,7 @@ const useStyles = makeStyles({
   image: ({ skinny }) => ({
     cursor: 'pointer',
     height: 'auto',
-    width: skinny ? 'max(min(2.8vw, 2.8em), 1.8em)' : 'min(2vw, 2em)',
+    width: skinny ? 'max(min(2.8vw, 2.8em), 1.8em)' : 'min(1.8vw, 1.8em)',
   }),
   imageBox: ({ skinny }) => ({
     alignItems: 'center',

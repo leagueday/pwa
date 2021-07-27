@@ -78,7 +78,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     fontSize: 'max(min(1.6vw, 14px), 12px)',
     height: '100%',
-    width: 'min(17%, 14em)',
+    width: 'min(19%, 15em)',
   },
   signInOutButton: {
     fontSize: '95%',

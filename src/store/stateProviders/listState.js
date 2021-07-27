@@ -40,17 +40,17 @@ function ListStateProvider(props) {
 
         setTimeout(() => (setDisabled(false)), 500)
 
-        if (globalList.includes({ fields: { channelName: title, channelTag: tag, channelImg: img } })) {
+        if (globalList.includes({ fields: { title: title, tag: tag, channelImg: img } })) {
             return
         } else {
             base('UserList').create([
                 {
                     "fields": {
-                        "channelName": title,
+                        "title": title,
                         "user": [
                             currentUserId
                         ],
-                        "channelTag": tag,
+                        "tag": tag,
                         "channelImg": img
                     }
                 }
@@ -66,7 +66,7 @@ function ListStateProvider(props) {
             });
         }
 
-        result.push({ fields: { channelName: title, channelTag: tag, channelImg: img } })
+        result.push({ fields: { title: title, tag: tag, channelImg: img } })
         setGlobalList(result.concat(globalList))
     }
 
@@ -75,8 +75,8 @@ function ListStateProvider(props) {
 
         setTimeout(() => (setDisabled(false)), 500)
 
-        const recordToDelete = globalList?.filter((item) => item.fields.channelTag === tag)
-        const newList = globalList?.filter((item) => item.fields.channelTag !== tag)
+        const recordToDelete = globalList?.filter((item) => item.fields.tag === tag)
+        const newList = globalList?.filter((item) => item.fields.tag !== tag)
         setGlobalList(newList)
 
 
@@ -97,7 +97,7 @@ function ListStateProvider(props) {
 
         return !!globalList?.find(
 
-            (channel) => channel?.fields?.channelName === title && channel?.fields?.channelTag === tag
+            (channel) => channel?.fields?.title === title && channel?.fields?.tag === tag
         )
     }
 
@@ -124,12 +124,12 @@ function ListStateProvider(props) {
         base('UserCreatorsList').create([
             {
                 "fields": {
-                    "creatorName": name,
+                    "name": name,
                     "user": [
                         currentUserId
                     ],
                     "creatorId": id,
-                    "creatorImg": img
+                    "image": img
                 }
             }
         ], function (err, records) {
@@ -143,7 +143,7 @@ function ListStateProvider(props) {
             });
         });
 
-        creators.push({ fields: { creatorName: name, creatorId: id, creatorImg: img } })
+        creators.push({ fields: { name: name, creatorId: id, image: img } })
         setCreatorList(creators.concat(creatorList))
     }
 
@@ -173,7 +173,7 @@ function ListStateProvider(props) {
 
         return !!creatorList?.find(
 
-            (creator) => creator?.fields?.creatorName === name && creator?.fields?.creatorId === id
+            (creator) => creator?.fields?.name === name && creator?.fields?.creatorId === id
         )
     }
 

@@ -66,7 +66,8 @@ const ChannelTile = ({ channel }) => {
   const dispatch = useDispatch()
   const gotoThisChannel = () =>
     dispatch(actions.pushHistory(`/channel/${channel.tag}`))
-
+  console.log('from channel tile ',channel);
+  
   return (
     <div className={classes.channelTile}>
     <Square className={classes.imageSquare}>

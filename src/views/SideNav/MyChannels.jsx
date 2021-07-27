@@ -7,12 +7,21 @@ import useChannels from '../../api/useChannels'
 import { selectors } from '../../store'
 import { actions, useLocationPathname } from '../../store'
 import Item from './Item'
-
+import PlusMinusButton from '../PlusMinusButton'
 const DEFAULT_CHANNELS_CUTOFF = 6
 
 const useStyles = makeStyles({
   myChannels: {},
-})
+  item: {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  playPause: {
+    position: 'absolute',
+    right: 6,
+  }
+});
 
 const isChannelSelected = (locationPathname, channelTag) => {
   const path = locationPathname ?? ''
@@ -39,17 +48,27 @@ const MyChannels = ({ skinny }) => {
     <div className={classes.myChannels}>
       {globalList?.map((channel, ind) => {
         return (
-          <Item
-            key={ind}
-            title={channel?.fields?.channelName}
-            imageUrl={channel?.fields?.channelImg}
-            isSelected={isChannelSelected(
-              locationPathname,
-              channel?.fields?.channelTag
-            )}
-            onClick={makeGotoThisChannel(channel?.fields?.channelTag)}
-            skinny={skinny}
-          />
+          <div className={classes.item}>
+            <Item
+              key={ind}
+              title={channel?.fields?.title}
+              imageUrl={channel?.fields?.channelImg}
+              isSelected={isChannelSelected(
+                locationPathname,
+                channel?.fields?.tag
+              )}
+              onClick={makeGotoThisChannel(channel?.fields?.tag)}
+              skinny={skinny}
+            />
+            <div className={classes.playPause}>
+
+            <PlusMinusButton 
+            subjectId={channel?.fields?.tag}
+            channel={channel.fields}
+            size={'1.5em'}
+            />
+            </div>
+          </div>
         )
       })}
     </div>

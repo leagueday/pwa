@@ -16,7 +16,6 @@ const PlusMinusButton = ({
   className,
   size,
   subjectId: channelTag,
-  subjectKind,
   channel,
 }) => {
   const user = useSelector(selectors.getUser)
