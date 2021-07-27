@@ -81,7 +81,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   recordRecs: {
-    overflow: 'scroll',
+    overflow: 'none',
     width: '30%',
     margin: '1%',
     height: 'auto',
@@ -112,6 +112,7 @@ const config = {
   accessKeyId: 'AKIA2NEES72FJV4VO343',
   secretAccessKey: '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',
 }
+
 const baseId = 'appXoertP1WJjd4TQ'
 const apiKey = 'keymd23kpZ12EriVi'
 const base = new Airtable({ apiKey }).base(baseId)
@@ -172,9 +173,9 @@ const UploadAudiocast = () => {
             playbackUrl: audiocast,
             channelTag: selectedChannel,
             description: formValues.description,
-            creatorImg: userData?.fields?.image,
+            image: userData?.fields?.image,
             upvotes: 0,
-            type: 'audiocast'
+            type: 'audiocast',
           },
         },
       ],
@@ -192,7 +193,7 @@ const UploadAudiocast = () => {
     dispatch(actions.pushHistory(`/profile/${user?.id}`))
   }
 
-  console.log('file  ',audiocast)
+  console.log('file  ', audiocast)
 
   const customStyles = {
     dropdownIndicator: () => ({
@@ -262,7 +263,7 @@ const UploadAudiocast = () => {
             </Button>
           </div>
           <div className={classes.recordRecs}>
-            <h2 className={classes.recHeader}>Recording Reccomendations</h2>
+            <h2 className={classes.recHeader}>Recording Recomendations</h2>
             <p>
               PC & Mac: OBS (
               <a

@@ -614,7 +614,7 @@ const MyProfile = ({ userId }) => {
                       onClick={() =>
                         dispatch(
                           actions.pushHistory(
-                            `/channel/${item.fields.channelTag}`
+                            `/channel/${item.fields.tag}`
                           )
                         )
                       }
@@ -626,7 +626,7 @@ const MyProfile = ({ userId }) => {
                         alt="channel image"
                       />
                       <p className={classes.channelName}>
-                        {item.fields.channelName}
+                        {item.fields.title}
                       </p>
                     </div>
                   )
@@ -650,12 +650,10 @@ const MyProfile = ({ userId }) => {
                     >
                       <img
                         className={classes.channelImg}
-                        src={item.fields.creatorImg}
+                        src={item.fields.image}
                         alt="creator image"
                       />
-                      <p className={classes.channelName}>
-                        {item.fields.creatorName}
-                      </p>
+                      <p className={classes.channelName}>{item.fields.name}</p>
                     </div>
                   )
                 })}
