@@ -263,7 +263,7 @@ const UploadAudiocast = () => {
             </Button>
           </div>
           <div className={classes.recordRecs}>
-            <h2 className={classes.recHeader}>Recording Recomendations</h2>
+            <h2 className={classes.recHeader}>Recording Recommendations</h2>
             <p>
               PC & Mac: OBS (
               <a
