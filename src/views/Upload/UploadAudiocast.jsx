@@ -168,8 +168,6 @@ const UploadAudiocast = () => {
     })
   }
 
-  console.log('file ', audiocast)
-
   const handleSubmit = () => {
     base('UserAudiocasts').create(
       [
