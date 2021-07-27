@@ -86,9 +86,7 @@ const apiKey = 'keymd23kpZ12EriVi'
 const base = new Airtable({ apiKey }).base(baseId)
 
 const AudioCard = ({ audio, indexData, channelTag }) => {
-  const { userData, setUserId, handleUnLike, userLikedAudio } = useContext(
-    UserStateContext
-  )
+  const { userData, setUserId } = useContext(UserStateContext)
   const dispatch = useDispatch()
   const classes = useStyles()
   const activeUser = useSelector(selectors.getUser)
@@ -158,13 +156,11 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
     )
   }
 
-  const index = userData?.fields?.likedAudio?.indexOf(audio?.id)
   const toggleUnLike = () => {
     // handleUnLike(audio, currentUserId)
     setLiked(false)
     setCount(count - 1)
     const filtered = votedAudio?.filter(item => item !== currentUserId)
-    console.log('avoiding user profiles ', filtered)
 
     base('UserAudiocasts').update(
       [
@@ -190,7 +186,7 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
 
   useEffect(() => {
     setUserId(activeUser.id)
-  }, []);
+  }, [])
 
   useEffect(() => {
     setCount(audio.fields.upvotes)

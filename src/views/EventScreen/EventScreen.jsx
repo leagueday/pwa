@@ -138,7 +138,6 @@ const EventScreen = ({ tag }) => {
           seteventDataFetch(allRecords.reverse())
           // setSecondPage(records)
           fetchNextPage()
-          console.log('records  ', allRecords)
         },
         function done(err) {
           if (err) {

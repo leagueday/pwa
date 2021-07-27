@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Airtable from 'airtable'
 import cx from 'classnames'
 import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '../../styling'
 import { actions, selectors, constants as storeConstants } from '../../store'
 import { IcoPause, IcoPlay, IcoPlus } from '../icons'
-
+import { UserStateContext } from '../../store/stateProviders/userState'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
+import { faThumbsUp as ThumbsUp } from '@fortawesome/free-solid-svg-icons'
 const useStyles = makeStyles(theme => ({
   clickable: {
     cursor: 'pointer',
@@ -202,6 +206,20 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.only('sm')]: {
       width: '100%',
     },
+  },
+  thumbsup: {
+    cursor: 'pointer',
+    color: colors.blue,
+  },
+  likeBtn: {
+    background: 'transparent',
+    outline: 'none',
+    border: 'none',
+  },
+  like: {
+    width: '6%',
+    display: 'flex',
+    alignItems: 'center',
   },
 }))
 
@@ -407,10 +425,16 @@ export const Tracks1 = ({
   indexdata,
   channelColor,
 }) => {
+  const baseId = 'appXoertP1WJjd4TQ'
+  const apiKey = 'keymd23kpZ12EriVi'
+  const base = new Airtable({ apiKey }).base(baseId)
   const classes = useStyles({ backgroundColor, channelColor })
   const dispatch = useDispatch()
-
+  const [liked, setLiked] = useState(false)
+  const [count, setCount] = useState()
+  const [votedAudio, setVotedAudio] = useState([])
   const audioUrl = useSelector(selectors.getAudioUrl)
+  const { currentUserId } = useContext(UserStateContext)
 
   const isSelectedAudio =
     audioUrl && audioUrl === episodeData?.fields?.playbackUrl
@@ -446,8 +470,143 @@ export const Tracks1 = ({
         ev.stopPropagation()
       }
 
+  useEffect(() => {
+    setCount(episodeData.fields.upvotes)
+    setLiked(episodeData?.fields?.userProfile?.includes(currentUserId))
+    setVotedAudio(episodeData?.fields?.userProfile)
+  }, [episodeData])
+
+  const handleLike = () => {
+    setLiked(true)
+    setCount(count + 1)
+    if (episodeData.fields.type === 'audiocast') {
+      base('UserAudiocasts').update(
+        [
+          {
+            id: episodeData.id,
+            fields: {
+              upvotes: episodeData.fields.upvotes + 1,
+              userProfile: !!episodeData?.fields?.userProfile
+                ? [...episodeData?.fields?.userProfile, currentUserId]
+                : [currentUserId],
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            console.log('liked record  ', record)
+          })
+        }
+      )
+    } else if (episodeData.fields.type === 'livestream') {
+      base('ChannelLiveData').update(
+        [
+          {
+            id: episodeData.id,
+            fields: {
+              upvotes: episodeData.fields.upvotes + 1,
+              userProfile: !!episodeData?.fields?.userProfile
+                ? [...episodeData?.fields?.userProfile, currentUserId]
+                : [currentUserId],
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            console.log('liked record  ', record)
+          })
+        }
+      )
+    }
+  }
+
+  const toggleUnLike = () => {
+    setLiked(false)
+    setCount(count - 1)
+    const filtered = votedAudio?.filter(item => item !== currentUserId)
+    if (episodeData.fields.type === 'audiocast') {
+      base('UserAudiocasts').update(
+        [
+          {
+            id: episodeData.id,
+            fields: {
+              upvotes: episodeData.fields.upvotes - 1,
+              userProfile: !!filtered ? filtered : [],
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            console.log('unliked record  ', record)
+          })
+        }
+      )
+    } else if (episodeData.fields.type === 'livestream') {
+      base('ChannelLiveData').update(
+        [
+          {
+            id: episodeData.id,
+            fields: {
+              upvotes: episodeData.fields.upvotes - 1,
+              userProfile: !!filtered ? filtered : [],
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            console.log('unliked record  ', record)
+          })
+        }
+      )
+    }
+  }
+
   return (
     <>
+      <div className={classes.like}>
+        {liked ? (
+          <button
+            onClick={toggleUnLike}
+            className={classes.likeBtn}
+            disabled={false}
+          >
+            <FontAwesomeIcon
+              icon={ThumbsUp}
+              size={'2x'}
+              className={classes.thumbsup}
+            />
+          </button>
+        ) : (
+          <button
+            onClick={handleLike}
+            className={classes.likeBtn}
+            disabled={false}
+          >
+            <FontAwesomeIcon
+              icon={faThumbsUp}
+              size={'2x'}
+              className={classes.thumbsup}
+            />
+          </button>
+        )}
+        <p className={classes.count}>{count}</p>
+      </div>
       <div className={classes.episodeRow}>
         <div className={classes.episodeControls}>
           <PlayOrPauseIcon

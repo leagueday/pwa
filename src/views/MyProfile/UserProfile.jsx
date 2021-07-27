@@ -291,7 +291,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    // justifyContent: 'space-around',
   },
 }))
 
