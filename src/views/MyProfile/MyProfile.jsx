@@ -163,6 +163,11 @@ const useStyles = makeStyles(theme => ({
       justifyContent: 'space-between',
     },
   },
+  track: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center'
+  },
   userGamesWrapper: {
     background: 'black',
     width: '100%',
@@ -327,11 +332,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-  },
-  track: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
   },
   xBtn: {
     marginLeft: '1%',
@@ -723,7 +723,6 @@ const MyProfile = ({ userId }) => {
                 })}
               </div>
             )}
-            
             {liveRecordings && (
               <div className={classes.recordings}>
                 {audiocasts.concat(userRecordings)?.length < 1 ? (
@@ -733,7 +732,6 @@ const MyProfile = ({ userId }) => {
                     countt += 1
                     return (
                       <div className={classes.track}>
-
                         <Tracks1
                           key={index}
                           episodeData={rec}

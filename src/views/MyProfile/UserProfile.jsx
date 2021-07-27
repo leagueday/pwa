@@ -268,6 +268,7 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
   },
   recordings: {
+    width: '',
     marginTop: '2%',
     zIndex: '-1',
   },
@@ -292,7 +293,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-}))
+}));
 
 const NoobTrophy = ({ classes }) => {
   return (
@@ -341,7 +342,6 @@ const MyProfile = ({ userId }) => {
   const base = new Airtable({ apiKey }).base(baseId)
   const [userRecordings, setUserRecordings] = useState([])
   const [audiocasts, setAudiocasts] = useState([])
-  const [combinedRecordings, setCombinedRecordings] = useState([])
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [trophieSelected, setTrophieSelected] = useState(false)
   const [creatorsSelected, setCreatorsSelected] = useState(false)
@@ -590,7 +590,7 @@ const MyProfile = ({ userId }) => {
                   audiocasts?.concat(userRecordings)?.map((rec, index) => {
                     count += 1
                     return (
-                      <>
+                      <div className={classes.track}>
                         <Tracks1
                           key={index}
                           episodeData={rec}
@@ -598,7 +598,7 @@ const MyProfile = ({ userId }) => {
                           channelColor={colors.darkGray}
                           indexdata={index}
                         />
-                      </>
+                      </div>
                     )
                   })
                 )}

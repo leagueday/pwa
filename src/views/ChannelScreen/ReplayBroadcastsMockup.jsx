@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Airtable from 'airtable'
 import cx from 'classnames'
+import LikeButton from '../LikeButton'
 import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '../../styling'
 import { actions, selectors, constants as storeConstants } from '../../store'
@@ -221,6 +222,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
   },
+  trackContainer: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+  },
 }))
 
 const mockupData = [
@@ -400,7 +406,7 @@ export const Tracks = ({
               episodeBackgroundColors[counter % episodeBackgroundColors.length]
             counter = counter + 1
             return (
-              <Track
+              <Tracks1
                 key={counter}
                 indexData={key}
                 episodeData={episode}
@@ -470,143 +476,13 @@ export const Tracks1 = ({
         ev.stopPropagation()
       }
 
-  useEffect(() => {
-    setCount(episodeData.fields.upvotes)
-    setLiked(episodeData?.fields?.userProfile?.includes(currentUserId))
-    setVotedAudio(episodeData?.fields?.userProfile)
-  }, [episodeData])
-
-  const handleLike = () => {
-    setLiked(true)
-    setCount(count + 1)
-    if (episodeData.fields.type === 'audiocast') {
-      base('UserAudiocasts').update(
-        [
-          {
-            id: episodeData.id,
-            fields: {
-              upvotes: episodeData.fields.upvotes + 1,
-              userProfile: !!episodeData?.fields?.userProfile
-                ? [...episodeData?.fields?.userProfile, currentUserId]
-                : [currentUserId],
-            },
-          },
-        ],
-        function (err, records) {
-          if (err) {
-            console.error(err)
-            return
-          }
-          records.forEach(function (record) {
-            console.log('liked record  ', record)
-          })
-        }
-      )
-    } else if (episodeData.fields.type === 'livestream') {
-      base('ChannelLiveData').update(
-        [
-          {
-            id: episodeData.id,
-            fields: {
-              upvotes: episodeData.fields.upvotes + 1,
-              userProfile: !!episodeData?.fields?.userProfile
-                ? [...episodeData?.fields?.userProfile, currentUserId]
-                : [currentUserId],
-            },
-          },
-        ],
-        function (err, records) {
-          if (err) {
-            console.error(err)
-            return
-          }
-          records.forEach(function (record) {
-            console.log('liked record  ', record)
-          })
-        }
-      )
-    }
-  }
-
-  const toggleUnLike = () => {
-    setLiked(false)
-    setCount(count - 1)
-    const filtered = votedAudio?.filter(item => item !== currentUserId)
-    if (episodeData.fields.type === 'audiocast') {
-      base('UserAudiocasts').update(
-        [
-          {
-            id: episodeData.id,
-            fields: {
-              upvotes: episodeData.fields.upvotes - 1,
-              userProfile: !!filtered ? filtered : [],
-            },
-          },
-        ],
-        function (err, records) {
-          if (err) {
-            console.error(err)
-            return
-          }
-          records.forEach(function (record) {
-            console.log('unliked record  ', record)
-          })
-        }
-      )
-    } else if (episodeData.fields.type === 'livestream') {
-      base('ChannelLiveData').update(
-        [
-          {
-            id: episodeData.id,
-            fields: {
-              upvotes: episodeData.fields.upvotes - 1,
-              userProfile: !!filtered ? filtered : [],
-            },
-          },
-        ],
-        function (err, records) {
-          if (err) {
-            console.error(err)
-            return
-          }
-          records.forEach(function (record) {
-            console.log('unliked record  ', record)
-          })
-        }
-      )
-    }
-  }
-
   return (
-    <>
-      <div className={classes.like}>
-        {liked ? (
-          <button
-            onClick={toggleUnLike}
-            className={classes.likeBtn}
-            disabled={false}
-          >
-            <FontAwesomeIcon
-              icon={ThumbsUp}
-              size={'2x'}
-              className={classes.thumbsup}
-            />
-          </button>
-        ) : (
-          <button
-            onClick={handleLike}
-            className={classes.likeBtn}
-            disabled={false}
-          >
-            <FontAwesomeIcon
-              icon={faThumbsUp}
-              size={'2x'}
-              className={classes.thumbsup}
-            />
-          </button>
-        )}
-        <p className={classes.count}>{count}</p>
-      </div>
+    <div className={classes.trackContainer}>
+      <LikeButton 
+      userId={currentUserId}
+      audio={episodeData}
+      channelTag={episodeData?.fields?.channelTag}
+      />
       <div className={classes.episodeRow}>
         <div className={classes.episodeControls}>
           <PlayOrPauseIcon
@@ -616,12 +492,6 @@ export const Tracks1 = ({
             }}
             onClick={onPopClick}
           />
-          {/* <IcoPlus
-            classes={{
-              inner: classes.episodePlus,
-              outer: classes.episodePOPCell,
-            }}
-          /> */}
         </div>
 
         <div className={classes.episodeTitleAndData}>
@@ -643,7 +513,7 @@ export const Tracks1 = ({
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
