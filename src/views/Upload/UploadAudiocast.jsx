@@ -290,7 +290,7 @@ const UploadAudiocast = () => {
                 >
                   Download
                 </a>
-                ){' '}
+                )
               </p>
             </div>
             <div className={classes.contentRecs}>
