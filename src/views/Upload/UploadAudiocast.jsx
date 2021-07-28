@@ -97,7 +97,7 @@ const useStyles = makeStyles(theme => ({
     padding: '10px',
     minHeight: '300px',
     [theme.breakpoints.up('lg')]: {
-      minWidth: '500px',
+      minWidth: '420px',
     },
     [theme.breakpoints.down('md')]: {
       width: '100%',
