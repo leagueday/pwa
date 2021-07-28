@@ -2,9 +2,9 @@ import React, { useState, useEffect, useContext } from 'react'
 import { selectors, actions } from '../../store'
 import { useSelector, useDispatch } from 'react-redux'
 import { TextField } from '@material-ui/core'
+import { getMyList } from '../../api/getUserList'
 import { makeStyles } from '@material-ui/core'
 import BasicLayout from '../BasicLayout'
-import { options } from './options'
 import Select from 'react-select'
 import Airtable from 'airtable'
 import { colors } from '../../styling'
@@ -41,7 +41,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-start',
-    [theme.breakpoints.down('sm')]: {
+    // overflow: 'scroll',
+    [theme.breakpoints.down('md')]: {
       marginTop: '10%',
       flexDirection: 'column-reverse',
       alignItems: 'center',
@@ -56,7 +57,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
+    overflow: 'auto',
+    [theme.breakpoints.down('md')]: {
       width: '100%',
       height: '100%',
       minHeight: '700px',
@@ -75,10 +77,6 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
-    [theme.breakpoints.down('sm')]: {
-      width: '35%',
-      height: '10%',
-    },
   },
   recs: {
     display: 'flex',
@@ -88,7 +86,31 @@ const useStyles = makeStyles(theme => ({
   },
   recordRecs: {
     overflow: 'none',
-    width: '30%',
+    width: '35%',
+    margin: '1%',
+    height: 'auto',
+    borderRadius: '5px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    border: '1px solid white',
+    padding: '10px',
+    minHeight: '300px',
+    [theme.breakpoints.up('lg')]: {
+      minWidth: '500px',
+    },
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  },
+  recHeader: {
+    borderBottom: '2px solid white',
+    textAlign: 'center',
+    color: colors.green,
+  },
+  contentRecs: {
+    overflow: 'none',
+    width: '35%',
     margin: '1%',
     height: 'auto',
     borderRadius: '5px',
@@ -101,13 +123,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('lg')]: {
       minWidth: '420px',
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
-  },
-  recHeader: {
-    borderBottom: '2px solid white',
-    textAlign: 'center',
   },
 }))
 
@@ -135,7 +153,10 @@ const UploadAudiocast = () => {
   const [audiocast, setAudiocast] = useState()
   const [thumbnail, setThumbnail] = useState()
   const [loading, setLoading] = useState(false)
+  const [channels, setChannels] = useState([])
+  const filteredListRecords = getMyList();
   const user = useSelector(selectors.getUser)
+
   useEffect(() => {
     setUserId(user.id)
   }, [user])
@@ -226,6 +247,7 @@ const UploadAudiocast = () => {
       color: 'white',
     }),
   }
+
   return (
     <BasicLayout>
       <div className={classes.content}>
@@ -248,7 +270,7 @@ const UploadAudiocast = () => {
             />
             <h4>Select Channel to upload Audiocast</h4>
             <Select
-              options={options}
+              options={filteredListRecords}
               className={classes.select}
               styles={customStyles}
               onChange={val => setSelectedChannel(val.value)}
@@ -281,19 +303,51 @@ const UploadAudiocast = () => {
             <div className={classes.recordRecs}>
               <h2 className={classes.recHeader}>Recording Recommendations</h2>
               <p>
-                PC & Mac: OBS (
+                PC & Mac:{' '}
                 <a
                   href="https://obsproject.com/download"
                   target="_blank"
                   style={{ color: 'blue' }}
                 >
-                  Download
+                  OBS
+                </a>{' '}
+                or{' '}
+                <a
+                  href="https://www.audacityteam.org/download/"
+                  target="_blank"
+                  style={{ color: 'blue' }}
+                >
+                  Audacity
+                </a>{' '}
+                {/* (
+                <a
+                  href="https://obsproject.com/download"
+                  target="_blank"
+                  style={{ color: 'blue' }}
+                >
+                  OBS Download
                 </a>
-                )
+                ,
+                <a
+                  href="https://www.audacityteam.org/download/"
+                  target="_blank"
+                  style={{ color: 'blue' }}
+                >
+                  Audacity Download
+                </a>
+                ) */}
               </p>
               <p>iOS Mobile: Voice Memos app</p>
               <p>
-                Android Mobile: Voice Recorder (
+                Android Mobile:{' '}
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.media.bestrecorder.audiorecorder&hl=en_US&gl=US"
+                  target="_blank"
+                  style={{ color: 'blue' }}
+                >
+                  Voice Recorder
+                </a>{' '}
+                {/* (
                 <a
                   href="https://play.google.com/store/apps/details?id=com.media.bestrecorder.audiorecorder&hl=en_US&gl=US"
                   target="_blank"
@@ -301,35 +355,56 @@ const UploadAudiocast = () => {
                 >
                   Download
                 </a>
-                )
+                ) */}
               </p>
             </div>
             <div className={classes.contentRecs}>
-              <h2 className={classes.recHeader}>What to make</h2>
+              <h2 className={classes.recHeader}>
+                Create with Us! Here's some category recommendations:
+              </h2>
               <ol>
-                <li>Meta casts: talk meta of your favorite video games</li>
-                <li>Esports recaps: run recaps of esports events</li>
-                <li>
-                  Play-by-Play coverage: do play-by-play casts of esports
-                  matches
-                </li>
-                <li>
-                  Gaming banter: general video gaming convos & banter with
-                  friends
-                </li>
-                <li>
-                  Business of gaming/esports: interviews or monologues on the
-                  biz side
-                </li>
-                <li>
-                  Journalism/news cast: what's going on in the gaming --
+                <p>
+                  {' '}
+                  <span style={{ fontWeight: 900 }}>1.</span> Meta casts: talk
+                  meta of your favorite video games
+                </p>
+                <p>
+                  {' '}
+                  <span style={{ fontWeight: 900 }}>2.</span> Esports recaps:
+                  run recaps of esports events
+                </p>
+                <p>
+                  {' '}
+                  <span style={{ fontWeight: 900 }}>3.</span> Play-by-Play
+                  coverage: do play-by-play casts of esports matches
+                </p>
+                <p>
+                  {' '}
+                  <span style={{ fontWeight: 900 }}>4.</span> Gaming banter:
+                  general video gaming convos & banter with friends
+                </p>
+                <p>
+                  {' '}
+                  <span style={{ fontWeight: 900 }}>5.</span> Business of
+                  gaming/esports: interviews or solos on the biz side
+                </p>
+                <p>
+                  {' '}
+                  <span style={{ fontWeight: 900 }}>6.</span> Journalism/news
+                  cast: what's going on in the gaming --
                   esports/publishers/releases/reviews
-                </li>
-                <li>
-                  Strategy & coaching: help the world get as good at your
-                  favorite games as you are
-                </li>
-                <li>Gaming music: reduxes of famous gaming tracks</li>
+                </p>
+                <p>
+                  {' '}
+                  <span style={{ fontWeight: 900 }}>7.</span> Strategy &
+                  coaching: help the world get as good at your favorite games as
+                  you are
+                </p>
+                <p>
+                  {' '}
+                  <span style={{ fontWeight: 900 }}>8.</span> Gaming music:
+                  reduxes of famous gaming tracks
+                </p>
               </ol>
             </div>
           </div>

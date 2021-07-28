@@ -736,7 +736,7 @@ const EditProfile = props => {
                 </span>
               )}
               <TextField
-                label="TwitterUrl"
+                label="Twitter Handle"
                 id="margin-normal"
                 name="TwitterUrl"
                 value={formInput.TwitterUrl}
@@ -754,7 +754,7 @@ const EditProfile = props => {
               <br></br>
               <br></br>
               <TextField
-                label="TwitchUrl"
+                label="Twitch Handle"
                 id="margin-normal"
                 name="TwitterUrl"
                 value={formInput.TwitchUrl}

@@ -1,3 +1,9 @@
+import Airtable from 'airtable';
+
+const baseId = 'appXoertP1WJjd4TQ'
+const apiKey = 'keymd23kpZ12EriVi'
+const base = new Airtable({ apiKey }).base(baseId)
+
 export const options = [
     {
         value: 'lol',
@@ -74,7 +80,7 @@ export const options = [
     {
         value: 'donotpeek',
         label: 'Do Not Peek Entertainment'
-    },  
+    },
     {
         value: 'preediction',
         label: 'Preediction Gaming Network'

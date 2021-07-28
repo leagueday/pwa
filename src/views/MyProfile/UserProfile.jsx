@@ -293,6 +293,10 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
+  creator: {
+    margin: 0,
+    padding: 0,
+  },
 }));
 
 const NoobTrophy = ({ classes }) => {
@@ -514,6 +518,10 @@ const MyProfile = ({ userId }) => {
               alt="User Profile Picture"
             />
           </div>
+              {
+                userData?.fields?.leagueDayCreator === "true" && 
+                <h3 className={classes.creator}>Founding Creator</h3>
+              }
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
               <p className={classes.userName}>{userData?.fields?.name}</p>

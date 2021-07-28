@@ -28,9 +28,9 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
-    minHeight: 0,
     width: '100%',
-    minHeight: '920px',
+    height: '100%',
+    minHeight: '1820px',
   },
   basicLayoutRow: {
     alignItems: 'stretch',
