@@ -80,6 +80,12 @@ const useStyles = makeStyles(theme => ({
       height: '10%',
     },
   },
+  recs: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    flexDirection: 'column',
+  },
   recordRecs: {
     overflow: 'none',
     width: '30%',
@@ -193,8 +199,6 @@ const UploadAudiocast = () => {
     dispatch(actions.pushHistory(`/profile/${user?.id}`))
   }
 
-  console.log('file  ', audiocast)
-
   const customStyles = {
     dropdownIndicator: () => ({
       color: 'white',
@@ -215,6 +219,7 @@ const UploadAudiocast = () => {
       color: 'white',
     }),
   }
+  
   return (
     <BasicLayout>
       <div className={classes.content}>
@@ -249,7 +254,6 @@ const UploadAudiocast = () => {
               name="image"
               onChange={handleImageUpload}
             />
-
             <h4>Upload .mp3 file</h4>
             <input
               aria-label="Select an .mp3 file to upload"
@@ -262,31 +266,61 @@ const UploadAudiocast = () => {
               Submit Audiocast
             </Button>
           </div>
-          <div className={classes.recordRecs}>
-            <h2 className={classes.recHeader}>Recording Recommendations</h2>
-            <p>
-              PC & Mac: OBS (
-              <a
-                href="https://obsproject.com/download"
-                target="_blank"
-                style={{ color: 'blue' }}
-              >
-                Download
-              </a>
-              )
-            </p>
-            <p>iOS Mobile: Voice Memos app</p>
-            <p>
-              Android Mobile: Voice Recorder (
-              <a
-                href="https://play.google.com/store/apps/details?id=com.media.bestrecorder.audiorecorder&hl=en_US&gl=US"
-                target="_blank"
-                style={{ color: 'blue' }}
-              >
-                Download
-              </a>
-              ){' '}
-            </p>
+          <div className={classes.recs}>
+            <div className={classes.recordRecs}>
+              <h2 className={classes.recHeader}>Recording Recommendations</h2>
+              <p>
+                PC & Mac: OBS (
+                <a
+                  href="https://obsproject.com/download"
+                  target="_blank"
+                  style={{ color: 'blue' }}
+                >
+                  Download
+                </a>
+                )
+              </p>
+              <p>iOS Mobile: Voice Memos app</p>
+              <p>
+                Android Mobile: Voice Recorder (
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.media.bestrecorder.audiorecorder&hl=en_US&gl=US"
+                  target="_blank"
+                  style={{ color: 'blue' }}
+                >
+                  Download
+                </a>
+                ){' '}
+              </p>
+            </div>
+            <div className={classes.contentRecs}>
+              <h2 className={classes.recHeader}>What to make</h2>
+              <ol>
+                <li>Meta casts: talk meta of your favorite video games</li>
+                <li>Esports recaps: run recaps of esports events</li>
+                <li>
+                  Play-by-Play coverage: do play-by-play casts of esports
+                  matches
+                </li>
+                <li>
+                  Gaming banter: general video gaming convos & banter with
+                  friends
+                </li>
+                <li>
+                  Business of gaming/esports: interviews or monologues on the
+                  biz side
+                </li>
+                <li>
+                  Journalism/news cast: what's going on in the gaming --
+                  esports/publishers/releases/reviews
+                </li>
+                <li>
+                  Strategy & coaching: help the world get as good at your
+                  favorite games as you are
+                </li>
+                <li>Gaming music: reduxes of famous gaming tracks</li>
+              </ol>
+            </div>
           </div>
         </div>
       </div>

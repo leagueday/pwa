@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: '0.25em',
     paddingRight: '0.25em',
   },
-}))
+}));
 
 const ChannelTile = ({ channel }) => {
   const classes = useStyles({ textColor: channel.color })
@@ -66,7 +66,6 @@ const ChannelTile = ({ channel }) => {
   const dispatch = useDispatch()
   const gotoThisChannel = () =>
     dispatch(actions.pushHistory(`/channel/${channel.tag}`))
-  console.log('from channel tile ',channel);
   
   return (
     <div className={classes.channelTile}>

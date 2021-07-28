@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Airtable from 'airtable'
 import cx from 'classnames'
+import LikeButton from '../LikeButton'
 import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '../../styling'
 import { actions, selectors, constants as storeConstants } from '../../store'
 import { IcoPause, IcoPlay, IcoPlus } from '../icons'
-
+import { UserStateContext } from '../../store/stateProviders/userState'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
+import { faThumbsUp as ThumbsUp } from '@fortawesome/free-solid-svg-icons'
 const useStyles = makeStyles(theme => ({
   clickable: {
     cursor: 'pointer',
@@ -203,6 +208,25 @@ const useStyles = makeStyles(theme => ({
       width: '100%',
     },
   },
+  thumbsup: {
+    cursor: 'pointer',
+    color: colors.blue,
+  },
+  likeBtn: {
+    background: 'transparent',
+    outline: 'none',
+    border: 'none',
+  },
+  like: {
+    width: '6%',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  trackContainer: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+  },
 }))
 
 const mockupData = [
@@ -382,7 +406,7 @@ export const Tracks = ({
               episodeBackgroundColors[counter % episodeBackgroundColors.length]
             counter = counter + 1
             return (
-              <Track
+              <Tracks1
                 key={counter}
                 indexData={key}
                 episodeData={episode}
@@ -407,10 +431,16 @@ export const Tracks1 = ({
   indexdata,
   channelColor,
 }) => {
+  const baseId = 'appXoertP1WJjd4TQ'
+  const apiKey = 'keymd23kpZ12EriVi'
+  const base = new Airtable({ apiKey }).base(baseId)
   const classes = useStyles({ backgroundColor, channelColor })
   const dispatch = useDispatch()
-
+  const [liked, setLiked] = useState(false)
+  const [count, setCount] = useState()
+  const [votedAudio, setVotedAudio] = useState([])
   const audioUrl = useSelector(selectors.getAudioUrl)
+  const { currentUserId } = useContext(UserStateContext)
 
   const isSelectedAudio =
     audioUrl && audioUrl === episodeData?.fields?.playbackUrl
@@ -447,7 +477,12 @@ export const Tracks1 = ({
       }
 
   return (
-    <>
+    <div className={classes.trackContainer}>
+      <LikeButton 
+      userId={currentUserId}
+      audio={episodeData}
+      channelTag={episodeData?.fields?.channelTag}
+      />
       <div className={classes.episodeRow}>
         <div className={classes.episodeControls}>
           <PlayOrPauseIcon
@@ -457,12 +492,6 @@ export const Tracks1 = ({
             }}
             onClick={onPopClick}
           />
-          {/* <IcoPlus
-            classes={{
-              inner: classes.episodePlus,
-              outer: classes.episodePOPCell,
-            }}
-          /> */}
         </div>
 
         <div className={classes.episodeTitleAndData}>
@@ -484,7 +513,7 @@ export const Tracks1 = ({
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

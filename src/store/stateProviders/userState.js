@@ -2,21 +2,27 @@ import React, { createContext, useState, useEffect } from 'react';
 import Airtable from 'airtable'
 import { selectors } from '..'
 import { useSelector } from 'react-redux';
-
+import useAirtable from '../../api/useAirtable';
 export const UserStateContext = createContext();
 const UserStateProvider = UserStateContext.Provider
 const baseId = 'appXoertP1WJjd4TQ'
 const apiKey = "keymd23kpZ12EriVi"
 
 function UserProfileProvider(props) {
-
     const base = new Airtable({ apiKey }).base(baseId)
     const activeUser = useSelector(selectors.getUser)
     const [userData, setUserData] = useState([])
     const [userId, setUserId] = useState('')
     const [loading, setLoading] = useState(false);
-    const [userLikedAudio, setUserLikedAudio] = useState([])
-
+    const [userLikedAudio, setUserLikedAudio] = useState([]);
+    const [liked, setLiked] = useState(false);
+    const [count, setCount] = useState();
+    const [likedAudio, setLikedAudio] = useState([]);
+    const { data } = useAirtable(baseId, 'UserProfile')
+    const currentUser = data?.filter(
+        user => user?.fields?.userId === activeUser?.id
+    )
+    const currentUserId = currentUser?.shift()?.id
     const getData = async (idx) => {
         setLoading(true)
         const id = activeUser?.id
@@ -39,6 +45,8 @@ function UserProfileProvider(props) {
     useEffect(() => {
         getData();
     }, [userId])
+
+    // Audiocast likes
 
     useEffect(() => {
         setUserLikedAudio(userData?.fields?.userProfile)
@@ -71,30 +79,10 @@ function UserProfileProvider(props) {
                 })
             }
         )
-
-        // base('UserProfile').update(
-        //     [
-        //         {
-        //             id: currentUserId,
-        //             fields: {
-        //                 likedAudio: userLikedAudio,
-        //             },
-        //         },
-        //     ],
-        //     function (err, records) {
-        //         if (err) {
-        //             console.error(err)
-        //             return
-        //         }
-        //         records.forEach(function (record) {
-        //             console.log('removed record from profile ', record)
-        //         })
-        //     }
-        // )
     }
 
     return (
-        <UserStateProvider value={{ loading, userData, setUserData, refreshData, getData, setUserId, handleUnLike, userLikedAudio }}>
+        <UserStateProvider value={{ loading, userData, setUserData, refreshData, getData, setUserId, handleUnLike, userLikedAudio, setLikedAudio, currentUserId }}>
             {props?.children}
         </UserStateProvider>
     )

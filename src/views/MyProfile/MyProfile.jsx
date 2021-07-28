@@ -12,6 +12,8 @@ import { addScrollStyle } from '../util'
 import { actions } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
+import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
+import { faThumbsUp as ThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import useAirTable from '../../api/useAirtable'
 import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
 
@@ -160,6 +162,11 @@ const useStyles = makeStyles(theme => ({
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
+  },
+  track: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center'
   },
   userGamesWrapper: {
     background: 'black',
@@ -326,11 +333,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     flexDirection: 'column',
   },
-  track: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-  },
   xBtn: {
     marginLeft: '1%',
     cursor: 'pointer',
@@ -360,6 +362,11 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '5px',
     height: 250,
   },
+  trophys: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
 }))
 
 const MyProfile = ({ userId }) => {
@@ -373,7 +380,6 @@ const MyProfile = ({ userId }) => {
   const [userRecordings, setUserRecordings] = useState([])
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [audiocasts, setAudiocasts] = useState([])
-  const [combinedRecordings, setCombinedRecordings] = useState([])
   const [channelSelected, setChannelSelected] = useState(false)
   const [trophieSelected, setTrophieSelected] = useState(false)
   const [creatorsSelected, setCreatorsSelected] = useState(false)
@@ -411,25 +417,6 @@ const MyProfile = ({ userId }) => {
 
   const handleModalClose = () => {
     setOpen(false)
-  }
-
-  const { data: audiocastss } = useAirTable(
-    'appXoertP1WJjd4TQ',
-    'UserAudiocasts'
-  )
-  const { data: recordedStreams } = useAirTable(
-    'appXoertP1WJjd4TQ',
-    'ChannelLiveData'
-  )
-
-  const getUserById = () => {
-    const currentUserRecordings = audiocastss?.filter(
-      item => item.fields.userId.shift() === user?.id
-    )
-    const userAudiocasts = recordedStreams?.filter(
-      item => item.fields.userId === user?.id
-    )
-    // setUserRecordings(currentUserRecordings?.concat(userAudiocasts))
   }
 
   const getUserRecordings = () => {
@@ -502,10 +489,6 @@ const MyProfile = ({ userId }) => {
   }
 
   useEffect(() => {
-    getUserById()
-  }, [recordedStreams])
-
-  useEffect(() => {
     getUserRecordings()
   }, [open, userId])
 
@@ -514,7 +497,7 @@ const MyProfile = ({ userId }) => {
   const golive = () => dispatch(actions.pushHistory('/live'))
   const editProfile = () => dispatch(actions.pushHistory('/editprofile'))
   // const gamesArray = currentUserGames?.fields?.channelName?.split(',')
-  let count = 1
+  let countt = 1
 
   if (loading) {
     return <h1>Loading...</h1>
@@ -698,9 +681,7 @@ const MyProfile = ({ userId }) => {
                       className={classes.channelsWrapper}
                       onClick={() =>
                         dispatch(
-                          actions.pushHistory(
-                            `/channel/${item.fields.tag}`
-                          )
+                          actions.pushHistory(`/channel/${item.fields.tag}`)
                         )
                       }
                       key={index}
@@ -710,9 +691,7 @@ const MyProfile = ({ userId }) => {
                         src={item.fields.channelImg}
                         alt="channel image"
                       />
-                      <p className={classes.channelName}>
-                        {item.fields.title}
-                      </p>
+                      <p className={classes.channelName}>{item.fields.title}</p>
                     </div>
                   )
                 })}
@@ -744,20 +723,19 @@ const MyProfile = ({ userId }) => {
                 })}
               </div>
             )}
-            
             {liveRecordings && (
               <div className={classes.recordings}>
                 {audiocasts.concat(userRecordings)?.length < 1 ? (
                   <p className={classes.placeHolder}>No Recorded Streams yet</p>
                 ) : (
                   audiocasts?.concat(userRecordings)?.map((rec, index) => {
-                    count += 1
+                    countt += 1
                     return (
                       <div className={classes.track}>
                         <Tracks1
                           key={index}
                           episodeData={rec}
-                          counter={count - 1}
+                          counter={countt - 1}
                           channelColor={colors.darkGray}
                           indexdata={index}
                         />

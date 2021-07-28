@@ -102,7 +102,6 @@ const Headline = ({ classes, subTitle, title }) => (
 const EventScreen = ({ tag }) => {
   const [eventDataFetch, seteventDataFetch] = useState([])
   const [eventDataFetchlCS, seteventDataFetchlCS] = useState([])
-  const [secondPage, setSecondPage] = useState([])
   const [loading, setisloading] = useState(0)
   const [criteria, setCriteria] = useState('')
   const classes = useStyles()
@@ -130,15 +129,10 @@ const EventScreen = ({ tag }) => {
         view: 'Grid view',
       })
       .eachPage(
-        async function page(records, fetchNextPage) {
-          // records.forEach(rec => {
-          //   allRecords.push(rec)
-          // })
+        async function page(records, fetchNextPage) {          
           allRecords = [...allRecords.reverse(), ...records]
           seteventDataFetch(allRecords.reverse())
-          // setSecondPage(records)
           fetchNextPage()
-          console.log('records  ', allRecords)
         },
         function done(err) {
           if (err) {
@@ -227,6 +221,7 @@ const EventScreen = ({ tag }) => {
               .map((item, index) => {
                 return (
                   <Item
+                    audio={item}
                     key={index}
                     accentColor={color}
                     className={classes.item}

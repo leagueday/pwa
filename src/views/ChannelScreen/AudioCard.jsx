@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import ToggleImageButton from '../ToggleImageButton'
+import LikeButton from '../LikeButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions, constants, selectors } from '../../store'
 import { colors } from '../../styling'
@@ -46,6 +47,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   title: {
+    margin: 0,
+    padding: 0,
     textAlign: 'center',
     fontSize: '100%',
   },
@@ -86,9 +89,7 @@ const apiKey = 'keymd23kpZ12EriVi'
 const base = new Airtable({ apiKey }).base(baseId)
 
 const AudioCard = ({ audio, indexData, channelTag }) => {
-  const { userData, setUserId, handleUnLike, userLikedAudio } = useContext(
-    UserStateContext
-  )
+  // const { userData, setUserId } = useContext(UserStateContext)
   const dispatch = useDispatch()
   const classes = useStyles()
   const activeUser = useSelector(selectors.getUser)
@@ -131,82 +132,13 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
         ev.stopPropagation()
       }
 
-  const handleLike = () => {
-    setLiked(true)
-    setCount(count + 1)
-    base('UserAudiocasts').update(
-      [
-        {
-          id: audio.id,
-          fields: {
-            upvotes: audio.fields.upvotes + 1,
-            userProfile: !!audio?.fields?.userProfile
-              ? [...audio?.fields?.userProfile, currentUserId]
-              : [currentUserId],
-          },
-        },
-      ],
-      function (err, records) {
-        if (err) {
-          console.error(err)
-          return
-        }
-        records.forEach(function (record) {
-          console.log('liked record  ', record)
-        })
-      }
-    )
-  }
-
-  const index = userData?.fields?.likedAudio?.indexOf(audio?.id)
-  const toggleUnLike = () => {
-    // handleUnLike(audio, currentUserId)
-    setLiked(false)
-    setCount(count - 1)
-    const filtered = votedAudio?.filter(item => item !== currentUserId)
-    console.log('avoiding user profiles ', filtered)
-
-    base('UserAudiocasts').update(
-      [
-        {
-          id: audio.id,
-          fields: {
-            upvotes: audio.fields.upvotes - 1,
-            userProfile: !!filtered ? filtered : [],
-          },
-        },
-      ],
-      function (err, records) {
-        if (err) {
-          console.error(err)
-          return
-        }
-        records.forEach(function (record) {
-          console.log('unliked record  ', record)
-        })
-      }
-    )
-  }
-
-  useEffect(() => {
-    setUserId(activeUser.id)
-  }, []);
-
-  useEffect(() => {
-    setCount(audio.fields.upvotes)
-    if (audio?.fields?.userProfile?.includes(currentUserId)) {
-      setLiked(true)
-    }
-    setVotedAudio(audio?.fields?.userProfile)
-  }, [channelTag, audio])
-
   return (
     <div>
       <div className={classes.audioCard}>
         <div className={classes.images}>
           <img
             className={classes.creatorImg}
-            src={audio?.fields?.image}
+            src={audio?.fields?.creatorImg}
             alt=""
             onClick={() =>
               dispatch(actions.pushHistory(`/profile/${audio?.fields?.userId}`))
@@ -231,34 +163,11 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
             offImage="/img/logo_live_play.png"
             shadowColor={colors.lightGray}
           />
-          <div className={classes.like}>
-            {liked ? (
-              <button
-                onClick={toggleUnLike}
-                className={classes.likeBtn}
-                disabled={false}
-              >
-                <FontAwesomeIcon
-                  icon={faThumbsUp}
-                  size={'2x'}
-                  className={classes.thumbsup}
-                />
-              </button>
-            ) : (
-              <button
-                onClick={handleLike}
-                className={classes.likeBtn}
-                disabled={false}
-              >
-                <FontAwesomeIcon
-                  icon={ThumbsUp}
-                  size={'2x'}
-                  className={classes.thumbsup}
-                />
-              </button>
-            )}
-            <p className={classes.count}>{count}</p>
-          </div>
+          <LikeButton 
+          userId={currentUserId}
+          channelTag={channelTag}
+          audio={audio}
+          />
         </div>
       </div>
     </div>

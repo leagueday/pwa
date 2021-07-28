@@ -3,9 +3,6 @@ import { useSelector } from 'react-redux'
 import { selectors } from '../../store'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch } from 'react-redux'
-import { actions, constants } from '../../store'
-import ToggleImageButton from '../ToggleImageButton'
-import { colors } from '../../styling'
 import Airtable from 'airtable'
 import AudioCard from './AudioCard'
 
@@ -22,7 +19,6 @@ const Audiocast = ({ channelTag }) => {
   const classes = useStyles()
   const user = useSelector(selectors.getUser)
   const [userAudio, setUserAudio] = useState([])
-  const disptach = useDispatch()
   const baseId = 'appXoertP1WJjd4TQ'
   const apiKey = 'keymd23kpZ12EriVi'
   const base = new Airtable({ apiKey }).base(baseId)
@@ -45,13 +41,11 @@ const Audiocast = ({ channelTag }) => {
         }
       )
   }
-
-  // console.log('where tf are the userProfiles ', userAudio)
   
   useEffect(() => {
     getUserAudio()
   }, [user, channelTag])
-
+  
   return (
     <div className={classes.wrapper}>
       {userAudio?.map((audio, key) => {
