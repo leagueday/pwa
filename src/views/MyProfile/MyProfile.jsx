@@ -265,11 +265,11 @@ const useStyles = makeStyles(theme => ({
   },
   socials: {
     fontWeight: theme.typography.fontWeightBold,
+    marginLeft: '3%',
   },
   socialLinks: {
     display: 'flex',
     fontSize: '90%',
-    justifyContent: 'space-evenly',
     alignItems: 'center',
     textDecoration: 'underline',
     color: 'white',
@@ -278,6 +278,14 @@ const useStyles = makeStyles(theme => ({
       alignItems: 'center',
       marginLeft: '1%',
     },
+  },
+  socialIcon: {
+    marginRight: '10%',
+  },
+  socialContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   channelImg: {
     borderRadius: '50%',
@@ -575,10 +583,10 @@ const MyProfile = ({ userId }) => {
             </div>
             <div className={classes.description}>
               <p>{userData?.fields?.description}</p>
-              <div>
-                <p className={classes.socials}>Social Links:</p>
+              <div className={classes.socialContainer}>
+                <p className={classes.socials}>Socials:</p>
                 <p className={classes.socialLinks}>
-                  <FontAwesomeIcon icon={faTwitter} />
+                  <FontAwesomeIcon icon={faTwitter} size={'lg'} className={classes.socialIcon} />
                   <a
                     className={classes.socialLinks}
                     href={userData?.fields?.TwitterUrl?.includes('http') ? userData?.fields?.TwitterUrl : `https://twitter.com/${userData?.fields?.TwitterUrl}`}
@@ -589,7 +597,7 @@ const MyProfile = ({ userId }) => {
                   </a>
                 </p>
                 <p className={classes.socialLinks}>
-                  <FontAwesomeIcon icon={faTwitch} />
+                  <FontAwesomeIcon icon={faTwitch} size={'lg'} className={classes.socialIcon}/>
                   <a
                     className={classes.socialLinks}
                     href={userData?.fields?.TwitchUrl?.includes('http') ? userData?.fields?.TwitchUrl : `https://twitch.com/${userData?.fields?.TwitchUrl}`}
