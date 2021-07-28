@@ -767,8 +767,8 @@ const MyProfile = ({ userId }) => {
                   </>
                 ) : audiocasts.concat(userRecordings)?.length > 5 ? (
                   <>
-                    <PentaTrophy classes={classes} />
                     <NoobTrophy classes={classes} />
+                    <PentaTrophy classes={classes} />
                   </>
                 ) : audiocasts.concat(userRecordings)?.length > 1 ? (
                   <NoobTrophy classes={classes} />

@@ -141,6 +141,7 @@ const Item = ({
       }
 
   // RENDER HTML COMPONENT
+
   return (
     <div className={classes.itemContainer}>
       <LikeButton
@@ -177,4 +178,4 @@ const Item = ({
   )
 }
 
-export default Item
+export default Item;

@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     outline: 'none',
     border: 'none',
   },
-}));
+}))
 
 const baseId = 'appXoertP1WJjd4TQ'
 const apiKey = 'keymd23kpZ12EriVi'
@@ -33,9 +33,16 @@ const LikeButton = ({ audio, channelTag, userId }) => {
   const [votedAudio, setVotedAudio] = useState([])
   const classes = useStyles()
 
-  const handleLike = (e) => {
+  console.log('voted audio  ', votedAudio)
+  const handleLike = e => {
     setLiked(true)
     setCount(count + 1)
+    // console.log(
+    //   'from handleLike ',
+    //   [...audio?.fields?.userProfile, userId],
+    //   userId
+    // )
+
     if (audio.fields.type === 'audiocast') {
       base('UserAudiocasts').update(
         [
@@ -43,9 +50,8 @@ const LikeButton = ({ audio, channelTag, userId }) => {
             id: audio.id,
             fields: {
               upvotes: audio.fields.upvotes + 1,
-              userProfile: !!audio?.fields?.userProfile
-                ? [...audio?.fields?.userProfile, currentUserId]
-                : [currentUserId],
+              userProfile:
+                votedAudio.length > 0 ? [...votedAudio, userId] : [userId],
             },
           },
         ],
@@ -66,9 +72,7 @@ const LikeButton = ({ audio, channelTag, userId }) => {
             id: audio.id,
             fields: {
               upvotes: audio.fields.upvotes + 1,
-              userProfile: !!audio?.fields?.userProfile
-                ? [...audio?.fields?.userProfile, userId]
-                : [userId],
+              userProfile: votedAudio.length > 0 ? [...votedAudio, userId] : [userId],
             },
           },
         ],
@@ -85,10 +89,12 @@ const LikeButton = ({ audio, channelTag, userId }) => {
     }
   }
 
-  const toggleUnLike = (e) => {
+  const toggleUnLike = e => {
     setLiked(false)
     setCount(count - 1)
     const filtered = votedAudio?.filter(item => item !== userId)
+    setVotedAudio(filtered)
+    console.log('from unLike ', filtered, userId)
     if (audio.fields.type === 'audiocast') {
       base('UserAudiocasts').update(
         [
@@ -137,7 +143,9 @@ const LikeButton = ({ audio, channelTag, userId }) => {
   useEffect(() => {
     setCount(audio?.fields?.upvotes)
     setLiked(audio?.fields?.userProfile?.includes(userId))
-    setVotedAudio(audio?.fields?.userProfile)
+    if (!!audio?.fields?.userProfile) {
+      setVotedAudio(audio?.fields?.userProfile)
+    }
   }, [channelTag, audio])
 
   return (
