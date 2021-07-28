@@ -179,7 +179,7 @@ const UploadAudiocast = () => {
             playbackUrl: audiocast,
             channelTag: selectedChannel,
             description: formValues.description,
-            image: userData?.fields?.image,
+            creatorImg: userData?.fields?.image,
             upvotes: 0,
             type: 'audiocast',
           },
@@ -219,7 +219,7 @@ const UploadAudiocast = () => {
       color: 'white',
     }),
   }
-  
+
   return (
     <BasicLayout>
       <div className={classes.content}>
