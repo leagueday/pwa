@@ -248,6 +248,7 @@ const EventScreen = ({ tag }) => {
             ? eventDataFetchlCS &&
               eventDataFetchlCS?.map((title, index) => (
                 <Item
+                audio={title}
                   key={index}
                   accentColor={color}
                   className={classes.item}

@@ -33,7 +33,7 @@ const LikeButton = ({ audio, channelTag, userId }) => {
   const [votedAudio, setVotedAudio] = useState([])
   const classes = useStyles()
 
-  console.log('voted audio  ', votedAudio)
+  console.log('voted audio  ', audio)
   const handleLike = e => {
     setLiked(true)
     setCount(count + 1)
@@ -43,7 +43,7 @@ const LikeButton = ({ audio, channelTag, userId }) => {
     //   userId
     // )
 
-    if (audio.fields.type === 'audiocast') {
+    if (audio?.fields?.type === 'audiocast') {
       base('UserAudiocasts').update(
         [
           {
