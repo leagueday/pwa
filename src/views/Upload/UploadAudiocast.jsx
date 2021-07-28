@@ -226,7 +226,6 @@ const UploadAudiocast = () => {
       color: 'white',
     }),
   }
-
   return (
     <BasicLayout>
       <div className={classes.content}>
