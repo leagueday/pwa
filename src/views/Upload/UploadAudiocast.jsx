@@ -134,6 +134,7 @@ const UploadAudiocast = () => {
   const [selectedChannel, setSelectedChannel] = useState()
   const [audiocast, setAudiocast] = useState()
   const [thumbnail, setThumbnail] = useState()
+  const [loading, setLoading] = useState(false)
   const user = useSelector(selectors.getUser)
   useEffect(() => {
     setUserId(user.id)
@@ -151,10 +152,12 @@ const UploadAudiocast = () => {
   const handleAudioUpload = e => {
     const file = e.target.files[0]
     console.log(file)
+    setLoading(true)
     uploadFile(e.target.files[0], config)
       .then(res => {
         console.log(res.location)
         setAudiocast(res.location)
+        setLoading(false)
       })
       .catch(err => console.log(err))
     console.log(audiocast)
@@ -162,10 +165,14 @@ const UploadAudiocast = () => {
 
   const handleImageUpload = e => {
     const file = e.target.files[0]
-    uploadFile(file, config).then(res => {
-      console.log(res.location)
-      setThumbnail(res.location)
-    })
+    setLoading(true)
+    uploadFile(file, config)
+      .then(res => {
+        console.log(res.location)
+        setThumbnail(res.location)
+        setLoading(false)
+      })
+      .catch(err => console.log(err))
   }
 
   const handleSubmit = () => {
@@ -261,8 +268,13 @@ const UploadAudiocast = () => {
               type="file"
               onChange={handleAudioUpload}
             />
+            {loading && <h2>Loading...</h2>}
 
-            <Button className={classes.submitBtn} onClick={handleSubmit}>
+            <Button
+              className={classes.submitBtn}
+              onClick={handleSubmit}
+              disabled={loading}
+            >
               Submit Audiocast
             </Button>
           </div>
