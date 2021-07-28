@@ -20,7 +20,7 @@ export const getMyList = () => {
     const user = useSelector(selectors.getUser)
     const [filteredListRecords, setFilteredListRecords] = useState([])
     let result = []
-    //sad
+
     const getListData = async () => {
         const baseId = 'appXoertP1WJjd4TQ'
         await fetch('/.netlify/functions/airtable-getprofile', {
@@ -29,16 +29,29 @@ export const getMyList = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ url: `${baseId}/UserList` }),
+            body: JSON.stringify({ url: `${baseId}/Channels` }),
         })
             .then(response => response.json())
             .then(function (response) {
-                response?.records?.map(item => {
-                    if (item?.fields?.userId?.shift() === user?.id) {
-                        result.push(item)
-                    }
+                response?.records?.forEach(item => {
+                    result.push({
+                        value: item.fields.tag,
+                        label: item.fields.title,
+                    })
                 })
-                setFilteredListRecords(result)
+                setFilteredListRecords(result.sort((a, b) => {
+                    let fa = a?.value?.toLowerCase(),
+                        fb = b?.value?.toLowerCase();
+
+                    if (fa < fb) {
+                        return -1;
+                    }
+                    if (fa > fb) {
+                        return 1;
+                    }
+                    return 0;
+                }))
+
             })
             .catch(error => {
                 console.log('error while data fetching', error)

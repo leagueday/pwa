@@ -21,8 +21,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    minHeight: '920px',
-    minHeight: 0,
+    minHeight: '1820px',
     width: '100%',
   },
   basicLayoutRow: {

@@ -736,13 +736,13 @@ const EditProfile = props => {
                 </span>
               )}
               <TextField
-                label="TwitterUrl"
+                label="Twitter Handle"
                 id="margin-normal"
                 name="TwitterUrl"
                 value={formInput.TwitterUrl}
                 defaultValue={formInput.TwitterUrl}
                 className={classes.textField}
-                helperText="Enter Your Twitter url"
+                helperText="Enter Your Twitter Handle"
                 onChange={e => {
                   setFormChanged(true)
                   setFormInput({
@@ -754,13 +754,13 @@ const EditProfile = props => {
               <br></br>
               <br></br>
               <TextField
-                label="TwitchUrl"
+                label="Twitch Handle"
                 id="margin-normal"
                 name="TwitterUrl"
                 value={formInput.TwitchUrl}
                 defaultValue={formInput.TwitchUrl}
                 className={classes.textField}
-                helperText="Enter Your Twitch url"
+                helperText="Enter Your Twitch Handle"
                 onChange={e => {
                   setFormChanged(true)
                   setFormInput({
