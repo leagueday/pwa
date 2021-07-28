@@ -578,19 +578,23 @@ const MyProfile = ({ userId }) => {
               <div>
                 <p className={classes.socials}>Social Links:</p>
                 <p className={classes.socialLinks}>
-                  <FontAwesomeIcon icon={faTwitter} />{' '}
+                  <FontAwesomeIcon icon={faTwitter} />
                   <a
                     className={classes.socialLinks}
-                    href={userData?.fields?.TwitterUrl}
+                    href={userData?.fields?.TwitterUrl?.includes('http') ? userData?.fields?.TwitterUrl : `https://twitter.com/${userData?.fields?.TwitterUrl}`}
+                    target="_blank"
+                    rel="noreferer"
                   >
                     {userData?.fields?.TwitterUrl}
                   </a>
                 </p>
                 <p className={classes.socialLinks}>
-                  <FontAwesomeIcon icon={faTwitch} />{' '}
+                  <FontAwesomeIcon icon={faTwitch} />
                   <a
                     className={classes.socialLinks}
-                    href={userData?.fields?.TwitchUrl}
+                    href={userData?.fields?.TwitchUrl?.includes('http') ? userData?.fields?.TwitchUrl : `https://twitch.com/${userData?.fields?.TwitchUrl}`}
+                    target="_blank"
+                    rel="noreferer"
                   >
                     {userData?.fields?.TwitchUrl}
                   </a>
