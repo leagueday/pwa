@@ -12,16 +12,14 @@ const useStyles = makeStyles(theme => ({
   channelTile: {
     cursor: 'pointer',
     display: 'flex',
-    // flex: 1,
     flexDirection: 'column',
-    // height: '100%',
     width: '16%',
     minHeight: 0,
     minWidth: 0,
     userSelect: 'none',
     marginBottom: '2.5%',
     [theme.breakpoints.down('sm')]: {
-      width: '33%'
+      width: '33%',
     },
   },
   image: {
@@ -36,12 +34,11 @@ const useStyles = makeStyles(theme => ({
   },
   imageSquare: {
     width: '80%',
+    position: 'relative',
   },
   plusMinusButton: {
-    // bottom: 'calc(50% * sin(50%)) + 0.25em',
     bottom: '0.25em',
     position: 'absolute',
-    // right: 'calc(50% * sin(50%)) + 0.25em',
     right: '0.25em',
     zIndex: 3,
   },
@@ -62,17 +59,31 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: '0.25em',
     paddingRight: '0.25em',
   },
+  ldCreatorImg: {
+    position: 'absolute',
+    width: '30%',
+    objectFit: 'cover',
+    top: 0,
+    right: 0,
+  },
 }))
 
 const CreatorTile = ({ user }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const gotoThisCreator = () =>
-  dispatch(actions.pushHistory(`/profile/${user.userId}`))
+    dispatch(actions.pushHistory(`/profile/${user.userId}`))
 
   return (
     <div className={classes.channelTile}>
       <Square className={classes.imageSquare}>
+        {user?.leagueDayCreator === 'true' && (
+          <img
+            className={classes.ldCreatorImg}
+            src="/img/LDcreator.png"
+            alt="LD creator badge"
+          />
+        )}
         <img
           className={classes.image}
           src={user.image}
@@ -92,4 +103,4 @@ const CreatorTile = ({ user }) => {
   )
 }
 
-export default CreatorTile;
+export default CreatorTile

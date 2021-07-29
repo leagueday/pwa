@@ -70,7 +70,7 @@ const useStyles = makeStyles(theme => ({
   },
   userImgContainer: {
     background: 'black',
-    width: '12rem',
+    width: '18rem',
     minHeight: '150px',
     height: '12rem',
     display: 'flex',
@@ -204,7 +204,6 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       paddingLeft: '5%',
     },
-    // overflow: 'scroll',
   },
   placeHolder: {
     opacity: 0.7,
@@ -296,8 +295,19 @@ const useStyles = makeStyles(theme => ({
   creator: {
     margin: 0,
     padding: 0,
+    color: colors.yellow,
   },
-}));
+  ldCreatorImg: {
+    width: '15%',
+    marginLeft: '2%',
+  },
+  ldCreatorBadge: {
+    marginTop: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+}))
 
 const NoobTrophy = ({ classes }) => {
   return (
@@ -328,7 +338,6 @@ const TitanTrophy = ({ classes }) => {
     <div className={classes.trophyCont}>
       <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
       <p>
-        {' '}
         <span className={classes.trophyName}>Gamer Audio Titan</span>
         <br></br> <i>10 streams created</i>
       </p>
@@ -494,11 +503,17 @@ const MyProfile = ({ userId }) => {
               }
               alt="User Profile Picture"
             />
+            {userData?.fields?.leagueDayCreator === 'true' && (
+              <div className={classes.ldCreatorBadge}>
+                <h3 className={classes.creator}>LD Official Creator</h3>
+                <img
+                  className={classes.ldCreatorImg}
+                  src="/img/LDcreator.png"
+                  alt="LD creator badge"
+                />
+              </div>
+            )}
           </div>
-              {
-                userData?.fields?.leagueDayCreator === "true" && 
-                <h3 className={classes.creator}>Founding Creator</h3>
-              }
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
               <p className={classes.userName}>{userData?.fields?.name}</p>
@@ -506,21 +521,33 @@ const MyProfile = ({ userId }) => {
             <div className={classes.description}>
               <p>{userData?.fields?.description}</p>
               <div>
-                <p className={classes.socials}>Social Links:</p>
+                <p className={classes.socials}>Socials:</p>
                 <p className={classes.socialLinks}>
-                  <FontAwesomeIcon icon={faTwitter} />{' '}
+                  <FontAwesomeIcon icon={faTwitter} />
                   <a
                     className={classes.socialLinks}
-                    href={userData?.fields?.TwitterUrl}
+                    href={
+                      userData?.fields?.TwitterUrl?.includes('http')
+                        ? userData?.fields?.TwitterUrl
+                        : `https://twitter.com/${userData?.fields?.TwitterUrl}`
+                    }
+                    target="_blank"
+                    rel="noreferer"
                   >
                     {userData?.fields?.TwitterUrl}
                   </a>
                 </p>
                 <p className={classes.socialLinks}>
-                  <FontAwesomeIcon icon={faTwitch} />{' '}
+                  <FontAwesomeIcon icon={faTwitch} />
                   <a
                     className={classes.socialLinks}
-                    href={userData?.fields?.TwitchUrl}
+                    href={
+                      userData?.fields?.TwitchUrl?.includes('http')
+                        ? userData?.fields?.TwitchUrl
+                        : `https://twitch.com/${userData?.fields?.TwitchUrl}`
+                    }
+                    target="_blank"
+                    rel="noreferer"
                   >
                     {userData?.fields?.TwitchUrl}
                   </a>
@@ -597,9 +624,7 @@ const MyProfile = ({ userId }) => {
                       className={classes.channelsWrapper}
                       onClick={() =>
                         dispatch(
-                          actions.pushHistory(
-                            `/channel/${item.fields.tag}`
-                          )
+                          actions.pushHistory(`/channel/${item.fields.tag}`)
                         )
                       }
                       key={index}
@@ -609,9 +634,7 @@ const MyProfile = ({ userId }) => {
                         src={item.fields.channelImg}
                         alt="channel image"
                       />
-                      <p className={classes.channelName}>
-                        {item.fields.title}
-                      </p>
+                      <p className={classes.channelName}>{item.fields.title}</p>
                     </div>
                   )
                 })}
