@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import cx from 'classnames'
-
+import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe'
 import { makeStyles } from '@material-ui/core'
 
 import { actions, selectors } from '../../store'
@@ -15,6 +15,8 @@ const MenuButton = makeIconButton(IcoMenu)
 
 const useStyles = makeStyles(theme => ({
   appBar: {
+    position: 'relative',
+    top: 0,
     alignItems: 'center',
     backgroundColor: colors.lightGray,
     display: 'flex',
@@ -63,6 +65,7 @@ const XsAppBar = ({ className, home }) => {
   const maybeGoHome = home ? null : () => dispatch(actions.pushHistory('/'))
 
   return (
+    <>
     <div className={cx(classes.appBar, className)}>
       <div className={classes.logoContainer} onClick={maybeGoHome}>
         <img className={classes.logo} src="/img/logo_square_transparent.png" />
@@ -86,6 +89,7 @@ const XsAppBar = ({ className, home }) => {
         />
       </div>
     </div>
+    </>
   )
 }
 

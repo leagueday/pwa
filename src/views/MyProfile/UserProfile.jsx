@@ -381,25 +381,6 @@ const MyProfile = ({ userId }) => {
     setTrophieSelected(false)
   }
 
-  const { data: audiocastss } = useAirTable(
-    'appXoertP1WJjd4TQ',
-    'UserAudiocasts'
-  )
-  const { data: recordedStreams } = useAirTable(
-    'appXoertP1WJjd4TQ',
-    'ChannelLiveData'
-  )
-
-  const getUserById = () => {
-    const currentUserRecordings = audiocastss?.filter(
-      item => item.fields.userId.shift() === userId
-    )
-    const userAudiocasts = recordedStreams?.filter(
-      item => item.fields.userId === userId
-    )
-    setUserRecordings(currentUserRecordings?.concat(userAudiocasts))
-  }
-
   const getUserRecordings = () => {
     base('UserAudiocasts')
       .select({
@@ -435,10 +416,6 @@ const MyProfile = ({ userId }) => {
         }
       )
   }
-
-  useEffect(() => {
-    getUserById()
-  }, [recordedStreams])
 
   const classes = useStyles({ primaryColor })
   let count = 1

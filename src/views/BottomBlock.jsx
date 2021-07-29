@@ -7,6 +7,7 @@ import NextLive from './NextLive'
 
 const useStyles = makeStyles(theme => ({
   bottomBlock: {
+    overflowY: 'hidden',
     width: '100%',
   },
   children: {
@@ -58,6 +59,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     display: 'flex',
     width: '100%',
+    overflowY: 'hidden',
   },
   titleRow: {
     alignItems: 'center',

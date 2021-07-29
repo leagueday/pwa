@@ -32,6 +32,13 @@ const PlusButton = makeIconButton(IcoPlus)
 const RewindStopButton = makeIconButton(IcoRewindStop)
 
 const useStyles = makeStyles(theme => ({
+  wrapper: {
+    position: 'relative',
+    maxHeight: '8em',
+    minHeight: '6em',
+    userSelect: 'none',
+    width: '100%',
+  },
   childButtonCol: {
     alignItems: 'center',
     display: 'flex',
@@ -70,21 +77,21 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   xsAudioControls: {
+    position: 'relative',
     backgroundColor: colors.brandBlack,
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
-    height: '75%',
-    maxHeight: '200px',
+    height: '100%',
     justifyContent: 'space-between',
     padding: '2vw',
-    position: 'relative',
+    bottom: 0,
   },
   volumeBox: {
     padding: '0 3vw',
-    marginTop: '2vw'
-  }
-}))
+    marginTop: '2vw',
+  },
+}));
 
 const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
 
@@ -127,41 +134,42 @@ const XsCondensedAudioControls = ({ className, primaryColor }) => {
         titleOnclick,
       }) =>
         ((PlusOrMinusButton, buttonColor) => (
-          <div
-            className={cx(classes.xsAudioControls, className)}
-            {...swipeHandlers}
-          >
-            <DownButton
-              className={classes.hideButton}
-              color={colors.magenta}
-              onClick={onHide}
-              backgroundColor={colors.brandBlack}
-              shadowColor={buttonShadowColor}
-              size="6vw"
-              strokeWidth="3"
-            />
-            <div className={classes.titleRow}>
-              <XsTitle
-                className={classes.title}
-                halfHeight="10vw"
-                height="12vw"
-                onClick={titleOnclick}
-                podcastName={podcastName}
-                primaryColor={primaryColor}
-                title={itemTitle}
-              >
-                <ToggleImageButtonSmall
-                  className={classes.logoButton}
-                  size="12vw"
-                  on={isPlaying}
-                  onClick={popOnclick}
-                  onImage="/img/logo_pause.png"
-                  offImage="/img/logo_play.png"
-                  shadowColor={buttonShadowColor}
-                />
-              </XsTitle>
-              <div className={classes.childButtonCol}>
-                {/* <PlusOrMinusButton
+          <div className={classes.wrapper}>
+            <div
+              className={cx(classes.xsAudioControls, className)}
+              {...swipeHandlers}
+            >
+              <DownButton
+                className={classes.hideButton}
+                color={colors.magenta}
+                onClick={onHide}
+                backgroundColor={colors.brandBlack}
+                shadowColor={buttonShadowColor}
+                size="6vw"
+                strokeWidth="3"
+              />
+              <div className={classes.titleRow}>
+                <XsTitle
+                  className={classes.title}
+                  halfHeight="10vw"
+                  height="12vw"
+                  onClick={titleOnclick}
+                  podcastName={podcastName}
+                  primaryColor={primaryColor}
+                  title={itemTitle}
+                >
+                  <ToggleImageButtonSmall
+                    className={classes.logoButton}
+                    size="12vw"
+                    on={isPlaying}
+                    onClick={popOnclick}
+                    onImage="/img/logo_pause.png"
+                    offImage="/img/logo_play.png"
+                    shadowColor={buttonShadowColor}
+                  />
+                </XsTitle>
+                <div className={classes.childButtonCol}>
+                  {/* <PlusOrMinusButton
                   backgroundColor={colors.brandBlack}
                   color={buttonColor}
                   onClick={plusOrMinusOnclick}
@@ -169,38 +177,39 @@ const XsCondensedAudioControls = ({ className, primaryColor }) => {
                   size="4vw"
                   strokeWidth="3"
                 /> */}
-                <ForwardStopButton
+                  <ForwardStopButton
+                    color={buttonColor}
+                    backgroundColor={colors.brandBlack}
+                    size="4vw"
+                    onClick={nextButtonOnclick}
+                    shadowColor={buttonShadowColor}
+                  />
+                </div>
+              </div>
+              <div className={classes.progressRow}>
+                <RewindStopButton
+                  iconClassName={classes.barsideButtonIcon}
                   color={buttonColor}
                   backgroundColor={colors.brandBlack}
                   size="4vw"
-                  onClick={nextButtonOnclick}
+                  onClick={replayButtonOnclick}
+                  shadowColor={buttonShadowColor}
+                />
+                <div className={classes.progressBoxFlex}>
+                  <ProgressBox />
+                </div>
+                <FastFwdStopButton
+                  iconClassName={classes.barsideButtonIcon}
+                  color={buttonColor}
+                  backgroundColor={colors.brandBlack}
+                  size="4vw"
+                  onClick={forwardButtonOnclick}
                   shadowColor={buttonShadowColor}
                 />
               </div>
-            </div>
-            <div className={classes.progressRow}>
-              <RewindStopButton
-                iconClassName={classes.barsideButtonIcon}
-                color={buttonColor}
-                backgroundColor={colors.brandBlack}
-                size="4vw"
-                onClick={replayButtonOnclick}
-                shadowColor={buttonShadowColor}
-              />
-              <div className={classes.progressBoxFlex}>
-                <ProgressBox />
+              <div className={classes.volumeBox}>
+                <VolumeBox />
               </div>
-              <FastFwdStopButton
-                iconClassName={classes.barsideButtonIcon}
-                color={buttonColor}
-                backgroundColor={colors.brandBlack}
-                size="4vw"
-                onClick={forwardButtonOnclick}
-                shadowColor={buttonShadowColor}
-              />
-            </div>
-            <div className={classes.volumeBox}>
-              <VolumeBox />
             </div>
           </div>
         ))(

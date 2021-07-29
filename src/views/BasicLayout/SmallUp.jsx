@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
       overflowX: 'hidden',
       overflowY: 'scroll',
       background: 'black',
+      // minHeight: '1920px',
     }),
   basicLayoutCol: {
     alignItems: 'stretch',

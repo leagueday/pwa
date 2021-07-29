@@ -115,6 +115,9 @@ const useStyles = makeStyles(theme => ({
       fontSize: '80%',
       paddingLeft: '2vw',
     },
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: '5%'
+    },
   }),
   episodeTitle: {
     color: colors.white80,
@@ -124,6 +127,7 @@ const useStyles = makeStyles(theme => ({
   episodeTitleAndData: {
     display: 'flex',
     width: '100%',
+    height: '100%',
     [theme.breakpoints.only('xs')]: {
       flexDirection: 'column',
     },
@@ -431,14 +435,8 @@ export const Tracks1 = ({
   indexdata,
   channelColor,
 }) => {
-  const baseId = 'appXoertP1WJjd4TQ'
-  const apiKey = 'keymd23kpZ12EriVi'
-  const base = new Airtable({ apiKey }).base(baseId)
   const classes = useStyles({ backgroundColor, channelColor })
   const dispatch = useDispatch()
-  const [liked, setLiked] = useState(false)
-  const [count, setCount] = useState()
-  const [votedAudio, setVotedAudio] = useState([])
   const audioUrl = useSelector(selectors.getAudioUrl)
   const { currentUserId } = useContext(UserStateContext)
 
