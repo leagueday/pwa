@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '50%',
     height: '100%',
     width: '100%',
+    objectFit: 'cover',
     [theme.breakpoints.only('xs')]: {
       border: `0.5vw solid ${colors.white80}`,
     },

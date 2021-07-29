@@ -200,7 +200,7 @@ const ExtraSmallExpanded = () => {
                     <ForwardStopButton
                       color={colors.magenta}
                       backgroundColor={colors.brandBlack}
-                      size="8vw"
+                      size="4vw"
                       onClick={nextButtonOnclick}
                       shadowColor={buttonShadowColor}
                     />
@@ -216,7 +216,7 @@ const ExtraSmallExpanded = () => {
                       iconClassName={classes.mainButtonIcon}
                       color={colors.magenta}
                       backgroundColor={colors.brandBlack}
-                      size="8vw"
+                      size="15vw"
                       onClick={replayButtonOnclick}
                       shadowColor={buttonShadowColor}
                     />
@@ -234,22 +234,22 @@ const ExtraSmallExpanded = () => {
                       iconClassName={classes.mainButtonIcon}
                       color={colors.magenta}
                       backgroundColor={colors.brandBlack}
-                      size="8vw"
+                      size="15vw"
                       onClick={forwardButtonOnclick}
                       shadowColor={buttonShadowColor}
                     />
                   </div>
                 </div>
-                <div className={classes.myListRow}>
+                {/* <div className={classes.myListRow}>
                   <PlusOrMinusButton
                     backgroundColor={colors.brandBlack}
                     color={colors.magenta}
                     onClick={plusOrMinusOnclick}
                     shadowColor={buttonShadowColor}
-                    size="8vw"
+                    size="15vw"
                     strokeWidth="3"
                   />
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

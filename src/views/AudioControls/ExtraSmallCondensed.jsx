@@ -74,7 +74,8 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
-    height: '100%',
+    height: '75%',
+    maxHeight: '200px',
     justifyContent: 'space-between',
     padding: '2vw',
     position: 'relative',
@@ -143,7 +144,7 @@ const XsCondensedAudioControls = ({ className, primaryColor }) => {
               <XsTitle
                 className={classes.title}
                 halfHeight="10vw"
-                height="20vw"
+                height="12vw"
                 onClick={titleOnclick}
                 podcastName={podcastName}
                 primaryColor={primaryColor}
@@ -151,7 +152,7 @@ const XsCondensedAudioControls = ({ className, primaryColor }) => {
               >
                 <ToggleImageButtonSmall
                   className={classes.logoButton}
-                  size="20vw"
+                  size="12vw"
                   on={isPlaying}
                   onClick={popOnclick}
                   onImage="/img/logo_pause.png"
@@ -160,18 +161,18 @@ const XsCondensedAudioControls = ({ className, primaryColor }) => {
                 />
               </XsTitle>
               <div className={classes.childButtonCol}>
-                <PlusOrMinusButton
+                {/* <PlusOrMinusButton
                   backgroundColor={colors.brandBlack}
                   color={buttonColor}
                   onClick={plusOrMinusOnclick}
                   shadowColor={buttonShadowColor}
-                  size="8vw"
+                  size="4vw"
                   strokeWidth="3"
-                />
+                /> */}
                 <ForwardStopButton
                   color={buttonColor}
                   backgroundColor={colors.brandBlack}
-                  size="8vw"
+                  size="4vw"
                   onClick={nextButtonOnclick}
                   shadowColor={buttonShadowColor}
                 />
@@ -182,7 +183,7 @@ const XsCondensedAudioControls = ({ className, primaryColor }) => {
                 iconClassName={classes.barsideButtonIcon}
                 color={buttonColor}
                 backgroundColor={colors.brandBlack}
-                size="8vw"
+                size="4vw"
                 onClick={replayButtonOnclick}
                 shadowColor={buttonShadowColor}
               />
@@ -193,7 +194,7 @@ const XsCondensedAudioControls = ({ className, primaryColor }) => {
                 iconClassName={classes.barsideButtonIcon}
                 color={buttonColor}
                 backgroundColor={colors.brandBlack}
-                size="8vw"
+                size="4vw"
                 onClick={forwardButtonOnclick}
                 shadowColor={buttonShadowColor}
               />

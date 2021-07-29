@@ -73,10 +73,10 @@ const StyledAppContent = () => {
   )
 }
 
-const Chronicle = () => {
-  useChronicle()
-  return null
-}
+// const Chronicle = () => {
+//   useChronicle()
+//   return null
+// }
 
 const App = () => (
   <Sentry.ErrorBoundary fallback={'An error has occurred'}>
@@ -85,7 +85,7 @@ const App = () => (
         <UserProfileProvider>
           <Audio />
           <Auth />
-          <Chronicle />
+          {/* <Chronicle /> */}
           <CssBaseline />
           <ThemeProvider>
             <StyledAppContent />
