@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { selectors } from '../../store'
-import { MyListContext } from '../../store/stateProviders/listState'
 import Airtable from 'airtable'
 import { UserStateContext } from '../../store/stateProviders/userState'
 import { colors } from '../../styling'
@@ -10,7 +8,6 @@ import { addScrollStyle } from '../util'
 import { actions } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
-import useAirTable from '../../api/useAirtable'
 import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
 const primaryColor = colors.magenta
 

@@ -198,6 +198,8 @@ const UploadAudiocast = () => {
       .catch(err => console.log(err))
   }
 
+  console.log('username ', userData.fields)
+
   const handleSubmit = () => {
     base('UserAudiocasts').create(
       [
@@ -212,6 +214,7 @@ const UploadAudiocast = () => {
             creatorImg: userData?.fields?.image,
             upvotes: 0,
             type: 'audiocast',
+            username: userData?.fields?.name
           },
         },
       ],

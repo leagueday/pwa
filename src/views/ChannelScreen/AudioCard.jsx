@@ -5,11 +5,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { actions, constants, selectors } from '../../store'
 import { colors } from '../../styling'
 import { makeStyles } from '@material-ui/styles'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
-import { faThumbsUp as ThumbsUp } from '@fortawesome/free-regular-svg-icons'
 import Airtable from 'airtable'
 import useAirtable from '../../api/useAirtable'
+import Modal from '@material-ui/core/Modal'
 import { UserStateContext } from '../../store/stateProviders/userState'
 
 const useStyles = makeStyles(theme => ({
@@ -29,6 +27,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   thumbnail: {
+    cursor: 'pointer',
     width: '100%',
     height: '150px',
     objectFit: 'cover',
@@ -37,7 +36,8 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     position: 'absolute',
     borderRadius: '50%',
-    width: '30%',
+    width: '5rem',
+    height: '5rem',
     objectFit: 'cover',
     right: -15,
     top: -15,
@@ -54,6 +54,10 @@ const useStyles = makeStyles(theme => ({
   },
   playBtn: {
     width: '50%',
+    height: '50px',
+  },
+  playBtnModal: {
+    width: '20%',
     height: '50px',
   },
   playLike: {
@@ -82,7 +86,44 @@ const useStyles = makeStyles(theme => ({
     outline: 'none',
     border: 'none',
   },
-}));
+  modalWrapper: {
+    position: 'absolute',
+    width: '70%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: colors.darkGray,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    color: 'white',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    outline: 'none',
+    borderRadius: '5px',
+    height: '80%',
+  },
+  audioDescription: {},
+  userImg: {
+    borderRadius: '50%',
+    objectFit: 'cover',
+    height: '12rem',
+    width: '12rem',
+  },
+  audioThumbnail: {
+    width: '45%',
+    maxHeight: '100%',
+  },
+  images: {
+    display: 'flex',
+    alignItem: 'flex-start',
+  },
+  userName: {
+    padding: 0,
+    margin: 0,
+  },
+}))
 
 const baseId = 'appXoertP1WJjd4TQ'
 const apiKey = 'keymd23kpZ12EriVi'
@@ -93,20 +134,25 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
   const dispatch = useDispatch()
   const classes = useStyles()
   const activeUser = useSelector(selectors.getUser)
-  const [count, setCount] = useState()
   const { data } = useAirtable(baseId, 'UserProfile')
   const currentUser = data?.filter(
     user => user?.fields?.userId === activeUser?.id
   )
   const currentUserId = currentUser?.shift()?.id
-  const [liked, setLiked] = useState(false)
-  const [votedAudio, setVotedAudio] = useState([])
   const audioUrl = useSelector(selectors.getAudioUrl)
-
+  const [open, setOpen] = useState(false)
   const isSelectedAudio = audioUrl && audioUrl === audio.fields.playbackUrl
   const audioMode = useSelector(selectors.getAudioMode)
 
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY
+
+  const handleModalClose = () => {
+    setOpen(false)
+  }
+
+  const handleModalOpen = () => {
+    setOpen(true)
+  }
 
   const onPopClick = isPlayings
     ? ev => {
@@ -145,11 +191,57 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
             }
           />
           <img
+            onClick={handleModalOpen}
             className={classes.thumbnail}
             src={audio?.fields?.thumbnail}
             alt=""
           />
         </div>
+        <Modal
+          open={open}
+          onClose={handleModalClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          <div className={classes.modalWrapper}>
+            <div className={classes.images}>
+              <img
+                className={classes.audioThumbnail}
+                src={audio?.fields?.thumbnail}
+                alt=""
+              />
+              <div>
+                <p className={classes.userName}>
+                  Created By: {audio?.fields?.username}
+                </p>
+                <img
+                  className={classes.userImg}
+                  src={audio?.fields?.creatorImg}
+                  alt=""
+                />
+              </div>
+            </div>
+            <div className={classes.audioDescription}>
+              <h3>{audio?.fields?.title}</h3>
+              <h6>{audio?.fields?.description}</h6>
+            </div>
+            <ToggleImageButton
+              className={classes.playBtnModal}
+              size="1vw"
+              on={isPlayings}
+              onClick={onPopClick}
+              onImage="/img/logo_live_pause.png"
+              offImage="/img/logo_live_play.png"
+              shadowColor={colors.lightGray}
+            />
+            <LikeButton
+              size={'32px'}
+              userId={currentUserId}
+              channelTag={channelTag}
+              audio={audio}
+            />
+          </div>
+        </Modal>
         <div>
           <h4 className={classes.title}>{audio?.fields?.title}</h4>
         </div>
@@ -163,10 +255,10 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
             offImage="/img/logo_live_play.png"
             shadowColor={colors.lightGray}
           />
-          <LikeButton 
-          userId={currentUserId}
-          channelTag={channelTag}
-          audio={audio}
+          <LikeButton
+            userId={currentUserId}
+            channelTag={channelTag}
+            audio={audio}
           />
         </div>
       </div>

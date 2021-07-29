@@ -12,8 +12,6 @@ import { addScrollStyle } from '../util'
 import { actions } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
-import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
-import { faThumbsUp as ThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
 
 const primaryColor = colors.magenta
