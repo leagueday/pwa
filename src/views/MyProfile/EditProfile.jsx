@@ -491,6 +491,8 @@ const EditProfile = props => {
                 admin: profileInfo.fields.admin,
                 UserAudiocasts: profileInfo.fields.UserAudiocasts,
                 profileCreated: 'yes',
+                likedAudio: profileInfo.fields.likedAudio,
+                ChannelLiveData: profileInfo.fields.channelLiveData
               },
             },
           ],

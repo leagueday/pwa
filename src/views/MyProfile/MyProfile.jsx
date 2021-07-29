@@ -14,7 +14,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
 import { faThumbsUp as ThumbsUp } from '@fortawesome/free-solid-svg-icons'
-import useAirTable from '../../api/useAirtable'
 import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
 
 const primaryColor = colors.magenta
@@ -102,6 +101,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   userBio: {
+    marginTop: '5%',
     width: '100%',
     display: 'flex',
     alignItems: 'center',
@@ -171,6 +171,7 @@ const useStyles = makeStyles(theme => ({
   userGamesWrapper: {
     background: 'black',
     width: '100%',
+    marginLeft: '3%',
     marginTop: '5%',
     minHeight: '400px',
     [theme.breakpoints.down('md')]: {
@@ -225,9 +226,8 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: '2%',
+    marginTop: '.5%',
     width: '100%',
-    // overflow: 'scroll',
   },
   placeHolder: {
     opacity: 0.7,
@@ -236,8 +236,8 @@ const useStyles = makeStyles(theme => ({
   },
   goLiveButton: {
     width: '110px',
-    height: '30px',
-    marginBottom: '5%',
+    height: '40px',
+    marginRight: '5%',
     background: colors.blue,
     borderRadius: '5px',
     '&:hover': {
@@ -311,7 +311,7 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
   },
   recordings: {
-    marginTop: '2%',
+    marginTop: '.5%',
     zIndex: '-1',
   },
   trophy: {
@@ -340,7 +340,8 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'column',
+    height: '3%',
+    justifyContent: 'center'
   },
   xBtn: {
     marginLeft: '1%',
@@ -371,18 +372,27 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '5px',
     height: 250,
   },
-  trophys: {
+  creator: {
+    margin: 0,
+    padding: 0,
+    color: colors.yellow,
+  },
+  ldCreatorImg: {
+    width: '15%',
+    marginLeft: '2%',
+  },
+  ldCreatorBadge: {
+    marginTop: '30%',
+    marginLeft: '5%',
     display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }))
 
 const MyProfile = ({ userId }) => {
   const { globalList, creatorList } = useContext(MyListContext)
-  const { userData, loading, refreshData, getData } = useContext(
-    UserStateContext
-  )
+  const { userData, loading } = useContext(UserStateContext)
   const baseId = 'appXoertP1WJjd4TQ'
   const apiKey = 'keymd23kpZ12EriVi'
   const base = new Airtable({ apiKey }).base(baseId)
@@ -574,6 +584,16 @@ const MyProfile = ({ userId }) => {
               }
               alt="User Profile Picture"
             />
+            {userData?.fields?.leagueDayCreator === 'true' && (
+              <div className={classes.ldCreatorBadge}>
+                <h3 className={classes.creator}>LD Official Creator</h3>
+                <img
+                  className={classes.ldCreatorImg}
+                  src="/img/LDcreator.png"
+                  alt="LD creator badge"
+                />
+              </div>
+            )}
           </div>
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
@@ -625,19 +645,6 @@ const MyProfile = ({ userId }) => {
                   </a>
                 </p>
               </div>
-            </div>
-            <div className={classes.audioButtons}>
-              {userData?.fields?.admin === 'true' && (
-                <Button onClick={golive} className={classes.goLiveButton}>
-                  Go Live
-                </Button>
-              )}
-              <Button
-                onClick={() => dispatch(actions.pushHistory('/upload'))}
-                className={classes.uploadButton}
-              >
-                Upload Audiocast
-              </Button>
             </div>
           </div>
         </div>
@@ -753,32 +760,49 @@ const MyProfile = ({ userId }) => {
               </div>
             )}
             {liveRecordings && (
-              <div className={classes.recordings}>
-                {audiocasts.concat(userRecordings)?.length < 1 ? (
-                  <p className={classes.placeHolder}>No Recorded Streams yet</p>
-                ) : (
-                  audiocasts?.concat(userRecordings)?.map((rec, index) => {
-                    countt += 1
-                    return (
-                      <div className={classes.track}>
-                        <Tracks1
-                          key={index}
-                          episodeData={rec}
-                          counter={countt - 1}
-                          channelColor={colors.darkGray}
-                          indexdata={index}
-                        />
-                        <p
-                          onClick={() => deleteAudiocast(rec)}
-                          className={classes.xBtn}
-                        >
-                          &#10005;
-                        </p>
-                      </div>
-                    )
-                  })
-                )}
-              </div>
+              <>
+                <div className={classes.audioButtons}>
+                  {userData?.fields?.admin === 'true' && (
+                    <Button onClick={golive} className={classes.goLiveButton}>
+                      Go Live
+                    </Button>
+                  )}
+                  <Button
+                    onClick={() => dispatch(actions.pushHistory('/upload'))}
+                    className={classes.uploadButton}
+                  >
+                    Upload Audiocast
+                  </Button>
+                </div>
+                <div className={classes.recordings}>
+                  {audiocasts.concat(userRecordings)?.length < 1 ? (
+                    <p className={classes.placeHolder}>
+                      No Recorded Streams yet
+                    </p>
+                  ) : (
+                    audiocasts?.concat(userRecordings)?.map((rec, index) => {
+                      countt += 1
+                      return (
+                        <div className={classes.track}>
+                          <Tracks1
+                            key={index}
+                            episodeData={rec}
+                            counter={countt - 1}
+                            channelColor={colors.darkGray}
+                            indexdata={index}
+                          />
+                          <p
+                            onClick={() => deleteAudiocast(rec)}
+                            className={classes.xBtn}
+                          >
+                            &#10005;
+                          </p>
+                        </div>
+                      )
+                    })
+                  )}
+                </div>
+              </>
             )}
             <div className={classes.trophys}>
               {trophieSelected &&
