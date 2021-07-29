@@ -8,7 +8,7 @@ import { colors } from '../styling'
 const useStyles = makeStyles(theme => ({
   brandGradientHorizontalStripe: {
     position: 'relative',
-    zIndex: 100,
+    zIndex: 0,
     background: `linear-gradient(90deg, ${colors.cyan} 0%, ${colors.magenta} 50%, ${colors.yellow} 100%)`,
     height: '1vw',
     width: '100%',

@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-
 import { makeStyles } from '@material-ui/core/styles'
 import { addScrollStyle } from '../util'
 import { selectors } from '../../store'
@@ -23,6 +22,7 @@ const useStyles = makeStyles(theme => ({
       overflowX: 'hidden',
       overflowY: 'scroll',
       background: 'black',
+      // minHeight: '1920px',
     }),
   basicLayoutCol: {
     alignItems: 'stretch',
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     width: '100%',
     height: '100%',
-    minHeight: '1820px',
+    // minHeight: '1820px',
   },
   basicLayoutRow: {
     alignItems: 'stretch',
@@ -78,7 +78,7 @@ const SmUpBasicLayout = props => {
         </div>
         {isAudioDisplayed && (
           <>
-            <BrandGradientHorizontalStripe />
+            {/* <BrandGradientHorizontalStripe /> */}
             <AudioControls />
           </>
         )}

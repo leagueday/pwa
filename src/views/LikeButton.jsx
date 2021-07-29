@@ -15,6 +15,8 @@ const useStyles = makeStyles(theme => ({
   thumbsup: {
     cursor: 'pointer',
     color: colors.blue,
+    fontSize: '20px',
+    
   },
   likeBtn: {
     background: 'transparent',
@@ -151,7 +153,7 @@ const LikeButton = ({ audio, channelTag, userId }) => {
         >
           <FontAwesomeIcon
             icon={faThumbsUp}
-            size={'2x'}
+            // size={'2x'}
             className={classes.thumbsup}
           />
         </button>
@@ -163,7 +165,7 @@ const LikeButton = ({ audio, channelTag, userId }) => {
         >
           <FontAwesomeIcon
             icon={ThumbsUp}
-            size={'2x'}
+            // size={'2x'}
             className={classes.thumbsup}
           />
         </button>

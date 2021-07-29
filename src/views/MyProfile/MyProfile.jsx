@@ -166,7 +166,7 @@ const useStyles = makeStyles(theme => ({
   track: {
     width: '100%',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   userGamesWrapper: {
     background: 'black',
@@ -285,7 +285,7 @@ const useStyles = makeStyles(theme => ({
   socialContainer: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   channelImg: {
     borderRadius: '50%',
@@ -319,6 +319,7 @@ const useStyles = makeStyles(theme => ({
     height: '120px',
   },
   trophyCont: {
+    marginRight: '4%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -586,10 +587,18 @@ const MyProfile = ({ userId }) => {
               <div className={classes.socialContainer}>
                 <p className={classes.socials}>Socials:</p>
                 <p className={classes.socialLinks}>
-                  <FontAwesomeIcon icon={faTwitter} size={'lg'} className={classes.socialIcon} />
+                  <FontAwesomeIcon
+                    icon={faTwitter}
+                    size={'lg'}
+                    className={classes.socialIcon}
+                  />
                   <a
                     className={classes.socialLinks}
-                    href={userData?.fields?.TwitterUrl?.includes('http') ? userData?.fields?.TwitterUrl : `https://twitter.com/${userData?.fields?.TwitterUrl}`}
+                    href={
+                      userData?.fields?.TwitterUrl?.includes('http')
+                        ? userData?.fields?.TwitterUrl
+                        : `https://twitter.com/${userData?.fields?.TwitterUrl}`
+                    }
                     target="_blank"
                     rel="noreferer"
                   >
@@ -597,10 +606,18 @@ const MyProfile = ({ userId }) => {
                   </a>
                 </p>
                 <p className={classes.socialLinks}>
-                  <FontAwesomeIcon icon={faTwitch} size={'lg'} className={classes.socialIcon}/>
+                  <FontAwesomeIcon
+                    icon={faTwitch}
+                    size={'lg'}
+                    className={classes.socialIcon}
+                  />
                   <a
                     className={classes.socialLinks}
-                    href={userData?.fields?.TwitchUrl?.includes('http') ? userData?.fields?.TwitchUrl : `https://twitch.com/${userData?.fields?.TwitchUrl}`}
+                    href={
+                      userData?.fields?.TwitchUrl?.includes('http')
+                        ? userData?.fields?.TwitchUrl
+                        : `https://twitch.com/${userData?.fields?.TwitchUrl}`
+                    }
                     target="_blank"
                     rel="noreferer"
                   >

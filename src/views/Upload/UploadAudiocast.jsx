@@ -28,10 +28,12 @@ const useStyles = makeStyles(theme => ({
       display: 'flex',
       flexDirection: 'column',
       height: '100%',
-      minHeight: '920px',
       overflowX: 'hidden',
       overflowY: 'auto',
       background: 'black',
+      [theme.breakpoints.down('md')]: {
+        minHeight: '1920px',
+      },
     }),
   wrapper: {
     marginBottom: '10%',
@@ -154,7 +156,7 @@ const UploadAudiocast = () => {
   const [thumbnail, setThumbnail] = useState()
   const [loading, setLoading] = useState(false)
   const [channels, setChannels] = useState([])
-  const filteredListRecords = getMyList();
+  const filteredListRecords = getMyList()
   const user = useSelector(selectors.getUser)
 
   useEffect(() => {
