@@ -332,6 +332,7 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
           />
         </div>
       </div>
+      
     </div>
   )
 }

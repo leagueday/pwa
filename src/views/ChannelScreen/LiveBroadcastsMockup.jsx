@@ -156,8 +156,10 @@ const Track = ({ classes }) => {
 const LiveBroadcastsMockup = ({ className, channel }) => {
   const classes = useStyles()
   let playbackurl=localStorage.getItem('playback')
+  
   return (
     <div className={cx(classes.liveBroadcasts, className)}>
+            <a href="/channel/lol/#audiocasts">Open Modal</a>
       <ComingSoon 
         className={playbackurl?classes.liveBroadcasts:classes.comingSoon}
         channel={channel}
@@ -184,6 +186,7 @@ const LiveBroadcastsMockup = ({ className, channel }) => {
           </div>
         </div>
       ))} */}
+
     </div>
   )
 }

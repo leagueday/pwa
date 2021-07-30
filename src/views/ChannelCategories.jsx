@@ -98,6 +98,7 @@ const ChannelCategories = ({ className }) => {
           title={title}
         />
       ))}
+      <a href="/channel/lol/#audiocasts">Open Modal</a>
       <div className={classes.creatorWrapper}>
         <div className={classes.headerContainer}>
           <span className={classes.line}></span>

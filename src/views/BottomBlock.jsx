@@ -82,7 +82,7 @@ const BottomBlock = props => {
   const { className, numPages, pageNum, titleRest, titleStart } = props
 
   return (
-    <div className={cx(classes.bottomBlock, className)}>
+    <div className={cx(classes.bottomBlock, className)} id={ titleRest === "Audiocasts" ? 'audiocasts' : '' }>
       <div className={classes.titleAndDotsRow}>
         <div className={classes.titleRow}>
           {(titleStart || titleRest) && (

@@ -141,13 +141,13 @@ const AggregatorContent = ({ channel }) => {
           />
         </BottomBlock>
       )}
-      <BottomBlock
-        accentColor={channel.color}
-        titleStart={channel.title}
-        titleRest="Audiocasts"
-      >
-        <Audiocast channelTag={channel.tag} />
-      </BottomBlock>
+        <BottomBlock
+          accentColor={channel.color}
+          titleStart={channel.title}
+          titleRest="Audiocasts"
+        >
+          <Audiocast channelTag={channel.tag} />
+        </BottomBlock>
     </ContentLayout>
   )
 }
