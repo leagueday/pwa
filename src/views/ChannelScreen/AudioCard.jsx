@@ -89,7 +89,7 @@ const useStyles = makeStyles(theme => ({
   },
   modalWrapper: {
     position: 'absolute',
-    width: '50%',
+    minWidth: '50%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -103,7 +103,8 @@ const useStyles = makeStyles(theme => ({
     transform: 'translate(-50%, -50%)',
     outline: 'none',
     borderRadius: '5px',
-    height: '60%',
+    minHeight: '60%',
+    height: 'auto'
   },
   audioDescription: {},
   userImg: {
@@ -139,7 +140,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     cursor: 'pointer',
   },
-}))
+}));
 
 const baseId = 'appXoertP1WJjd4TQ'
 const apiKey = 'keymd23kpZ12EriVi'
@@ -308,6 +309,7 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
               channelTag={channelTag}
               audio={audio}
             />
+            {/* <a target="_blank" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fapp.leagueday.gg">Share on Facebook</a> */}
           </div>
         </Modal>
         <div>
