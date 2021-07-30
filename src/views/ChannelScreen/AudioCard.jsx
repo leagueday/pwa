@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useMemo } from 'react'
 import ToggleImageButton from '../ToggleImageButton'
 import LikeButton from '../LikeButton'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,6 +9,7 @@ import Airtable from 'airtable'
 import useAirtable from '../../api/useAirtable'
 import Modal from '@material-ui/core/Modal'
 import { UserStateContext } from '../../store/stateProviders/userState'
+import { maybeHmsToSecondsOnly, formatSecondsDuration } from '../dateutil'
 
 const useStyles = makeStyles(theme => ({
   audioCard: {
@@ -112,8 +113,8 @@ const useStyles = makeStyles(theme => ({
     width: '7rem',
   },
   audioThumbnail: {
-    width: '45%',
-    minWidth: 400,
+    width: '40%',
+    minWidth: 350,
     maxHeight: 250,
     borderRadius: '5px',
     objectFit: 'cover',
@@ -158,8 +159,30 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
   const [open, setOpen] = useState(false)
   const isSelectedAudio = audioUrl && audioUrl === audio.fields.playbackUrl
   const audioMode = useSelector(selectors.getAudioMode)
+    const [selectedDuration, setSelectedDuration] = useState()
+  const duration = maybeHmsToSecondsOnly(
+    selectedDuration
+  )
+
+  const durationLabel = useMemo(() => formatSecondsDuration(duration), [
+    duration,
+  ])
 
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY
+
+  const au = document.createElement('audio')
+
+  au.src = audio?.fields?.playbackUrl
+
+  au.addEventListener(
+    'loadedmetadata',
+    function () {
+      const duration = au.duration
+
+      setSelectedDuration(duration)
+    },
+    false
+  )
 
   const handleModalClose = () => {
     setOpen(false)
@@ -226,26 +249,49 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
                 alt=""
               />
               <div className={classes.creatorCreds}>
-                <div className={classes.createdBy} onClick={() => dispatch(actions.pushHistory(`/profile/${audio?.fields?.userId}`))}>
+                <div
+                  className={classes.createdBy}
+                  onClick={() =>
+                    dispatch(
+                      actions.pushHistory(`/profile/${audio?.fields?.userId}`)
+                    )
+                  }
+                >
                   <img
                     className={classes.userImg}
                     src={audio?.fields?.creatorImg}
                     alt=""
                   />
                   <p style={{ opacity: 0.8, marginLeft: 15 }}>
-                    By: 
-                     <span className={classes.userName}>
-                       {audio?.fields?.username}
-                     </span>
+                    By:
+                    <span className={classes.userName}>
+                      {audio?.fields?.username}
+                    </span>
                   </p>
                 </div>
-                <p style={{ color: colors.white80 }}>{audio?.fields?.uploadDate}</p>
-                <p style={{ color: colors.white80 }}>Duration: </p>
+                <p style={{ color: colors.white80 }}>
+                  Date:{' '}
+                  <span style={{ color: colors.yellow, opacity: 0.8 }}>
+                    {audio?.fields?.uploadDate}
+                  </span>
+                </p>
+                <p style={{ color: colors.white80 }}>
+                  Duration:{' '}
+                  <span style={{ color: colors.yellow, opacity: 0.8 }}>
+                    {durationLabel}
+                  </span>
+                </p>
               </div>
             </div>
             <div className={classes.audioDescription}>
-              <h3>{audio?.fields?.title}</h3>
-              <h5>{audio?.fields?.description}</h5>
+              <p style={{ fontSize: '20px', fontWeight: 300 }}>
+                <span style={{ fontWeight: 900 }}>Title: </span>
+                {audio?.fields?.title}
+              </p>
+              <p style={{ fontSize: '20px', fontWeight: 300 }}>
+                <span style={{ fontWeight: 900 }}>Description: </span>
+                {audio?.fields?.description}
+              </p>
             </div>
             <ToggleImageButton
               className={classes.playBtnModal}

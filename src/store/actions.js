@@ -166,7 +166,7 @@ export const selectAudio = (
     title,
     position,
   },
-})
+});
 
 export const setAudioDuration = duration => ({
   type: ActionType.SET_AUDIO_DURATION,
