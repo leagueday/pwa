@@ -198,8 +198,6 @@ const UploadAudiocast = () => {
       .catch(err => console.log(err))
   }
 
-  console.log('username ', userData.fields)
-
   const handleSubmit = () => {
     base('UserAudiocasts').create(
       [

@@ -88,7 +88,7 @@ const useStyles = makeStyles(theme => ({
   },
   modalWrapper: {
     position: 'absolute',
-    width: '70%',
+    width: '50%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -102,18 +102,19 @@ const useStyles = makeStyles(theme => ({
     transform: 'translate(-50%, -50%)',
     outline: 'none',
     borderRadius: '5px',
-    height: '80%',
+    height: '60%',
   },
   audioDescription: {},
   userImg: {
     borderRadius: '50%',
     objectFit: 'cover',
-    height: '12rem',
-    width: '12rem',
+    height: '7rem',
+    width: '7rem',
   },
   audioThumbnail: {
-    width: '45%',
+    width: '40%',
     maxHeight: '100%',
+    borderRadius: '5px',
   },
   images: {
     display: 'flex',
@@ -122,6 +123,16 @@ const useStyles = makeStyles(theme => ({
   userName: {
     padding: 0,
     margin: 0,
+    color: colors.yellow,
+  },
+  creatorCreds: {
+    display: 'flex',
+    flexDirections: 'column',
+    marginLeft: '5%',
+  },
+  createdBy: {
+    display: 'flex',
+    alignItems: 'center',
   },
 }))
 
@@ -210,15 +221,21 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
                 src={audio?.fields?.thumbnail}
                 alt=""
               />
-              <div>
-                <p className={classes.userName}>
-                  Created By: {audio?.fields?.username}
-                </p>
-                <img
-                  className={classes.userImg}
-                  src={audio?.fields?.creatorImg}
-                  alt=""
-                />
+              <div className={classes.creatorCreds}>
+                <div className={classes.createdBy}>
+                  <img
+                    className={classes.userImg}
+                    src={audio?.fields?.creatorImg}
+                    alt=""
+                  />
+                  <p style={{ opacity: 0.7 }}>
+                    By:{' '}
+                    <span className={classes.userName}>
+                      {audio?.fields?.username}
+                    </span>
+                  </p>
+                </div>
+                <p>{audio?.fields?.uploadDate}</p>
               </div>
             </div>
             <div className={classes.audioDescription}>
