@@ -117,7 +117,7 @@ const useStyles = makeStyles(theme => ({
     minWidth: 350,
     maxHeight: 250,
     borderRadius: '5px',
-    objectFit: 'cover',
+    objectFit: 'contain',
   },
   images: {
     display: 'flex',
