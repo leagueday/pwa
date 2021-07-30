@@ -112,9 +112,11 @@ const useStyles = makeStyles(theme => ({
     width: '7rem',
   },
   audioThumbnail: {
-    width: '40%',
-    maxHeight: '100%',
+    width: '45%',
+    minWidth: 400,
+    maxHeight: 250,
     borderRadius: '5px',
+    objectFit: 'cover',
   },
   images: {
     display: 'flex',
@@ -122,17 +124,19 @@ const useStyles = makeStyles(theme => ({
   },
   userName: {
     padding: 0,
-    margin: 0,
+    margin: 5,
     color: colors.yellow,
   },
   creatorCreds: {
     display: 'flex',
-    flexDirections: 'column',
+    flexDirection: 'column',
     marginLeft: '5%',
+    minWidth: 400,
   },
   createdBy: {
     display: 'flex',
     alignItems: 'center',
+    cursor: 'pointer',
   },
 }))
 
@@ -222,25 +226,26 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
                 alt=""
               />
               <div className={classes.creatorCreds}>
-                <div className={classes.createdBy}>
+                <div className={classes.createdBy} onClick={() => dispatch(actions.pushHistory(`/profile/${audio?.fields?.userId}`))}>
                   <img
                     className={classes.userImg}
                     src={audio?.fields?.creatorImg}
                     alt=""
                   />
-                  <p style={{ opacity: 0.7 }}>
-                    By:{' '}
-                    <span className={classes.userName}>
-                      {audio?.fields?.username}
-                    </span>
+                  <p style={{ opacity: 0.8, marginLeft: 15 }}>
+                    By: 
+                     <span className={classes.userName}>
+                       {audio?.fields?.username}
+                     </span>
                   </p>
                 </div>
-                <p>{audio?.fields?.uploadDate}</p>
+                <p style={{ color: colors.white80 }}>{audio?.fields?.uploadDate}</p>
+                <p style={{ color: colors.white80 }}>Duration: </p>
               </div>
             </div>
             <div className={classes.audioDescription}>
               <h3>{audio?.fields?.title}</h3>
-              <h6>{audio?.fields?.description}</h6>
+              <h5>{audio?.fields?.description}</h5>
             </div>
             <ToggleImageButton
               className={classes.playBtnModal}
