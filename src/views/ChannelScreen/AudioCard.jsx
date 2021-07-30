@@ -6,6 +6,8 @@ import { actions, constants, selectors } from '../../store'
 import { colors } from '../../styling'
 import { makeStyles } from '@material-ui/styles'
 import Airtable from 'airtable'
+import { LinkedIn, Twitter, Facebook, Email } from '@material-ui/icons'
+import LinkIcon from '@material-ui/icons/Link'
 import useAirtable from '../../api/useAirtable'
 import Modal from '@material-ui/core/Modal'
 import { UserStateContext } from '../../store/stateProviders/userState'
@@ -104,7 +106,22 @@ const useStyles = makeStyles(theme => ({
     outline: 'none',
     borderRadius: '5px',
     minHeight: '60%',
-    height: 'auto'
+    height: 'auto',
+  },
+  linkModalWrapper: {
+    position: 'absolute',
+    width: '20%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    backgroundColor: '#f7f7f7',
+    boxShadow: theme.shadows[5],
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    outline: 'none',
+    borderRadius: '5px',
+    height: '12%',
   },
   audioDescription: {},
   userImg: {
@@ -140,7 +157,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     cursor: 'pointer',
   },
-}));
+}))
 
 const baseId = 'appXoertP1WJjd4TQ'
 const apiKey = 'keymd23kpZ12EriVi'
@@ -158,16 +175,27 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
   const currentUserId = currentUser?.shift()?.id
   const audioUrl = useSelector(selectors.getAudioUrl)
   const [open, setOpen] = useState(false)
+  const [linkOpen, setLinkOpen] = useState(false)
   const isSelectedAudio = audioUrl && audioUrl === audio.fields.playbackUrl
   const audioMode = useSelector(selectors.getAudioMode)
-    const [selectedDuration, setSelectedDuration] = useState()
-  const duration = maybeHmsToSecondsOnly(
-    selectedDuration
-  )
+  const [selectedDuration, setSelectedDuration] = useState()
+  const duration = maybeHmsToSecondsOnly(selectedDuration)
 
   const durationLabel = useMemo(() => formatSecondsDuration(duration), [
     duration,
   ])
+
+  const [copied, setCopied] = useState(false)
+
+  function copy() {
+    const el = document.createElement('input')
+    el.value = window.location.href
+    document.body.appendChild(el)
+    el.select()
+    document.execCommand('copy')
+    document.body.removeChild(el)
+    setCopied(true)
+  }
 
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY
 
@@ -193,6 +221,14 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
     setOpen(true)
   }
 
+  const openLinkModal = () => {
+    setLinkOpen(true)
+  }
+
+  const closeLinkModal = () => {
+    setLinkOpen(false)
+  }
+
   const onPopClick = isPlayings
     ? ev => {
         dispatch(actions.pauseAudio())
@@ -216,6 +252,8 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
         }
         ev.stopPropagation()
       }
+
+  console.log(window.location.href)
 
   return (
     <div>
@@ -309,7 +347,66 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
               channelTag={channelTag}
               audio={audio}
             />
-            {/* <a target="_blank" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fapp.leagueday.gg">Share on Facebook</a> */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+                cursor: 'pointer',
+                width: '20%',
+              }}
+              onClick={openLinkModal}
+            >
+              <LinkIcon style={{ fontSize: '32px' }} fontSize={'inherit'} />
+              <p style={{ padding: 0, margin: 0 }}> Share Link</p>
+            </div>
+          </div>
+        </Modal>
+        <Modal
+          open={linkOpen}
+          onClose={closeLinkModal}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          <div className={classes.linkModalWrapper}>
+            <a
+              target="_blank"
+              href={`https://www.facebook.com/sharer.php?u=https%3A%2F%2Fapp.leagueday.gg/channel/${audio?.fields?.channelTag}`}
+              style={{ color: colors.blue }}
+            >
+              <Facebook />
+            </a>{' '}
+            <a
+              target="_blank"
+              href={`https://twitter.com/intent/tweet?url=https%3A%2F%2Fapp.leagueday.gg/channel/${audio?.fields?.channelTag}`}
+              style={{ color: colors.blue }}
+            >
+              <Twitter />{' '}
+            </a>{' '}
+            <a
+              target="_blank"
+              href={`https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fapp.leagueday.gg/channel/${audio?.fields?.channelTag}`}
+              style={{ color: colors.blue }}
+            >
+              <LinkedIn />
+            </a>
+            <a
+              style={{ color: colors.blue }}
+              href={`mailto:?body= Check out this LeagueDay channel page! https://app.leagueday.gg/channel/${audio?.fields?.channelTag}`}
+              target="_blank"
+            >
+              {' '}
+              <Email />
+            </a>
+            <p
+              style={{ color: 'black', fontSize: '90%', cursor: 'pointer' }}
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href)
+                setCopied(true)
+              }}
+            >
+              {!copied ? 'Copy link' : 'Copied!'}
+            </p>
           </div>
         </Modal>
         <div>
@@ -332,7 +429,6 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
           />
         </div>
       </div>
-      
     </div>
   )
 }

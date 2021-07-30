@@ -159,7 +159,6 @@ const LiveBroadcastsMockup = ({ className, channel }) => {
   
   return (
     <div className={cx(classes.liveBroadcasts, className)}>
-            <a href="/channel/lol/#audiocasts">Open Modal</a>
       <ComingSoon 
         className={playbackurl?classes.liveBroadcasts:classes.comingSoon}
         channel={channel}
