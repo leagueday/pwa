@@ -4,6 +4,7 @@ import LikeButton from '../LikeButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions, constants, selectors } from '../../store'
 import { colors } from '../../styling'
+import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import Airtable from 'airtable'
 import { LinkedIn, Twitter, Facebook, Email } from '@material-ui/icons'
@@ -29,13 +30,22 @@ const useStyles = makeStyles(theme => ({
   images: {
     width: '100%',
   },
+  modalImages: {
+    width: '100%',
+    display: 'flex',
+    alignItem: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      // marginTop: '50%',
+      display: 'none',
+    },
+  },
   thumbnail: {
-    cursor: 'pointer',
     width: '100%',
     height: '150px',
     objectFit: 'cover',
   },
   creatorImg: {
+    zIndex: 100,
     cursor: 'pointer',
     position: 'absolute',
     borderRadius: '50%',
@@ -60,7 +70,7 @@ const useStyles = makeStyles(theme => ({
     height: '50px',
   },
   playBtnModal: {
-    width: '20%',
+    width: '50%',
     height: '50px',
   },
   playLike: {
@@ -105,8 +115,12 @@ const useStyles = makeStyles(theme => ({
     transform: 'translate(-50%, -50%)',
     outline: 'none',
     borderRadius: '5px',
-    minHeight: '60%',
     height: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      maxHeight: '90%',
+      overflow: 'auto',
+      width: '100%',
+    },
   },
   linkModalWrapper: {
     position: 'absolute',
@@ -123,7 +137,6 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '5px',
     height: '12%',
   },
-  audioDescription: {},
   userImg: {
     borderRadius: '50%',
     objectFit: 'cover',
@@ -136,10 +149,7 @@ const useStyles = makeStyles(theme => ({
     maxHeight: 250,
     borderRadius: '5px',
     objectFit: 'contain',
-  },
-  images: {
-    display: 'flex',
-    alignItem: 'flex-start',
+    borderRadius: '5px',
   },
   userName: {
     padding: 0,
@@ -157,6 +167,47 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     cursor: 'pointer',
   },
+  expandModal: {
+    zIndex: 100,
+    border: 'none',
+    outline: 'none',
+    position: 'absolute',
+    top: '30%',
+    transform: 'translateX(-50%)',
+    left: '50%',
+    padding: '10 20',
+    width: '25%',
+    borderRadius: '70px',
+    background: colors.blue,
+    borderRadius: '5px',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+  },
+  likeShare: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      justifyContent: 'space-evenly',
+      width: '100%',
+    },
+  },
+  shareBtn: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    cursor: 'pointer',
+    width: '50%',
+  },
+  audioDescription: {
+    overflow: 'visible',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 'auto',
+    },
+  }
 }))
 
 const baseId = 'appXoertP1WJjd4TQ'
@@ -179,23 +230,13 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
   const isSelectedAudio = audioUrl && audioUrl === audio.fields.playbackUrl
   const audioMode = useSelector(selectors.getAudioMode)
   const [selectedDuration, setSelectedDuration] = useState()
+  const [seeMore, setSeeMore] = useState(false)
+  const [copied, setCopied] = useState(false)
   const duration = maybeHmsToSecondsOnly(selectedDuration)
 
   const durationLabel = useMemo(() => formatSecondsDuration(duration), [
     duration,
   ])
-
-  const [copied, setCopied] = useState(false)
-
-  function copy() {
-    const el = document.createElement('input')
-    el.value = window.location.href
-    document.body.appendChild(el)
-    el.select()
-    document.execCommand('copy')
-    document.body.removeChild(el)
-    setCopied(true)
-  }
 
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY
 
@@ -253,24 +294,35 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
         ev.stopPropagation()
       }
 
-  console.log(window.location.href)
-
   return (
     <div>
       <div className={classes.audioCard}>
-        <div className={classes.images}>
+        <div className={classes.images} onMouseLeave={() => setSeeMore(false)}>
+          {seeMore && (
+            <Button
+              onMouseOpen={() => setSeeMore(true)}
+              className={classes.expandModal}
+              onClick={handleModalOpen}
+            >
+              More
+            </Button>
+          )}
           <img
             className={classes.creatorImg}
             src={audio?.fields?.creatorImg}
             alt=""
+            style={{}}
             onClick={() =>
               dispatch(actions.pushHistory(`/profile/${audio?.fields?.userId}`))
             }
           />
           <img
-            onClick={handleModalOpen}
+            onMouseEnter={() => setSeeMore(true)}
             className={classes.thumbnail}
             src={audio?.fields?.thumbnail}
+            style={{
+              filter: seeMore ? 'brightness(50%)' : '',
+            }}
             alt=""
           />
         </div>
@@ -281,7 +333,7 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
           aria-describedby="simple-modal-description"
         >
           <div className={classes.modalWrapper}>
-            <div className={classes.images}>
+            <div className={classes.modalImages}>
               <img
                 className={classes.audioThumbnail}
                 src={audio?.fields?.thumbnail}
@@ -332,33 +384,32 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
                 {audio?.fields?.description}
               </p>
             </div>
-            <ToggleImageButton
-              className={classes.playBtnModal}
-              size="1vw"
-              on={isPlayings}
-              onClick={onPopClick}
-              onImage="/img/logo_live_pause.png"
-              offImage="/img/logo_live_play.png"
-              shadowColor={colors.lightGray}
-            />
-            <LikeButton
-              size={'32px'}
-              userId={currentUserId}
-              channelTag={channelTag}
-              audio={audio}
-            />
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-evenly',
-                cursor: 'pointer',
-                width: '20%',
-              }}
-              onClick={openLinkModal}
-            >
-              <LinkIcon style={{ fontSize: '32px' }} fontSize={'inherit'} />
-              <p style={{ padding: 0, margin: 0 }}> Share Link</p>
+            <div>
+              <div className={classes.likeShare}>
+                <ToggleImageButton
+                  className={classes.playBtnModal}
+                  size="1vw"
+                  on={isPlayings}
+                  onClick={onPopClick}
+                  onImage="/img/logo_live_pause.png"
+                  offImage="/img/logo_live_play.png"
+                  shadowColor={colors.lightGray}
+                />
+
+                <LikeButton
+                  size={'32px'}
+                  userId={currentUserId}
+                  channelTag={channelTag}
+                  audio={audio}
+                />
+                <div
+                  className={classes.shareBtn}
+                  onClick={openLinkModal}
+                >
+                  <LinkIcon style={{ fontSize: '32px' }} fontSize={'inherit'} />
+                  <p style={{ padding: 0, margin: 0 }}> Share Link</p>
+                </div>
+              </div>
             </div>
           </div>
         </Modal>
@@ -410,7 +461,12 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
           </div>
         </Modal>
         <div>
-          <h4 className={classes.title}>{audio?.fields?.title}</h4>
+          <h4
+            style={{ filter: seeMore ? 'brightness(50%)' : '' }}
+            className={classes.title}
+          >
+            {audio?.fields?.title}
+          </h4>
         </div>
         <div className={classes.playLike}>
           <ToggleImageButton
