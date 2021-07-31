@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect, useMemo } from 'react'
 import ToggleImageButton from '../ToggleImageButton'
 import LikeButton from '../LikeButton'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { actions, constants, selectors } from '../../store'
 import { colors } from '../../styling'
 import { Button } from '@material-ui/core'
@@ -211,8 +213,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const baseId = 'appXoertP1WJjd4TQ'
-const apiKey = 'keymd23kpZ12EriVi'
-const base = new Airtable({ apiKey }).base(baseId)
 
 const AudioCard = ({ audio, indexData, channelTag }) => {
   // const { userData, setUserId } = useContext(UserStateContext)
@@ -223,6 +223,9 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
   const currentUser = data?.filter(
     user => user?.fields?.userId === activeUser?.id
   )
+  const theme = useTheme()
+  const sm = useMediaQuery(theme.breakpoints.down('sm'));
+  console.log('screen size ', sm);
   const currentUserId = currentUser?.shift()?.id
   const audioUrl = useSelector(selectors.getAudioUrl)
   const [open, setOpen] = useState(false)
@@ -297,7 +300,7 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
   return (
     <div>
       <div className={classes.audioCard}>
-        <div className={classes.images} onMouseLeave={() => setSeeMore(false)}>
+        <div className={classes.images} onMouseLeave={!sm ? () => setSeeMore(false) : null}>
           {seeMore && (
             <Button
               onMouseOpen={() => setSeeMore(true)}
@@ -317,9 +320,10 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
             }
           />
           <img
-            onMouseEnter={() => setSeeMore(true)}
+            onMouseEnter={!sm ? () => setSeeMore(true) : null}
             className={classes.thumbnail}
             src={audio?.fields?.thumbnail}
+            onClick={handleModalOpen}
             style={{
               filter: seeMore ? 'brightness(50%)' : '',
             }}
