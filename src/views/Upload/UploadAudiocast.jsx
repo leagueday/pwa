@@ -174,7 +174,7 @@ const UploadAudiocast = () => {
 
   const handleAudioUpload = e => {
     const file = e.target.files[0]
-    console.log(file)
+    console.log('file ',file)
     setLoading(true)
     uploadFile(e.target.files[0], config)
       .then(res => {
@@ -212,6 +212,7 @@ const UploadAudiocast = () => {
             creatorImg: userData?.fields?.image,
             upvotes: 0,
             type: 'audiocast',
+            username: userData?.fields?.name
           },
         },
       ],

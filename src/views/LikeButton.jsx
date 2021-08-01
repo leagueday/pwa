@@ -12,12 +12,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'space-around',
   },
-  thumbsup: {
+  thumbsup: ({ size }) => ({
     cursor: 'pointer',
     color: colors.blue,
-    fontSize: '20px',
-    
-  },
+    fontSize: size ? size : '24px',
+  }),
   likeBtn: {
     background: 'transparent',
     outline: 'none',
@@ -29,11 +28,11 @@ const baseId = 'appXoertP1WJjd4TQ'
 const apiKey = 'keymd23kpZ12EriVi'
 const base = new Airtable({ apiKey }).base(baseId)
 
-const LikeButton = ({ audio, channelTag, userId }) => {
+const LikeButton = ({ audio, channelTag, userId, size }) => {
   const [liked, setLiked] = useState(false)
   const [count, setCount] = useState()
   const [votedAudio, setVotedAudio] = useState([])
-  const classes = useStyles()
+  const classes = useStyles({ size })
 
   const handleLike = e => {
     setLiked(true)
@@ -68,7 +67,8 @@ const LikeButton = ({ audio, channelTag, userId }) => {
             id: audio.id,
             fields: {
               upvotes: audio.fields.upvotes + 1,
-              userProfile: votedAudio.length > 0 ? [...votedAudio, userId] : [userId],
+              userProfile:
+                votedAudio.length > 0 ? [...votedAudio, userId] : [userId],
             },
           },
         ],
@@ -151,11 +151,7 @@ const LikeButton = ({ audio, channelTag, userId }) => {
           className={classes.likeBtn}
           disabled={false}
         >
-          <FontAwesomeIcon
-            icon={faThumbsUp}
-            // size={'2x'}
-            className={classes.thumbsup}
-          />
+          <FontAwesomeIcon icon={faThumbsUp} className={classes.thumbsup} />
         </button>
       ) : (
         <button
@@ -163,11 +159,7 @@ const LikeButton = ({ audio, channelTag, userId }) => {
           className={classes.likeBtn}
           disabled={false}
         >
-          <FontAwesomeIcon
-            icon={ThumbsUp}
-            // size={'2x'}
-            className={classes.thumbsup}
-          />
+          <FontAwesomeIcon icon={ThumbsUp} className={classes.thumbsup} />
         </button>
       )}
       <p className={classes.count}>{count}</p>

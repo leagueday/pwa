@@ -156,6 +156,7 @@ const Track = ({ classes }) => {
 const LiveBroadcastsMockup = ({ className, channel }) => {
   const classes = useStyles()
   let playbackurl=localStorage.getItem('playback')
+  
   return (
     <div className={cx(classes.liveBroadcasts, className)}>
       <ComingSoon 
@@ -184,6 +185,7 @@ const LiveBroadcastsMockup = ({ className, channel }) => {
           </div>
         </div>
       ))} */}
+
     </div>
   )
 }

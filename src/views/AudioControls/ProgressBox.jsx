@@ -67,6 +67,8 @@ const ProgressBox = ({ className, isExpanded }) => {
 
   const position = useSelector(selectors.getAudioPosition)
   const seeked = useSelector(selectors.getAudioSeeked)
+  console.log('seeked from audio ',seeked);
+  
   const duration = maybeHmsToSecondsOnly(
     useSelector(selectors.getAudioDuration)
   )

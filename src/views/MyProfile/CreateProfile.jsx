@@ -115,7 +115,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CreateProfile = props => {
-  const channels = useChannels().list
   const [state, setFile] = React.useState({
     mainState: 'initial',
     imageUploaded: 0,
@@ -136,8 +135,6 @@ const CreateProfile = props => {
     TwitterUrl: '',
     InstagramUrl: '',
     TwitchUrl: '',
-    userChannelName: '',
-    userChannelImage: '',
   })
   const [selectChannel, setselectChannel] = useState([])
   const [channelTag, setChannelTag] = useState([])
@@ -248,24 +245,6 @@ const CreateProfile = props => {
     setsaveContext(arr)
   }
 
-  const onChannelChanged = (e, channelFieldKey, tag) => {
-    const { value, checked } = e.target
-    let channelSelect = value[channelFieldKey]
-    channelSelect = e.target.value
-    let datasaved = selectChannel
-    let datasavedFortag = channelTag
-    if (checked) {
-      datasaved.push(value)
-      datasavedFortag.push(tag['tag'].toLowerCase())
-    } else {
-      let index = datasaved.indexOf(value)
-      let dataTagIndex = datasavedFortag.indexOf(tag['tag'])
-      datasaved.splice(index, 1)
-      datasavedFortag.splice(tag['tag'], 1)
-    }
-    setselectChannel(datasaved)
-    setChannelTag(datasavedFortag)
-  }
 
   const classes = useStyles({ primaryColor })
   const user = useSelector(selectors.getUser)
@@ -290,13 +269,9 @@ const CreateProfile = props => {
                   date: new Date(),
                   userId: user.id,
                   email: user.email,
-                  //FacebookUrl:formInput.facebookUrl,
                   TwitterUrl: formInput.TwitterUrl,
-                  //InstagramUrl:formInput.InstagramUrl,
                   TwitchUrl: formInput.TwitchUrl,
                   MyContext: saveContext.toString(),
-                  userChannel: formInput.userChannelName,
-                  channelImage: saveChannelImage,
                   rtmpLink: 'rtmps://global-live.mux.com:443/app',
                   streamKey: localStorage.getItem('channelStrkey'),
                   userChannelTag: formInput.userChannelName
@@ -575,44 +550,6 @@ const CreateProfile = props => {
                       })
                     }
                   />
-                  <br></br>
-                  <br></br>
-                  <TextField
-                    label="ChannelName"
-                    id="margin-normal"
-                    name="channelName"
-                    value={formInput.userChannelName}
-                    defaultValue={formInput.userChannelName}
-                    className={classes.textField}
-                    helperText="Enter Your channel Name"
-                    onChange={e =>
-                      setFormInput({
-                        ...formInput,
-                        userChannelName: e.target.value,
-                      })
-                    }
-                  />
-                  <br></br>
-                  <br></br>
-                  <div className={classes.root}>
-                    Upload Channel Image: <br></br>
-                    <br></br>
-                    <input
-                      accept="image/*"
-                      id="contained-button-file"
-                      multiple
-                      type="file"
-                      onChange={handleChannelImage}
-                    />
-                    {formInput.userChannelImage && (
-                      <img
-                        src={URL.createObjectURL(formInput.userChannelImage)}
-                        width="5%"
-                      />
-                    )}
-                    <br></br>
-                    <br></br>
-                  </div>
                   <br></br>
                   <br></br>
                 </Fragment>
