@@ -98,12 +98,12 @@ const ChannelCategories = ({ className }) => {
           title={title}
         />
       ))}
-      <div className={classes.creatorWrapper}>
+      {/* <div className={classes.creatorWrapper}>
         <div className={classes.headerContainer}>
           <span className={classes.line}></span>
           <h2 className={classes.creator}>LeagueDay Creators</h2>
           <span className={classes.line}></span>
-        </div>
+        </div> */}
         {/* <input
           className={classes.searchBar}
           type="text"
@@ -111,7 +111,7 @@ const ChannelCategories = ({ className }) => {
           value={criteria}
           onChange={e => setCriteria(e.target.value)}
         /> */}
-        <div className={classes.creatorContainer}>
+        {/* <div className={classes.creatorContainer}>
           {creators
             ?.filter(crea =>
               crea.fields.name?.toLowerCase().includes(criteria?.toLowerCase())
@@ -121,7 +121,7 @@ const ChannelCategories = ({ className }) => {
               return <CreatorTile user={fields} />
             })}
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

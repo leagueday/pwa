@@ -7,6 +7,7 @@ const HomeScreen = React.lazy(() => import('./views/HomeScreen'))
 const ProfileScreen = React.lazy(() => import('./views/MyProfile'))
 const GoLive = React.lazy(() => import('./views/GoLive'));
 const UploadAudio = React.lazy(() => import('./views/Upload'))
+const CreatorScreen = React.lazy(() => import('./views/CreatorScreen'))
 const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'));
 const GoToLiveData = React.lazy(() => import('./views/GoLive/GoLiveData'));
 const PreviewPage = React.lazy(() => import('./views/GoLive/PreviewPage'));
@@ -62,6 +63,7 @@ export const routesConfig = [
     }),
   ],
   [matchFirstToken('upload'), () => true, UploadAudio, () => ({})],
+  [matchFirstToken('creators'), () => true, CreatorScreen, () => ({})],
   [matchFirstToken('live'), () => true, GoLive, () => ({})],
   [matchFirstToken('gotolive'), () => true, GoToLiveData, () => ({})],
   [matchFirstToken('preview'), () => true, PreviewPage, () => ({})],

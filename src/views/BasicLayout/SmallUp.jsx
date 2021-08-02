@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
+import NavBar from '../NavBar'
 import { addScrollStyle } from '../util'
 import { selectors } from '../../store'
 import AudioControls from '../AudioControls'
@@ -51,7 +52,9 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   sideNav: {},
-}))
+}));
+
+
 
 const SmUpBasicLayout = props => {
   const classes = useStyles();
@@ -68,6 +71,7 @@ const SmUpBasicLayout = props => {
     // <div className={classes.content}>
       <div className={classes.basicLayoutCol}>
         <BrandGradientHorizontalStripe />
+        <NavBar />
         <div className={classes.basicLayoutRow}>
           <SideNav
             className={classes.sideNav}

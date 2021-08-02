@@ -178,14 +178,14 @@ const FatSideNav = ({ className, home }) => {
     <div className={cx(classes.sideNav, className)}>
       <React.Suspense fallback={<Loading />}>
         <div className={classes.controls}>
-          <div className={classes.logoContainer}>
+          {/* <div className={classes.logoContainer}>
             <img
               className={classes.logo}
               onClick={goHome}
               src="/img/NEW_LDLogo.png"
             />
             <p className={classes.logoText}>BETA</p>
-          </div>
+          </div> */}
           <div className={classes.signInOutButtonContainer}>
             <SignInOutButton className={classes.signInOutButton} />
           </div>

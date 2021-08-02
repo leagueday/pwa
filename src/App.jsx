@@ -73,6 +73,7 @@ const StyledAppContent = () => {
   )
 }
 
+
 // const Chronicle = () => {
 //   useChronicle()
 //   return null
