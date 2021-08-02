@@ -48,15 +48,12 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     position: 'relative',
     borderBottom: `2px solid ${colors.darkerGray}`,
-    '&:hover': {
-      borderBottom: `2px solid ${colors.yellow}`,
-    },
     '&:before': {
       content: "''",
       display: 'block',
       width: '100%',
       height: '2px',
-      background: colors.magenta,
+      background: `linear-gradient(90deg, ${colors.cyan} 0%, ${colors.magenta} 50%, ${colors.yellow} 100%)`,
       position: 'absolute',
       left: 0,
       zIndex: 100,
