@@ -8,6 +8,9 @@ const useStyles = makeStyles(theme => ({
   creatorWrapper: {
     position: 'relative',
     minHeight: '25vh',
+    [theme.breakpoints.down('sm')]: {
+      overflow: 'scroll',
+    },
   },
   creator: {
     textAlign: 'center',
