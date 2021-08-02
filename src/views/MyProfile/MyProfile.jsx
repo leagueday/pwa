@@ -602,6 +602,7 @@ const MyProfile = ({ userId }) => {
             <div className={classes.description}>
               <p>{userData?.fields?.description}</p>
               <div className={classes.socialContainer}>
+                <p style={{ width: '100%' }}><span className={classes.socials}>Level:</span> {userData?.fields?.credentials}</p>
                 <p className={classes.socials}>Socials:</p>
                 <p className={classes.socialLinks}>
                   <FontAwesomeIcon
