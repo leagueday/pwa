@@ -3,22 +3,25 @@ import { makeStyles } from '@material-ui/styles'
 import { colors } from '../styling'
 import { useDispatch } from 'react-redux'
 import { actions } from '../store'
+import { useLocationPathname } from '../store'
 
 const useStyles = makeStyles(theme => ({
   navbar: {
     padding: 0,
     margin: 0,
     position: 'relative',
-    height: '50px',
+    height: '7%',
     width: '100%',
-    background: colors.darkerGray,
+    background: colors.darkGray,
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   logoContainer: {
     width: '180px',
     cursor: 'pointer',
+    marginBottom: '10px',
   },
   logo: {
     cursor: 'pointer',
@@ -28,9 +31,8 @@ const useStyles = makeStyles(theme => ({
   },
   logoText: {
     position: 'absolute',
-    top: -5,
+    top: 0,
     left: '6.5%',
-    // opacity: 0.8,
     textAlign: 'top',
     fontWeight: theme.typography.fontWeightBold,
     fontSize: '150%',
@@ -44,27 +46,76 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     cursor: 'pointer',
+    position: 'relative',
+    borderBottom: `2px solid ${colors.darkerGray}`,
     '&:hover': {
-      borderBottom: `2px solid ${colors.magenta}`,
+      borderBottom: `2px solid ${colors.yellow}`,
     },
+    '&:before': {
+      content: "''",
+      display: 'block',
+      width: '100%',
+      height: '2px',
+      background: colors.magenta,
+      position: 'absolute',
+      left: 0,
+      zIndex: 100,
+      bottom: '-2px',
+      transformOrigin: 'left',
+      transform: 'scale(0)',
+      transition: '0.25s linear',
+    },
+    '&:hover:before': {
+      transform: 'scale(1)',
+    },
+  },
+  //   h1 {
+  //     border-bottom: 3px solid #ff8cbc;
+  //     font-size: 3em;
+  //     transition: all 0.25s linear;
+  //     position: relative;
+  //   }
+
+  //   h1:before {
+  //     content: "";
+  //     display: block;
+  //     width: 100%;
+  //     height: 3px;
+  //     background-color: #61a3ff;
+  //     position: absolute;
+  //     left: 0;
+  //     bottom: -3px; /* this is to match where the border is */
+  //     transform-origin: left;
+  //     transform: scale(0);
+  //     transition: 0.25s linear;
+  //   /*   will-change: transform; */
+  //   }
+
+  //   h1:hover:before {
+  //     transform: scale(1);
+  //   }
+  selectedLink: {
+    borderBottom: `2px solid ${colors.magenta}`,
   },
 }))
 
 const NavBar = () => {
+  const pathname = useLocationPathname()
   const classes = useStyles()
   const dispatch = useDispatch()
   const goHome = () => dispatch(actions.pushHistory('/'))
-  const [homeActive, setHomeActive] = useState(true)
-  const [creatorActive, setCreatorActive] = useState(false)
+  const [homeActive, setHomeActive] = useState(pathname === '/')
+  const [creatorActive, setCreatorActive] = useState(pathname === '/creators')
 
+  console.log(pathname)
   const homeClick = () => {
     setHomeActive(true)
     setCreatorActive(false)
   }
 
   const creatorClick = () => {
-      setCreatorActive(true)
-      setHomeActive(false);
+    setCreatorActive(true)
+    setHomeActive(false)
   }
 
   return (
@@ -74,12 +125,21 @@ const NavBar = () => {
         <p className={classes.logoText}>BETA</p>
       </div>
       <div className={classes.navLinks}>
-        <h4 className={classes.link} onClick={goHome}>
+        <h4
+          className={homeActive ? classes.selectedLink : classes.link}
+          onClick={() => {
+            goHome()
+            homeClick()
+          }}
+        >
           Discover
         </h4>
         <h4
-          className={classes.link}
-          onClick={() => dispatch(actions.pushHistory('/creators'))}
+          className={creatorActive ? classes.selectedLink : classes.link}
+          onClick={() => {
+            dispatch(actions.pushHistory('/creators'))
+            creatorClick()
+          }}
         >
           Creators
         </h4>
