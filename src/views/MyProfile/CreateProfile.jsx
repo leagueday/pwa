@@ -1,28 +1,69 @@
-import React, { useReducer, Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, Icon, TextField, Paper, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import IconButton from '@material-ui/core/IconButton'
-import Avatar from '@material-ui/core/Avatar'
 import 'react-h5-audio-player/lib/styles.css'
 import { ToastContainer, toast } from 'react-toastify'
-import useFacets from '../../api/useFacets'
 import { selectors, actions } from '../../store'
-import useChannels from '../../api/useChannels'
 import { colors } from '../../styling'
 import BasicLayout from '../BasicLayout'
-import FacetedPodcastTiles from '../FacetedPodcastTiles'
-import Loading from '../Loading'
 import { addScrollStyle } from '../util'
 import TitleBar from './TitleBar'
 import blue from '@material-ui/core/colors/blue'
 import { uploadFile } from 'react-s3'
-import Fat from '../SideNav/Fat'
-
+import Select from 'react-select'
 import('buffer').then(({ Buffer }) => {
   global.Buffer = Buffer
 })
 const primaryColor = colors.magenta
+
+const options = [
+  {
+    value: 'Pro Caster ',
+    label: ' Pro Caster',
+  },
+  {
+    value: 'Amateur Caster ',
+    label: ' Amateur Caster',
+  },
+  {
+    value: 'Pro Streamer ',
+    label: ' Pro Streamer',
+  },
+  {
+    value: 'Amateur Streamer ',
+    label: ' Amateur Streamer',
+  },
+  {
+    value: 'Pro Podcaster ',
+    label: ' Pro Podcaster',
+  },
+  {
+    value: 'Amateur Podcaster ',
+    label: ' Amateur Podcaster',
+  },
+]
+
+const customStyles = {
+  dropdownIndicator: () => ({
+    color: 'white',
+    fontsize: '1rem',
+  }),
+  option: () => ({
+    color: 'black',
+  }),
+  control: () => ({
+    border: '2px solid white',
+    borderRadius: '5px',
+    display: 'flex',
+  }),
+  placeholder: () => ({
+    color: 'white',
+  }),
+  singleValue: () => ({
+    color: 'white',
+  }),
+}
 
 const useStyles = makeStyles(theme => ({
   channelCategories: {
@@ -142,6 +183,8 @@ const CreateProfile = props => {
   const [rtmpLink, setrtmpLink] = useState('')
   const [streamKey, setsreamKey] = useState('')
   const [liveStreamId, setliveStreamId] = useState('')
+  const [experienceOptions, setExperienceOptions] = useState(options)
+  const [selectedCredentials, setSelectedCredentials] = useState([])
   const [context, setContext] = React.useState([{ value: null }])
   const [saveContext, setsaveContext] = React.useState([])
   const [selectedFile, setSelectedFile] = useState(null)
@@ -185,20 +228,6 @@ const CreateProfile = props => {
     reader.readAsDataURL(event.target.files[0])
   }
 
-  const handleChannelImage = async event => {
-    var channelImageSaved = event.target.files[0]
-    setFormInput({
-      ...formInput,
-      userChannelImage: channelImageSaved,
-    })
-    let newFileName = channelImageSaved.name.replace(/\..+$/, '')
-    uploadFile(channelImageSaved, config)
-      .then(data => {
-        setsaveChannelImage(data['location'])
-      })
-      .catch(err => console.error(err))
-  }
-
   const validateForm = () => {
     let formIsValid = true
     if (
@@ -219,11 +248,6 @@ const CreateProfile = props => {
       formIsValid = false
       formInput.descriptionError = 'Please Enter Description'
     }
-    // if (!state.selectedFile || state.selectedFile.length==null ) {
-    //   formIsValid = false;
-    //   state.photoError = "Please Upload picture";
-    // }
-
     return formIsValid
   }
 
@@ -245,12 +269,12 @@ const CreateProfile = props => {
     setsaveContext(arr)
   }
 
-
   const classes = useStyles({ primaryColor })
   const user = useSelector(selectors.getUser)
   const userName = user?.user_metadata?.full_name
 
   const submit = evt => {
+    console.log('called submit  ')
     evt.preventDefault()
     muxChannel()
     return sleep(3000).then(() => {
@@ -274,11 +298,9 @@ const CreateProfile = props => {
                   MyContext: saveContext.toString(),
                   rtmpLink: 'rtmps://global-live.mux.com:443/app',
                   streamKey: localStorage.getItem('channelStrkey'),
-                  userChannelTag: formInput.userChannelName
-                    .toLowerCase()
-                    .replace(/\s/g, ''),
                   liveStreamId: localStorage.getItem('channelStrId'),
                   profileCreated: 'yes',
+                  credentials: selectedCredentials?.join(),
                 },
               },
             ],
@@ -375,7 +397,53 @@ const CreateProfile = props => {
         console.log('error while data fetching', error.type)
       })
   }
+
+  const handleSelect = e => {
+    setSelectedCredentials(
+      Array.isArray(e) ? e.map(topping => topping.label) : []
+    )
+  }
   
+  useEffect(() => {
+    if (selectedCredentials?.length === 0) {
+      setExperienceOptions(options)
+    }
+    if (selectedCredentials[selectedCredentials.length - 1]?.includes('Pro Caster')) {
+      setExperienceOptions(
+        experienceOptions?.filter(opt => !opt.label.includes('Amateur Caster'))
+      )
+    }
+    if (selectedCredentials[selectedCredentials.length - 1]?.includes('Amateur Caster')) {
+      setExperienceOptions(
+        experienceOptions?.filter(opt => !opt.label.includes('Pro Caster'))
+      )
+    }
+    if (selectedCredentials[selectedCredentials.length - 1]?.includes('Pro Streamer')) {
+      setExperienceOptions(
+        experienceOptions?.filter(
+          opt => !opt.label.includes('Amateur Streamer')
+        )
+      )
+    }
+    if (selectedCredentials[selectedCredentials.length - 1]?.includes('Amateur Streamer')) {
+      setExperienceOptions(
+        experienceOptions?.filter(opt => !opt.label.includes('Pro Streamer'))
+      )
+    }
+    if (selectedCredentials[selectedCredentials.length - 1]?.includes('Pro Podcaster')) {
+      setExperienceOptions(
+        experienceOptions?.filter(
+          opt => !opt.label.includes('Amateur Podcaster')
+        )
+      )
+    }
+    if (selectedCredentials[selectedCredentials.length - 1]?.includes('Amateur Podcaster')) {
+      setExperienceOptions(
+        experienceOptions?.filter(opt => !opt.label.includes('Pro Podcaster'))
+      )
+    }
+  }, [selectedCredentials])
+
   return (
     <BasicLayout home>
       <ToastContainer />
@@ -440,8 +508,13 @@ const CreateProfile = props => {
                 )}
                 <br />
                 <br />
-                <br />
-                <br />
+                <h3>Select Your Focus Area(s) and Experience:</h3>
+                <Select
+                  options={experienceOptions}
+                  styles={customStyles}
+                  onChange={handleSelect}
+                  isMulti
+                />
                 <br></br>
                 <br></br>
                 <div className={classes.root}>
