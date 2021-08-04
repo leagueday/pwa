@@ -60,37 +60,12 @@ const useStyles = makeStyles(theme => ({
       bottom: '-2px',
       transformOrigin: 'left',
       transform: 'scale(0)',
-      transition: '0.25s linear',
+      transition: '0.1s linear',
     },
     '&:hover:before': {
       transform: 'scale(1)',
     },
   },
-  //   h1 {
-  //     border-bottom: 3px solid #ff8cbc;
-  //     font-size: 3em;
-  //     transition: all 0.25s linear;
-  //     position: relative;
-  //   }
-
-  //   h1:before {
-  //     content: "";
-  //     display: block;
-  //     width: 100%;
-  //     height: 3px;
-  //     background-color: #61a3ff;
-  //     position: absolute;
-  //     left: 0;
-  //     bottom: -3px; /* this is to match where the border is */
-  //     transform-origin: left;
-  //     transform: scale(0);
-  //     transition: 0.25s linear;
-  //   /*   will-change: transform; */
-  //   }
-
-  //   h1:hover:before {
-  //     transform: scale(1);
-  //   }
   selectedLink: {
     borderBottom: `2px solid ${colors.magenta}`,
   },
@@ -104,7 +79,6 @@ const NavBar = () => {
   const [homeActive, setHomeActive] = useState(pathname === '/')
   const [creatorActive, setCreatorActive] = useState(pathname === '/creators')
 
-  console.log(pathname)
   const homeClick = () => {
     setHomeActive(true)
     setCreatorActive(false)

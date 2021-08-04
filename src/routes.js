@@ -1,13 +1,14 @@
 import React from 'react';
 
-const ChannelScreen = React.lazy(() => import('./views/ChannelScreen'))
-const EventScreen = React.lazy(() => import('./views/EventScreen'))
-const IconDump = React.lazy(() => import('./views/IconDump'))
-const HomeScreen = React.lazy(() => import('./views/HomeScreen'))
-const ProfileScreen = React.lazy(() => import('./views/MyProfile'))
+const ChannelScreen = React.lazy(() => import('./views/ChannelScreen'));
+const EventScreen = React.lazy(() => import('./views/EventScreen'));
+const IconDump = React.lazy(() => import('./views/IconDump'));
+const HomeScreen = React.lazy(() => import('./views/HomeScreen'));
+const ProfileScreen = React.lazy(() => import('./views/MyProfile'));
 const GoLive = React.lazy(() => import('./views/GoLive'));
-const UploadAudio = React.lazy(() => import('./views/Upload'))
-const CreatorScreen = React.lazy(() => import('./views/CreatorScreen'))
+const UploadAudio = React.lazy(() => import('./views/Upload'));
+const CreatorScreen = React.lazy(() => import('./views/CreatorScreen'));
+const ChatScreen = React.lazy(() => import('./views/ChatScreen'));
 const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'));
 const GoToLiveData = React.lazy(() => import('./views/GoLive/GoLiveData'));
 const PreviewPage = React.lazy(() => import('./views/GoLive/PreviewPage'));
@@ -63,6 +64,7 @@ export const routesConfig = [
     }),
   ],
   [matchFirstToken('upload'), () => true, UploadAudio, () => ({})],
+  [matchFirstToken('chat'), () => true, ChatScreen, () => ({})],
   [matchFirstToken('creators'), () => true, CreatorScreen, () => ({})],
   [matchFirstToken('live'), () => true, GoLive, () => ({})],
   [matchFirstToken('gotolive'), () => true, GoToLiveData, () => ({})],

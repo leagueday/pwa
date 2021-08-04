@@ -16,6 +16,216 @@ import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
 
 const primaryColor = colors.magenta
 
+export const mockFriends = {
+  userId: 'a6283fa7-7405-4d72-aaab-3f84e630845d',
+  friends: [
+    {
+      ChannelLiveData: ['recxA5xhJZlBw0qVo'],
+      MyContext: 'Test',
+      TwitchUrl: 'nvantzos',
+      TwitterUrl: 'nikvantzos',
+      UserAudiocasts: [
+        ('recjHFYIEHksXoc5J',
+        'recMNRJiaK3pZf7Dk',
+        'recouTuUDYWADAv1h',
+        'rec3GFESHacXGosb5',
+        'recWSixPKsYxpzJqw',
+        'reccrPmV7sI6Nk9ws',
+        'recC4vfIgZzUQzuuz',
+        'recxpX2XSbfMFaZ6J',
+        'recVqeLpRG8yw7XjZ'),
+      ],
+      UserCreatorsList: [
+        ('recJixYr6ZyhXlT7l', 'recUIZlxl0W84aClN', 'recc05v4kPFnOfy9m'),
+      ],
+      UserList: [
+        ('recgHSN75dVUB6IBx', 'recjGDfvcjUMf3L8O', 'recwjSU9LqOKFiZuv'),
+      ],
+      admin: 'true',
+      date: '2021-07-29T21:05:33.188Z',
+      description: "LeagueDay Founder | 'Going for the Turkey' - MacGruber",
+      email: 'nick@leagueday.gg',
+      heroImg:
+        'https://leagueday-prod-images.s3.amazonaws.com/uploads/beach 1.jpg',
+      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/1567776578931.jpg',
+      likedAudio: [
+        ('reccrPmV7sI6Nk9ws',
+        'recxpX2XSbfMFaZ6J',
+        'recC4vfIgZzUQzuuz',
+        'rec3GFESHacXGosb5',
+        'recWSixPKsYxpzJqw',
+        'recouTuUDYWADAv1h',
+        'recMNRJiaK3pZf7Dk',
+        'recjHFYIEHksXoc5J',
+        'recoVj8mGxPAptJQn',
+        'reccDXcgbVZgOpMoC',
+        'recVqeLpRG8yw7XjZ'),
+      ],
+      liveStreamId: 'bXthhO1HODhAx7u003N1aQUX89aGiz02yTKKvOWl6HvVo',
+      name: 'Chuuper',
+      profileCreated: 'yes',
+      rtmpLink: 'rtmps://global-live.mux.com:443/app',
+      streamKey: 'e7295a2e-72ad-faef-f288-ba66c822981a',
+      userChannel: 'ChannelName',
+      userChannelTag: 'channelname',
+      userId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
+    },
+    {
+      ChannelLiveData: ['recxA5xhJZlBw0qVo'],
+      MyContext: 'Test',
+      TwitchUrl: 'nvantzos',
+      TwitterUrl: 'nikvantzos',
+      UserAudiocasts: [
+        'recjHFYIEHksXoc5J',
+        'recMNRJiaK3pZf7Dk',
+        'recouTuUDYWADAv1h',
+        'rec3GFESHacXGosb5',
+        'recWSixPKsYxpzJqw',
+        'reccrPmV7sI6Nk9ws',
+        'recC4vfIgZzUQzuuz',
+        'recxpX2XSbfMFaZ6J',
+        'recVqeLpRG8yw7XjZ',
+      ],
+      UserCreatorsList: [
+        ('recJixYr6ZyhXlT7l', 'recUIZlxl0W84aClN', 'recc05v4kPFnOfy9m'),
+      ],
+      UserList: [
+        ('recgHSN75dVUB6IBx', 'recjGDfvcjUMf3L8O', 'recwjSU9LqOKFiZuv'),
+      ],
+      admin: 'true',
+      date: '2021-07-29T21:05:33.188Z',
+      description: "LeagueDay Founder | 'Going for the Turkey' - MacGruber",
+      email: 'nick@leagueday.gg',
+      heroImg:
+        'https://leagueday-prod-images.s3.amazonaws.com/uploads/beach 1.jpg',
+      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/kelseyyt.jpg',
+      likedAudio: [
+        'reccrPmV7sI6Nk9ws',
+        'recxpX2XSbfMFaZ6J',
+        'recC4vfIgZzUQzuuz',
+        'rec3GFESHacXGosb5',
+        'recWSixPKsYxpzJqw',
+        'recouTuUDYWADAv1h',
+        'recMNRJiaK3pZf7Dk',
+        'recjHFYIEHksXoc5J',
+        'recoVj8mGxPAptJQn',
+        'reccDXcgbVZgOpMoC',
+        'recVqeLpRG8yw7XjZ',
+      ],
+      liveStreamId: 'bXthhO1HODhAx7u003N1aQUX89aGiz02yTKKvOWl6HvVo',
+      name: 'Kelsey Moser',
+      profileCreated: 'yes',
+      rtmpLink: 'rtmps://global-live.mux.com:443/app',
+      streamKey: 'e7295a2e-72ad-faef-f288-ba66c822981a',
+      userChannel: 'ChannelName',
+      userChannelTag: 'channelname',
+      userId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
+    },
+    {
+      ChannelLiveData: ['recxA5xhJZlBw0qVo'],
+      MyContext: 'Test',
+      TwitchUrl: 'nvantzos',
+      TwitterUrl: 'nikvantzos',
+      UserAudiocasts: [
+        'recjHFYIEHksXoc5J',
+        'recMNRJiaK3pZf7Dk',
+        'recouTuUDYWADAv1h',
+        'rec3GFESHacXGosb5',
+        'recWSixPKsYxpzJqw',
+        'reccrPmV7sI6Nk9ws',
+        'recC4vfIgZzUQzuuz',
+        'recxpX2XSbfMFaZ6J',
+        'recVqeLpRG8yw7XjZ',
+      ],
+      UserCreatorsList: [
+        'recJixYr6ZyhXlT7l',
+        'recUIZlxl0W84aClN',
+        'recc05v4kPFnOfy9m',
+      ],
+      UserList: ['recgHSN75dVUB6IBx', 'recjGDfvcjUMf3L8O', 'recwjSU9LqOKFiZuv'],
+      admin: 'true',
+      date: '2021-07-29T21:05:33.188Z',
+      description: "LeagueDay Founder | 'Going for the Turkey' - MacGruber",
+      email: 'nick@leagueday.gg',
+      heroImg:
+        'https://leagueday-prod-images.s3.amazonaws.com/uploads/beach 1.jpg',
+      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/DSC_0051.jpg',
+      likedAudio: [
+        'reccrPmV7sI6Nk9ws',
+        'recxpX2XSbfMFaZ6J',
+        'recC4vfIgZzUQzuuz',
+        'rec3GFESHacXGosb5',
+        'recWSixPKsYxpzJqw',
+        'recouTuUDYWADAv1h',
+        'recMNRJiaK3pZf7Dk',
+        'recjHFYIEHksXoc5J',
+        'recoVj8mGxPAptJQn',
+        'reccDXcgbVZgOpMoC',
+        'recVqeLpRG8yw7XjZ',
+      ],
+      liveStreamId: 'bXthhO1HODhAx7u003N1aQUX89aGiz02yTKKvOWl6HvVo',
+      name: 'Adrian Lawal',
+      profileCreated: 'yes',
+      rtmpLink: 'rtmps://global-live.mux.com:443/app',
+      streamKey: 'e7295a2e-72ad-faef-f288-ba66c822981a',
+      userChannel: 'ChannelName',
+      userChannelTag: 'channelname',
+      userId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
+    },
+    {
+      ChannelLiveData: ['recxA5xhJZlBw0qVo'],
+      MyContext: 'Test',
+      TwitchUrl: 'nvantzos',
+      TwitterUrl: 'nikvantzos',
+      UserAudiocasts: [
+        ('recjHFYIEHksXoc5J',
+        'recMNRJiaK3pZf7Dk',
+        'recouTuUDYWADAv1h',
+        'rec3GFESHacXGosb5',
+        'recWSixPKsYxpzJqw',
+        'reccrPmV7sI6Nk9ws',
+        'recC4vfIgZzUQzuuz',
+        'recxpX2XSbfMFaZ6J',
+        'recVqeLpRG8yw7XjZ'),
+      ],
+      UserCreatorsList: [
+        ('recJixYr6ZyhXlT7l', 'recUIZlxl0W84aClN', 'recc05v4kPFnOfy9m'),
+      ],
+      UserList: [
+        ('recgHSN75dVUB6IBx', 'recjGDfvcjUMf3L8O', 'recwjSU9LqOKFiZuv'),
+      ],
+      admin: 'true',
+      date: '2021-07-29T21:05:33.188Z',
+      description: "LeagueDay Founder | 'Going for the Turkey' - MacGruber",
+      email: 'nick@leagueday.gg',
+      heroImg:
+        'https://leagueday-prod-images.s3.amazonaws.com/uploads/beach 1.jpg',
+      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg',
+      likedAudio: [
+        ('reccrPmV7sI6Nk9ws',
+        'recxpX2XSbfMFaZ6J',
+        'recC4vfIgZzUQzuuz',
+        'rec3GFESHacXGosb5',
+        'recWSixPKsYxpzJqw',
+        'recouTuUDYWADAv1h',
+        'recMNRJiaK3pZf7Dk',
+        'recjHFYIEHksXoc5J',
+        'recoVj8mGxPAptJQn',
+        'reccDXcgbVZgOpMoC',
+        'recVqeLpRG8yw7XjZ'),
+      ],
+      liveStreamId: 'bXthhO1HODhAx7u003N1aQUX89aGiz02yTKKvOWl6HvVo',
+      name: 'Nick Vantzos',
+      profileCreated: 'yes',
+      rtmpLink: 'rtmps://global-live.mux.com:443/app',
+      streamKey: 'e7295a2e-72ad-faef-f288-ba66c822981a',
+      userChannel: 'ChannelName',
+      userChannelTag: 'channelname',
+      userId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
+    },
+  ],
+}
+
 const useStyles = makeStyles(theme => ({
   content: () =>
     addScrollStyle(
@@ -338,7 +548,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     height: '3%',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   xBtn: {
     marginLeft: '1%',
@@ -385,6 +595,25 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  friendList: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    width: '50%'
+  },
+  friendImg: {
+    width: '10%',
+  },
+  chatBtn: {
+    width: '110px',
+    height: '40px',
+    marginRight: '5%',
+    background: colors.blue,
+    borderRadius: '5px',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+  },
 }))
 
 const MyProfile = ({ userId }) => {
@@ -397,6 +626,7 @@ const MyProfile = ({ userId }) => {
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [audiocasts, setAudiocasts] = useState([])
   const [channelSelected, setChannelSelected] = useState(false)
+  const [friendSelected, setFriendSelected] = useState(false)
   const [trophieSelected, setTrophieSelected] = useState(false)
   const [creatorsSelected, setCreatorsSelected] = useState(false)
   const [recordToDelete, setRecordToDelete] = useState({})
@@ -408,6 +638,7 @@ const MyProfile = ({ userId }) => {
     setLiveRecordings(false)
     setChannelSelected(false)
     setTrophieSelected(false)
+    setFriendSelected(false)
   }
 
   const handleChannelClick = () => {
@@ -415,6 +646,7 @@ const MyProfile = ({ userId }) => {
     setLiveRecordings(false)
     setChannelSelected(true)
     setTrophieSelected(false)
+    setFriendSelected(false)
   }
 
   const handleTrophyClick = () => {
@@ -422,6 +654,7 @@ const MyProfile = ({ userId }) => {
     setLiveRecordings(false)
     setChannelSelected(false)
     setTrophieSelected(true)
+    setFriendSelected(false)
   }
 
   const handleLiveClick = () => {
@@ -429,6 +662,15 @@ const MyProfile = ({ userId }) => {
     setLiveRecordings(true)
     setChannelSelected(false)
     setTrophieSelected(false)
+    setFriendSelected(false)
+  }
+
+  const handleFriendClick = () => {
+    setCreatorsSelected(false)
+    setLiveRecordings(false)
+    setChannelSelected(false)
+    setTrophieSelected(false)
+    setFriendSelected(true)
   }
 
   const handleModalClose = () => {
@@ -602,7 +844,10 @@ const MyProfile = ({ userId }) => {
             <div className={classes.description}>
               <p>{userData?.fields?.description}</p>
               <div className={classes.socialContainer}>
-                <p style={{ width: '100%' }}><span className={classes.socials}>Level:</span> {userData?.fields?.credentials}</p>
+                <p style={{ width: '100%' }}>
+                  <span className={classes.socials}>Level:</span>{' '}
+                  {userData?.fields?.credentials}
+                </p>
                 <p className={classes.socials}>Socials:</p>
                 <p className={classes.socialLinks}>
                   <FontAwesomeIcon
@@ -681,6 +926,14 @@ const MyProfile = ({ userId }) => {
             </span>
             <span
               className={
+                friendSelected ? classes.selectedButton : classes.sectionButton
+              }
+              onClick={handleFriendClick}
+            >
+              Friends
+            </span>
+            <span
+              className={
                 channelSelected ? classes.selectedButton : classes.sectionButton
               }
               onClick={handleChannelClick}
@@ -755,6 +1008,26 @@ const MyProfile = ({ userId }) => {
                     </div>
                   )
                 })}
+              </div>
+            )}
+            {friendSelected && (
+              <div>
+                {mockFriends.friends.map(friend => (
+                  <div className={classes.friendList}>
+                    <img
+                      src={friend.image}
+                      alt=""
+                      className={classes.friendImg}
+                    />
+                    <p>{friend.name}</p>
+                    <Button
+                      className={classes.chatBtn}
+                      onClick={() => dispatch(actions.pushHistory('/chat'))}
+                    >
+                      Chat
+                    </Button>
+                  </div>
+                ))}
               </div>
             )}
             {liveRecordings && (

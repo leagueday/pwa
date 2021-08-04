@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
       background: 'inherit',
     },
   },
-}))
+}));
 
 const SmallUp = () => {
   const classes = useStyles()

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
+import { Button } from '@material-ui/core'
 import Airtable from 'airtable'
 import { UserStateContext } from '../../store/stateProviders/userState'
 import { colors } from '../../styling'
@@ -106,17 +107,6 @@ const useStyles = makeStyles(theme => ({
       alignItems: 'stretch',
       paddingLeft: '3%',
       paddingRight: '3%',
-    },
-  },
-  editProfile: {
-    background: colors.blue,
-    width: '150px',
-    '&:hover': {
-      backgroundColor: theme.palette.primary.active,
-    },
-    [theme.breakpoints.down('md')]: {
-      width: '25%',
-      fontSize: '80%',
     },
   },
   userName: {
@@ -304,6 +294,17 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  editProfile: {
+    background: colors.blue,
+    width: '200px',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+    [theme.breakpoints.down('md')]: {
+      width: '25%',
+      fontSize: '80%',
+    },
+  },
 }))
 
 const NoobTrophy = ({ classes }) => {
@@ -356,6 +357,7 @@ const MyProfile = ({ userId }) => {
   const [trophieSelected, setTrophieSelected] = useState(false)
   const [creatorsSelected, setCreatorsSelected] = useState(false)
   const [channelSelected, setChannelSelected] = useState(false)
+  const [sent, setSent] = useState(false)
   const [channelList, setChannelList] = useState([])
   const [creatorList, setCreatorList] = useState([])
 
@@ -511,6 +513,7 @@ const MyProfile = ({ userId }) => {
               </div>
             )}
           </div>
+          <Button className={classes.editProfile} onClick={() => setSent(true)}> {sent ? 'Sent!' : 'Send Friend Request'} </Button>
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
               <p className={classes.userName}>{userData?.fields?.name}</p>
