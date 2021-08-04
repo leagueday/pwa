@@ -28,8 +28,9 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     borderBottom: `0.5px solid ${colors.darkGray}`,
+    padding: '0 15%',
     borderRight: `2px solid ${colors.blue}`,
     '&:hover': {
       borderRight: `4px solid ${theme.palette.primary.active}`,

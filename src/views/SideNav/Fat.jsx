@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   sideNav: {
-    backgroundColor: colors.darkGray,
+    backgroundColor: colors.darkerGray,
     display: 'flex',
     flexDirection: 'column',
     fontSize: 'max(min(1.6vw, 14px), 12px)',

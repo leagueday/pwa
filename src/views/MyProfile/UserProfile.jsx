@@ -518,7 +518,7 @@ const MyProfile = ({ userId }) => {
             <div className={classes.userEditName}>
               <p className={classes.userName}>{userData?.fields?.name}</p>
               <p style={{ width: '100%' }}>
-                  <span className={classes.socials}>Level:</span>{' '}
+                  <span className={classes.socials}>Experience:</span>{' '}
                   {userData?.fields?.credentials}
                 </p>
             </div>

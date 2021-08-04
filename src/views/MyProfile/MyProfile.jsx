@@ -598,8 +598,8 @@ const useStyles = makeStyles(theme => ({
   friendList: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-    width: '50%'
+    justifyContent: 'space-between',
+    width: '40%'
   },
   friendImg: {
     width: '10%',
@@ -845,7 +845,7 @@ const MyProfile = ({ userId }) => {
               <p>{userData?.fields?.description}</p>
               <div className={classes.socialContainer}>
                 <p style={{ width: '100%' }}>
-                  <span className={classes.socials}>Level:</span>{' '}
+                  <span className={classes.socials}>Experience:</span>{' '}
                   {userData?.fields?.credentials}
                 </p>
                 <p className={classes.socials}>Socials:</p>
