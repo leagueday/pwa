@@ -8,6 +8,7 @@ const useStyles = makeStyles(theme => ({
   creatorWrapper: {
     position: 'relative',
     minHeight: '25vh',
+    background: colors.darkerGray,
     [theme.breakpoints.down('sm')]: {
       overflow: 'scroll',
     },
@@ -29,8 +30,6 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     display: 'flex',
     flexWrap: 'wrap',
-    // justifyContent: 'space-between',
-    background: 'black',
     [theme.breakpoints.down('sm')]: {
       background: 'inherit',
     },

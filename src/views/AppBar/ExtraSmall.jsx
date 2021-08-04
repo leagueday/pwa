@@ -39,8 +39,9 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     padding: '0 2vw',
+    cursor: 'pointer',
   },
-}))
+}));
 
 //
 const XsAppBar = ({ className, home }) => {
@@ -62,7 +63,7 @@ const XsAppBar = ({ className, home }) => {
     }
   }
 
-  const maybeGoHome = home ? null : () => dispatch(actions.pushHistory('/'))
+  const maybeGoHome = () => dispatch(actions.pushHistory('/'))
 
   return (
     <>
