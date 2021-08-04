@@ -116,7 +116,7 @@ const useStyles = makeStyles(theme => ({
       paddingLeft: '2vw',
     },
     [theme.breakpoints.down('sm')]: {
-      marginLeft: '5%'
+      marginLeft: '5%',
     },
   }),
   episodeTitle: {
@@ -476,10 +476,10 @@ export const Tracks1 = ({
 
   return (
     <div className={classes.trackContainer}>
-      <LikeButton 
-      userId={currentUserId}
-      audio={episodeData}
-      channelTag={episodeData?.fields?.channelTag}
+      <LikeButton
+        userId={currentUserId}
+        audio={episodeData}
+        channelTag={episodeData?.fields?.channelTag}
       />
       <div className={classes.episodeRow}>
         <div className={classes.episodeControls}>
@@ -559,7 +559,7 @@ const TracksData = ({
   )
 }
 
-const ReplayBroadcastsMockup = ({ className, channel }) => {
+const ReplayBroadcastsMockup = ({ className, channel, leagueNight }) => {
   const classes = useStyles()
   const [RecordedData, setRecordedData] = useState([])
   const [rescentAsscetid, setrescentAsscetId] = useState([])
@@ -627,43 +627,37 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
 
   return (
     <div className={cx(classes.replayBroadcasts, className)}>
-      {filterMockupData(channel.tag).map(sectionData => {
-        return (
-          <>
-            {sectionData.event == 'lcs' && (
-              <div
-                key={sectionData.name + sectionData.event}
-                className={classes.replayBroadcast}
-              >
+      {!leagueNight &&
+        filterMockupData(channel.tag).map(sectionData => {
+          return (
+            <>
+              {sectionData.event == 'lcs' && (
                 <div
-                  className={classes.eventImageAndText}
-                  onClick={makeGotoEvent(sectionData.event)}
+                  key={sectionData.name + sectionData.event}
+                  className={classes.replayBroadcast}
                 >
-                  <EventImage
-                    classes={classes}
-                    imageUrl={sectionData.imageUrl}
+                  <div
+                    className={classes.eventImageAndText}
                     onClick={makeGotoEvent(sectionData.event)}
-                  />
-                  <EventTextplate
-                    channelColor={channel.color}
-                    onClick={makeGotoEvent(sectionData.event)}
-                    sectionData={sectionData}
-                  />
+                  >
+                    <EventImage
+                      classes={classes}
+                      imageUrl={sectionData.imageUrl}
+                      onClick={makeGotoEvent(sectionData.event)}
+                    />
+                    <EventTextplate
+                      channelColor={channel.color}
+                      onClick={makeGotoEvent(sectionData.event)}
+                      sectionData={sectionData}
+                    />
+                  </div>
                 </div>
-                <Tracks
-                  chanelEvent={sectionData.event}
-                  sectionData={RecordedData}
-                  channelColor={channel.color}
-                  assetid={rescentAsscetid}
-                />
-              </div>
-            )}
-          </>
-        )
-      })}
-
-      {filterMockupData(channel.tag).map(sectionData => {
-        return (
+              )}
+            </>
+          )
+        })}
+      {leagueNight &&
+        filterMockupData(channel.tag).map(sectionData => (
           <>
             {sectionData.event == 'leaguenight' && (
               <div
@@ -682,16 +676,10 @@ const ReplayBroadcastsMockup = ({ className, channel }) => {
                     sectionData={sectionData}
                   />
                 </div>
-                <TracksData
-                  sectionName={sectionData.event}
-                  leaugeNightData={leagueNightRecorded}
-                  channelColor={channel.color}
-                />
               </div>
             )}
           </>
-        )
-      })}
+        ))}
     </div>
   )
 }

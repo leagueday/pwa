@@ -249,6 +249,9 @@ const UploadAudiocast = () => {
     singleValue: () => ({
       color: 'white',
     }),
+    input: () => ({
+      color: 'white'
+    })
   }
 
   return (
@@ -322,23 +325,6 @@ const UploadAudiocast = () => {
                 >
                   Audacity
                 </a>{' '}
-                {/* (
-                <a
-                  href="https://obsproject.com/download"
-                  target="_blank"
-                  style={{ color: 'blue' }}
-                >
-                  OBS Download
-                </a>
-                ,
-                <a
-                  href="https://www.audacityteam.org/download/"
-                  target="_blank"
-                  style={{ color: 'blue' }}
-                >
-                  Audacity Download
-                </a>
-                ) */}
               </p>
               <p>iOS Mobile: Voice Memos app</p>
               <p>
@@ -350,15 +336,6 @@ const UploadAudiocast = () => {
                 >
                   Voice Recorder
                 </a>{' '}
-                {/* (
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.media.bestrecorder.audiorecorder&hl=en_US&gl=US"
-                  target="_blank"
-                  style={{ color: 'blue' }}
-                >
-                  Download
-                </a>
-                ) */}
               </p>
             </div>
             <div className={classes.contentRecs}>

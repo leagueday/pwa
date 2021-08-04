@@ -31,7 +31,9 @@ const Audiocast = ({ channelTag }) => {
       })
       .eachPage(
         async function page(records, fetchNextPage) {
-          setUserAudio(records)
+          setUserAudio(records.sort((a, b) => {
+            return b.fields.upvotes - a.fields.upvotes
+          }))
         },
         function done(err) {
           if (err) {
@@ -41,11 +43,11 @@ const Audiocast = ({ channelTag }) => {
         }
       )
   }
-  
+
   useEffect(() => {
     getUserAudio()
   }, [user, channelTag])
-  
+
   return (
     <div className={classes.wrapper}>
       {userAudio?.map((audio, key) => {

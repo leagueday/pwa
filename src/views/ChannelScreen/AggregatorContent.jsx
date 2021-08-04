@@ -126,9 +126,15 @@ const AggregatorContent = ({ channel }) => {
             channel={channel}
             channelColor={channel.color}
           />
+          <ReplayBroadcastsMockup
+            className={classes.replayBroadcasts}
+            channel={channel}
+            channelColor={channel.color}
+            leagueNight={false}
+          />
         </BottomBlock>
       )}
-      {hasReplay && (
+      {/* {hasReplay && (
         <BottomBlock
           accentColor={channel.color}
           titleStart={channel.title}
@@ -140,14 +146,20 @@ const AggregatorContent = ({ channel }) => {
             channelColor={channel.color}
           />
         </BottomBlock>
-      )}
-        <BottomBlock
-          accentColor={channel.color}
-          titleStart={channel.title}
-          titleRest="Audiocasts"
-        >
-          <Audiocast channelTag={channel.tag} />
-        </BottomBlock>
+      )} */}
+      <BottomBlock
+        accentColor={channel.color}
+        titleStart={channel.title}
+        titleRest="Audiocasts"
+      >
+        <Audiocast channelTag={channel.tag} />
+        <ReplayBroadcastsMockup
+            className={classes.replayBroadcasts}
+            channel={channel}
+            channelColor={channel.color}
+            leagueNight={true}
+          />
+      </BottomBlock>
     </ContentLayout>
   )
 }

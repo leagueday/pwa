@@ -225,7 +225,6 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
   )
   const theme = useTheme()
   const sm = useMediaQuery(theme.breakpoints.down('sm'));
-  console.log('screen size ', sm);
   const currentUserId = currentUser?.shift()?.id
   const audioUrl = useSelector(selectors.getAudioUrl)
   const [open, setOpen] = useState(false)

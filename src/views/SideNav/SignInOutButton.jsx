@@ -24,19 +24,15 @@ const SignInOutButton = ({ className }) => {
   const isAuthenticated = !!user
 
   const [onClick, text] = isAuthenticated
-    ? [() => dispatch(actions.logout()), 'Sign Out']
-    : [() => dispatch(actions.login()), 'Sign In']
+    ? [() => dispatch(actions.logout()), 'SIGN OUT']
+    : [() => dispatch(actions.login()), 'SIGN IN']
 
   return (
-    <Button
-      className={cx(classes.inNOutButton, className)}
-      color="primary"
+    <p
       onClick={onClick}
-      size="small"
-      variant="contained"
     >
       {text}
-    </Button>
+    </p>
   )
 }
 

@@ -19,10 +19,13 @@ function UserProfileProvider(props) {
     const [count, setCount] = useState();
     const [likedAudio, setLikedAudio] = useState([]);
     const { data } = useAirtable(baseId, 'UserProfile')
+
     const currentUser = data?.filter(
         user => user?.fields?.userId === activeUser?.id
     )
+
     const currentUserId = currentUser?.shift()?.id
+
     const getData = async (idx) => {
         setLoading(true)
         const id = activeUser?.id

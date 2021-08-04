@@ -17,7 +17,6 @@ and increased limits are not currently available.
 */
 
 export const getMyList = () => {
-    const user = useSelector(selectors.getUser)
     const [filteredListRecords, setFilteredListRecords] = useState([])
     let result = []
 
