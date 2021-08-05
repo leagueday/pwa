@@ -1,8 +1,8 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-
+import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-
+import PersonIcon from '@material-ui/icons/Person'
 import { actions } from '../../store'
 import { colors } from '../../styling'
 import PlusMinusBtn from './PlusMinusBtn'
@@ -52,9 +52,11 @@ const useStyles = makeStyles(theme => ({
     display: 'inline-flex',
   },
   textBox: {
+    width: '100%',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row-reverse',
     minHeight: '15%',
+    justifyContent: 'space-between',
     overflow: 'hidden',
     paddingLeft: '0.25em',
     paddingRight: '0.25em',
@@ -65,6 +67,15 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
     top: 0,
     right: 0,
+  },
+  addFriend: {
+    marginRight: '10%',
+    height: '70%',
+    width: '10%',
+    background: colors.blue,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
   },
 }))
 
@@ -98,6 +109,9 @@ const CreatorTile = ({ user }) => {
       </Square>
       <div className={classes.textBox} onClick={gotoThisCreator}>
         <div className={classes.text}>{user.name}</div>
+        {/* <Button className={classes.addFriend}>
+          <PersonIcon /> +
+        </Button> */}
       </div>
     </div>
   )

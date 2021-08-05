@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
+import { UserStateContext } from '../../store/stateProviders/userState'
 import { makeStyles } from '@material-ui/core/styles'
 import NavBar from '../NavBar'
 import { addScrollStyle } from '../util'
@@ -31,7 +32,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     width: '100%',
     height: '100%',
-    // minHeight: '1820px',
   },
   basicLayoutRow: {
     alignItems: 'stretch',
@@ -58,12 +58,10 @@ const useStyles = makeStyles(theme => ({
 
 const SmUpBasicLayout = props => {
   const classes = useStyles();
-
   const audioItemUrl = useSelector(selectors.getAudioUrl);
   const isAudioDisplayed = !!audioItemUrl
 
   const navVisibility = useSelector(selectors.getNavVisibility);
-
   // smUp nav is by default open
   const isNavVisible = navVisibility !== false
 

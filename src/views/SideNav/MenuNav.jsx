@@ -85,6 +85,8 @@ const MenuNav = ({ anchor, hide, home, isVisible }) => {
         />
       ))}
       <MenuItem onClick={hideAnd(signInOut)}>{signInOutText}</MenuItem>
+      <MenuItem onClick={() => dispatch(actions.pushHistory(`/profile/${user.id}`))}>Profile</MenuItem>
+      <MenuItem onClick={() => dispatch(actions.pushHistory(`/creators`))}>Creators</MenuItem>
     </Menu>
   )
 }

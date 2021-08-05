@@ -9,7 +9,7 @@ const CreatorScreen = props => {
   const theme = useTheme()
   const smUp = useMediaQuery(theme.breakpoints.up('sm'))
 
-  return smUp ? <SmallUp {...props} /> : <ExtraSmall {...props} />
+  return <SmallUp {...props} />
 }
 
 export default CreatorScreen;

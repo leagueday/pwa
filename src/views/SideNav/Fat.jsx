@@ -63,7 +63,6 @@ const useStyles = makeStyles(theme => ({
     colors.blue,
     theme
   )({
-    flex: 1,
     minHeight: 0,
     overflowY: 'auto',
     width: '100%',
@@ -146,7 +145,6 @@ const FatSideNav = ({ className, home }) => {
       .then(response => response.json())
       .then(function (response) {
         if (response.records.length > 0) {
-          //setProfileCreated(response.records[0].fields.profileCreated)
           setProfileCreated(true)
           localStorage.setItem(
             'profilecreated',
@@ -169,10 +167,10 @@ const FatSideNav = ({ className, home }) => {
   const myprofile = () => {
     dispatch(actions.pushHistory(`/profile/${user.id}`))
   }
+  const createProfile = () => dispatch(actions.pushHistory('/create'))
 
   const golive = () => dispatch(actions.pushHistory('/live'))
 
-  const createProfile = () => dispatch(actions.pushHistory('/create'))
 
   return (
     <div className={cx(classes.sideNav, className)}>
@@ -186,9 +184,9 @@ const FatSideNav = ({ className, home }) => {
             />
             <p className={classes.logoText}>BETA</p>
           </div> */}
-          <div className={classes.signInOutButtonContainer}>
+          {/* <div className={classes.signInOutButtonContainer}>
             <SignInOutButton className={classes.signInOutButton} />
-          </div>
+          </div> */}
         </div>
         <div className={classes.scroller}>
           <div className={classes.scrollerChild}>
@@ -207,7 +205,7 @@ const FatSideNav = ({ className, home }) => {
               <MyCreators />
               </Expander>
             <MyPodcasts />
-            <React.Suspense fallback={<Loading />}>
+            {/* <React.Suspense fallback={<Loading />}>
               {user &&
                 (profileCreated ? (
                   <Button
@@ -230,7 +228,7 @@ const FatSideNav = ({ className, home }) => {
                     CREATE PROFILE
                   </Button>
                 ))}
-            </React.Suspense>
+            </React.Suspense> */}
           </div>
         </div>
       </React.Suspense>

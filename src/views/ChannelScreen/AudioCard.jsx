@@ -56,6 +56,7 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
     right: -15,
     top: -15,
+    border: `2px solid ${colors.blue}`,
     transition: 'all .1s ease-in-out',
     '&:hover': {
       transform: 'scale(1.1)',
@@ -225,7 +226,6 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
   )
   const theme = useTheme()
   const sm = useMediaQuery(theme.breakpoints.down('sm'));
-  console.log('screen size ', sm);
   const currentUserId = currentUser?.shift()?.id
   const audioUrl = useSelector(selectors.getAudioUrl)
   const [open, setOpen] = useState(false)
