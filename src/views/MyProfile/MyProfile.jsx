@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import { selectors } from '../../store'
+import { getMyList } from '../../api/getUserList'
 import Modal from '@material-ui/core/Modal'
 import { MyListContext } from '../../store/stateProviders/listState'
 import { UserStateContext } from '../../store/stateProviders/userState'
@@ -617,7 +618,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const MyProfile = ({ userId }) => {
-  const { globalList, creatorList } = useContext(MyListContext)
+  const { globalList, creatorList, setGlobalList, setCreatorList } = useContext(MyListContext)
   const { userData, loading } = useContext(UserStateContext)
   const baseId = 'appXoertP1WJjd4TQ'
   const apiKey = 'keymd23kpZ12EriVi'
@@ -631,6 +632,7 @@ const MyProfile = ({ userId }) => {
   const [creatorsSelected, setCreatorsSelected] = useState(false)
   const [recordToDelete, setRecordToDelete] = useState({})
   const [open, setOpen] = useState(false)
+  const {filteredListRecords, creatorList: cl} = getMyList();
   const user = useSelector(selectors.getUser)
 
   const handleCreatorClick = () => {
@@ -798,6 +800,20 @@ const MyProfile = ({ userId }) => {
     )
   }
 
+  useEffect(() => {
+    if (globalList.length === 0 && filteredListRecords.length > 0) {
+      console.log('set channel list ')
+      setGlobalList(filteredListRecords)
+    }
+  }, [filteredListRecords])
+
+  useEffect(() => {
+    if (creatorList.length === 0 && cl.length > 0) {
+      console.log('set creator list')
+      setCreatorList(cl)
+    } 
+  }, [cl])
+
   return (
     <div className={classes.content}>
       <div className={classes.heroImgCont}>
@@ -962,7 +978,7 @@ const MyProfile = ({ userId }) => {
           <div className={classes.userContent}>
             {channelSelected && (
               <div className={classes.channels}>
-                {globalList?.map((item, index) => {
+                {filteredListRecords?.map((item, index) => {
                   return (
                     <div
                       className={classes.channelsWrapper}
@@ -986,7 +1002,7 @@ const MyProfile = ({ userId }) => {
             )}
             {creatorsSelected && (
               <div className={classes.channels}>
-                {creatorList?.map((item, index) => {
+                {cl?.map((item, index) => {
                   return (
                     <div
                       className={classes.channelsWrapper}
@@ -1012,8 +1028,8 @@ const MyProfile = ({ userId }) => {
             )}
             {friendSelected && (
               <div>
-                {mockFriends.friends.map(friend => (
-                  <div className={classes.friendList}>
+                {mockFriends.friends.map((friend, index) => (
+                  <div className={classes.friendList} key={index}>
                     <img
                       src={friend.image}
                       alt=""
@@ -1054,7 +1070,7 @@ const MyProfile = ({ userId }) => {
                     audiocasts?.concat(userRecordings)?.map((rec, index) => {
                       countt += 1
                       return (
-                        <div className={classes.track}>
+                        <div className={classes.track} key={index}>
                           <Tracks1
                             key={index}
                             episodeData={rec}

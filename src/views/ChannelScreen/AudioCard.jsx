@@ -56,6 +56,7 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
     right: -15,
     top: -15,
+    border: `2px solid ${colors.blue}`,
     transition: 'all .1s ease-in-out',
     '&:hover': {
       transform: 'scale(1.1)',

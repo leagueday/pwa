@@ -1,6 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { MyListContext } from '../../store/stateProviders/listState'
+import { getMyList } from '../../api/getUserList'
 import { actions } from '../../store'
 import Item from './Item'
 import PlusMinusBtn from '../CreatorTilesRow/PlusMinusBtn'
@@ -20,8 +21,16 @@ const useStyles = makeStyles(theme => ({
 
 const MyCreators = () => {
   const dispatch = useDispatch()
-  const { creatorList } = useContext(MyListContext)
+  const { creatorList: cl } = getMyList();
+  const { creatorList, setCreatorList } = useContext(MyListContext)
   const classes = useStyles()
+
+  useEffect(() => {
+    if (creatorList.length === 0 && cl.length > 0) {
+      console.log('set creator list')
+      setCreatorList(cl)
+    } 
+  }, [cl])
 
   return (
     <div>

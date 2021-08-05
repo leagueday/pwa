@@ -63,7 +63,6 @@ const useStyles = makeStyles(theme => ({
     colors.blue,
     theme
   )({
-    flex: 1,
     minHeight: 0,
     overflowY: 'auto',
     width: '100%',

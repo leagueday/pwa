@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     position: 'relative',
     borderBottom: `2px solid ${colors.darkerGray}`,
+    opacity: 0.8,
     '&:before': {
       content: "''",
       display: 'block',
@@ -66,6 +67,9 @@ const useStyles = makeStyles(theme => ({
       transformOrigin: 'left',
       transform: 'scale(0)',
       transition: '0.1s linear',
+    },
+    '&:hover': {
+      opacity: 1
     },
     '&:hover:before': {
       transform: 'scale(1)',

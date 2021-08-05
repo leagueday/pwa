@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles'
 import { colors } from '../../styling'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
-
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 const useStyles = makeStyles(theme => ({
   chatBox: {
     position: 'relative',
@@ -55,7 +55,18 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.primary.active,
     },
   },
-}))
+  addIcon: {
+    position: 'absolute',
+    top: 15,
+    right: 20,
+    color: colors.blue,
+    '&:hover': {
+      color: theme.palette.primary.active,
+    },
+    fontSize: '32px',
+    cursor: 'pointer',
+  }
+}));
 
 const ChatRoom = ({ friend }) => {
   const classes = useStyles()
@@ -67,6 +78,7 @@ const ChatRoom = ({ friend }) => {
           <div className={classes.reciever}>
             <img src={friend.image} alt="" className={classes.friendImg} />
             <h3>{friend.name}</h3>
+            <GroupAddIcon className={classes.addIcon}/>
           </div>
 
           <input type="text" className={classes.message} />

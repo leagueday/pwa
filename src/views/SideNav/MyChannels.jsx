@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
+import { getMyList } from '../../api/getUserList'
 import { MyListContext } from '../../store/stateProviders/listState'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
@@ -35,14 +36,21 @@ const isChannelSelected = (locationPathname, channelTag) => {
 
 const MyChannels = ({ skinny }) => {
   const classes = useStyles()
-  const { globalList } = useContext(MyListContext)
-
+  const { globalList, setGlobalList } = useContext(MyListContext)
+  const { filteredListRecords } = getMyList()
   const dispatch = useDispatch()
 
   const makeGotoThisChannel = channelTag => () =>
     dispatch(actions.pushHistory(`/channel/${channelTag}`))
 
   const locationPathname = useLocationPathname()
+
+  useEffect(() => {
+    if (globalList.length === 0 && filteredListRecords.length > 0) {
+      console.log('set global state ')
+      setGlobalList(filteredListRecords)
+    }
+  }, [filteredListRecords])
 
   return (
     <div className={classes.myChannels}>
