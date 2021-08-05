@@ -109,9 +109,9 @@ const CreatorTile = ({ user }) => {
       </Square>
       <div className={classes.textBox} onClick={gotoThisCreator}>
         <div className={classes.text}>{user.name}</div>
-        <Button className={classes.addFriend}>
+        {/* <Button className={classes.addFriend}>
           <PersonIcon /> +
-        </Button>
+        </Button> */}
       </div>
     </div>
   )

@@ -26,6 +26,7 @@ const MyCreators = () => {
   const classes = useStyles()
 
   useEffect(() => {
+    console.log('creator bs ',creatorList.length, cl.length)
     if (creatorList.length === 0 && cl.length > 0) {
       console.log('set creator list')
       setCreatorList(cl)

@@ -235,10 +235,10 @@ const NavBar = () => {
           classes={{list: classes.dropdown}}
         >
           <div>
-            <MenuItem classes={{ root: classes.profileBtn }}>
+            <MenuItem classes={{ root: classes.profileBtn }} >
               {profileCreated ? (
                 <p
-                  onClick={myprofile}
+                onClick={myprofile}
                 >
                   PROFILE
                 </p>

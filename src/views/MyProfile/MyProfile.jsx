@@ -940,14 +940,14 @@ const MyProfile = ({ userId }) => {
             >
               Audiocasts
             </span>
-            <span
+            {/* <span
               className={
                 friendSelected ? classes.selectedButton : classes.sectionButton
               }
               onClick={handleFriendClick}
             >
               Friends
-            </span>
+            </span> */}
             <span
               className={
                 channelSelected ? classes.selectedButton : classes.sectionButton
