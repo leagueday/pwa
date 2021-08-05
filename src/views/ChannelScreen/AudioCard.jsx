@@ -28,6 +28,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      width: '12rem',
+    },
   },
   images: {
     width: '100%',
