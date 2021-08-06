@@ -224,7 +224,6 @@ const useStyles = makeStyles(theme => ({
 const baseId = 'appXoertP1WJjd4TQ'
 
 const AudioCard = ({ audio, indexData, channelTag }) => {
-  // const { userData, setUserId } = useContext(UserStateContext)
   const dispatch = useDispatch()
   const classes = useStyles()
   const activeUser = useSelector(selectors.getUser)
