@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import ToggleImageButton from '../ToggleImageButton'
 import LikeButton from '../LikeButton'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,12 +8,10 @@ import { actions, constants, selectors } from '../../store'
 import { colors } from '../../styling'
 import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import Airtable from 'airtable'
 import { LinkedIn, Twitter, Facebook, Email } from '@material-ui/icons'
 import LinkIcon from '@material-ui/icons/Link'
 import useAirtable from '../../api/useAirtable'
 import Modal from '@material-ui/core/Modal'
-import { UserStateContext } from '../../store/stateProviders/userState'
 import { maybeHmsToSecondsOnly, formatSecondsDuration } from '../dateutil'
 
 const useStyles = makeStyles(theme => ({
@@ -28,6 +26,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      width: '40%',
+      marginLeft: '15px',
+    },
   },
   images: {
     width: '100%',
@@ -37,7 +39,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItem: 'flex-start',
     [theme.breakpoints.down('sm')]: {
-      // marginTop: '50%',
       display: 'none',
     },
   },
@@ -61,12 +62,19 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       transform: 'scale(1.1)',
     },
+    [theme.breakpoints.down('sm')]: {
+      width: '4rem',
+      height: '4rem',
+    },
   },
   title: {
     margin: 0,
     padding: 0,
     textAlign: 'center',
     fontSize: '100%',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '80%',
+    },
   },
   playBtn: {
     width: '50%',
@@ -210,7 +218,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       marginTop: 'auto',
     },
-  }
+  },
 }))
 
 const baseId = 'appXoertP1WJjd4TQ'
@@ -225,7 +233,7 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
     user => user?.fields?.userId === activeUser?.id
   )
   const theme = useTheme()
-  const sm = useMediaQuery(theme.breakpoints.down('sm'));
+  const sm = useMediaQuery(theme.breakpoints.down('sm'))
   const currentUserId = currentUser?.shift()?.id
   const audioUrl = useSelector(selectors.getAudioUrl)
   const [open, setOpen] = useState(false)
@@ -298,196 +306,194 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
       }
 
   return (
-    <div>
-      <div className={classes.audioCard}>
-        <div className={classes.images} onMouseLeave={!sm ? () => setSeeMore(false) : null}>
-          {seeMore && (
-            <Button
-              onMouseOpen={() => setSeeMore(true)}
-              className={classes.expandModal}
-              onClick={handleModalOpen}
-            >
-              More
-            </Button>
-          )}
-          <img
-            className={classes.creatorImg}
-            src={audio?.fields?.creatorImg}
-            alt=""
-            style={{}}
-            onClick={() =>
-              dispatch(actions.pushHistory(`/profile/${audio?.fields?.userId}`))
-            }
-          />
-          <img
-            onMouseEnter={!sm ? () => setSeeMore(true) : null}
-            className={classes.thumbnail}
-            src={audio?.fields?.thumbnail}
+    <div className={classes.audioCard}>
+      <div
+        className={classes.images}
+        onMouseLeave={!sm ? () => setSeeMore(false) : null}
+      >
+        {seeMore && (
+          <Button
+            onMouseOpen={() => setSeeMore(true)}
+            className={classes.expandModal}
             onClick={handleModalOpen}
-            style={{
-              filter: seeMore ? 'brightness(50%)' : '',
-            }}
-            alt=""
-          />
-        </div>
-        <Modal
-          open={open}
-          onClose={handleModalClose}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-        >
-          <div className={classes.modalWrapper}>
-            <div className={classes.modalImages}>
-              <img
-                className={classes.audioThumbnail}
-                src={audio?.fields?.thumbnail}
-                alt=""
-              />
-              <div className={classes.creatorCreds}>
-                <div
-                  className={classes.createdBy}
-                  onClick={() =>
-                    dispatch(
-                      actions.pushHistory(`/profile/${audio?.fields?.userId}`)
-                    )
-                  }
-                >
-                  <img
-                    className={classes.userImg}
-                    src={audio?.fields?.creatorImg}
-                    alt=""
-                  />
-                  <p style={{ opacity: 0.8, marginLeft: 15 }}>
-                    By:
-                    <span className={classes.userName}>
-                      {audio?.fields?.username}
-                    </span>
-                  </p>
-                </div>
-                <p style={{ color: colors.white80 }}>
-                  Date:{' '}
-                  <span style={{ color: colors.yellow, opacity: 0.8 }}>
-                    {audio?.fields?.uploadDate}
-                  </span>
-                </p>
-                <p style={{ color: colors.white80 }}>
-                  Duration:{' '}
-                  <span style={{ color: colors.yellow, opacity: 0.8 }}>
-                    {durationLabel}
+          >
+            More
+          </Button>
+        )}
+        <img
+          className={classes.creatorImg}
+          src={audio?.fields?.creatorImg}
+          alt=""
+          style={{}}
+          onClick={() =>
+            dispatch(actions.pushHistory(`/profile/${audio?.fields?.userId}`))
+          }
+        />
+        <img
+          onMouseEnter={!sm ? () => setSeeMore(true) : null}
+          className={classes.thumbnail}
+          src={audio?.fields?.thumbnail}
+          onClick={handleModalOpen}
+          style={{
+            filter: seeMore ? 'brightness(50%)' : '',
+          }}
+          alt=""
+        />
+      </div>
+      <Modal
+        open={open}
+        onClose={handleModalClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div className={classes.modalWrapper}>
+          <div className={classes.modalImages}>
+            <img
+              className={classes.audioThumbnail}
+              src={audio?.fields?.thumbnail}
+              alt=""
+            />
+            <div className={classes.creatorCreds}>
+              <div
+                className={classes.createdBy}
+                onClick={() =>
+                  dispatch(
+                    actions.pushHistory(`/profile/${audio?.fields?.userId}`)
+                  )
+                }
+              >
+                <img
+                  className={classes.userImg}
+                  src={audio?.fields?.creatorImg}
+                  alt=""
+                />
+                <p style={{ opacity: 0.8, marginLeft: 15 }}>
+                  By:
+                  <span className={classes.userName}>
+                    {audio?.fields?.username}
                   </span>
                 </p>
               </div>
-            </div>
-            <div className={classes.audioDescription}>
-              <p style={{ fontSize: '20px', fontWeight: 300 }}>
-                <span style={{ fontWeight: 900 }}>Title: </span>
-                {audio?.fields?.title}
+              <p style={{ color: colors.white80 }}>
+                Date:{' '}
+                <span style={{ color: colors.yellow, opacity: 0.8 }}>
+                  {audio?.fields?.uploadDate}
+                </span>
               </p>
-              <p style={{ fontSize: '20px', fontWeight: 300 }}>
-                <span style={{ fontWeight: 900 }}>Description: </span>
-                {audio?.fields?.description}
+              <p style={{ color: colors.white80 }}>
+                Duration:{' '}
+                <span style={{ color: colors.yellow, opacity: 0.8 }}>
+                  {durationLabel}
+                </span>
               </p>
-            </div>
-            <div>
-              <div className={classes.likeShare}>
-                <ToggleImageButton
-                  className={classes.playBtnModal}
-                  size="1vw"
-                  on={isPlayings}
-                  onClick={onPopClick}
-                  onImage="/img/logo_live_pause.png"
-                  offImage="/img/logo_live_play.png"
-                  shadowColor={colors.lightGray}
-                />
-
-                <LikeButton
-                  size={'32px'}
-                  userId={currentUserId}
-                  channelTag={channelTag}
-                  audio={audio}
-                />
-                <div
-                  className={classes.shareBtn}
-                  onClick={openLinkModal}
-                >
-                  <LinkIcon style={{ fontSize: '32px' }} fontSize={'inherit'} />
-                  <p style={{ padding: 0, margin: 0 }}> Share Link</p>
-                </div>
-              </div>
             </div>
           </div>
-        </Modal>
-        <Modal
-          open={linkOpen}
-          onClose={closeLinkModal}
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-        >
-          <div className={classes.linkModalWrapper}>
-            <a
-              target="_blank"
-              href={`https://www.facebook.com/sharer.php?u=https%3A%2F%2Fapp.leagueday.gg/channel/${audio?.fields?.channelTag}`}
-              style={{ color: colors.blue }}
-            >
-              <Facebook />
-            </a>{' '}
-            <a
-              target="_blank"
-              href={`https://twitter.com/intent/tweet?url=https%3A%2F%2Fapp.leagueday.gg/channel/${audio?.fields?.channelTag}`}
-              style={{ color: colors.blue }}
-            >
-              <Twitter />{' '}
-            </a>{' '}
-            <a
-              target="_blank"
-              href={`https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fapp.leagueday.gg/channel/${audio?.fields?.channelTag}`}
-              style={{ color: colors.blue }}
-            >
-              <LinkedIn />
-            </a>
-            <a
-              style={{ color: colors.blue }}
-              href={`mailto:?body= Check out this LeagueDay channel page! https://app.leagueday.gg/channel/${audio?.fields?.channelTag}`}
-              target="_blank"
-            >
-              {' '}
-              <Email />
-            </a>
-            <p
-              style={{ color: 'black', fontSize: '90%', cursor: 'pointer' }}
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href)
-                setCopied(true)
-              }}
-            >
-              {!copied ? 'Copy link' : 'Copied!'}
+          <div className={classes.audioDescription}>
+            <p style={{ fontSize: '20px', fontWeight: 300 }}>
+              <span style={{ fontWeight: 900 }}>Title: </span>
+              {audio?.fields?.title}
+            </p>
+            <p style={{ fontSize: '20px', fontWeight: 300 }}>
+              <span style={{ fontWeight: 900 }}>Description: </span>
+              {audio?.fields?.description}
             </p>
           </div>
-        </Modal>
-        <div>
-          <h4
-            style={{ filter: seeMore ? 'brightness(50%)' : '' }}
-            className={classes.title}
+          <div>
+            <div className={classes.likeShare}>
+              <ToggleImageButton
+                className={classes.playBtnModal}
+                size="1vw"
+                on={isPlayings}
+                onClick={onPopClick}
+                onImage="/img/logo_live_pause.png"
+                offImage="/img/logo_live_play.png"
+                shadowColor={colors.lightGray}
+              />
+
+              <LikeButton
+                size={'32px'}
+                userId={currentUserId}
+                channelTag={channelTag}
+                audio={audio}
+              />
+              <div className={classes.shareBtn} onClick={openLinkModal}>
+                <LinkIcon style={{ fontSize: '32px' }} fontSize={'inherit'} />
+                <p style={{ padding: 0, margin: 0 }}> Share Link</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        open={linkOpen}
+        onClose={closeLinkModal}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div className={classes.linkModalWrapper}>
+          <a
+            target="_blank"
+            href={`https://www.facebook.com/sharer.php?u=https%3A%2F%2Fapp.leagueday.gg/channel/${audio?.fields?.channelTag}`}
+            style={{ color: colors.blue }}
           >
-            {audio?.fields?.title}
-          </h4>
+            <Facebook />
+          </a>{' '}
+          <a
+            target="_blank"
+            href={`https://twitter.com/intent/tweet?url=https%3A%2F%2Fapp.leagueday.gg/channel/${audio?.fields?.channelTag}`}
+            style={{ color: colors.blue }}
+          >
+            <Twitter />{' '}
+          </a>{' '}
+          <a
+            target="_blank"
+            href={`https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fapp.leagueday.gg/channel/${audio?.fields?.channelTag}`}
+            style={{ color: colors.blue }}
+          >
+            <LinkedIn />
+          </a>
+          <a
+            style={{ color: colors.blue }}
+            href={`mailto:?body= Check out this LeagueDay channel page! https://app.leagueday.gg/channel/${audio?.fields?.channelTag}`}
+            target="_blank"
+          >
+            {' '}
+            <Email />
+          </a>
+          <p
+            style={{ color: 'black', fontSize: '90%', cursor: 'pointer' }}
+            onClick={() => {
+              navigator.clipboard.writeText(window.location.href)
+              setCopied(true)
+            }}
+          >
+            {!copied ? 'Copy link' : 'Copied!'}
+          </p>
         </div>
-        <div className={classes.playLike}>
-          <ToggleImageButton
-            className={classes.playBtn}
-            size="5vw"
-            on={isPlayings}
-            onClick={onPopClick}
-            onImage="/img/logo_live_pause.png"
-            offImage="/img/logo_live_play.png"
-            shadowColor={colors.lightGray}
-          />
-          <LikeButton
-            userId={currentUserId}
-            channelTag={channelTag}
-            audio={audio}
-          />
-        </div>
+      </Modal>
+      <div style={{ overflow: 'hidden' }}>
+        <h4
+          style={{ filter: seeMore ? 'brightness(50%)' : '' }}
+          className={classes.title}
+        >
+          {audio?.fields?.title}
+        </h4>
+      </div>
+      <div className={classes.playLike}>
+        <ToggleImageButton
+          className={classes.playBtn}
+          size="5vw"
+          on={isPlayings}
+          onClick={onPopClick}
+          onImage="/img/logo_live_pause.png"
+          offImage="/img/logo_live_play.png"
+          shadowColor={colors.lightGray}
+        />
+        <LikeButton
+          userId={currentUserId}
+          channelTag={channelTag}
+          audio={audio}
+        />
       </div>
     </div>
   )

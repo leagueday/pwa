@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import cx from 'classnames'
 import Color from 'color'
 import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '../../styling'
 import ComingSoon from '../ComingSoon'
 import ToggleImageButtonSmall from '../ToggleImageButtonSmall'
-import ReplayLiveBroadCast from './ReplayLiveBroadCast';
+import ReplayLiveBroadCast from './ReplayLiveBroadCast'
 
 const useStyles = makeStyles(theme => ({
   comingSoon: {
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
   liveBroadcast: {
     display: 'flex',
-   flexDirection: 'row',
+    flexDirection: 'row',
   },
   liveBroadcasts: {
     alignItems: 'stretch',
@@ -43,17 +43,17 @@ const useStyles = makeStyles(theme => ({
     width: '400%',
   },
   livenessContent: {
-     backgroundColor: '#070709',
-     display: 'flex',
-    flex:4 ,
-     padding: '1em 0 1em 1em',
+    backgroundColor: '#070709',
+    display: 'flex',
+    flex: 4,
+    padding: '1em 0 1em 1em',
     [theme.breakpoints.only('xs')]: {
       padding: '2vw 0 2vw 2vw',
     },
   },
   livenessLeftPad: {
-    display:"flex",
-    flex:-6
+    display: 'flex',
+    flex: -6,
   },
   sectionTitle: ({ channelColor }) => ({
     color: channelColor,
@@ -154,17 +154,50 @@ const Track = ({ classes }) => {
 }
 
 const LiveBroadcastsMockup = ({ className, channel }) => {
+  useEffect(() => {
+    // ;(function (w, d, s) {
+    //   if (w.SDW) console.error('SDW widget already included')
+    //   ;(w.SDW = {}), (w.SDW._r = s)
+    //   let methods = [
+    //     'mount',
+    //     'unmount',
+    //     'addWidget',
+    //     'updateWidget',
+    //     'removeWidget',
+    //     'initStyles',
+    //   ]
+    //   w.SDW._q = []
+    //   methods.forEach(
+    //     method =>
+    //       (w.SDW[method] = function () {
+    //         w.SDW._q.push([method, arguments])
+    //       })
+    //   )
+    //   var script = d.createElement('script')
+    //   script.async = 1
+    //   script.src = s
+    //   var before = d.getElementsByTagName('script')[0]
+    //   before.parentNode.insertBefore(script, before)
+    // })(window, document, 'https://widgets.shadow.gg/realtime/scriptLoader.js')
+    SDW.mount({
+      clientId: 'v8rpx5ws1x3E8wNz7ck6MhaZJt5WQkK9',
+      // theme: { primary: '#ff0000' },
+    })
+    SDW.addWidget({ containerId: 'sdwContainer', type: 'calendar' })
+  }, [])
+
   const classes = useStyles()
-  let playbackurl=localStorage.getItem('playback')
-  
+  let playbackurl = localStorage.getItem('playback')
+
   return (
     <div className={cx(classes.liveBroadcasts, className)}>
-      <ComingSoon 
-        className={playbackurl?classes.liveBroadcasts:classes.comingSoon}
+      <ComingSoon
+        className={playbackurl ? classes.liveBroadcasts : classes.comingSoon}
         channel={channel}
         channelColor={channel.color}
-       />
-          {/* <ReplayLiveBroadCast   
+      />
+      <div id="sdwContainer"></div>
+      {/* <ReplayLiveBroadCast   
             className={classes.replayBroadcasts}
             channel={channel}
             channelColor={channel.color}/> */}
@@ -185,7 +218,6 @@ const LiveBroadcastsMockup = ({ className, channel }) => {
           </div>
         </div>
       ))} */}
-
     </div>
   )
 }
@@ -195,4 +227,4 @@ export const mockupGetHasBroadcasts = channel => {
   return data.length > 0
 }
 
-export default LiveBroadcastsMockup;
+export default LiveBroadcastsMockup

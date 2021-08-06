@@ -12,6 +12,9 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
     height: '100%',
     width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'space-evenly',
+    },
   },
 }))
 
@@ -31,9 +34,11 @@ const Audiocast = ({ channelTag }) => {
       })
       .eachPage(
         async function page(records, fetchNextPage) {
-          setUserAudio(records.sort((a, b) => {
-            return b.fields.upvotes - a.fields.upvotes
-          }))
+          setUserAudio(
+            records.sort((a, b) => {
+              return b.fields.upvotes - a.fields.upvotes
+            })
+          )
         },
         function done(err) {
           if (err) {
