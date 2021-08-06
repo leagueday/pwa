@@ -1,10 +1,10 @@
 import { selectors, actions } from '../store'
 import React, { useState, useEffect } from 'react'
-import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import SignInOutButton from './SideNav/SignInOutButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { colors } from '../styling'
+import { Button } from '@material-ui/core'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { useLocationPathname } from '../store'
@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
       transition: '0.1s linear',
     },
     '&:hover': {
-      opacity: 1
+      opacity: 1,
     },
     '&:hover:before': {
       transform: 'scale(1)',
@@ -106,9 +106,16 @@ const useStyles = makeStyles(theme => ({
     // width: '100%',
     // height: '100%',
     '&:hover': {
-      background: colors.blue
-    }
-  }
+      background: colors.blue,
+    },
+  },
+  inBtn: {
+    background: colors.blue,
+    color: 'white',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+  },
 }))
 
 const NavBar = () => {
@@ -118,7 +125,6 @@ const NavBar = () => {
   const goHome = () => dispatch(actions.pushHistory('/'))
   const [homeActive, setHomeActive] = useState(pathname === '/')
   const [creatorActive, setCreatorActive] = useState(pathname === '/creators')
-  const [profileOpen, setProfileOpen] = useState(false)
   const [profileCreated, setProfileCreated] = useState(false)
   const [userData, setUserData] = useState({})
   const user = useSelector(selectors.getUser)
@@ -209,52 +215,50 @@ const NavBar = () => {
         >
           Creators
         </h4>
-        <img
-          className={classes.profile}
-          onClick={handleClick}
-          src={
-            userData?.fields?.image
-              ? userData?.fields?.image
-              : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues='
-          }
-          alt=""
-        />
-        <Menu
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          classes={{list: classes.dropdown}}
-        >
-          <div>
-            <MenuItem classes={{ root: classes.profileBtn }} >
-              {profileCreated ? (
-                <p
-                onClick={myprofile}
-                >
-                  PROFILE
-                </p>
-              ) : (
-                <p
-                  onClick={createProfile}
-                >
-                  CREATE PROFILE
-                </p>
-              )}
-            </MenuItem>
-            <MenuItem>
-              <SignInOutButton className={classes.signInOutButton} />
-            </MenuItem>
-          </div>
-        </Menu>
+        {user ? (
+          <>
+            <img
+              className={classes.profile}
+              onClick={handleClick}
+              src={
+                userData?.fields?.image
+                  ? userData?.fields?.image
+                  : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues='
+              }
+              alt=""
+            />
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              transformOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              classes={{ list: classes.dropdown }}
+            >
+              <div>
+                <MenuItem classes={{ root: classes.profileBtn }}>
+                  {profileCreated ? (
+                    <p onClick={myprofile}>PROFILE</p>
+                  ) : (
+                    <p onClick={createProfile}>CREATE PROFILE</p>
+                  )}
+                </MenuItem>
+                <MenuItem>
+                  <SignInOutButton className={classes.signInOutButton} />
+                </MenuItem>
+              </div>
+            </Menu>
+          </>
+        ) : (
+          <Button className={classes.inBtn} onClick={() => dispatch(actions.login())} size="medium">Sign In</Button>
+        )}
       </div>
     </div>
   )

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { MyListContext } from '../../store/stateProviders/listState'
 import { getMyList } from '../../api/getUserList'
-import { actions } from '../../store'
+import { actions, selectors } from '../../store'
 import Item from './Item'
 import PlusMinusBtn from '../CreatorTilesRow/PlusMinusBtn'
 import { makeStyles } from '@material-ui/styles'
@@ -21,13 +21,14 @@ const useStyles = makeStyles(theme => ({
 
 const MyCreators = () => {
   const dispatch = useDispatch()
+  const user = useSelector(selectors.getUser)
   const { creatorList: cl } = getMyList();
   const { creatorList, setCreatorList } = useContext(MyListContext)
   const classes = useStyles()
 
   useEffect(() => {
     console.log('creator bs ',creatorList.length, cl.length)
-    if (creatorList.length === 0 && cl.length > 0) {
+    if (user && creatorList.length === 0 && cl.length > 0) {
       console.log('set creator list')
       setCreatorList(cl)
     } 
