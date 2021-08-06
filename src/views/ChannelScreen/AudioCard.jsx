@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     border: '.5px solid white',
     borderRadius: '5px',
     marginLeft: '35px',
-    marginBottom: '32%',
+    marginBottom: '8%',
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
