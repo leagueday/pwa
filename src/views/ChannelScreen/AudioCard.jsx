@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
   },
   creatorImg: {
-    zIndex: 100,
+    zIndex: 10,
     cursor: 'pointer',
     position: 'absolute',
     borderRadius: '50%',

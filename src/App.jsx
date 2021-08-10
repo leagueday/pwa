@@ -80,30 +80,30 @@ const StyledAppContent = () => {
 
 const App = () => {
 
-  ;(function (w, d, s) {
-    if (w.SDW) console.error('SDW widget already included')
-    ;(w.SDW = {}), (w.SDW._r = s)
-    let methods = [
-      'mount',
-      'unmount',
-      'addWidget',
-      'updateWidget',
-      'removeWidget',
-      'initStyles',
-    ]
-    w.SDW._q = []
-    methods.forEach(
-      method =>
-        (w.SDW[method] = function () {
-          w.SDW._q.push([method, arguments])
-        })
-    )
-    var script = d.createElement('script')
-    script.async = 1
-    script.src = s
-    var before = d.getElementsByTagName('script')[0]
-    before.parentNode.insertBefore(script, before)
-  })(window, document, 'https://widgets.shadow.gg/realtime/scriptLoader.js')
+  // ;(function (w, d, s) {
+  //   if (w.SDW) console.error('SDW widget already included')
+  //   ;(w.SDW = {}), (w.SDW._r = s)
+  //   let methods = [
+  //     'mount',
+  //     'unmount',
+  //     'addWidget',
+  //     'updateWidget',
+  //     'removeWidget',
+  //     'initStyles',
+  //   ]
+  //   w.SDW._q = []
+  //   methods.forEach(
+  //     method =>
+  //       (w.SDW[method] = function () {
+  //         w.SDW._q.push([method, arguments])
+  //       })
+  //   )
+  //   var script = d.createElement('script')
+  //   script.async = 1
+  //   script.src = s
+  //   var before = d.getElementsByTagName('script')[0]
+  //   before.parentNode.insertBefore(script, before)
+  // })(window, document, 'https://widgets.shadow.gg/realtime/scriptLoader.js')
 
   return (
     <Sentry.ErrorBoundary fallback={'An error has occurred'}>

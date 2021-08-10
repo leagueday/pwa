@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import BasicLayout from '../BasicLayout'
-import { mockFriends } from '../MyProfile/MyProfile'
+import { useSelector } from 'react-redux';
+import { selectors, actions } from '../../store';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/styles'
 import { colors } from '../../styling'
 import ChatRoom from './ChatRoom'
@@ -67,8 +69,27 @@ const useStyles = makeStyles(theme => ({
 
 const ChatScreen = () => {
   const classes = useStyles()
-  const [text, setText] = useState('')
   const [friend, setFriend] = useState()
+  const [activeFriends, setActiveFriends] = useState([])
+  const user = useSelector(selectors.getUser)
+
+  const getFriendRequests = () => {
+    axios
+      .post('http://localhost:3000/friends/list', {
+        userId: user.id,
+      })
+      .then(res => {
+        console.log('freinds', res)
+        setActiveFriends(res.data.accepted)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  useEffect(() => {
+    getFriendRequests();
+  },[])
 
   return (
     <BasicLayout>
@@ -84,10 +105,10 @@ const ChatScreen = () => {
           >
             <h3 style={{ textAlign: 'center' }}>Messages</h3>
           </div>
-          {mockFriends.friends.map(item => (
-            <div className={classes.friend} onClick={() => setFriend(item)}>
-              <img src={item.image} alt="" className={classes.friendImg} />
-              <p>{item.name}</p>
+          {activeFriends?.map(item => (
+            <div className={classes.friend} onClick={() => setFriend(item?.friend)}>
+              <img src={item?.friend?.image} alt="" className={classes.friendImg} />
+              <p>{item?.friend?.name}</p>
             </div>
           ))}
         </div>

@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useDispatch } from 'react-redux'
+import axios from 'axios'
+import { Modal } from '@material-ui/core'
+import { selectors } from '../../store'
+import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import Airtable from 'airtable'
@@ -305,6 +308,30 @@ const useStyles = makeStyles(theme => ({
       fontSize: '80%',
     },
   },
+  modalWrapper: {
+    position: 'absolute',
+    width: 520,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: colors.darkGray,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    color: 'white',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    outline: 'none',
+    borderRadius: '5px',
+    height: 250,
+  },
+  createBtn: {
+    background: colors.blue,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+  },
 }))
 
 const NoobTrophy = ({ classes }) => {
@@ -343,14 +370,13 @@ const TitanTrophy = ({ classes }) => {
   )
 }
 
-const MyProfile = ({ userId }) => {
-  const { userData, loading, refreshData, getData } = useContext(
-    UserStateContext
-  )
+const UserProfile = ({ userId }) => {
+  const { userData, loading, getData } = useContext(UserStateContext)
   const dispatch = useDispatch()
   const baseId = 'appXoertP1WJjd4TQ'
   const apiKey = 'keymd23kpZ12EriVi'
   const base = new Airtable({ apiKey }).base(baseId)
+  const user = useSelector(selectors.getUser)
   const [userRecordings, setUserRecordings] = useState([])
   const [audiocasts, setAudiocasts] = useState([])
   const [liveRecordings, setLiveRecordings] = useState(true)
@@ -360,6 +386,8 @@ const MyProfile = ({ userId }) => {
   const [sent, setSent] = useState(false)
   const [channelList, setChannelList] = useState([])
   const [creatorList, setCreatorList] = useState([])
+  const [open, setOpen] = useState(false)
+  const [profileCreated, setProfileCreated] = useState(false)
 
   const handleCreatorClick = () => {
     setCreatorsSelected(true)
@@ -470,12 +498,73 @@ const MyProfile = ({ userId }) => {
       )
   }
 
+  const sendRequest = () => {
+    if (!user) {
+      dispatch(actions.login())
+    } else if (user && profileCreated === false) {
+      setOpen(true)
+    } else {
+      axios
+        .post('http://localhost:3000/friends/invite', {
+          userId: user.id,
+          friendId: userId,
+        })
+        .then(res => {
+          setSent(true)
+          console.log('invited friend ', res)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  }
+
+  const handleProfileStatus = async () => {
+    const baseId = 'appXoertP1WJjd4TQ'
+    let fetchSearch
+    if (user) {
+      const userId = user['id']
+      fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
+    }
+    await fetch('/.netlify/functions/airtable-getprofile', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url: `${baseId}/UserProfile${fetchSearch}` }),
+    })
+      .then(response => response.json())
+      .then(function (response) {
+        if (response.records.length > 0) {
+          setProfileCreated(true)
+          localStorage.setItem(
+            'profilecreated',
+            response.records[0].fields.profileCreated
+          )
+        } else {
+          setProfileCreated(false)
+        }
+      })
+      .catch(error => {
+        console.log('error while data fetching', error)
+      })
+  }
+
   useEffect(() => {
     getListData()
     getCreatorData()
     getData()
     getUserRecordings()
   }, [userId])
+
+  useEffect(() => {
+    handleProfileStatus()
+  }, [])
+
+  useEffect(() => {
+    handleProfileStatus()
+  }, [user])
 
   return (
     <div className={classes.content}>
@@ -513,14 +602,28 @@ const MyProfile = ({ userId }) => {
               </div>
             )}
           </div>
-          <Button className={classes.editProfile} onClick={() => setSent(true)}> {sent ? 'Sent!' : 'Send Friend Request'} </Button>
+          <Modal open={open} onClose={() => setOpen(false)}>
+            <div className={classes.modalWrapper}>
+              <h4>Create a LeagueDay profile to send friend requests!</h4>
+              <Button
+                className={classes.createBtn}
+                onClick={() => dispatch(actions.pushHistory('/create'))}
+              >
+                Create Profile
+              </Button>
+            </div>
+          </Modal>
+          <Button className={classes.editProfile} onClick={sendRequest}>
+            {' '}
+            {sent ? 'Sent!' : 'Send Friend Request'}{' '}
+          </Button>
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
               <p className={classes.userName}>{userData?.fields?.name}</p>
               <p style={{ width: '100%' }}>
-                  <span className={classes.socials}>Experience:</span>{' '}
-                  {userData?.fields?.credentials}
-                </p>
+                <span className={classes.socials}>Experience:</span>{' '}
+                {userData?.fields?.credentials}
+              </p>
             </div>
             <div className={classes.description}>
               <p>{userData?.fields?.description}</p>
@@ -698,4 +801,4 @@ const MyProfile = ({ userId }) => {
   )
 }
 
-export default MyProfile
+export default UserProfile
