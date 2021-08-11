@@ -89,6 +89,13 @@ export const setUserData = userData => ({
   },
 })
 
+export const setFriendsList = friendsList => ({
+  type: ActionType.SET_FRIENDS_LIST,
+  payload: {
+    friendsList
+  }
+})
+
 export const showAudioControls = () => ({
   type: ActionType.SHOW_AUDIO_CONTROLS,
   payload: {},

@@ -383,10 +383,13 @@ const UserProfile = ({ userId }) => {
   const [trophieSelected, setTrophieSelected] = useState(false)
   const [creatorsSelected, setCreatorsSelected] = useState(false)
   const [channelSelected, setChannelSelected] = useState(false)
-  const [sent, setSent] = useState(false)
   const [channelList, setChannelList] = useState([])
   const [creatorList, setCreatorList] = useState([])
   const [open, setOpen] = useState(false)
+  const [alreadyFriends, setAlreadyFriends] = useState(false)
+  const [requestPending, setRequestPending] = useState(false)
+  const [sentRequest, setSentRequest] = useState(false)
+  const friendsList = useSelector(selectors.getFriendsList)
   const [profileCreated, setProfileCreated] = useState(false)
 
   const handleCreatorClick = () => {
@@ -505,12 +508,11 @@ const UserProfile = ({ userId }) => {
       setOpen(true)
     } else {
       axios
-        .post('http://localhost:3000/friends/invite', {
+        .post('https://leagueday-api.herokuapp.com/friends/invite', {
           userId: user.id,
           friendId: userId,
         })
         .then(res => {
-          setSent(true)
           console.log('invited friend ', res)
         })
         .catch(err => {
@@ -557,6 +559,32 @@ const UserProfile = ({ userId }) => {
     getData()
     getUserRecordings()
   }, [userId])
+
+  useEffect(() => {
+    friendsList?.sent?.map(friend => {
+      if (friend.friend.id === userId) {
+        setSentRequest(true)
+      } else {
+        return
+      }
+    })
+
+    friendsList?.recieved?.map(friend => {
+      if (friend.friend.id === userId) {
+        setRequestPending(true)
+      } else {
+        return
+      }
+    })
+
+    friendsList?.accepted?.map(friend => {
+      if (friend.friend.id === userId) {
+        setAlreadyFriends(true)
+      } else {
+        return
+      }
+    })
+  }, [friendsList])
 
   useEffect(() => {
     handleProfileStatus()
@@ -613,10 +641,31 @@ const UserProfile = ({ userId }) => {
               </Button>
             </div>
           </Modal>
-          <Button className={classes.editProfile} onClick={sendRequest}>
-            {' '}
-            {sent ? 'Sent!' : 'Send Friend Request'}{' '}
-          </Button>
+          {requestPending ? (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Button>Accept Friend Request</Button>
+              <Button>Decline Friend Request</Button>
+            </div>
+          ) : (
+            <Button
+              className={classes.editProfile}
+              onClick={sendRequest}
+              disabled={alreadyFriends ? alreadyFriends : sentRequest}
+            >
+              {' '}
+              {sentRequest
+                ? 'Request Pending'
+                : alreadyFriends
+                ? 'Already Friends!'
+                : 'Send Friend Request'}{' '}
+            </Button>
+          )}
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
               <p className={classes.userName}>{userData?.fields?.name}</p>

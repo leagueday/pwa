@@ -459,10 +459,9 @@ const MyProfile = ({ userId }) => {
   const [trophieSelected, setTrophieSelected] = useState(false)
   const [creatorsSelected, setCreatorsSelected] = useState(false)
   const [recordToDelete, setRecordToDelete] = useState({})
-  const [friendRequests, setFriendRequests] = useState([])
-  const [friends, setFriends] = useState([])
   const [friendsModal, setFriendsModal] = useState(false)
   const [open, setOpen] = useState(false)
+  const friendList = useSelector(selectors.getFriendsList);
   const { filteredListRecords, creatorList: cl } = getMyList()
   const user = useSelector(selectors.getUser)
 
@@ -551,21 +550,6 @@ const MyProfile = ({ userId }) => {
     setRecordToDelete(audio)
   }
 
-  const getFriendRequests = () => {
-    axios
-      .post('http://localhost:3000/friends/list', {
-        userId: user.id,
-      })
-      .then(res => {
-        console.log('freinds', res)
-        setFriendRequests(res.data.received)
-        setFriends(res.data.accepted)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
   const deleteRecord = () => {
     if (recordToDelete.fields.type === 'audiocast') {
       base('UserAudiocasts').destroy(
@@ -596,7 +580,7 @@ const MyProfile = ({ userId }) => {
 
   const acceptFriendReq = id => {
     axios
-      .post('http://localhost:3000/friends/accept', {
+      .post('https://leagueday-api.herokuapp.com/friends/accept', {
         id,
       })
       .then(res => {
@@ -607,15 +591,22 @@ const MyProfile = ({ userId }) => {
       })
   }
 
-  const declineFriendReq = () => {}
+  const declineFriendReq = (id) => {
+    axios
+      .post('https://leagueday-api.herokuapp.com/friends/decline', {
+        id,
+      })
+      .then(res => {
+        console.log('declined friend ', res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
 
   useEffect(() => {
     getUserRecordings()
   }, [open, userId])
-
-  useEffect(() => {
-    getFriendRequests()
-  }, [user])
 
   const classes = useStyles()
   const dispatch = useDispatch()
@@ -626,10 +617,10 @@ const MyProfile = ({ userId }) => {
   if (loading) {
     return <h1>Loading...</h1>
   }
+  
+//https://leagueday-api.herokuapp.com/
 
   const NoobTrophy = ({ classes }) => {
- 
-
     return (
       <div className={classes.trophyCont}>
         <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
@@ -680,13 +671,11 @@ const MyProfile = ({ userId }) => {
     }
   }, [cl])
 
-  console.log('friends  ',friends)
-
   return (
     <div className={classes.content}>
       <Modal open={friendsModal} onClose={() => setFriendsModal(false)}>
         <div className={classes.friendsModalWrapper}>
-          {friendRequests?.map((friend, ind) => (
+          {friendList?.received?.map((friend, ind) => (
             <div className={classes.friendReqList} key={ind}>
               <div
                 style={{
@@ -937,7 +926,7 @@ const MyProfile = ({ userId }) => {
             )}
             {friendSelected && (
               <div>
-                {friends?.map((friend, index) => (
+                {friendList?.accepted?.map((friend, index) => (
                   <div className={classes.friendList} key={index}>
                     <img
                       src={friend.friend.image}

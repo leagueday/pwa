@@ -9,6 +9,7 @@ import { colors } from '../../styling'
 import PlusMinusBtn from './PlusMinusBtn'
 import Square from '../Square'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
+import CheckIcon from '@material-ui/icons/Check';
 
 const useStyles = makeStyles(theme => ({
   channelTile: {
@@ -112,7 +113,12 @@ const CreatorTile = ({ user }) => {
     dispatch(actions.pushHistory(`/profile/${user.userId}`))
   const currentUser = useSelector(selectors.getUser)
   const [open, setOpen] = useState(false)
+  const friendsList = useSelector(selectors.getFriendsList)
   const [profileCreated, setProfileCreated] = useState(false)
+  const [alreadyFriends, setAlreadyFriends] = useState(false)
+  const [requestPending, setRequestPending] = useState(false)
+  const [sentRequest, setSentRequest] = useState(false)
+  const [sent, setSent] = useState(false)
 
   const handleProfileStatus = async () => {
     const baseId = 'appXoertP1WJjd4TQ'
@@ -153,12 +159,13 @@ const CreatorTile = ({ user }) => {
       setOpen(true)
     } else {
       axios
-        .post('http://localhost:3000/friends/invite', {
+        .post('https://leagueday-api.herokuapp.com/friends/invite', {
           userId: currentUser.id,
           friendId: user.userId,
         })
         .then(res => {
           console.log('invited friend ', res)
+          setSent(true)
         })
         .catch(err => {
           console.log(err)
@@ -173,6 +180,32 @@ const CreatorTile = ({ user }) => {
   useEffect(() => {
     handleProfileStatus()
   }, [currentUser])
+
+  useEffect(() => {
+    friendsList?.sent?.map(friend => {
+      if (friend.friend.id === user.userId) {
+        setSentRequest(true)
+      } else {
+        return
+      }
+    })
+
+    friendsList?.recieved?.map(friend => {
+      if (friend.friend.id === user.userId) {
+        setRequestPending(true)
+      } else {
+        return
+      }
+    })
+
+    friendsList?.accepted?.map(friend => {
+      if (friend.friend.id === user.userId) {
+        setAlreadyFriends(true)
+      } else {
+        return
+      }
+    })
+  }, [friendsList])
 
   return (
     <div className={classes.channelTile}>
@@ -210,9 +243,20 @@ const CreatorTile = ({ user }) => {
       </Modal>
       <div className={classes.textBox}>
         <div className={classes.text}>{user.name}</div>
-        <Button className={classes.addFriend} onClick={sendRequest}>
-          <PersonAddIcon />
-        </Button>
+        {currentUser && (
+          <Button
+            className={classes.addFriend}
+            onClick={sendRequest}
+            disabled={alreadyFriends || requestPending || sentRequest}
+          >
+            {
+              sent ? 
+              <CheckIcon />
+              :
+              <PersonAddIcon />
+            }
+          </Button>
+        )}
       </div>
     </div>
   )

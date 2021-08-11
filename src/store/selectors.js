@@ -13,6 +13,7 @@ export const getTaps = store => getAppState(store)?.taps
 export const getTheme = store => getAppState(store)?.theme
 export const getUser = store => getAppState(store)?.user
 export const getUserData = store => getAppState(store)?.userData
+export const getFriendsList = store => getAppState(store)?.friends
 
 // Router
 

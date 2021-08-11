@@ -65,31 +65,12 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '70px',
     padding: 15,
   },
-}))
+}));
 
 const ChatScreen = () => {
   const classes = useStyles()
   const [friend, setFriend] = useState()
-  const [activeFriends, setActiveFriends] = useState([])
-  const user = useSelector(selectors.getUser)
-
-  const getFriendRequests = () => {
-    axios
-      .post('http://localhost:3000/friends/list', {
-        userId: user.id,
-      })
-      .then(res => {
-        console.log('freinds', res)
-        setActiveFriends(res.data.accepted)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
-  useEffect(() => {
-    getFriendRequests();
-  },[])
+  const friendList = useSelector(selectors.getFriendsList);
 
   return (
     <BasicLayout>
@@ -105,7 +86,7 @@ const ChatScreen = () => {
           >
             <h3 style={{ textAlign: 'center' }}>Messages</h3>
           </div>
-          {activeFriends?.map(item => (
+          {friendList?.accepted?.map(item => (
             <div className={classes.friend} onClick={() => setFriend(item?.friend)}>
               <img src={item?.friend?.image} alt="" className={classes.friendImg} />
               <p>{item?.friend?.name}</p>

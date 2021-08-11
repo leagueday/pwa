@@ -18,6 +18,7 @@ const initialState = {
   theme: constants.UI_THEME_SPEC,
   user: null,
   userData: null,
+  friends: {},
 }
 
 const addToMyList = (userData, id, kind) => {
@@ -37,8 +38,8 @@ const removeFromMyList = (userData, id, kind) => {
 
   const nextMyList = myList
     ? myList.filter(
-        ({ id: liId, kind: liKind }) => liId !== id || liKind !== kind
-      )
+      ({ id: liId, kind: liKind }) => liId !== id || liKind !== kind
+    )
     : []
 
   return {
@@ -140,6 +141,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         userData: action.payload.userData,
+      }
+    }
+    case ActionType.SET_FRIENDS_LIST: {
+      return {
+        ...state,
+        friends: action.payload.friendsList
       }
     }
     case ActionType.SHOW_AUDIO_CONTROLS: {
