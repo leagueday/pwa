@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Airtable from 'airtable'
 import { useSelector, useDispatch } from 'react-redux'
+import Friend from './Friend'
+import FriendRequest from './FriendRequest'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
@@ -123,6 +125,22 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('md')]: {
       width: '25%',
       fontSize: '80%',
+    },
+  },
+  accepted: {
+    cursor: 'not-allowed',
+    width: '300px',
+    background: colors.blue,
+    '&:hover': {
+      background: colors.blue,
+    },
+  },
+  declined: {
+    cursor: 'not-allowed',
+    width: '300px',
+    background: 'red',
+    '&:hover': {
+      background: 'red',
     },
   },
   friendRequests: {
@@ -422,7 +440,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '40%',
+    width: '50%',
   },
   friendReqList: {
     display: 'block',
@@ -461,7 +479,8 @@ const MyProfile = ({ userId }) => {
   const [recordToDelete, setRecordToDelete] = useState({})
   const [friendsModal, setFriendsModal] = useState(false)
   const [open, setOpen] = useState(false)
-  const friendList = useSelector(selectors.getFriendsList);
+  const [declined, setDeclined] = useState(false)
+  const friendList = useSelector(selectors.getFriendsList)
   const { filteredListRecords, creatorList: cl } = getMyList()
   const user = useSelector(selectors.getUser)
 
@@ -578,32 +597,6 @@ const MyProfile = ({ userId }) => {
     getUserRecordings()
   }
 
-  const acceptFriendReq = id => {
-    axios
-      .post('https://leagueday-api.herokuapp.com/friends/accept', {
-        id,
-      })
-      .then(res => {
-        console.log('accepted friend ', res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
-  const declineFriendReq = (id) => {
-    axios
-      .post('https://leagueday-api.herokuapp.com/friends/decline', {
-        id,
-      })
-      .then(res => {
-        console.log('declined friend ', res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
   useEffect(() => {
     getUserRecordings()
   }, [open, userId])
@@ -617,8 +610,8 @@ const MyProfile = ({ userId }) => {
   if (loading) {
     return <h1>Loading...</h1>
   }
-  
-//https://leagueday-api.herokuapp.com/
+
+  //https://leagueday-api.herokuapp.com/
 
   const NoobTrophy = ({ classes }) => {
     return (
@@ -677,33 +670,7 @@ const MyProfile = ({ userId }) => {
         <div className={classes.friendsModalWrapper}>
           {friendList?.received?.map((friend, ind) => (
             <div className={classes.friendReqList} key={ind}>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  width: '100%',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <img
-                  src={friend?.friend?.image}
-                  alt=""
-                  className={classes.friendImg}
-                />
-                <p>{friend?.friend?.name}</p>
-                <Button
-                  className={classes.editProfile}
-                  onClick={() => acceptFriendReq(friend.id)}
-                >
-                  Accept
-                </Button>
-                <Button
-                  className={classes.deleteBtn}
-                  onClick={() => declineFriendReq(friend.id)}
-                >
-                  Decline
-                </Button>
-              </div>
+              <FriendRequest friend={friend} classes={classes} />
             </div>
           ))}
         </div>
@@ -927,20 +894,7 @@ const MyProfile = ({ userId }) => {
             {friendSelected && (
               <div>
                 {friendList?.accepted?.map((friend, index) => (
-                  <div className={classes.friendList} key={index}>
-                    <img
-                      src={friend.friend.image}
-                      alt=""
-                      className={classes.friendImg}
-                    />
-                    <p>{friend.friend.name}</p>
-                    <Button
-                      className={classes.chatBtn}
-                      onClick={() => dispatch(actions.pushHistory('/chat'))}
-                    >
-                      Chat
-                    </Button>
-                  </div>
+                    <Friend friend={friend} key={index} classes={classes}/>
                 ))}
               </div>
             )}

@@ -513,6 +513,7 @@ const UserProfile = ({ userId }) => {
           friendId: userId,
         })
         .then(res => {
+          setSentRequest(true)
           console.log('invited friend ', res)
         })
         .catch(err => {
