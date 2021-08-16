@@ -7,7 +7,7 @@ import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import { selectors } from '../../store'
-import { getMyList } from '../../api/getUserList'
+import { getMyList } from '../GetUserList'
 import Modal from '@material-ui/core/Modal'
 import { MyListContext } from '../../store/stateProviders/listState'
 import { UserStateContext } from '../../store/stateProviders/userState'
@@ -145,6 +145,7 @@ const useStyles = makeStyles(theme => ({
   },
   friendRequests: {
     position: 'absolute',
+    zIndex: 10,
     right: 20,
     top: 20,
     background: colors.blue,
@@ -290,7 +291,6 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
-    [theme.breakpoints.down('md')]: {},
     [theme.breakpoints.down('sm')]: {
       width: '35%',
       height: '10%',
@@ -439,15 +439,34 @@ const useStyles = makeStyles(theme => ({
   friendList: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
+    width: '75%',
+    margin: '2% 0',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    },
+  },
+  friendImgCont: {
+    width: '25%',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  friendBtnCont: {
     width: '50%',
+  },
+  friendName: {
+    width: '25%',
   },
   friendReqList: {
     display: 'block',
     width: '100%',
   },
   friendImg: {
-    width: '10%',
+    width: '70px',
+    margin: 'auto',
+    borderRadius: '50%',
+    height: '70px',
+    objectFit: 'cover',
   },
   chatBtn: {
     width: '110px',
@@ -479,9 +498,8 @@ const MyProfile = ({ userId }) => {
   const [recordToDelete, setRecordToDelete] = useState({})
   const [friendsModal, setFriendsModal] = useState(false)
   const [open, setOpen] = useState(false)
-  const [declined, setDeclined] = useState(false)
   const friendList = useSelector(selectors.getFriendsList)
-  const { filteredListRecords, creatorList: cl } = getMyList()
+  // const { filteredListRecords, creatorList: cl } = getMyList()
   const user = useSelector(selectors.getUser)
 
   const handleCreatorClick = () => {
@@ -650,19 +668,19 @@ const MyProfile = ({ userId }) => {
     )
   }
 
-  useEffect(() => {
-    if (globalList.length === 0 && filteredListRecords.length > 0) {
-      console.log('set channel list ')
-      setGlobalList(filteredListRecords)
-    }
-  }, [filteredListRecords])
+  // useEffect(() => {
+  //   if (globalList.length === 0 && filteredListRecords.length > 0) {
+  //     console.log('set channel list ')
+  //     setGlobalList(filteredListRecords)
+  //   }
+  // }, [filteredListRecords])
 
-  useEffect(() => {
-    if (creatorList.length === 0 && cl.length > 0) {
-      console.log('set creator list')
-      setCreatorList(cl)
-    }
-  }, [cl])
+  // useEffect(() => {
+  //   if (creatorList.length === 0 && cl.length > 0) {
+  //     console.log('set creator list')
+  //     setCreatorList(cl)
+  //   }
+  // }, [cl])
 
   return (
     <div className={classes.content}>

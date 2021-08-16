@@ -1,7 +1,9 @@
 import React from 'react'
 import { hot } from 'react-hot-loader/root'
+import GetMyList from './views/GetUserList'
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import FriendsListProvider from './store/stateProviders/toggleFriend'
 import Paper from '@material-ui/core/Paper'
 import ListStateProvider from './store/stateProviders/listState'
 import UserProfileProvider from './store/stateProviders/userState'
@@ -84,15 +86,18 @@ const App = () => {
       <StoreProvider>
         <ListStateProvider>
           <UserProfileProvider>
-            <Audio />
-            <Auth />
-            {/* <Chronicle /> */}
-            <CssBaseline />
-            <ThemeProvider>
-              <StyledAppContent />
-            </ThemeProvider>
-            <UserData />
-            <FriendsList />
+            <FriendsListProvider>
+              <Audio />
+              <Auth />
+              {/* <Chronicle /> */}
+              <CssBaseline />
+              <ThemeProvider>
+                <StyledAppContent />
+              </ThemeProvider>
+              <UserData />
+              <FriendsList />
+              <GetMyList />
+            </FriendsListProvider>
           </UserProfileProvider>
         </ListStateProvider>
       </StoreProvider>

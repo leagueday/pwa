@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { Modal } from '@material-ui/core'
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import { selectors } from '../../store'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
@@ -332,6 +333,22 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.primary.active,
     },
   },
+  accepted: {
+    width: '200px',
+    marginBottom: '5px',
+    background: colors.blue,
+    '&:hover': {
+      background: theme.palette.primary.active,
+    },
+  },
+  declined: {
+    width: '200px',
+    background: 'red',
+    '&:hover': {
+      background: 'red',
+      opacity: 0.8,
+    },
+  },
 }))
 
 const NoobTrophy = ({ classes }) => {
@@ -369,14 +386,20 @@ const TitanTrophy = ({ classes }) => {
     </div>
   )
 }
+const apiKey = 'keymd23kpZ12EriVi'
+const baseId = 'appXoertP1WJjd4TQ'
+const base = new Airtable({ apiKey }).base(baseId)
 
 const UserProfile = ({ userId }) => {
   const { userData, loading, getData } = useContext(UserStateContext)
+  const { sendRequest, declineFriendReq, acceptFriendReq } = useContext(
+    FriendsStateContext
+  )
+
   const dispatch = useDispatch()
-  const baseId = 'appXoertP1WJjd4TQ'
-  const apiKey = 'keymd23kpZ12EriVi'
-  const base = new Airtable({ apiKey }).base(baseId)
+  const friendsList = useSelector(selectors.getFriendsList)
   const user = useSelector(selectors.getUser)
+
   const [userRecordings, setUserRecordings] = useState([])
   const [audiocasts, setAudiocasts] = useState([])
   const [liveRecordings, setLiveRecordings] = useState(true)
@@ -384,12 +407,14 @@ const UserProfile = ({ userId }) => {
   const [creatorsSelected, setCreatorsSelected] = useState(false)
   const [channelSelected, setChannelSelected] = useState(false)
   const [channelList, setChannelList] = useState([])
+  const [accepted, setAccepted] = useState(false)
+  const [declined, setDeclined] = useState(false)
   const [creatorList, setCreatorList] = useState([])
   const [open, setOpen] = useState(false)
   const [alreadyFriends, setAlreadyFriends] = useState(false)
   const [requestPending, setRequestPending] = useState(false)
   const [sentRequest, setSentRequest] = useState(false)
-  const friendsList = useSelector(selectors.getFriendsList)
+  const [declineId, setDeclineId] = useState('')
   const [profileCreated, setProfileCreated] = useState(false)
 
   const handleCreatorClick = () => {
@@ -501,24 +526,14 @@ const UserProfile = ({ userId }) => {
       )
   }
 
-  const sendRequest = () => {
+  const handleSend = () => {
     if (!user) {
       dispatch(actions.login())
     } else if (user && profileCreated === false) {
       setOpen(true)
     } else {
-      axios
-        .post('https://leagueday-api.herokuapp.com/friends/invite', {
-          userId: user.id,
-          friendId: userId,
-        })
-        .then(res => {
-          setSentRequest(true)
-          console.log('invited friend ', res)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      sendRequest(userId)
+      setSentRequest(true)
     }
   }
 
@@ -561,16 +576,22 @@ const UserProfile = ({ userId }) => {
     getUserRecordings()
   }, [userId])
 
+  const handleAccept = () => {
+    acceptFriendReq(declineId)
+    setAccepted(true)
+  }
+
   useEffect(() => {
     friendsList?.sent?.map(friend => {
       if (friend.friend.id === userId) {
+        setDeclineId(friend.id)
         setSentRequest(true)
       } else {
         return
       }
     })
 
-    friendsList?.recieved?.map(friend => {
+    friendsList?.received?.map(friend => {
       if (friend.friend.id === userId) {
         setRequestPending(true)
       } else {
@@ -585,7 +606,7 @@ const UserProfile = ({ userId }) => {
         return
       }
     })
-  }, [friendsList])
+  }, [friendsList, userId])
 
   useEffect(() => {
     handleProfileStatus()
@@ -650,13 +671,27 @@ const UserProfile = ({ userId }) => {
                 alignItems: 'center',
               }}
             >
-              <Button>Accept Friend Request</Button>
-              <Button>Decline Friend Request</Button>
+              {!declined && (
+                <Button className={classes.accepted} onClick={handleAccept}>
+                  {accepted ? 'Accepted!' : 'Accept Friend Request'}
+                </Button>
+              )}
+              {!accepted && (
+                <Button
+                  className={classes.declined}
+                  onClick={() => {
+                    declineFriendReq(declineId)
+                    setDeclined(true)
+                  }}
+                >
+                  {declined ? 'Declined!' : 'Decline Friend Request'}
+                </Button>
+              )}
             </div>
           ) : (
             <Button
               className={classes.editProfile}
-              onClick={sendRequest}
+              onClick={handleSend}
               disabled={alreadyFriends ? alreadyFriends : sentRequest}
             >
               {' '}

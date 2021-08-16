@@ -19,6 +19,8 @@ const initialState = {
   user: null,
   userData: null,
   friends: {},
+  myChannelList: [],
+  myCreatorList: []
 }
 
 const addToMyList = (userData, id, kind) => {
@@ -147,6 +149,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         friends: action.payload.friendsList
+      }
+    }
+    case ActionType.SET_CHANNEL_LIST: {
+      return {
+        ...state,
+        myChannelList: action.payload.channelList
+      }
+    }
+    case ActionType.SET_CREATOR_LIST: {
+      return {
+        ...state,
+        myCreatorList: action.payload.creatorList
       }
     }
     case ActionType.SHOW_AUDIO_CONTROLS: {

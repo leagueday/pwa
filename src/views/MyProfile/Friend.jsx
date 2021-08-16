@@ -24,30 +24,34 @@ const Friend = ({ friend, classes }) => {
 
   return (
     <div className={classes.friendList}>
-      <img src={friend.friend.image} alt="" className={classes.friendImg} />
-      <p>{friend.friend.name}</p>
-      {!declined ? (
-        <>
-          <Button
-            className={classes.chatBtn}
-            onClick={() => dispatch(actions.pushHistory('/chat'))}
-          >
-            Chat
-          </Button>
-          <Button
-            className={classes.deleteBtn}
-            onClick={() => declineFriendReq(friend.id)}
-          >
-            Remove friend
-          </Button>
-        </>
-      ) : (
-        <div>
-          <Button className={classes.declined}>Removed!</Button>
-        </div>
-      )}
+      <div className={classes.friendImgCont}>
+        <img src={friend.friend.image} alt="" className={classes.friendImg} />
+      </div>
+      <p className={classes.friendName}>{friend.friend.name}</p>
+      <div className={classes.friendBtnCont}>
+        {!declined ? (
+          <>
+            <Button
+              className={classes.chatBtn}
+              onClick={() => dispatch(actions.pushHistory('/chat'))}
+            >
+              Chat
+            </Button>
+            <Button
+              className={classes.deleteBtn}
+              onClick={() => declineFriendReq(friend.id)}
+            >
+              Remove friend
+            </Button>
+          </>
+        ) : (
+          <div>
+            <Button className={classes.declined}>Removed!</Button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
 
-export default Friend
+export default Friend;

@@ -32,13 +32,10 @@ function ListStateProvider(props) {
             if (records === undefined) {
                 console.log('EMPTY LIST')
             }
-            console.log('api res',records, 'global list', globalList)
         }, function done(err) {
             if (err) { console.error(err); return; }
         });
     }
-
-    console.log('global list ',globalList)
 
     const addToList = async (title, tag, img) => {
 

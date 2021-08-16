@@ -5,6 +5,8 @@ export const getAudioControlsExpanded = store => store.app.audioControlsExpanded
 export const getAudioControlsHidden = store => store.app.audioControlsHidden
 export const getFilter = store => getAppState(store)?.filter
 export const getMyList = store => getAppState(store)?.userData?.my
+export const getMyChannels = store => getAppState(store)?.channelList
+export const getMyCreators = store => getAppState(store)?.creatorList
 export const getNavExpander = tag => store =>
   getAppState(store)?.navExpanders?.[tag]
 export const getNavVisibility = store => getAppState(store)?.navVisibility
