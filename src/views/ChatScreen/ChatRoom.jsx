@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { colors } from '../../styling'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import GroupAddIcon from '@material-ui/icons/GroupAdd'
+import { io } from 'socket.io-client'
+
+const socket = io('https://localhost:3000')
+
 const useStyles = makeStyles(theme => ({
   chatBox: {
     position: 'relative',
@@ -65,11 +69,16 @@ const useStyles = makeStyles(theme => ({
     },
     fontSize: '32px',
     cursor: 'pointer',
-  }
-}));
+  },
+}))
 
 const ChatRoom = ({ friend }) => {
   const classes = useStyles()
+  const [message, setMessage] = useState('')
+
+  useEffect(() => {
+    socket.emit('new_chat', 'first message')
+  }, [])
 
   return (
     <div className={classes.chatBox}>
@@ -78,10 +87,10 @@ const ChatRoom = ({ friend }) => {
           <div className={classes.reciever}>
             <img src={friend.image} alt="" className={classes.friendImg} />
             <h3>{friend.name}</h3>
-            <GroupAddIcon className={classes.addIcon}/>
+            <GroupAddIcon className={classes.addIcon} />
           </div>
 
-          <input type="text" className={classes.message} />
+          <input type="text" className={classes.message} onChange={(e) => setMessage(e.target.value)}/>
           <FontAwesomeIcon
             icon={faPaperPlane}
             className={classes.sendIcon}

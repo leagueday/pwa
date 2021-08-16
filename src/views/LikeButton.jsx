@@ -11,7 +11,7 @@ import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { colors } from '../styling'
 const useStyles = makeStyles(theme => ({
   like: {
-    width: '5%',
+    width: '65px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',

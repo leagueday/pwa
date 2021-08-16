@@ -96,12 +96,14 @@ export const setFriendsList = friendsList => ({
   }
 })
 
-export const setChannelList = channelList => ({
-  type: ActionType.SET_CHANNEL_LIST,
-  payload: {
-    channelList
-  }
-})
+export const setChannelList = channelList => (
+  console.log('might work ', channelList),
+  {
+    type: ActionType.SET_CHANNEL_LIST,
+    payload: {
+      channelList
+    }
+  })
 
 export const setCreatorList = creatorList => ({
   type: ActionType.SET_CREATOR_LIST,

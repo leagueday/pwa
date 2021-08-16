@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import Airtable from 'airtable'
 import useAirTable from '../../api/useAirtable';
-import { selectors } from '..'
-import { useSelector } from 'react-redux';
+import { selectors, actions } from '..'
+import { useSelector, useDispatch } from 'react-redux';
 
 export const MyListContext = createContext();
 const MyListProvider = MyListContext.Provider;
@@ -11,7 +11,10 @@ const apiKey = "keymd23kpZ12EriVi"
 const base = new Airtable({ apiKey }).base(baseId)
 
 function ListStateProvider(props) {
+    const dispatch = useDispatch();
     const activeUser = useSelector(selectors.getUser)
+    const channelList = useSelector(selectors.getMyChannels);
+    const creatorsList = useSelector(selectors.getMyCreators);
     const { data } = useAirTable(baseId, 'UserProfile');
     const [globalList, setGlobalList] = useState([]);
     const currentUser = data?.filter((user) => user?.fields?.userId === activeUser?.id)
@@ -22,6 +25,8 @@ function ListStateProvider(props) {
     let result = []
     let creators = []
     // CHANNEL LIST
+
+    console.log('redux ',channelList, creatorsList)
 
     const getData = () => {
         base('UserList').select({
@@ -35,6 +40,7 @@ function ListStateProvider(props) {
         }, function done(err) {
             if (err) { console.error(err); return; }
         });
+        // setGlobalList(channelList)
     }
 
     const addToList = async (title, tag, img) => {
@@ -68,7 +74,7 @@ function ListStateProvider(props) {
                 });
             });
         }
-
+        dispatch(actions.addToMyList(title, tag, img))
         result.push({ fields: { title: title, tag: tag, channelImg: img } })
         setGlobalList(result.concat(globalList))
     }

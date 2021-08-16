@@ -500,6 +500,7 @@ const MyProfile = ({ userId }) => {
   const [open, setOpen] = useState(false)
   const friendList = useSelector(selectors.getFriendsList)
   // const { filteredListRecords, creatorList: cl } = getMyList()
+  const filteredListRecords = useSelector(selectors.getMyChannels);
   const user = useSelector(selectors.getUser)
 
   const handleCreatorClick = () => {
@@ -668,12 +669,12 @@ const MyProfile = ({ userId }) => {
     )
   }
 
-  // useEffect(() => {
-  //   if (globalList.length === 0 && filteredListRecords.length > 0) {
-  //     console.log('set channel list ')
-  //     setGlobalList(filteredListRecords)
-  //   }
-  // }, [filteredListRecords])
+  useEffect(() => {
+    if (globalList.length === 0 && filteredListRecords.length > 0) {
+      console.log('set channel list ')
+      setGlobalList(filteredListRecords)
+    }
+  }, [filteredListRecords])
 
   // useEffect(() => {
   //   if (creatorList.length === 0 && cl.length > 0) {

@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
 const MyCreators = () => {
   const dispatch = useDispatch()
   const user = useSelector(selectors.getUser)
+  const creators = useSelector(selectors.getMyCreators);
   // const { creatorList: cl } = getMyList();
   const { creatorList, setCreatorList } = useContext(MyListContext)
   const classes = useStyles()
@@ -32,6 +33,7 @@ const MyCreators = () => {
   //     setCreatorList(cl)
   //   } 
   // }, [cl])
+  console.log('creators ',creators)
 
   return (
     <div>

@@ -44,14 +44,12 @@ const MyChannels = ({ skinny }) => {
 
   const locationPathname = useLocationPathname()
 
-  console.log('channels from redux ',channels)
-
-  // useEffect(() => {
-  //   if (user && globalList.length === 0 && filteredListRecords.length > 0) {
-  //     console.log('set global state ')
-  //     setGlobalList(filteredListRecords)
-  //   }
-  // }, [filteredListRecords])
+  useEffect(() => {
+    if (user && globalList.length === 0 && channels.length > 0) {
+      console.log('set global state ')
+      setGlobalList(channels)
+    }
+  }, [channels])
 
   return (
     <div className={classes.myChannels}>

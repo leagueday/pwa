@@ -23,13 +23,13 @@ const initialState = {
   myCreatorList: []
 }
 
-const addToMyList = (userData, id, kind) => {
-  const myList = userData?.my ?? []
-  const nextMyList = [...myList, { id, kind }]
+const addToMyList = (state = initialState, title, tag, img) => {
+  const myList = state.myChannelList ?? []
+  const nextMyList = [...myList, { fields: { title: title, tag: tag, channelImg: img } }]
 
   return {
-    ...userData,
-    my: nextMyList,
+    ...state,
+    myChannelList: nextMyList,
   }
 }
 
