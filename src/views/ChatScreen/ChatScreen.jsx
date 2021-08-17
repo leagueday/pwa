@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import BasicLayout from '../BasicLayout'
-import { useSelector } from 'react-redux';
-import { selectors, actions } from '../../store';
-import axios from 'axios';
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
+import { useSelector } from 'react-redux'
+import { selectors, actions } from '../../store'
+import axios from 'axios'
 import { makeStyles } from '@material-ui/styles'
 import { colors } from '../../styling'
 import ChatRoom from './ChatRoom'
@@ -11,15 +12,15 @@ export const mockFriends = [
   {
     friend: {
       name: 'Nick',
-      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg'
-    }
+      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg',
+    },
   },
   {
     friend: {
       name: 'Sam',
-      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg'
-    }
-  }
+      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg',
+    },
+  },
 ]
 
 const useStyles = makeStyles(theme => ({
@@ -60,6 +61,21 @@ const useStyles = makeStyles(theme => ({
       background: '#111',
     },
   },
+  selectedFriend: {
+    cursor: 'pointer',
+    height: '6%',
+    minHeight: '45px',
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottom: `0.5px solid ${colors.darkGray}`,
+    padding: '0 15%',
+    borderRight: `2px solid ${colors.blue}`,
+    borderRight: `4px solid ${theme.palette.primary.active}`,
+    filter: 'brightness(110%)',
+    background: '#111',
+  },
   friendImg: {
     borderRadius: '50%',
     height: '40px',
@@ -86,12 +102,13 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '70px',
     padding: 15,
   },
-}));
+}))
 
 const ChatScreen = () => {
   const classes = useStyles()
-  const [friend, setFriend] = useState()
-  const friendList = useSelector(selectors.getFriendsList);
+  const friendList = useSelector(selectors.getFriendsList)
+  const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext)
+  const [friend, setFriend] = useState(selectedFriend?.friend)
 
   return (
     <BasicLayout>
@@ -108,8 +125,15 @@ const ChatScreen = () => {
             <h3 style={{ textAlign: 'center' }}>Messages</h3>
           </div>
           {friendList?.accepted?.map(item => (
-            <div className={classes.friend} onClick={() => setFriend(item?.friend)}>
-              <img src={item?.friend?.image} alt="" className={classes.friendImg} />
+            <div
+              className={item?.friend?.name === friend?.name ? classes.selectedFriend : classes.friend} 
+              onClick={() => setFriend(item?.friend)}
+            >
+              <img
+                src={item?.friend?.image}
+                alt=""
+                className={classes.friendImg}
+              />
               <p>{item?.friend?.name}</p>
             </div>
           ))}

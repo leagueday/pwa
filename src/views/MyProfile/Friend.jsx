@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import { Button } from '@material-ui/core'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
@@ -7,6 +8,7 @@ import { actions } from '../../store'
 const Friend = ({ friend, classes }) => {
   const dispatch = useDispatch()
   const [declined, setDeclined] = useState(false)
+  const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext)
 
   const declineFriendReq = id => {
     axios
@@ -33,7 +35,10 @@ const Friend = ({ friend, classes }) => {
           <>
             <Button
               className={classes.chatBtn}
-              onClick={() => dispatch(actions.pushHistory('/chat'))}
+              onClick={() => {
+                setSelectedFriend(friend)
+                dispatch(actions.pushHistory('/chat'))
+              }}
             >
               Chat
             </Button>
@@ -54,4 +59,4 @@ const Friend = ({ friend, classes }) => {
   )
 }
 
-export default Friend;
+export default Friend

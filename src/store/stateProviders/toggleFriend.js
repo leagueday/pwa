@@ -7,6 +7,7 @@ const FriendsStateProvider = FriendsStateContext.Provider
 
 function FriendsListProvider(props) {
     const user = useSelector(selectors.getUser);
+    const [selectedFriend, setSelectedFriend] = useState({})
 
     const sendRequest = (userId) => {
         axios
@@ -50,7 +51,7 @@ function FriendsListProvider(props) {
     }
 
     return (
-        <FriendsStateProvider value={{ acceptFriendReq, sendRequest, declineFriendReq }}>
+        <FriendsStateProvider value={{ acceptFriendReq, sendRequest, declineFriendReq, selectedFriend, setSelectedFriend }}>
             {props?.children}
         </FriendsStateProvider>
     )

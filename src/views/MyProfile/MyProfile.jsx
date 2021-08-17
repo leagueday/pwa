@@ -3,6 +3,7 @@ import Airtable from 'airtable'
 import { useSelector, useDispatch } from 'react-redux'
 import Friend from './Friend'
 import FriendRequest from './FriendRequest'
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
@@ -485,6 +486,7 @@ const MyProfile = ({ userId }) => {
   const { globalList, creatorList, setGlobalList, setCreatorList } = useContext(
     MyListContext
   )
+  
   const { userData, loading } = useContext(UserStateContext)
   const baseId = 'appXoertP1WJjd4TQ'
   const apiKey = 'keymd23kpZ12EriVi'
@@ -683,8 +685,6 @@ const MyProfile = ({ userId }) => {
   //     setCreatorList(cl)
   //   }
   // }, [cl])
-
-  console.log('so fucking retarded ',friendList)
 
   return (
     <div className={classes.content}>
