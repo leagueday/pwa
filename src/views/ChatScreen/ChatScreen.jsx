@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
   friendsList: {
     padding: 0,
     width: '20%',
+    minWidth: '280px',
     background: 'black',
     display: 'flex',
     flexDirection: 'column',
@@ -42,6 +43,7 @@ const useStyles = makeStyles(theme => ({
   friend: {
     cursor: 'pointer',
     height: '6%',
+    minHeight: '45px',
     width: '100%',
     display: 'flex',
     alignItems: 'center',
@@ -73,6 +75,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     bottom: 15,
     width: '80%',
+    minHeight: '80px',
     left: '50%',
     transform: 'translateX(-50%)',
     border: 'none',

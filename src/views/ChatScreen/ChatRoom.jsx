@@ -157,6 +157,7 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
   },
   reciever: {
+    background: 'black',
     position: 'absolute',
     height: '7%',
     marginBottom: '10%',
@@ -242,13 +243,11 @@ const ChatRoom = ({ friend }) => {
   const roomId = [friend?.id, user?.id]
     .sort((a, b) => (a > b ? 1 : -1))
     .join('-')
-
   const socket = SocketIOClient('https://leagueday-api.herokuapp.com', {
     query: {
       roomId,
     },
   })
-
   const classes = useStyles()
   const [message, setMessage] = useState('')
   const [userData, setUserData] = useState({})
@@ -289,9 +288,13 @@ const ChatRoom = ({ friend }) => {
           : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues=',
       })
       .then(res => {
-        console.log('sent message ', res)
         socket.emit('new_chat', { message })
+        console.log('sent message ', res)
         setMessage('')
+        socket.on('new_chat', () => {
+          console.log('triggered new chat ')
+          getMessages()
+        })
       })
       .catch(err => {
         console.log('message send error ', err)
@@ -313,15 +316,9 @@ const ChatRoom = ({ friend }) => {
       })
   }
 
-  socket.on('new_chat', () => {
-    console.log('triggered new chat ')
-    getMessages()
-  })
+  useEffect(() => {}, [])
 
   useEffect(() => {
-    socket.on('connection', () => {
-      console.log('hello ', socket.id)
-    })
     getProfileData()
     getMessages()
   }, [user, friend])
