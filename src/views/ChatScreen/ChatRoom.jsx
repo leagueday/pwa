@@ -7,7 +7,7 @@ import { colors } from '../../styling'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
 import GroupAddIcon from '@material-ui/icons/GroupAdd'
-import { io } from 'socket.io-client'
+import SocketIOClient from 'socket.io-client'
 
 const mockChats = [
   {
@@ -132,14 +132,13 @@ const mockChats = [
   },
 ]
 
-// const socket = io('https://localhost:3000')
-
 const useStyles = makeStyles(theme => ({
   chatBox: {
     position: 'relative',
     background: colors.darkerGray,
     width: '100%',
     height: '100%',
+    overflow: 'hidden',
     marginLeft: '2px',
     background: 'black',
     outline: `0.5px solid ${colors.darkGray}`,
@@ -239,9 +238,19 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ChatRoom = ({ friend }) => {
+  const user = useSelector(selectors.getUser)
+  const roomId = [friend?.id, user?.id]
+    .sort((a, b) => (a > b ? 1 : -1))
+    .join('-')
+
+  const socket = SocketIOClient('https://leagueday-api.herokuapp.com', {
+    query: {
+      roomId,
+    },
+  })
+
   const classes = useStyles()
   const [message, setMessage] = useState('')
-  const user = useSelector(selectors.getUser)
   const [userData, setUserData] = useState({})
   const [allChats, setAllChats] = useState([])
 
@@ -270,11 +279,6 @@ const ChatRoom = ({ friend }) => {
   }
 
   const sendChat = () => {
-    const roomId = [friend.id, user.id]
-      .sort((a, b) => (a > b ? 1 : -1))
-      .join('-')
-    console.log('ids ', friend, roomId)
-
     axios
       .post('https://leagueday-api.herokuapp.com/chats/create', {
         userId: user.id,
@@ -286,6 +290,7 @@ const ChatRoom = ({ friend }) => {
       })
       .then(res => {
         console.log('sent message ', res)
+        socket.emit('new_chat', { message })
         setMessage('')
       })
       .catch(err => {
@@ -296,10 +301,11 @@ const ChatRoom = ({ friend }) => {
   const getMessages = () => {
     axios
       .post('https://leagueday-api.herokuapp.com/chats/list', {
-        roomId: [friend?.id, user?.id]?.sort((a, b) => (a > b ? 1 : -1))?.join('-'),
+        roomId: [friend?.id, user?.id]
+          ?.sort((a, b) => (a > b ? 1 : -1))
+          ?.join('-'),
       })
       .then(res => {
-        console.log('messages ', res)
         setAllChats(res.data.data)
       })
       .catch(err => {
@@ -307,9 +313,17 @@ const ChatRoom = ({ friend }) => {
       })
   }
 
+  socket.on('new_chat', () => {
+    console.log('triggered new chat ')
+    getMessages()
+  })
+
   useEffect(() => {
+    socket.on('connection', () => {
+      console.log('hello ', socket.id)
+    })
     getProfileData()
-    getMessages();
+    getMessages()
   }, [user, friend])
 
   return (

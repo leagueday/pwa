@@ -12,7 +12,6 @@ const FriendsList = () => {
         userId: user?.id,
       })
       .then(res => {
-        console.log('complete fucking bullshit ', res)
         dispatch(actions.setFriendsList(res.data))
       })
       .catch(err => {
