@@ -1,136 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { selectors } from '../../store'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import { addScrollStyle } from '../util'
 import { colors } from '../../styling'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
 import GroupAddIcon from '@material-ui/icons/GroupAdd'
 import SocketIOClient from 'socket.io-client'
-
-const mockChats = [
-  {
-    authorId: 'a6283fa7-7405-4d72-aaab-3f84e630845d',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/m8Pic.jpeg',
-  },
-  {
-    authorId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg',
-  },
-  {
-    authorId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg',
-  },
-  {
-    authorId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg',
-  },
-  {
-    authorId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg',
-  },
-  {
-    authorId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg',
-  },
-  {
-    authorId: 'a6283fa7-7405-4d72-aaab-3f84e630845d',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/m8Pic.jpeg',
-  },
-  {
-    authorId: 'a6283fa7-7405-4d72-aaab-3f84e630845d',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/m8Pic.jpeg',
-  },
-  {
-    authorId: 'a6283fa7-7405-4d72-aaab-3f84e630845d',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/m8Pic.jpeg',
-  },
-  {
-    authorId: 'a6283fa7-7405-4d72-aaab-3f84e630845d',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/m8Pic.jpeg',
-  },
-  {
-    authorId: 'a6283fa7-7405-4d72-aaab-3f84e630845d',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/m8Pic.jpeg',
-  },
-  {
-    authorId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg',
-  },
-  {
-    authorId: 'a6283fa7-7405-4d72-aaab-3f84e630845d',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/m8Pic.jpeg',
-  },
-  {
-    authorId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg',
-  },
-  {
-    authorId: 'a6283fa7-7405-4d72-aaab-3f84e630845d',
-    _id: 'ObjectId(611a8fb892caa000159c4053)',
-    roomId:
-      'a6283fa7-7405-4d72-aaab-3f84e630845d-b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    message: 'test message',
-    image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/m8Pic.jpeg',
-  },
-]
 
 const useStyles = makeStyles(theme => ({
   chatBox: {
@@ -158,11 +36,8 @@ const useStyles = makeStyles(theme => ({
   },
   reciever: {
     background: 'black',
-    position: 'absolute',
     height: '7%',
-    marginBottom: '10%',
     width: '100%',
-    top: 0,
     borderBottom: `0.5px solid ${colors.darkGray}`,
     display: 'flex',
     justifyContent: 'center',
@@ -197,11 +72,15 @@ const useStyles = makeStyles(theme => ({
     fontSize: '32px',
     cursor: 'pointer',
   },
-  chatRoom: {
-    height: '85%',
-    marginTop: '5%',
-    overflow: 'scroll',
-  },
+  chatRoom: ({ primaryColor = colors.blue }) =>
+    addScrollStyle(
+      primaryColor,
+      theme
+    )({
+      height: '85%',
+      overflow: 'scroll',
+      overflowX: 'hidden',
+    }),
   chat: {
     display: 'flex',
     justifyContent: 'flex-start',
@@ -216,16 +95,18 @@ const useStyles = makeStyles(theme => ({
     color: 'black',
   },
   uText: {
+    maxWidth: '50%',
     marginRight: '2%',
-    borderRadius: '70px',
+    borderRadius: '10px',
     background: colors.blue,
-    padding: '.5%',
+    padding: '1%',
   },
   text: {
+    maxWidth: '50%',
     marginLeft: '2%',
-    borderRadius: '70px',
+    borderRadius: '10px',
     background: colors.white80,
-    padding: '.5%',
+    padding: '1%',
   },
   chatImg: {
     width: '50px',
@@ -234,6 +115,8 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
   },
   recipient: {
+    display: 'flex',
+    flexDirection: 'column',
     height: '100%',
   },
 }))
@@ -252,6 +135,14 @@ const ChatRoom = ({ friend }) => {
   const [message, setMessage] = useState('')
   const [userData, setUserData] = useState({})
   const [allChats, setAllChats] = useState([])
+
+  const messageEl = useRef(null)
+
+  const scrollToBottom = () => {
+    messageEl?.current?.scrollIntoView({ behavior: 'auto' })
+  }
+
+  useEffect(scrollToBottom, [allChats])
 
   const getProfileData = () => {
     const baseId = 'appXoertP1WJjd4TQ'
@@ -277,7 +168,8 @@ const ChatRoom = ({ friend }) => {
       })
   }
 
-  const sendChat = () => {
+  const sendChat = (e) => {
+    e.preventDefault();
     axios
       .post('https://leagueday-api.herokuapp.com/chats/create', {
         userId: user.id,
@@ -316,7 +208,19 @@ const ChatRoom = ({ friend }) => {
       })
   }
 
-  useEffect(() => {}, [])
+  const listener = event => {
+    if (event.code === "Enter" || event.code === "NumpadEnter") {
+      console.log("Enter key was pressed. Run your function.");
+      sendChat();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, []);
 
   useEffect(() => {
     getProfileData()
@@ -350,19 +254,26 @@ const ChatRoom = ({ friend }) => {
                 </p>
               </div>
             ))}
+            <div ref={messageEl} />
           </div>
-          <input
-            type="text"
-            className={classes.message}
-            value={message}
-            onChange={e => setMessage(e.target.value)}
-          />
-          <FontAwesomeIcon
-            icon={faPaperPlane}
-            className={classes.sendIcon}
-            size={'2x'}
-            onClick={sendChat}
-          />
+          <div style={{ height: '8%' }}>
+            <form onSubmit={sendChat}>
+              <input
+                type="text"
+                className={classes.message}
+                value={message}
+                onChange={e => setMessage(e.target.value)}
+                onKeyDown={listener}
+              />
+              <button type="submit" style={{ border: 'none', outline: 'none', background: 'transparent' }}>
+                <FontAwesomeIcon
+                  icon={faPaperPlane}
+                  className={classes.sendIcon}
+                  size={'2x'}
+                />
+              </button>
+            </form>
+          </div>
         </div>
       ) : (
         <h1

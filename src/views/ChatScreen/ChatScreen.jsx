@@ -39,6 +39,9 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     outline: `0.5px solid ${colors.darkGray}`,
+    [theme.breakpoints.down('md')]: {
+      minWidth: '220px',
+    },
   },
   friend: {
     cursor: 'pointer',
@@ -72,8 +75,8 @@ const useStyles = makeStyles(theme => ({
     background: 'black',
   },
   message: {
-    position: 'absolute',
-    bottom: 15,
+    // position: 'absolute',
+    // bottom: 15,
     width: '80%',
     minHeight: '80px',
     left: '50%',
