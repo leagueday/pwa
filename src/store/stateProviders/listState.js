@@ -26,7 +26,6 @@ function ListStateProvider(props) {
     let creators = []
     // CHANNEL LIST
 
-    console.log('redux ',channelList, creatorsList)
 
     const getData = () => {
         base('UserList').select({

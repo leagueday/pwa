@@ -7,6 +7,21 @@ import { makeStyles } from '@material-ui/styles'
 import { colors } from '../../styling'
 import ChatRoom from './ChatRoom'
 
+export const mockFriends = [
+  {
+    friend: {
+      name: 'Nick',
+      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg'
+    }
+  },
+  {
+    friend: {
+      name: 'Sam',
+      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg'
+    }
+  }
+]
+
 const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'flex',

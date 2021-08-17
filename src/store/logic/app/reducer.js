@@ -18,7 +18,7 @@ const initialState = {
   theme: constants.UI_THEME_SPEC,
   user: null,
   userData: null,
-  friends: {},
+  friends: [],
   myChannelList: [],
   myCreatorList: []
 }

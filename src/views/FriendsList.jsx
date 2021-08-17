@@ -6,13 +6,13 @@ import { actions, selectors } from '../store'
 const FriendsList = () => {
   const dispatch = useDispatch()
   const user = useSelector(selectors.getUser)
-    console.log('called')
   useEffect(() => {
     axios
       .post('https://leagueday-api.herokuapp.com/friends/list', {
         userId: user?.id,
       })
       .then(res => {
+        console.log('complete fucking bullshit ', res)
         dispatch(actions.setFriendsList(res.data))
       })
       .catch(err => {

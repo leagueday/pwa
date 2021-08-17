@@ -33,7 +33,6 @@ const MyCreators = () => {
   //     setCreatorList(cl)
   //   } 
   // }, [cl])
-  console.log('creators ',creators)
 
   return (
     <div>

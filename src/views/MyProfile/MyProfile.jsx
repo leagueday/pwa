@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import { selectors } from '../../store'
 import { getMyList } from '../GetUserList'
+import { mockFriends } from '../ChatScreen/ChatScreen'
 import Modal from '@material-ui/core/Modal'
 import { MyListContext } from '../../store/stateProviders/listState'
 import { UserStateContext } from '../../store/stateProviders/userState'
@@ -682,6 +683,8 @@ const MyProfile = ({ userId }) => {
   //     setCreatorList(cl)
   //   }
   // }, [cl])
+
+  console.log('so fucking retarded ',friendList)
 
   return (
     <div className={classes.content}>
