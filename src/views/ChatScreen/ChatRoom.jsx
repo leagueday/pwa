@@ -205,10 +205,8 @@ const ChatRoom = ({ friend, roomId }) => {
       })
   }
 
-  console.log('roomId from outside function ', roomId)
 
   const getMessages = () => {
-    console.log('roomId ', roomId)
     axios
       .post('https://leagueday-api.herokuapp.com/chats/list', {
         roomId: '1d49ba0d-97b8-435a-99c2-386675ee76cc-a6283fa7-7405-4d72-aaab-3f84e630845d',
