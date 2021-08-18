@@ -16,7 +16,6 @@ import { uploadFile } from 'react-s3';
 import('buffer').then(({Buffer}) => {global.Buffer = Buffer;})
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 
-
 const primaryColor = colors.magenta
 
 const useStyles = makeStyles(theme => ({

@@ -3,6 +3,7 @@ import BasicLayout from '../BasicLayout'
 import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import { useSelector } from 'react-redux'
 import { selectors, actions } from '../../store'
+import SocketIOClient from 'socket.io-client';
 import axios from 'axios'
 import { makeStyles } from '@material-ui/styles'
 import { colors } from '../../styling'
@@ -108,10 +109,21 @@ const ChatScreen = () => {
   const user = useSelector(selectors.getUser)
   const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext)
   const [friend, setFriend] = useState(selectedFriend?.friend)
-
-  const roomId = [friend?.id, user?.id]
-    .sort((a, b) => (a > b ? 1 : -1))
-    .join('-')
+  
+  const roomId = [selectedFriend?.id, user?.id]
+  .sort((a, b) => (a > b ? 1 : -1))
+  .join('-')
+  
+  const [socket, setSocket] = useState(null)
+  
+  useEffect(() => {
+    console.log('set socket ', roomId)
+    const newSocket = SocketIOClient('https://leagueday-api.herokuapp.com', {
+      query: roomId,
+    })
+    setSocket(newSocket)
+    return () => newSocket.close()
+  }, [setSocket])
 
   return (
     <BasicLayout>
@@ -131,7 +143,7 @@ const ChatScreen = () => {
           {friendList?.accepted?.map(item => (
             <div
               className={
-                item?.friend?.name === friend?.name
+                item?.friend?.name === selectedFriend?.name
                   ? classes.selectedFriend
                   : classes.friend
               }
@@ -146,7 +158,7 @@ const ChatScreen = () => {
             </div>
           ))}
         </div>
-        <ChatRoom friend={selectedFriend} roomId={roomId}/>
+        <ChatRoom selectedFriend={selectedFriend} roomId={roomId} socket={socket}/>
       </div>
     </BasicLayout>
   )

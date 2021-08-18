@@ -124,31 +124,32 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ChatRoom = ({ friend }) => {
+const ChatRoom = ({  socket, roomId }) => {
   const user = useSelector(selectors.getUser)
-  const [socket, setSocket] = useState(null)
   const { selectedFriend } = useContext(FriendsStateContext)
+  
+  // const [socket, setSocket] = useState(null)
+  // const roomId = [selectedFriend?.id, user?.id]
+  //   .sort((a, b) => (a > b ? 1 : -1))
+  //   .join('-')
 
-  const roomId = [selectedFriend?.id, user?.id]
-    .sort((a, b) => (a > b ? 1 : -1))
-    .join('-')
-
-  useEffect(() => {
-    console.log('set socket ', roomId)
-    const newSocket = SocketIOClient('https://leagueday-api.herokuapp.com', {
-      query: roomId,
-    })
-    setSocket(newSocket)
-    return () => newSocket.close()
-  }, [setSocket])
+  // useEffect(() => {
+  //   console.log('set socket ', roomId)
+  //   const newSocket = SocketIOClient('https://leagueday-api.herokuapp.com', {
+  //     query: roomId,
+  //   })
+  //   setSocket(newSocket)
+  //   return () => newSocket.close()
+  // }, [setSocket])
+  
+  const roomIdRef = useRef(roomId)
 
   useEffect(() => {
     socket?.on('new_chat', () => {
       console.log('triggered new chat ')
-      if (friend) {
-        getMessages()
-      }
+      getMessages()
     })
+
     return () => {
       socket?.off('new_chat', () => {
         getMessages()
@@ -215,21 +216,21 @@ const ChatRoom = ({ friend }) => {
   }
 
   const getMessages = () => {
-    setTimeout(() => {
-      console.log('roomId ', roomId, selectedFriend)
-      axios
-        .post('https://leagueday-api.herokuapp.com/chats/list', {
-          roomId: roomId,
-        })
-        .then(res => {
-          console.log('res', res)
-          setAllChats(res.data.data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    }, 100)
+    console.log('roomId in getMessages()', roomIdRef.current)
+    axios
+      .post('https://leagueday-api.herokuapp.com/chats/list', {
+        roomId: roomId,
+      })
+      .then(res => {
+        console.log('res', res)
+        setAllChats(res.data.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
+
+  console.log('roomId in function body ', roomId)
 
   const listener = event => {
     if (event.code === 'Enter' || event.code === 'NumpadEnter') {
