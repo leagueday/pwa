@@ -703,11 +703,11 @@ const MyProfile = ({ userId }) => {
       <Modal open={friendsModal} onClose={() => setFriendsModal(false)}>
         <div className={classes.friendsModalWrapper}>
           {friendList?.received?.length === 0 && <h4>No Pending requests</h4>}
-          {friendList?.received?.map((friend, ind) => {
-            ;<div className={classes.friendReqList} key={ind}>
+          {friendList?.received?.map((friend, ind) => (
+            <div className={classes.friendReqList} key={ind}>
               <FriendRequest friend={friend} classes={classes} />
             </div>
-          })}
+          ))}
         </div>
       </Modal>
       <div className={classes.heroImgCont}>
