@@ -91,8 +91,6 @@ const useStyles = makeStyles(theme => ({
     background: 'black',
   },
   message: {
-    // position: 'absolute',
-    // bottom: 15,
     width: '80%',
     minHeight: '80px',
     left: '50%',
@@ -107,8 +105,13 @@ const useStyles = makeStyles(theme => ({
 const ChatScreen = () => {
   const classes = useStyles()
   const friendList = useSelector(selectors.getFriendsList)
+  const user = useSelector(selectors.getUser)
   const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext)
   const [friend, setFriend] = useState(selectedFriend?.friend)
+
+  const roomId = [friend?.id, user?.id]
+    .sort((a, b) => (a > b ? 1 : -1))
+    .join('-')
 
   return (
     <BasicLayout>
@@ -143,7 +146,7 @@ const ChatScreen = () => {
             </div>
           ))}
         </div>
-        <ChatRoom friend={friend} />
+        <ChatRoom friend={friend} roomId={roomId}/>
       </div>
     </BasicLayout>
   )

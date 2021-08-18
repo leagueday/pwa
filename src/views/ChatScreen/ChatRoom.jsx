@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { selectors } from '../../store'
 import { useSelector } from 'react-redux'
+import SocketIOClient from 'socket.io-client'
 import axios from 'axios'
 import { addScrollStyle } from '../util'
 import { colors } from '../../styling'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
 import GroupAddIcon from '@material-ui/icons/GroupAdd'
-import SocketIOClient from 'socket.io-client'
 
 const useStyles = makeStyles(theme => ({
   chatBox: {
@@ -123,16 +123,30 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ChatRoom = ({ friend }) => {
+const ChatRoom = ({ friend, roomId }) => {
   const user = useSelector(selectors.getUser)
-  const roomId = [friend?.id, user?.id]
-    .sort((a, b) => (a > b ? 1 : -1))
-    .join('-')
-  const socket = SocketIOClient('https://leagueday-api.herokuapp.com', {
-    query: {
-      roomId,
-    },
-  })
+  const [socket, setSocket] = useState(null)
+
+  useEffect(() => {
+    const newSocket = SocketIOClient('https://leagueday-api.herokuapp.com', {
+      query: roomId,
+    })
+    setSocket(newSocket)
+    return () => newSocket.close()
+  }, [setSocket])
+
+  useEffect(() => {
+    socket?.on('new_chat', () => {
+      console.log('triggered new chat ')
+      getMessages()
+    })
+    return () => {
+      socket?.off('new_chat', () => {
+        getMessages()
+      })
+    }
+  }, [socket, roomId])
+
   const classes = useStyles()
   const [message, setMessage] = useState('')
   const [userData, setUserData] = useState({})
@@ -170,8 +184,8 @@ const ChatRoom = ({ friend }) => {
       })
   }
 
-  const sendChat = (e) => {
-    e.preventDefault();
+  const sendChat = e => {
+    e.preventDefault()
     axios
       .post('https://leagueday-api.herokuapp.com/chats/create', {
         userId: user.id,
@@ -183,26 +197,24 @@ const ChatRoom = ({ friend }) => {
       })
       .then(res => {
         socket.emit('new_chat', { message })
-        console.log('sent message ', res)
         setMessage('')
-        socket.on('new_chat', () => {
-          console.log('triggered new chat ')
-          getMessages()
-        })
+        console.log('sent message ', res)
       })
       .catch(err => {
         console.log('message send error ', err)
       })
   }
 
+  console.log('roomId from outside function ', roomId)
+
   const getMessages = () => {
+    console.log('roomId ', roomId)
     axios
       .post('https://leagueday-api.herokuapp.com/chats/list', {
-        roomId: [friend?.id, user?.id]
-          ?.sort((a, b) => (a > b ? 1 : -1))
-          ?.join('-'),
+        roomId: '1d49ba0d-97b8-435a-99c2-386675ee76cc-a6283fa7-7405-4d72-aaab-3f84e630845d',
       })
       .then(res => {
+        console.log('res', res)
         setAllChats(res.data.data)
       })
       .catch(err => {
@@ -211,17 +223,17 @@ const ChatRoom = ({ friend }) => {
   }
 
   const listener = event => {
-    if (event.code === "Enter" || event.code === "NumpadEnter") {
-      sendChat();
+    if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+      sendChat()
     }
-  };
+  }
 
   useEffect(() => {
-    document.addEventListener("keydown", listener);
+    document.addEventListener('keydown', listener)
     return () => {
-      document.removeEventListener("keydown", listener);
-    };
-  }, []);
+      document.removeEventListener('keydown', listener)
+    }
+  }, [])
 
   useEffect(() => {
     getProfileData()
@@ -266,11 +278,19 @@ const ChatRoom = ({ friend }) => {
                 onChange={e => setMessage(e.target.value)}
                 onKeyDown={listener}
               />
-              <button type="submit" style={{ border: 'none', outline: 'none', background: 'transparent' }}>
+              <button
+                type="submit"
+                style={{
+                  border: 'none',
+                  outline: 'none',
+                  background: 'transparent',
+                }}
+              >
                 <FontAwesomeIcon
                   icon={faPaperPlane}
                   className={classes.sendIcon}
                   size={'2x'}
+                  onClick={sendChat}
                 />
               </button>
             </form>
