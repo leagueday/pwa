@@ -37,6 +37,7 @@ const useStyles = makeStyles(theme => ({
   reciever: {
     background: 'black',
     height: '7%',
+    minHeight: '60px',
     width: '100%',
     borderBottom: `0.5px solid ${colors.darkGray}`,
     display: 'flex',
@@ -77,7 +78,8 @@ const useStyles = makeStyles(theme => ({
       primaryColor,
       theme
     )({
-      height: '85%',
+      height: '82%',
+      marginBottom: '3%',
       overflow: 'scroll',
       overflowX: 'hidden',
     }),
@@ -210,7 +212,6 @@ const ChatRoom = ({ friend }) => {
 
   const listener = event => {
     if (event.code === "Enter" || event.code === "NumpadEnter") {
-      console.log("Enter key was pressed. Run your function.");
       sendChat();
     }
   };
@@ -256,7 +257,7 @@ const ChatRoom = ({ friend }) => {
             ))}
             <div ref={messageEl} />
           </div>
-          <div style={{ height: '8%' }}>
+          <div style={{ height: '8%', background: 'black' }}>
             <form onSubmit={sendChat}>
               <input
                 type="text"

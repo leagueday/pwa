@@ -119,7 +119,7 @@ const AggregatorContent = ({ channel }) => {
         <BottomBlock
           accentColor={channel.color}
           titleStart={channel.title}
-          titleRest="Live"
+          titleRest="Live Audiocasts"
         >
           <LiveBroadcastsMockup
             className={classes.liveBroadcasts}
@@ -134,23 +134,10 @@ const AggregatorContent = ({ channel }) => {
           />
         </BottomBlock>
       )}
-      {/* {hasReplay && (
-        <BottomBlock
-          accentColor={channel.color}
-          titleStart={channel.title}
-          titleRest="Replays"
-        >
-          <ReplayBroadcastsMockup
-            className={classes.replayBroadcasts}
-            channel={channel}
-            channelColor={channel.color}
-          />
-        </BottomBlock>
-      )} */}
       <BottomBlock
         accentColor={channel.color}
         titleStart={channel.title}
-        titleRest="Audiocasts"
+        titleRest="Recorded Audiocasts"
       >
         <Audiocast channelTag={channel.tag} />
         <ReplayBroadcastsMockup

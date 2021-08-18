@@ -120,13 +120,18 @@ const ChatScreen = () => {
               height: '7%',
               margin: 0,
               padding: 0,
+              minHeight: '60px',
             }}
           >
             <h3 style={{ textAlign: 'center' }}>Messages</h3>
           </div>
           {friendList?.accepted?.map(item => (
             <div
-              className={item?.friend?.name === friend?.name ? classes.selectedFriend : classes.friend} 
+              className={
+                item?.friend?.name === friend?.name
+                  ? classes.selectedFriend
+                  : classes.friend
+              }
               onClick={() => setFriend(item?.friend)}
             >
               <img

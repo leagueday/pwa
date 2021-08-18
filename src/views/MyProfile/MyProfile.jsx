@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Friend from './Friend'
 import FriendRequest from './FriendRequest'
 import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
@@ -225,6 +226,7 @@ const useStyles = makeStyles(theme => ({
     borderBottom: '1px solid #333',
   },
   sectionButton: {
+    position: 'relative',
     cursor: 'pointer',
     padding: 10,
     marginRight: '4%',
@@ -243,6 +245,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   selectedButton: {
+    position: 'relative',
     cursor: 'pointer',
     padding: 10,
     marginRight: '4%',
@@ -445,7 +448,7 @@ const useStyles = makeStyles(theme => ({
     width: '75%',
     margin: '2% 0',
     [theme.breakpoints.down('md')]: {
-      width: '100%'
+      width: '100%',
     },
   },
   friendImgCont: {
@@ -480,13 +483,22 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.primary.active,
     },
   },
+  friendReqNot: {
+    position: 'absolute',
+    borderRadius: '50%',
+    width: '15%',
+    background: 'red',
+    color: 'white',
+    left: -5,
+    top: -5,
+  },
 }))
 
 const MyProfile = ({ userId }) => {
   const { globalList, creatorList, setGlobalList, setCreatorList } = useContext(
     MyListContext
   )
-  
+
   const { userData, loading } = useContext(UserStateContext)
   const baseId = 'appXoertP1WJjd4TQ'
   const apiKey = 'keymd23kpZ12EriVi'
@@ -503,7 +515,7 @@ const MyProfile = ({ userId }) => {
   const [open, setOpen] = useState(false)
   const friendList = useSelector(selectors.getFriendsList)
   // const { filteredListRecords, creatorList: cl } = getMyList()
-  const filteredListRecords = useSelector(selectors.getMyChannels);
+  const filteredListRecords = useSelector(selectors.getMyChannels)
   const user = useSelector(selectors.getUser)
 
   const handleCreatorClick = () => {
@@ -690,11 +702,12 @@ const MyProfile = ({ userId }) => {
     <div className={classes.content}>
       <Modal open={friendsModal} onClose={() => setFriendsModal(false)}>
         <div className={classes.friendsModalWrapper}>
-          {friendList?.received?.map((friend, ind) => (
-            <div className={classes.friendReqList} key={ind}>
+          {friendList?.received?.length === 0 && <h4>No Pending requests</h4>}
+          {friendList?.received?.map((friend, ind) => {
+            ;<div className={classes.friendReqList} key={ind}>
               <FriendRequest friend={friend} classes={classes} />
             </div>
-          ))}
+          })}
         </div>
       </Modal>
       <div className={classes.heroImgCont}>
@@ -714,6 +727,11 @@ const MyProfile = ({ userId }) => {
           className={classes.friendRequests}
         >
           Friend Requests
+          {friendList?.received?.length > 0 && (
+            <span className={classes.friendReqNot}>
+              {friendList?.received?.length}
+            </span>
+          )}
         </Button>
         <div className={classes.credInfo}>
           <div className={classes.userImgContainer}>
@@ -834,6 +852,14 @@ const MyProfile = ({ userId }) => {
               onClick={handleFriendClick}
             >
               Friends
+              <NotificationsActiveIcon
+                style={{
+                  position: 'absolute',
+                  color: colors.blue,
+                  right: -5,
+                  top: -5,
+                }}
+              />
             </span>
             <span
               className={
@@ -916,7 +942,7 @@ const MyProfile = ({ userId }) => {
             {friendSelected && (
               <div>
                 {friendList?.accepted?.map((friend, index) => (
-                    <Friend friend={friend} key={index} classes={classes}/>
+                  <Friend friend={friend} key={index} classes={classes} />
                 ))}
               </div>
             )}
