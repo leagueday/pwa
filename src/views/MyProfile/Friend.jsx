@@ -36,7 +36,7 @@ const Friend = ({ friend, classes }) => {
             <Button
               className={classes.chatBtn}
               onClick={() => {
-                setSelectedFriend(friend)
+                setSelectedFriend(friend.friend)
                 dispatch(actions.pushHistory('/chat'))
               }}
             >

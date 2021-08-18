@@ -113,11 +113,10 @@ const ChatScreen = () => {
   const roomId = [selectedFriend?.id, user?.id]
   .sort((a, b) => (a > b ? 1 : -1))
   .join('-')
-  
+
   const [socket, setSocket] = useState(null)
   
   useEffect(() => {
-    console.log('set socket ', roomId)
     const newSocket = SocketIOClient('https://leagueday-api.herokuapp.com', {
       query: roomId,
     })

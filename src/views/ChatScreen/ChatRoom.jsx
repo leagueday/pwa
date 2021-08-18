@@ -127,32 +127,18 @@ const useStyles = makeStyles(theme => ({
 const ChatRoom = ({  socket, roomId }) => {
   const user = useSelector(selectors.getUser)
   const { selectedFriend } = useContext(FriendsStateContext)
-  
-  // const [socket, setSocket] = useState(null)
-  // const roomId = [selectedFriend?.id, user?.id]
-  //   .sort((a, b) => (a > b ? 1 : -1))
-  //   .join('-')
 
-  // useEffect(() => {
-  //   console.log('set socket ', roomId)
-  //   const newSocket = SocketIOClient('https://leagueday-api.herokuapp.com', {
-  //     query: roomId,
-  //   })
-  //   setSocket(newSocket)
-  //   return () => newSocket.close()
-  // }, [setSocket])
-  
   const roomIdRef = useRef(roomId)
 
   useEffect(() => {
     socket?.on('new_chat', () => {
       console.log('triggered new chat ')
-      getMessages()
+      getMessages(roomIdRef.current)
     })
 
     return () => {
       socket?.off('new_chat', () => {
-        getMessages()
+        getMessages(roomIdRef.current)
       })
     }
   }, [socket])
@@ -215,11 +201,10 @@ const ChatRoom = ({  socket, roomId }) => {
       })
   }
 
-  const getMessages = () => {
-    console.log('roomId in getMessages()', roomIdRef.current)
+  const getMessages = (id) => {
     axios
       .post('https://leagueday-api.herokuapp.com/chats/list', {
-        roomId: roomId,
+        roomId: id,
       })
       .then(res => {
         console.log('res', res)
@@ -229,8 +214,6 @@ const ChatRoom = ({  socket, roomId }) => {
         console.log(err)
       })
   }
-
-  console.log('roomId in function body ', roomId)
 
   const listener = event => {
     if (event.code === 'Enter' || event.code === 'NumpadEnter') {
@@ -247,7 +230,8 @@ const ChatRoom = ({  socket, roomId }) => {
 
   useEffect(() => {
     getProfileData()
-    getMessages()
+    getMessages(roomId)
+    roomIdRef.current = roomId
   }, [user, selectedFriend])
 
   return (
