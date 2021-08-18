@@ -143,25 +143,13 @@ const NextLive = ({ titleStart, titleRest }) => {
         )} */}
       {titleStart === 'League of Legends' && (
         <>
-          <div className={classes.nextLive}>
-            <img
-              src="/img/NEW_LDLogo.png"
-              className={classes.nextLiveImg}
-              // style={{ width: '120px', height: '30px' }}
-            />
-            <p className={classes.nextLiveText}>
-              Live every Friday, Saturday and Sunday from{' '}
-              <span className={classes.liveSpan}>6-10pm EST</span>, and
-              Wednesdays from{' '}
-              <span className={classes.liveSpan}>10-11pm EST</span>!
-            </p>
-          </div>
           <p>
             Find the full LCS Playoffs Schedule{' '}
             <a
               href="https://lolesports.com/schedule?leagues=lec,lck,lcl"
               target="_blank"
               rel="noreferer"
+              style={{ color: 'blue' }}
             >
               here.
             </a>
