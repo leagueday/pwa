@@ -1,7 +1,9 @@
 import Color from 'color'
 import stringStripHtml from 'string-strip-html'
+import { io } from 'socket.io-client'
+import { colors } from '../styling';
 
-import { colors } from '../styling'
+export const socket = io('https://leagueday-api.herokuapp.com') 
 
 export const addScrollStyle = (
   scrollbarColor,

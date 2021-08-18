@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { MyListContext } from '../../store/stateProviders/listState'
-import { getMyList } from '../../api/getUserList'
+import { getMyList } from '../GetUserList'
 import { actions, selectors } from '../../store'
 import Item from './Item'
 import PlusMinusBtn from '../CreatorTilesRow/PlusMinusBtn'
@@ -22,17 +22,17 @@ const useStyles = makeStyles(theme => ({
 const MyCreators = () => {
   const dispatch = useDispatch()
   const user = useSelector(selectors.getUser)
-  const { creatorList: cl } = getMyList();
+  const creators = useSelector(selectors.getMyCreators);
+  // const { creatorList: cl } = getMyList();
   const { creatorList, setCreatorList } = useContext(MyListContext)
   const classes = useStyles()
 
-  useEffect(() => {
-    console.log('creator bs ',creatorList.length, cl.length)
-    if (user && creatorList.length === 0 && cl.length > 0) {
-      console.log('set creator list')
-      setCreatorList(cl)
-    } 
-  }, [cl])
+  // useEffect(() => {
+  //   if (user && creatorList.length === 0 && cl.length > 0) {
+  //     console.log('set creator list')
+  //     setCreatorList(cl)
+  //   } 
+  // }, [cl])
 
   return (
     <div>

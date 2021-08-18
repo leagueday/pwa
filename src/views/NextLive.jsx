@@ -12,11 +12,11 @@ const useStyles = makeStyles(theme => ({
     fontSize: '100%',
     [theme.breakpoints.only('xs')]: {
       background: 'black',
-      fontSize: '70%'
+      fontSize: '70%',
     },
     [theme.breakpoints.only('sm')]: {
       flexDirection: 'column',
-      fontSize: '90%'
+      fontSize: '90%',
     },
   },
   nextLiveText: {
@@ -25,11 +25,11 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 10,
     textAlign: 'center',
     [theme.breakpoints.only('xs')]: {
-      width: '100%'
+      width: '100%',
     },
   },
   liveSpan: {
-    color: colors.magenta
+    color: colors.magenta,
   },
   nextLiveImg: {
     // flex: 0.5,
@@ -37,13 +37,13 @@ const useStyles = makeStyles(theme => ({
     width: '18%',
     // flex: 1
     [theme.breakpoints.only('xs')]: {
-      display: 'none'
+      display: 'none',
     },
   },
 }))
 
 const NextLive = ({ titleStart, titleRest }) => {
-  const classes = useStyles();
+  const classes = useStyles()
   const [live, setlive] = useState(false)
   const [days, setDays] = useState(0)
   const [hours, setHours] = useState(0)
@@ -57,14 +57,13 @@ const NextLive = ({ titleStart, titleRest }) => {
     'June 25, 2021 18:00:00',
     'June 26, 2021 18:00:00',
     'June 27, 2021 18:00:00',
-  ];
+  ]
 
   const [liveDates, setLiveDates] = useState(mockLiveDates)
 
   const { data } = useAirTable('appXoertP1WJjd4TQ', 'ChannelLiveData')
 
   const [channelData, setChannelData] = useState(data)
-
 
   // const getChannelData = () => {
   //   setChannelData(data)
@@ -142,18 +141,21 @@ const NextLive = ({ titleStart, titleRest }) => {
             </p>
           </div>
         )} */}
-        {titleStart === 'League of Legends' &&
-          <div className={classes.nextLive}>
-            <img
-              src="/img/NEW_LDLogo.png"
-              className={classes.nextLiveImg}
-              // style={{ width: '120px', height: '30px' }}
-            />
-            <p className={classes.nextLiveText}>
-              Live every Friday, Saturday and Sunday from <span className={classes.liveSpan}>6-10pm EST</span>, and Wednesdays from <span className={classes.liveSpan}>10-11pm EST</span>!
-            </p>
-          </div>
-        }
+      {titleStart === 'League of Legends' && (
+        <>
+          <p>
+            Find the full LCS Playoffs Schedule{' '}
+            <a
+              href="https://lolesports.com/schedule?leagues=lec,lck,lcl"
+              target="_blank"
+              rel="noreferer"
+              style={{ color: 'blue' }}
+            >
+              here.
+            </a>
+          </p>
+        </>
+      )}
     </div>
   )
 }

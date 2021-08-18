@@ -18,15 +18,18 @@ const initialState = {
   theme: constants.UI_THEME_SPEC,
   user: null,
   userData: null,
+  friends: [],
+  myChannelList: [],
+  myCreatorList: []
 }
 
-const addToMyList = (userData, id, kind) => {
-  const myList = userData?.my ?? []
-  const nextMyList = [...myList, { id, kind }]
+const addToMyList = (state = initialState, title, tag, img) => {
+  const myList = state.myChannelList ?? []
+  const nextMyList = [...myList, { fields: { title: title, tag: tag, channelImg: img } }]
 
   return {
-    ...userData,
-    my: nextMyList,
+    ...state,
+    myChannelList: nextMyList,
   }
 }
 
@@ -37,8 +40,8 @@ const removeFromMyList = (userData, id, kind) => {
 
   const nextMyList = myList
     ? myList.filter(
-        ({ id: liId, kind: liKind }) => liId !== id || liKind !== kind
-      )
+      ({ id: liId, kind: liKind }) => liId !== id || liKind !== kind
+    )
     : []
 
   return {
@@ -140,6 +143,24 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         userData: action.payload.userData,
+      }
+    }
+    case ActionType.SET_FRIENDS_LIST: {
+      return {
+        ...state,
+        friends: action.payload.friendsList
+      }
+    }
+    case ActionType.SET_CHANNEL_LIST: {
+      return {
+        ...state,
+        myChannelList: action.payload.channelList
+      }
+    }
+    case ActionType.SET_CREATOR_LIST: {
+      return {
+        ...state,
+        myCreatorList: action.payload.creatorList
       }
     }
     case ActionType.SHOW_AUDIO_CONTROLS: {

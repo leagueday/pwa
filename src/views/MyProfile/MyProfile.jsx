@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Airtable from 'airtable'
 import { useSelector, useDispatch } from 'react-redux'
+import Friend from './Friend'
+import FriendRequest from './FriendRequest'
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive'
+import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import { selectors } from '../../store'
-import { getMyList } from '../../api/getUserList'
+import { getMyList } from '../GetUserList'
+import { mockFriends } from '../ChatScreen/ChatScreen'
 import Modal from '@material-ui/core/Modal'
 import { MyListContext } from '../../store/stateProviders/listState'
 import { UserStateContext } from '../../store/stateProviders/userState'
@@ -16,216 +22,6 @@ import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
 
 const primaryColor = colors.magenta
-
-export const mockFriends = {
-  userId: 'a6283fa7-7405-4d72-aaab-3f84e630845d',
-  friends: [
-    {
-      ChannelLiveData: ['recxA5xhJZlBw0qVo'],
-      MyContext: 'Test',
-      TwitchUrl: 'nvantzos',
-      TwitterUrl: 'nikvantzos',
-      UserAudiocasts: [
-        ('recjHFYIEHksXoc5J',
-        'recMNRJiaK3pZf7Dk',
-        'recouTuUDYWADAv1h',
-        'rec3GFESHacXGosb5',
-        'recWSixPKsYxpzJqw',
-        'reccrPmV7sI6Nk9ws',
-        'recC4vfIgZzUQzuuz',
-        'recxpX2XSbfMFaZ6J',
-        'recVqeLpRG8yw7XjZ'),
-      ],
-      UserCreatorsList: [
-        ('recJixYr6ZyhXlT7l', 'recUIZlxl0W84aClN', 'recc05v4kPFnOfy9m'),
-      ],
-      UserList: [
-        ('recgHSN75dVUB6IBx', 'recjGDfvcjUMf3L8O', 'recwjSU9LqOKFiZuv'),
-      ],
-      admin: 'true',
-      date: '2021-07-29T21:05:33.188Z',
-      description: "LeagueDay Founder | 'Going for the Turkey' - MacGruber",
-      email: 'nick@leagueday.gg',
-      heroImg:
-        'https://leagueday-prod-images.s3.amazonaws.com/uploads/beach 1.jpg',
-      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/1567776578931.jpg',
-      likedAudio: [
-        ('reccrPmV7sI6Nk9ws',
-        'recxpX2XSbfMFaZ6J',
-        'recC4vfIgZzUQzuuz',
-        'rec3GFESHacXGosb5',
-        'recWSixPKsYxpzJqw',
-        'recouTuUDYWADAv1h',
-        'recMNRJiaK3pZf7Dk',
-        'recjHFYIEHksXoc5J',
-        'recoVj8mGxPAptJQn',
-        'reccDXcgbVZgOpMoC',
-        'recVqeLpRG8yw7XjZ'),
-      ],
-      liveStreamId: 'bXthhO1HODhAx7u003N1aQUX89aGiz02yTKKvOWl6HvVo',
-      name: 'Chuuper',
-      profileCreated: 'yes',
-      rtmpLink: 'rtmps://global-live.mux.com:443/app',
-      streamKey: 'e7295a2e-72ad-faef-f288-ba66c822981a',
-      userChannel: 'ChannelName',
-      userChannelTag: 'channelname',
-      userId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    },
-    {
-      ChannelLiveData: ['recxA5xhJZlBw0qVo'],
-      MyContext: 'Test',
-      TwitchUrl: 'nvantzos',
-      TwitterUrl: 'nikvantzos',
-      UserAudiocasts: [
-        'recjHFYIEHksXoc5J',
-        'recMNRJiaK3pZf7Dk',
-        'recouTuUDYWADAv1h',
-        'rec3GFESHacXGosb5',
-        'recWSixPKsYxpzJqw',
-        'reccrPmV7sI6Nk9ws',
-        'recC4vfIgZzUQzuuz',
-        'recxpX2XSbfMFaZ6J',
-        'recVqeLpRG8yw7XjZ',
-      ],
-      UserCreatorsList: [
-        ('recJixYr6ZyhXlT7l', 'recUIZlxl0W84aClN', 'recc05v4kPFnOfy9m'),
-      ],
-      UserList: [
-        ('recgHSN75dVUB6IBx', 'recjGDfvcjUMf3L8O', 'recwjSU9LqOKFiZuv'),
-      ],
-      admin: 'true',
-      date: '2021-07-29T21:05:33.188Z',
-      description: "LeagueDay Founder | 'Going for the Turkey' - MacGruber",
-      email: 'nick@leagueday.gg',
-      heroImg:
-        'https://leagueday-prod-images.s3.amazonaws.com/uploads/beach 1.jpg',
-      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/kelseyyt.jpg',
-      likedAudio: [
-        'reccrPmV7sI6Nk9ws',
-        'recxpX2XSbfMFaZ6J',
-        'recC4vfIgZzUQzuuz',
-        'rec3GFESHacXGosb5',
-        'recWSixPKsYxpzJqw',
-        'recouTuUDYWADAv1h',
-        'recMNRJiaK3pZf7Dk',
-        'recjHFYIEHksXoc5J',
-        'recoVj8mGxPAptJQn',
-        'reccDXcgbVZgOpMoC',
-        'recVqeLpRG8yw7XjZ',
-      ],
-      liveStreamId: 'bXthhO1HODhAx7u003N1aQUX89aGiz02yTKKvOWl6HvVo',
-      name: 'Kelsey Moser',
-      profileCreated: 'yes',
-      rtmpLink: 'rtmps://global-live.mux.com:443/app',
-      streamKey: 'e7295a2e-72ad-faef-f288-ba66c822981a',
-      userChannel: 'ChannelName',
-      userChannelTag: 'channelname',
-      userId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    },
-    {
-      ChannelLiveData: ['recxA5xhJZlBw0qVo'],
-      MyContext: 'Test',
-      TwitchUrl: 'nvantzos',
-      TwitterUrl: 'nikvantzos',
-      UserAudiocasts: [
-        'recjHFYIEHksXoc5J',
-        'recMNRJiaK3pZf7Dk',
-        'recouTuUDYWADAv1h',
-        'rec3GFESHacXGosb5',
-        'recWSixPKsYxpzJqw',
-        'reccrPmV7sI6Nk9ws',
-        'recC4vfIgZzUQzuuz',
-        'recxpX2XSbfMFaZ6J',
-        'recVqeLpRG8yw7XjZ',
-      ],
-      UserCreatorsList: [
-        'recJixYr6ZyhXlT7l',
-        'recUIZlxl0W84aClN',
-        'recc05v4kPFnOfy9m',
-      ],
-      UserList: ['recgHSN75dVUB6IBx', 'recjGDfvcjUMf3L8O', 'recwjSU9LqOKFiZuv'],
-      admin: 'true',
-      date: '2021-07-29T21:05:33.188Z',
-      description: "LeagueDay Founder | 'Going for the Turkey' - MacGruber",
-      email: 'nick@leagueday.gg',
-      heroImg:
-        'https://leagueday-prod-images.s3.amazonaws.com/uploads/beach 1.jpg',
-      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/DSC_0051.jpg',
-      likedAudio: [
-        'reccrPmV7sI6Nk9ws',
-        'recxpX2XSbfMFaZ6J',
-        'recC4vfIgZzUQzuuz',
-        'rec3GFESHacXGosb5',
-        'recWSixPKsYxpzJqw',
-        'recouTuUDYWADAv1h',
-        'recMNRJiaK3pZf7Dk',
-        'recjHFYIEHksXoc5J',
-        'recoVj8mGxPAptJQn',
-        'reccDXcgbVZgOpMoC',
-        'recVqeLpRG8yw7XjZ',
-      ],
-      liveStreamId: 'bXthhO1HODhAx7u003N1aQUX89aGiz02yTKKvOWl6HvVo',
-      name: 'Adrian Lawal',
-      profileCreated: 'yes',
-      rtmpLink: 'rtmps://global-live.mux.com:443/app',
-      streamKey: 'e7295a2e-72ad-faef-f288-ba66c822981a',
-      userChannel: 'ChannelName',
-      userChannelTag: 'channelname',
-      userId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    },
-    {
-      ChannelLiveData: ['recxA5xhJZlBw0qVo'],
-      MyContext: 'Test',
-      TwitchUrl: 'nvantzos',
-      TwitterUrl: 'nikvantzos',
-      UserAudiocasts: [
-        ('recjHFYIEHksXoc5J',
-        'recMNRJiaK3pZf7Dk',
-        'recouTuUDYWADAv1h',
-        'rec3GFESHacXGosb5',
-        'recWSixPKsYxpzJqw',
-        'reccrPmV7sI6Nk9ws',
-        'recC4vfIgZzUQzuuz',
-        'recxpX2XSbfMFaZ6J',
-        'recVqeLpRG8yw7XjZ'),
-      ],
-      UserCreatorsList: [
-        ('recJixYr6ZyhXlT7l', 'recUIZlxl0W84aClN', 'recc05v4kPFnOfy9m'),
-      ],
-      UserList: [
-        ('recgHSN75dVUB6IBx', 'recjGDfvcjUMf3L8O', 'recwjSU9LqOKFiZuv'),
-      ],
-      admin: 'true',
-      date: '2021-07-29T21:05:33.188Z',
-      description: "LeagueDay Founder | 'Going for the Turkey' - MacGruber",
-      email: 'nick@leagueday.gg',
-      heroImg:
-        'https://leagueday-prod-images.s3.amazonaws.com/uploads/beach 1.jpg',
-      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg',
-      likedAudio: [
-        ('reccrPmV7sI6Nk9ws',
-        'recxpX2XSbfMFaZ6J',
-        'recC4vfIgZzUQzuuz',
-        'rec3GFESHacXGosb5',
-        'recWSixPKsYxpzJqw',
-        'recouTuUDYWADAv1h',
-        'recMNRJiaK3pZf7Dk',
-        'recjHFYIEHksXoc5J',
-        'recoVj8mGxPAptJQn',
-        'reccDXcgbVZgOpMoC',
-        'recVqeLpRG8yw7XjZ'),
-      ],
-      liveStreamId: 'bXthhO1HODhAx7u003N1aQUX89aGiz02yTKKvOWl6HvVo',
-      name: 'Nick Vantzos',
-      profileCreated: 'yes',
-      rtmpLink: 'rtmps://global-live.mux.com:443/app',
-      streamKey: 'e7295a2e-72ad-faef-f288-ba66c822981a',
-      userChannel: 'ChannelName',
-      userChannelTag: 'channelname',
-      userId: 'b33b2ca9-6350-4e6e-aabe-544fc9f9e0c1',
-    },
-  ],
-}
 
 const useStyles = makeStyles(theme => ({
   content: () =>
@@ -241,6 +37,7 @@ const useStyles = makeStyles(theme => ({
       overflowY: 'auto',
     }),
   profileWrapper: {
+    position: 'relative',
     background: 'black',
     height: '90vh',
     width: '95%',
@@ -333,6 +130,37 @@ const useStyles = makeStyles(theme => ({
       fontSize: '80%',
     },
   },
+  accepted: {
+    cursor: 'not-allowed',
+    width: '300px',
+    background: colors.blue,
+    '&:hover': {
+      background: colors.blue,
+    },
+  },
+  declined: {
+    cursor: 'not-allowed',
+    width: '300px',
+    background: 'red',
+    '&:hover': {
+      background: 'red',
+    },
+  },
+  friendRequests: {
+    position: 'absolute',
+    zIndex: 10,
+    right: 20,
+    top: 20,
+    background: colors.blue,
+    width: '200px',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+    [theme.breakpoints.down('md')]: {
+      width: '25%',
+      fontSize: '80%',
+    },
+  },
   deleteBtn: {
     background: 'transparent',
     border: '1px solid red',
@@ -398,6 +226,7 @@ const useStyles = makeStyles(theme => ({
     borderBottom: '1px solid #333',
   },
   sectionButton: {
+    position: 'relative',
     cursor: 'pointer',
     padding: 10,
     marginRight: '4%',
@@ -416,6 +245,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   selectedButton: {
+    position: 'relative',
     cursor: 'pointer',
     padding: 10,
     marginRight: '4%',
@@ -466,7 +296,6 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
-    [theme.breakpoints.down('md')]: {},
     [theme.breakpoints.down('sm')]: {
       width: '35%',
       height: '10%',
@@ -580,6 +409,22 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '5px',
     height: 250,
   },
+  friendsModalWrapper: {
+    position: 'absolute',
+    width: 650,
+    overflow: 'scroll',
+    backgroundColor: colors.darkGray,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    color: 'white',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    outline: 'none',
+    borderRadius: '5px',
+    maxHeight: 750,
+    height: 'auto',
+  },
   creator: {
     margin: 0,
     padding: 0,
@@ -599,11 +444,34 @@ const useStyles = makeStyles(theme => ({
   friendList: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '40%'
+    justifyContent: 'space-evenly',
+    width: '75%',
+    margin: '2% 0',
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  },
+  friendImgCont: {
+    width: '25%',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  friendBtnCont: {
+    width: '50%',
+  },
+  friendName: {
+    width: '25%',
+  },
+  friendReqList: {
+    display: 'block',
+    width: '100%',
   },
   friendImg: {
-    width: '10%',
+    width: '70px',
+    margin: 'auto',
+    borderRadius: '50%',
+    height: '70px',
+    objectFit: 'cover',
   },
   chatBtn: {
     width: '110px',
@@ -615,10 +483,22 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.primary.active,
     },
   },
+  friendReqNot: {
+    position: 'absolute',
+    borderRadius: '50%',
+    width: '15%',
+    background: 'red',
+    color: 'white',
+    left: -5,
+    top: -5,
+  },
 }))
 
 const MyProfile = ({ userId }) => {
-  const { globalList, creatorList, setGlobalList, setCreatorList } = useContext(MyListContext)
+  const { globalList, creatorList, setGlobalList, setCreatorList } = useContext(
+    MyListContext
+  )
+
   const { userData, loading } = useContext(UserStateContext)
   const baseId = 'appXoertP1WJjd4TQ'
   const apiKey = 'keymd23kpZ12EriVi'
@@ -631,8 +511,11 @@ const MyProfile = ({ userId }) => {
   const [trophieSelected, setTrophieSelected] = useState(false)
   const [creatorsSelected, setCreatorsSelected] = useState(false)
   const [recordToDelete, setRecordToDelete] = useState({})
+  const [friendsModal, setFriendsModal] = useState(false)
   const [open, setOpen] = useState(false)
-  const {filteredListRecords, creatorList: cl} = getMyList();
+  const friendList = useSelector(selectors.getFriendsList)
+  // const { filteredListRecords, creatorList: cl } = getMyList()
+  const filteredListRecords = useSelector(selectors.getMyChannels)
   const user = useSelector(selectors.getUser)
 
   const handleCreatorClick = () => {
@@ -756,12 +639,13 @@ const MyProfile = ({ userId }) => {
   const dispatch = useDispatch()
   const golive = () => dispatch(actions.pushHistory('/live'))
   const editProfile = () => dispatch(actions.pushHistory('/editprofile'))
-  // const gamesArray = currentUserGames?.fields?.channelName?.split(',')
   let countt = 1
 
   if (loading) {
     return <h1>Loading...</h1>
   }
+
+  //https://leagueday-api.herokuapp.com/
 
   const NoobTrophy = ({ classes }) => {
     return (
@@ -807,15 +691,25 @@ const MyProfile = ({ userId }) => {
     }
   }, [filteredListRecords])
 
-  useEffect(() => {
-    if (creatorList.length === 0 && cl.length > 0) {
-      console.log('set creator list')
-      setCreatorList(cl)
-    } 
-  }, [cl])
+  // useEffect(() => {
+  //   if (creatorList.length === 0 && cl.length > 0) {
+  //     console.log('set creator list')
+  //     setCreatorList(cl)
+  //   }
+  // }, [cl])
 
   return (
     <div className={classes.content}>
+      <Modal open={friendsModal} onClose={() => setFriendsModal(false)}>
+        <div className={classes.friendsModalWrapper}>
+          {friendList?.received?.length === 0 && <h4>No Pending requests</h4>}
+          {friendList?.received?.map((friend, ind) => (
+            <div className={classes.friendReqList} key={ind}>
+              <FriendRequest friend={friend} classes={classes} />
+            </div>
+          ))}
+        </div>
+      </Modal>
       <div className={classes.heroImgCont}>
         <img
           className={classes.heroImg}
@@ -828,6 +722,17 @@ const MyProfile = ({ userId }) => {
         />
       </div>
       <div className={classes.profileWrapper}>
+        <Button
+          onClick={() => setFriendsModal(true)}
+          className={classes.friendRequests}
+        >
+          Friend Requests
+          {friendList?.received?.length > 0 && (
+            <span className={classes.friendReqNot}>
+              {friendList?.received?.length}
+            </span>
+          )}
+        </Button>
         <div className={classes.credInfo}>
           <div className={classes.userImgContainer}>
             <img
@@ -940,14 +845,22 @@ const MyProfile = ({ userId }) => {
             >
               Audiocasts
             </span>
-            {/* <span
+            <span
               className={
                 friendSelected ? classes.selectedButton : classes.sectionButton
               }
               onClick={handleFriendClick}
             >
               Friends
-            </span> */}
+              <NotificationsActiveIcon
+                style={{
+                  position: 'absolute',
+                  color: colors.blue,
+                  right: -5,
+                  top: -5,
+                }}
+              />
+            </span>
             <span
               className={
                 channelSelected ? classes.selectedButton : classes.sectionButton
@@ -1028,21 +941,8 @@ const MyProfile = ({ userId }) => {
             )}
             {friendSelected && (
               <div>
-                {mockFriends.friends.map((friend, index) => (
-                  <div className={classes.friendList} key={index}>
-                    <img
-                      src={friend.image}
-                      alt=""
-                      className={classes.friendImg}
-                    />
-                    <p>{friend.name}</p>
-                    <Button
-                      className={classes.chatBtn}
-                      onClick={() => dispatch(actions.pushHistory('/chat'))}
-                    >
-                      Chat
-                    </Button>
-                  </div>
+                {friendList?.accepted?.map((friend, index) => (
+                  <Friend friend={friend} key={index} classes={classes} />
                 ))}
               </div>
             )}

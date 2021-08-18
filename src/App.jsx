@@ -1,7 +1,9 @@
 import React from 'react'
 import { hot } from 'react-hot-loader/root'
+import GetMyList from './views/GetUserList'
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import FriendsListProvider from './store/stateProviders/toggleFriend'
 import Paper from '@material-ui/core/Paper'
 import ListStateProvider from './store/stateProviders/listState'
 import UserProfileProvider from './store/stateProviders/userState'
@@ -14,7 +16,7 @@ import Audio from './views/Audio'
 import Auth from './views/Auth'
 import Mushipan from './views/MushipanRouter'
 import UserData from './views/UserData'
-
+import FriendsList from './views/FriendsList'
 import { routesConfig } from './routes'
 
 Sentry.init({
@@ -79,45 +81,23 @@ const StyledAppContent = () => {
 // }
 
 const App = () => {
-
-  ;(function (w, d, s) {
-    if (w.SDW) console.error('SDW widget already included')
-    ;(w.SDW = {}), (w.SDW._r = s)
-    let methods = [
-      'mount',
-      'unmount',
-      'addWidget',
-      'updateWidget',
-      'removeWidget',
-      'initStyles',
-    ]
-    w.SDW._q = []
-    methods.forEach(
-      method =>
-        (w.SDW[method] = function () {
-          w.SDW._q.push([method, arguments])
-        })
-    )
-    var script = d.createElement('script')
-    script.async = 1
-    script.src = s
-    var before = d.getElementsByTagName('script')[0]
-    before.parentNode.insertBefore(script, before)
-  })(window, document, 'https://widgets.shadow.gg/realtime/scriptLoader.js')
-
   return (
     <Sentry.ErrorBoundary fallback={'An error has occurred'}>
       <StoreProvider>
         <ListStateProvider>
           <UserProfileProvider>
-            <Audio />
-            <Auth />
-            {/* <Chronicle /> */}
-            <CssBaseline />
-            <ThemeProvider>
-              <StyledAppContent />
-            </ThemeProvider>
-            <UserData />
+            <FriendsListProvider>
+              <Audio />
+              <Auth />
+              {/* <Chronicle /> */}
+              <CssBaseline />
+              <ThemeProvider>
+                <StyledAppContent />
+              </ThemeProvider>
+              <UserData />
+              <FriendsList />
+              <GetMyList />
+            </FriendsListProvider>
           </UserProfileProvider>
         </ListStateProvider>
       </StoreProvider>

@@ -188,6 +188,7 @@ const NavBar = () => {
   const myprofile = () => {
     dispatch(actions.pushHistory(`/profile/${user.id}`))
   }
+  
   const createProfile = () => dispatch(actions.pushHistory('/create'))
 
   return (
