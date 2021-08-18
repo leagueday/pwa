@@ -135,7 +135,7 @@ const ChatScreen = () => {
                   ? classes.selectedFriend
                   : classes.friend
               }
-              onClick={() => setFriend(item?.friend)}
+              onClick={() => setSelectedFriend(item?.friend)}
             >
               <img
                 src={item?.friend?.image}
@@ -146,7 +146,7 @@ const ChatScreen = () => {
             </div>
           ))}
         </div>
-        <ChatRoom friend={friend} roomId={roomId}/>
+        <ChatRoom friend={selectedFriend} roomId={roomId}/>
       </div>
     </BasicLayout>
   )

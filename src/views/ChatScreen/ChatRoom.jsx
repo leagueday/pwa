@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { selectors } from '../../store'
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import { useSelector } from 'react-redux'
 import SocketIOClient from 'socket.io-client'
 import axios from 'axios'
@@ -123,11 +124,17 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ChatRoom = ({ friend, roomId }) => {
+const ChatRoom = ({ friend }) => {
   const user = useSelector(selectors.getUser)
   const [socket, setSocket] = useState(null)
+  const { selectedFriend } = useContext(FriendsStateContext)
+
+  const roomId = [selectedFriend?.id, user?.id]
+    .sort((a, b) => (a > b ? 1 : -1))
+    .join('-')
 
   useEffect(() => {
+    console.log('set socket ', roomId)
     const newSocket = SocketIOClient('https://leagueday-api.herokuapp.com', {
       query: roomId,
     })
@@ -138,14 +145,16 @@ const ChatRoom = ({ friend, roomId }) => {
   useEffect(() => {
     socket?.on('new_chat', () => {
       console.log('triggered new chat ')
-      getMessages()
+      if (friend) {
+        getMessages()
+      }
     })
     return () => {
       socket?.off('new_chat', () => {
         getMessages()
       })
     }
-  }, [socket, roomId])
+  }, [socket])
 
   const classes = useStyles()
   const [message, setMessage] = useState('')
@@ -205,19 +214,21 @@ const ChatRoom = ({ friend, roomId }) => {
       })
   }
 
-
   const getMessages = () => {
-    axios
-      .post('https://leagueday-api.herokuapp.com/chats/list', {
-        roomId: '1d49ba0d-97b8-435a-99c2-386675ee76cc-a6283fa7-7405-4d72-aaab-3f84e630845d',
-      })
-      .then(res => {
-        console.log('res', res)
-        setAllChats(res.data.data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    setTimeout(() => {
+      console.log('roomId ', roomId, selectedFriend)
+      axios
+        .post('https://leagueday-api.herokuapp.com/chats/list', {
+          roomId: roomId,
+        })
+        .then(res => {
+          console.log('res', res)
+          setAllChats(res.data.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }, 100)
   }
 
   const listener = event => {
@@ -236,15 +247,19 @@ const ChatRoom = ({ friend, roomId }) => {
   useEffect(() => {
     getProfileData()
     getMessages()
-  }, [user, friend])
+  }, [user, selectedFriend])
 
   return (
     <div className={classes.chatBox}>
-      {!!friend ? (
+      {!!selectedFriend ? (
         <div className={classes.recipient}>
           <div className={classes.reciever}>
-            <img src={friend.image} alt="" className={classes.friendImg} />
-            <h3>{friend.name}</h3>
+            <img
+              src={selectedFriend.image}
+              alt=""
+              className={classes.friendImg}
+            />
+            <h3>{selectedFriend.name}</h3>
             <GroupAddIcon className={classes.addIcon} />
           </div>
           <div className={classes.chatRoom}>
