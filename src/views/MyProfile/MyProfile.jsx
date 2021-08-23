@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Airtable from 'airtable'
+import AudioCard from '../ChannelScreen/AudioCard'
 import { useSelector, useDispatch } from 'react-redux'
 import Friend from './Friend'
 import FriendRequest from './FriendRequest'
@@ -514,6 +515,7 @@ const MyProfile = ({ userId }) => {
   const [friendsModal, setFriendsModal] = useState(false)
   const [open, setOpen] = useState(false)
   const friendList = useSelector(selectors.getFriendsList)
+  const [liveData, setLiveData] = useState([])
   // const { filteredListRecords, creatorList: cl } = getMyList()
   const filteredListRecords = useSelector(selectors.getMyChannels)
   const user = useSelector(selectors.getUser)
@@ -690,13 +692,6 @@ const MyProfile = ({ userId }) => {
       setGlobalList(filteredListRecords)
     }
   }, [filteredListRecords])
-
-  // useEffect(() => {
-  //   if (creatorList.length === 0 && cl.length > 0) {
-  //     console.log('set creator list')
-  //     setCreatorList(cl)
-  //   }
-  // }, [cl])
 
   return (
     <div className={classes.content}>
@@ -915,7 +910,7 @@ const MyProfile = ({ userId }) => {
             )}
             {creatorsSelected && (
               <div className={classes.channels}>
-                {cl?.map((item, index) => {
+                {creatorList?.map((item, index) => {
                   return (
                     <div
                       className={classes.channelsWrapper}

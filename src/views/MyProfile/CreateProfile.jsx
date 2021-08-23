@@ -337,6 +337,7 @@ const CreateProfile = props => {
           dispatch(actions.pushHistory('/myprofile'))
         }
       }
+      setLoading(false)
     })
     setLoading(false)
   }
@@ -348,7 +349,7 @@ const CreateProfile = props => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ url: `video/v1/live-streams` }),
+      body: JSON.stringify({ url: `video/v1/live-streams`, passthrough: "lol" }),
     })
       .then(response => response.json())
       .then(function (livestreamData) {

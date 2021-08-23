@@ -54,7 +54,6 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.ADD_TO_MYLIST: {
       const { id, kind } = action.payload
-
       return {
         ...state,
         userData: addToMyList(state.userData, id, kind),

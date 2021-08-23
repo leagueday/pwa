@@ -99,9 +99,6 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
 
 const AggregatorContent = ({ channel }) => {
   const classes = useStyles({ channelColor: channel.color })
-  const facets = useFacets(channel.tag)
-  const hasLive = hasLiveMockupData(channel)
-  const hasReplay = hasReplayMockupData(channel)
 
   return (
     <ContentLayout
@@ -111,29 +108,26 @@ const AggregatorContent = ({ channel }) => {
         <Headline
           channel={channel}
           classes={classes}
-          hasBroadcasts={hasLive || hasReplay}
         />
       )}
     >
-      {hasLive && (
-        <BottomBlock
-          accentColor={channel.color}
-          titleStart={channel.title}
-          titleRest="Live Audiocasts"
-        >
-          <LiveBroadcastsMockup
-            className={classes.liveBroadcasts}
-            channel={channel}
-            channelColor={channel.color}
-          />
-          <ReplayBroadcastsMockup
-            className={classes.replayBroadcasts}
-            channel={channel}
-            channelColor={channel.color}
-            leagueNight={false}
-          />
-        </BottomBlock>
-      )}
+      <BottomBlock
+        accentColor={channel.color}
+        titleStart={channel.title}
+        titleRest="Live Audiocasts"
+      >
+        <LiveBroadcastsMockup
+          className={classes.liveBroadcasts}
+          channel={channel}
+          channelColor={channel.color}
+        />
+        {/* <ReplayBroadcastsMockup
+          className={classes.replayBroadcasts}
+          channel={channel}
+          channelColor={channel.color}
+          leagueNight={false}
+        /> */}
+      </BottomBlock>
       <BottomBlock
         accentColor={channel.color}
         titleStart={channel.title}
@@ -141,11 +135,11 @@ const AggregatorContent = ({ channel }) => {
       >
         <Audiocast channelTag={channel.tag} />
         <ReplayBroadcastsMockup
-            className={classes.replayBroadcasts}
-            channel={channel}
-            channelColor={channel.color}
-            leagueNight={true}
-          />
+          className={classes.replayBroadcasts}
+          channel={channel}
+          channelColor={channel.color}
+          leagueNight={true}
+        />
       </BottomBlock>
     </ContentLayout>
   )

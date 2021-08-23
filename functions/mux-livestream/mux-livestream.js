@@ -17,17 +17,22 @@ const handler = async (event, context) => {
   // const queryStringParameters = event.queryStringParameters
   // const foreignUrl = queryStringParameters.https://api.mux.com/video/v1/live-streams
 
-  const { url } = JSON.parse(event.body)
-  const bodyData=JSON.stringify({
+  const { url, passthrough } = JSON.parse(event.body)
+  const bodyData = JSON.stringify({
     "playback_policy": "public",
     "new_asset_settings": {
       "playback_policy": "public"
-    }
-  }  )
+    },
+    "passthrough": passthrough,
+    "audio_only": true
+  })
+
   const response = await fetch(`https://api.mux.com/${url}`,
-   {  method: 'POST',
-     body:bodyData,
-    headers })
+    {
+      method: 'POST',
+      body: bodyData,
+      headers
+    })
 
   return {
     body: await response.text(),

@@ -371,8 +371,8 @@ const Track = ({
           <div className={classes.episodeDateAndDuration}>
             <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
             <div className={classes.episodeDate}>
-              {episodeData.fields.liveDate
-                ? episodeData.fields.liveDate.split('T')[0]
+              {episodeData.fields.uploadDate
+                ? episodeData.fields.uploadDate.split('T')[0]
                 : ''}
             </div>
           </div>
@@ -504,8 +504,8 @@ export const Tracks1 = ({
           <div className={classes.episodeDateAndDuration}>
             <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
             <div className={classes.episodeDate}>
-              {episodeData?.fields?.liveDate
-                ? episodeData?.fields?.liveDate.split('T')[0]
+              {episodeData?.fields?.uploadDate
+                ? episodeData?.fields?.uploadDate.split('T')[0]
                 : ''}
             </div>
           </div>
@@ -575,7 +575,7 @@ const ReplayBroadcastsMockup = ({ className, channel, leagueNight }) => {
 
     let urladd = `maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(
       channel['tag']
-    )}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    )}&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
 
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
@@ -600,7 +600,7 @@ const ReplayBroadcastsMockup = ({ className, channel, leagueNight }) => {
 
   const leagueNightshowRecordedData = () => {
     const baseId = 'appXoertP1WJjd4TQ'
-    let urladd = `maxRecords=3&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    let urladd = `maxRecords=3&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
@@ -628,7 +628,13 @@ const ReplayBroadcastsMockup = ({ className, channel, leagueNight }) => {
   ;(function (w, d, s) {
     if (w.SDW) console.error('SDW widget already included')
     ;(w.SDW = {}), (w.SDW._r = s)
-    let methods = ['mount', 'unmount', 'addWidget', 'updateWidget', 'removeWidget']
+    let methods = [
+      'mount',
+      'unmount',
+      'addWidget',
+      'updateWidget',
+      'removeWidget',
+    ]
     w.SDW._q = []
     methods.forEach(
       method =>
