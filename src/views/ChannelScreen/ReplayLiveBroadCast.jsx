@@ -261,7 +261,7 @@ const EventImage = ({ classes, imageUrl, onClick }) => {
           <img
             className={cx(classes.eventImage, classes.clickable)}
             onClick={onClick}
-            src={image.fields && image.fields.thumbnailUrl}
+            src={image.fields && image.fields.thumbnail}
           />
         ))}
     </React.Fragment>
@@ -380,7 +380,7 @@ const Track = ({
               </div>
               <div className={classes.episodeDate}>
                 {episodeData.fields
-                  ? episodeData.fields.liveDate.split('T')[0]
+                  ? episodeData.fields.uploadDate.split('T')[0]
                   : ''}
               </div>
               <div className={classes.episodeDuration}>{fakeDurationLabel}</div>
@@ -470,7 +470,7 @@ const ReplayLiveBroadCast = ({ className, channel }) => {
     const baseId = 'appXoertP1WJjd4TQ'
     let urladd = `maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(
       channel['tag']
-    )}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    )}&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
@@ -518,34 +518,33 @@ const ReplayLiveBroadCast = ({ className, channel }) => {
 
   return (
     <div className={cx(classes.replayBroadcasts, className, channel)}>
-      {/* <ComingSoon className={classes.comingSoon} /> */}
-      {/* {fetchLiveData.map((sectionData,index)=>{
-        return ( */}
-
-      <div key={fetchLiveData} className={classes.liveBroadcast}>
-        <div className={classes.eventImageAndText}>
-          <EventImage classes={classes} imageUrl={fetchLiveData} />
-          <EventTextplate
-            channelColor={channel.color}
-            sectionData={fetchLiveData}
-          />
-        </div>
-        <div className={classes.liveness}>
-          <div className={classes.livenessLeftPad}>&nbsp;</div>
-          <div className={classes.livenessContent}>
-            {/* { showLiveData.map((item,index)=>{ */}
-            <Tracks
-              sectionData={showLiveData}
-              channelColor={channel.color}
-              assetsId={rescentAsscetid}
-              channelData={channel}
-            />
-            {/* })} */}
-          </div>
-        </div>
-      </div>
-      {/* )
-        })} */}
+      <ComingSoon className={classes.comingSoon} />
+      {fetchLiveData.map((sectionData, index) => {
+        // return (
+        //   <div key={fetchLiveData} className={classes.liveBroadcast}>
+        //     <div className={classes.eventImageAndText}>
+        //       <EventImage classes={classes} imageUrl={fetchLiveData} />
+        //       <EventTextplate
+        //         channelColor={channel.color}
+        //         sectionData={fetchLiveData}
+        //       />
+        //     </div>
+        //     <div className={classes.liveness}>
+        //       <div className={classes.livenessLeftPad}>&nbsp;</div>
+        //       <div className={classes.livenessContent}>
+        //         {/* { showLiveData.map((item,index)=>{ */}
+        //         <Tracks
+        //           sectionData={showLiveData}
+        //           channelColor={channel.color}
+        //           assetsId={rescentAsscetid}
+        //           channelData={channel}
+        //         />
+        //         {/* })} */}
+        //       </div>
+        //     </div>
+        //   </div>
+        // )
+      })}
     </div>
   )
 }

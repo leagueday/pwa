@@ -8,6 +8,7 @@ import { IcoPlay, IcoPause } from './icons'
 import { useSelector, useDispatch } from 'react-redux'
 import { actions, selectors, constants as storeConstants } from '../store'
 import { makeIconButton } from './IconButton'
+
 const useStyles = makeStyles(theme => ({
   comingSoon: {
     alignItems: 'flex-start',
@@ -92,7 +93,7 @@ const useStyles = makeStyles(theme => ({
   eventImage: {
     height: '6vw',
     width: '6vw',
-    objectFit: 'cover'
+    objectFit: 'cover',
   },
   eventImageFormobileView: {
     height: '15vw',
@@ -204,6 +205,7 @@ const Track = ({ classes, playbackurl }) => {
         dispatch(actions.playAudio())
         ev.stopPropagation()
       }
+
   return (
     <div className={classes.track}>
       <ToggleImageButton
@@ -235,6 +237,10 @@ const ComingSoon = ({ className, channel, channelColor }) => {
   const [fetchLiveData, setFetchLiveData] = useState([])
   const [liveStatus, setliveStatus] = useState(0)
   const [liveurlcheck, setliveurlchk] = useState('')
+  const userData = useSelector(selectors.getUserData)
+  const baseId = 'appXoertP1WJjd4TQ'
+
+  console.log('userData? ', fetchLiveData)
 
   const [url, setUrl] = useState('')
   useEffect(() => {
@@ -243,25 +249,25 @@ const ComingSoon = ({ className, channel, channelColor }) => {
     // muxliveData();
     // })
   }, [liveStatus])
+
   const liveData = channellivestream => {
-    const baseId = 'appXoertP1WJjd4TQ'
     let urladd = `filterByFormula={channelTag}=${JSON.stringify(
       channel['tag']
-    )}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    )}&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      // body: JSON.stringify({url: `video/v1/live-streams/${livestreamingId}`})
       body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
     })
       .then(response => response.json())
       .then(function (response) {
+        console.log('live stream data ', response)
         if (response.records.length) {
           muxliveData(response.records[0].fields.playbackUrl, channellivestream)
-          setFetchLiveData([response.records[0]])
+          setFetchLiveData(response.records[0])
           localStorage.setItem(
             'livePlayurl',
             response.records[0].fields.playbackUrl
@@ -270,12 +276,11 @@ const ComingSoon = ({ className, channel, channelColor }) => {
         }
       })
       .catch(error => {
-        console.log('error while data fetching', error.type)
+        console.log('error while data fetching', error)
       })
   }
-  let checkChannel
+
   const muxliveData = (liveurl, livestreamid) => {
-    const baseId = 'appXoertP1WJjd4TQ'
     if (liveurl) {
       fetch('/.netlify/functions/mux-proxy', {
         method: 'POST',
@@ -287,13 +292,13 @@ const ComingSoon = ({ className, channel, channelColor }) => {
       })
         .then(response => response.json())
         .then(function (response) {
-          //console.log('abc',response)
+          console.log('live stream from mux ', response)
           if (response.data.status == 'active') {
             setliveStatus(1)
           }
         })
         .catch(error => {
-          console.log('error while data fetching', error.type)
+          console.log('error while data fetching', error)
         })
     } else {
       setliveStatus(0)
@@ -302,7 +307,6 @@ const ComingSoon = ({ className, channel, channelColor }) => {
 
   const classes = useStyles()
 
-  //console.log('checkchannel',liveStatus)
   return (
     <div className={cx(classes.comingSoon, className)}>
       {liveStatus == 0 ? (
@@ -322,8 +326,8 @@ const ComingSoon = ({ className, channel, channelColor }) => {
                       <EventImage
                         classes={classes}
                         imageUrl={
-                          sectionData.fields.thumbnailUrl
-                            ? sectionData.fields.thumbnailUrl
+                          sectionData.fields.thumbnail
+                            ? sectionData.fields.thumbnail
                             : ''
                         }
                       />
@@ -350,6 +354,7 @@ const ComingSoon = ({ className, channel, channelColor }) => {
     </div>
   )
 }
+
 export const mockupGetHasBroadcasts = channel => {
   const data = filterMockupData(channel.tag)
   return data.length > 0

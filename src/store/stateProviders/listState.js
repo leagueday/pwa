@@ -12,7 +12,7 @@ const base = new Airtable({ apiKey }).base(baseId)
 
 function ListStateProvider(props) {
     const dispatch = useDispatch();
-    const activeUser = useSelector(selectors.getUser)
+    const activeUser = useSelector(selectors.getUser);
     const channelList = useSelector(selectors.getMyChannels);
     const creatorsList = useSelector(selectors.getMyCreators);
     const { data } = useAirTable(baseId, 'UserProfile');
@@ -25,7 +25,6 @@ function ListStateProvider(props) {
     let result = []
     let creators = []
     // CHANNEL LIST
-
 
     const getData = () => {
         base('UserList').select({
@@ -86,7 +85,6 @@ function ListStateProvider(props) {
         const recordToDelete = globalList?.filter((item) => item.fields.tag === tag)
         const newList = globalList?.filter((item) => item.fields.tag !== tag)
         setGlobalList(newList)
-
 
         await Promise.all(recordToDelete)
         const id = recordToDelete?.shift()?.id

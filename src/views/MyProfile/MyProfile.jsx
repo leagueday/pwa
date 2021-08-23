@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Airtable from 'airtable'
+import AudioCard from '../ChannelScreen/AudioCard'
 import { useSelector, useDispatch } from 'react-redux'
 import Friend from './Friend'
 import FriendRequest from './FriendRequest'
@@ -514,6 +515,7 @@ const MyProfile = ({ userId }) => {
   const [friendsModal, setFriendsModal] = useState(false)
   const [open, setOpen] = useState(false)
   const friendList = useSelector(selectors.getFriendsList)
+  const [liveData, setLiveData] = useState([])
   // const { filteredListRecords, creatorList: cl } = getMyList()
   const filteredListRecords = useSelector(selectors.getMyChannels)
   const user = useSelector(selectors.getUser)
@@ -561,6 +563,26 @@ const MyProfile = ({ userId }) => {
   const handleModalClose = () => {
     setOpen(false)
   }
+
+  useEffect(() => {
+    let urladd = `filterByFormula={channelTag}='lol'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
+    fetch('/.netlify/functions/commingsoon-proxy', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
+    })
+      .then(response => response.json())
+      .then(function (response) {
+        setLiveData(response.records.filter(item => !!item.fields.liveStreamId))
+        console.log('live data from AT ', response.records.slice(0, 4))
+      })
+      .catch(error => {
+        console.log('error while data fetching', error)
+      })
+  }, [])
 
   const getUserRecordings = () => {
     base('UserAudiocasts')
@@ -645,8 +667,6 @@ const MyProfile = ({ userId }) => {
     return <h1>Loading...</h1>
   }
 
-  //https://leagueday-api.herokuapp.com/
-
   const NoobTrophy = ({ classes }) => {
     return (
       <div className={classes.trophyCont}>
@@ -698,14 +718,50 @@ const MyProfile = ({ userId }) => {
   //   }
   // }, [cl])
 
+  const MuxComponent = ({ livestreamid, count, audio }) => {
+    const [active, setActive] = useState(false)
+
+    fetch('/.netlify/functions/mux-proxy', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        url: `video/v1/live-streams/${livestreamid}?limit=200`,
+      }),
+    })
+      .then(response => response.json())
+      .then(function (response) {
+        console.log(`number ${count + 1}`, response)
+        if (response.data.status === 'active') {
+          setActive(true)
+        }
+      })
+      .catch(error => {
+        console.log('error while data fetching', error.type)
+      })
+
+    return (
+      active && (
+        <AudioCard channelTag={'lol'} indexData={count + 1} audio={audio} />
+      )
+    )
+  }
+
   return (
     <div className={classes.content}>
       <Modal open={friendsModal} onClose={() => setFriendsModal(false)}>
         <div className={classes.friendsModalWrapper}>
           {friendList?.received?.length === 0 && <h4>No Pending requests</h4>}
-          {friendList?.received?.map((friend, ind) => (
+          {liveData?.map((id, ind) => (
             <div className={classes.friendReqList} key={ind}>
-              <FriendRequest friend={friend} classes={classes} />
+              {/* <FriendRequest friend={friend} classes={classes} /> */}
+              <MuxComponent
+                livestreamid={id.fields.liveStreamId}
+                count={ind}
+                audio={id}
+              />
             </div>
           ))}
         </div>
@@ -915,7 +971,7 @@ const MyProfile = ({ userId }) => {
             )}
             {creatorsSelected && (
               <div className={classes.channels}>
-                {cl?.map((item, index) => {
+                {creatorList?.map((item, index) => {
                   return (
                     <div
                       className={classes.channelsWrapper}

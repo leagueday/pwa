@@ -1,26 +1,19 @@
-import React, { useEffect, lazy, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import ReactHlsPlayer from 'react-hls-player';
-import Airtable from 'airtable'
 import 'react-h5-audio-player/lib/styles.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Button, Icon, TextField, Paper, Typography } from "@material-ui/core";
+import { Button, Icon } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles'
 import useChannels from '../../api/useChannels';
-import useChannelCategories from '../../api/useChannelCategories';
-import useFacets from '../../api/useFacets'
 import { actions, selectors, constants as storeConstants } from '../../store'
 import { colors } from '../../styling'
 import BasicLayout from '../BasicLayout'
-import FacetedPodcastTiles from '../FacetedPodcastTiles'
-import Loading from '../Loading'
 import { addScrollStyle } from '../util'
 import TitleBar from './TitleBar'
-import GoLiveData from './GoLiveData';
 import { makeIconButton } from '../IconButton'
 import { IcoPause, IcoPlay } from '../icons'
-const ChannelCategories = lazy(() => import('../ChannelCategories'))
+
 const primaryColor = colors.magenta
 const PauseButton = makeIconButton(IcoPause)
 const PlayButton = makeIconButton(IcoPlay)
@@ -95,8 +88,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const DestributionPage = () => {
-  const audioRef = useRef(null);
-  const facetedPodcasts = useFacets('Home')
   const classes = useStyles({ primaryColor })
   const [channelList, setChannelList] = useState({
     rtmpLink: "",
@@ -113,12 +104,14 @@ const DestributionPage = () => {
   const [userProfile, setUserProfile] = useState([])
   const [userChannel, setuserChannel] = useState([])
   const [playbackChannel, setplaybackChannel] = useState('')
+  const [liveStreamId, setLiveStreamId] = useState('')
   const channels = useChannels().list
   const user = useSelector(selectors.getUser)
+  const userData = useSelector(selectors.getUserData)
   const userName = user?.user_metadata?.full_name
+  const baseId = 'appXoertP1WJjd4TQ'
 
   useEffect(() => {
-    const baseId = 'appXoertP1WJjd4TQ'
     const userId = user['id']
     let fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
 
@@ -154,88 +147,83 @@ const DestributionPage = () => {
   }
 
   let channelsData = channels.concat(userChannelPush)
+
   const onChannelChanged = (e, key) => {
 
     let ChannelInfo = channelsData[key]
-    if (!ChannelInfo.rtmpLink || !ChannelInfo.streamKey || !ChannelInfo.liveStreamId) {
-      toast.error("We can't Go Live for this channel as stream key is not provided. Please update key and try again.")
-      setdirectLink(false);
-      setCreate(false)
-    }
-    else {
-      setChannelList({
-        ...channelList,
-        channelTitle: e.target.value,
-        rtmpLink: ChannelInfo.rtmpLink,
-        liveStreamId: ChannelInfo.liveStreamId,
-        streamKey: ChannelInfo.streamKey,
-        channelTag: ChannelInfo.tag
-      })
-      setCreate(true)
-      setbutton(true)
-      toast.success("Please click Create Direct Link below to stream to selected channel")
-    }
-
+    setChannelList({
+      ...channelList,
+      channelTitle: e.target.value,
+      rtmpLink: ChannelInfo.rtmpLink,
+      liveStreamId: ChannelInfo.liveStreamId,
+      streamKey: ChannelInfo.streamKey,
+      channelTag: ChannelInfo.tag
+    })
+    setCreate(true)
+    setbutton(true)
+    toast.success("Please click Create Direct Link below to stream to selected channel")
   }
 
-  const creatingDirectLink = () => {
-    let livestreamingId = channelList['liveStreamId']
+  const creatingDirectLink = async () => {
+    const passthrough = channelList.channelTag
 
-    //call mux api to get playback url
-    fetch('/.netlify/functions/mux-proxy', {
+    await fetch('/.netlify/functions/mux-livestream', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ url: `video/v1/live-streams/${livestreamingId}` })
-    }).then(response => response.json())
-      .then(function (streamData) {
-        console.log('ola ',streamData.data);
-        setplaybackChannel(streamData.data.playback_ids[0].id)
-        setStreamkey({
-          streamkey: streamData.data.stream_key
-        })
-        setplayback({
-          playback: streamData.data.playback_ids[0].id
-        })
+      body: JSON.stringify({ url: `video/v1/live-streams`, passthrough: passthrough }),
+    })
+      .then(response => response.json())
+      .then(function (livestreamData) {
+        console.log("doing it the right way ", livestreamData)
+        setStreamkey(livestreamData.data.stream_key)
+        setLiveStreamId(livestreamData.data.id)
+        setplayback(livestreamData.data.playback_ids[0].id)
         setdirectLink(true)
         setCreate(true)
         setbutton(false)
-        localStorage.setItem('playback', streamData.data.playback_ids[0].id)
-        submitFormData(streamData.data.playback_ids[0].id)
-      }
-      ).catch((error) => {
-        toast.error(error.type)
+        submitFormData(livestreamData.data.playback_ids[0].id, livestreamData.data.id, livestreamData.data.stream_key)
+      })
+      .catch(error => {
+        console.log("error ", error)
+        // toast.error(error.type)
       })
   }
+
+  console.log('mux vars ', liveStreamId, streamkey, playback)
 
   let playId = playback.playback;
   let playbackUrl = `${playbackStream}/${playId}.m3u8`
   let playbachannelUrl = playbackChannel
   const playerRef = useRef();
 
-  function submitFormData(play_id) {
+  function submitFormData(play_id, livestreamid, stream) {
+    console.log('data from submit form ', livestreamid, stream)
     let data = {
       "records": [
         {
           "fields": {
             title: localStorage.getItem('title'),
             description: localStorage.getItem('description'),
-            thumbnailUrl: localStorage.getItem('channelImage'),
-            liveDate: new Date(),
+            thumbnail: localStorage.getItem('channelImage'),
+            uploadDate: new Date(),
             channelTag: channelList.channelTag,
             playbackUrl: `${playbackStream}/${play_id}.m3u8`,
             userId: user.id,
+            liveStreamId: livestreamid,
+            streamKey: stream,
             upvotes: 0,
             userEmail: user.email,
-            type: 'livestream'
+            type: 'livestream',
+            creatorImg: userData.fields.image,
+            username: userData.fields.name
           }
         }
       ]
     }
 
-    const baseId = 'appXoertP1WJjd4TQ'
     fetch('/.netlify/functions/airtable-proxy', {
       method: 'POST',
       headers: {
@@ -246,26 +234,13 @@ const DestributionPage = () => {
     }).then(response => response.json())
       .then(
         function (response) {
-          console.log("response from api",response)
+          console.log("new channelLiveData entry ", response)
         }
       ).catch((error) => {
         console.log("error while data fetching", error.type)
       })
   }
 
-  function playVideo() {
-    playerRef.current.play();
-    setdirectLink(false)
-  }
-
-  function pauseVideo() {
-    playerRef.current.pause();
-  }
-
-  function toggleControls() {
-    playerRef.current.controls = !playerRef.current.controls;
-  }
-  
   channelsData && channelsData.map((channel, index) => {
     userProfile && userProfile.map((item) => {
       if (channel.title === item) {
@@ -349,11 +324,11 @@ const DestributionPage = () => {
                     <h3>Please link the keys below to OBS and then click Create Direct Link in order to go live on selected channel</h3>
                   </header>
                   <li >
-                    Stream Key:  {channelList['streamKey']}
+                    Stream Key: {streamkey}
                   </li>
                   <li>
                     RTMP Link: <a className={classes.space} href={playbackUrl} target="_blank">
-                      {channelList['rtmpLink']}
+                    rtmps://global-live.mux.com:443/app
                     </a>
                   </li>
                 </ul>
@@ -372,9 +347,9 @@ const DestributionPage = () => {
 
               {directLink && (
                 <>
-                  Your playBack url is: <a className={classes.playback} href={playbackUrl} target="_blank">
+                  {/* Your playBack url is: <a className={classes.playback} href={playbackUrl} target="_blank">
                     {playbackUrl}
-                  </a>
+                  </a> */}
                   <br></br>
                   <br></br>
                   Play Audio:
@@ -396,7 +371,6 @@ const DestributionPage = () => {
       ) : (window.location.href = '/')}
     </BasicLayout>
   )
-
 }
 
 export default DestributionPage
