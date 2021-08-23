@@ -339,6 +339,7 @@ const CreateProfile = props => {
       }
       setLoading(false)
     })
+    setLoading(false)
   }
 
   const muxChannel = () => {
