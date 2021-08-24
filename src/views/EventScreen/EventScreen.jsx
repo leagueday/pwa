@@ -12,6 +12,7 @@ import ContentLayout from '../ContentLayout'
 import Square from '../Square'
 import Item from './Item'
 
+
 const useStyles = makeStyles(theme => ({
   accentColor: ({ color }) => ({
     color,

@@ -26,7 +26,6 @@ function ListStateProvider(props) {
     let creators = []
     // CHANNEL LIST
 
-
     const getData = () => {
         base('UserList').select({
             filterByFormula: `{userId} = '${activeUser?.id}'`,
