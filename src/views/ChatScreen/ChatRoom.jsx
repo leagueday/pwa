@@ -127,7 +127,7 @@ const useStyles = makeStyles(theme => ({
 const ChatRoom = ({  socket, roomId }) => {
   const user = useSelector(selectors.getUser)
   const { selectedFriend } = useContext(FriendsStateContext)
-
+  const userData = useSelector(selectors.getUserData)
   const roomIdRef = useRef(roomId)
 
   useEffect(() => {
@@ -145,7 +145,6 @@ const ChatRoom = ({  socket, roomId }) => {
 
   const classes = useStyles()
   const [message, setMessage] = useState('')
-  const [userData, setUserData] = useState({})
   const [allChats, setAllChats] = useState([])
 
   const messageEl = useRef(null)
@@ -155,30 +154,6 @@ const ChatRoom = ({  socket, roomId }) => {
   }
 
   useEffect(scrollToBottom, [allChats])
-
-  const getProfileData = () => {
-    const baseId = 'appXoertP1WJjd4TQ'
-    let fetchSearch
-    if (user) {
-      const userId = user['id']
-      fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
-    }
-    fetch('/.netlify/functions/airtable-getprofile', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/UserProfile${fetchSearch}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        setUserData(response.records[0])
-      })
-      .catch(error => {
-        console.log('error while data fetching', error)
-      })
-  }
 
   const sendChat = e => {
     e.preventDefault()
@@ -229,7 +204,6 @@ const ChatRoom = ({  socket, roomId }) => {
   }, [])
 
   useEffect(() => {
-    getProfileData()
     getMessages(roomId)
     roomIdRef.current = roomId
   }, [user, selectedFriend])
