@@ -121,12 +121,12 @@ const AggregatorContent = ({ channel }) => {
           channel={channel}
           channelColor={channel.color}
         />
-        {/* <ReplayBroadcastsMockup
+        <ReplayBroadcastsMockup
           className={classes.replayBroadcasts}
           channel={channel}
           channelColor={channel.color}
           leagueNight={false}
-        /> */}
+        />
       </BottomBlock>
       <BottomBlock
         accentColor={channel.color}

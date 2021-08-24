@@ -128,6 +128,7 @@ const NavBar = () => {
   const [profileCreated, setProfileCreated] = useState(false)
   const [userData, setUserData] = useState({})
   const user = useSelector(selectors.getUser)
+  const userProfile = useSelector(selectors.getUserData)
   const [anchorEl, setAnchorEl] = useState(null)
 
   const handleClick = event => {
@@ -222,8 +223,8 @@ const NavBar = () => {
               className={classes.profile}
               onClick={handleClick}
               src={
-                userData?.fields?.image
-                  ? userData?.fields?.image
+                userProfile?.fields?.image
+                  ? userProfile?.fields?.image
                   : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues='
               }
               alt=""
