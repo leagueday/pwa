@@ -371,8 +371,8 @@ const Track = ({
           <div className={classes.episodeDateAndDuration}>
             <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
             <div className={classes.episodeDate}>
-              {episodeData.fields.liveDate
-                ? episodeData.fields.liveDate.split('T')[0]
+              {episodeData.fields.uploadDate
+                ? episodeData.fields.uploadDate.split('T')[0]
                 : ''}
             </div>
           </div>
@@ -504,8 +504,8 @@ export const Tracks1 = ({
           <div className={classes.episodeDateAndDuration}>
             <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
             <div className={classes.episodeDate}>
-              {episodeData?.fields?.liveDate
-                ? episodeData?.fields?.liveDate.split('T')[0]
+              {episodeData?.fields?.uploadDate
+                ? episodeData?.fields?.uploadDate.split('T')[0]
                 : ''}
             </div>
           </div>
@@ -575,7 +575,7 @@ const ReplayBroadcastsMockup = ({ className, channel, leagueNight }) => {
 
     let urladd = `maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(
       channel['tag']
-    )}&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    )}&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
 
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
@@ -600,7 +600,7 @@ const ReplayBroadcastsMockup = ({ className, channel, leagueNight }) => {
 
   const leagueNightshowRecordedData = () => {
     const baseId = 'appXoertP1WJjd4TQ'
-    let urladd = `maxRecords=3&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    let urladd = `maxRecords=3&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
@@ -625,8 +625,62 @@ const ReplayBroadcastsMockup = ({ className, channel, leagueNight }) => {
     dispatch(actions.pushHistory(`/event/${event}`))
   }
 
+  ;(function (w, d, s) {
+    if (w.SDW) console.error('SDW widget already included')
+    ;(w.SDW = {}), (w.SDW._r = s)
+    let methods = [
+      'mount',
+      'unmount',
+      'addWidget',
+      'updateWidget',
+      'removeWidget',
+    ]
+    w.SDW._q = []
+    methods.forEach(
+      method =>
+        (w.SDW[method] = function () {
+          w.SDW._q.push([method, arguments])
+        })
+    )
+    var script = d.createElement('script')
+    script.async = 1
+    script.src = s
+    var before = d.getElementsByTagName('script')[0]
+    before.parentNode.insertBefore(script, before)
+  })(window, document, 'https://widgets.shadow.gg/realtime/scriptLoader.js')
+  SDW.mount({
+    clientId: 'v8rpx5ws1x3E8wNz7ck6MhaZJt5WQkK9',
+    theme: {
+      background: '#f5f5f5',
+      'secondary-background': '#EDEDED',
+      'base-text': '#313131',
+      border: '#DEDEDE',
+      primary: '#eb3323',
+      secondary: '#DEDEDE',
+      red: '#ed553b',
+      blue: '#006495',
+      'hover-bg': '#DEDEDE',
+      'hover-text': '#313131',
+      dark: false,
+    },
+    baseUrl: 'https://widgets.shadow.gg',
+  })
+  SDW.addWidget({
+    containerId: 'shadow-container',
+    settings: {
+      groupCalendarByLive: false,
+      hasPlayerStats: false,
+      hasPlayerStatsOverlay: true,
+      hasDesktopLayout: true,
+      matchWidgetId: 'match-custom-shadow',
+      titleFilter: ['lol'],
+    },
+    type: 'calendar',
+  })
+
   return (
     <div className={cx(classes.replayBroadcasts, className)}>
+      <div id="shadow-container"></div>
       {!leagueNight &&
         filterMockupData(channel.tag).map(sectionData => {
           return (

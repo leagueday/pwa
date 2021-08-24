@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
   },
   creatorImg: {
-    zIndex: 100,
+    zIndex: 10,
     cursor: 'pointer',
     position: 'absolute',
     borderRadius: '50%',
@@ -178,6 +178,32 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     cursor: 'pointer',
   },
+  '@keyframes blinker': {
+    '0%': { filter: 'brightness(100%)' },
+    '49%': { filter: 'brightness(100%)' },
+    '50%': { filter: 'brightness(200%)' },
+    '100%': { filter: 'brightness(200%)' },
+  },
+  liveSign: {
+    zIndex: 100,
+    border: 'none',
+    outline: 'none',
+    position: 'absolute',
+    top: -10,
+    left: -10,
+    padding: '10 20',
+    width: '25%',
+    background: 'red',
+    borderRadius: '5px',
+    '&:hover': {
+      background: 'red',
+      filter: 'brightness(150%)',
+    },
+    animationName: '$blinker',
+    animationTimingFunction: 'linear',
+    animationDuration: '1.5s',
+    animationIterationCount: 'infinite',
+  },
   expandModal: {
     zIndex: 100,
     border: 'none',
@@ -188,7 +214,6 @@ const useStyles = makeStyles(theme => ({
     left: '50%',
     padding: '10 20',
     width: '25%',
-    borderRadius: '70px',
     background: colors.blue,
     borderRadius: '5px',
     '&:hover': {
@@ -223,8 +248,7 @@ const useStyles = makeStyles(theme => ({
 
 const baseId = 'appXoertP1WJjd4TQ'
 
-const AudioCard = ({ audio, indexData, channelTag }) => {
-  // const { userData, setUserId } = useContext(UserStateContext)
+const AudioCard = ({ audio, indexData, channelTag, live }) => {
   const dispatch = useDispatch()
   const classes = useStyles()
   const activeUser = useSelector(selectors.getUser)
@@ -320,6 +344,7 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
             More
           </Button>
         )}
+        {live && <Button className={classes.liveSign}>Live</Button>}
         <img
           className={classes.creatorImg}
           src={audio?.fields?.creatorImg}
@@ -380,12 +405,14 @@ const AudioCard = ({ audio, indexData, channelTag }) => {
                   {audio?.fields?.uploadDate}
                 </span>
               </p>
-              <p style={{ color: colors.white80 }}>
-                Duration:{' '}
-                <span style={{ color: colors.yellow, opacity: 0.8 }}>
-                  {durationLabel}
-                </span>
-              </p>
+              {!live && (
+                <p style={{ color: colors.white80 }}>
+                  Duration:{' '}
+                  <span style={{ color: colors.yellow, opacity: 0.8 }}>
+                    {durationLabel}
+                  </span>
+                </p>
+              )}
             </div>
           </div>
           <div className={classes.audioDescription}>

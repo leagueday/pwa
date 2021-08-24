@@ -1,15 +1,23 @@
-import React from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { makeStyles } from '@material-ui/styles'
+import { selectors } from '../../store'
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
+import { useSelector } from 'react-redux'
+import SocketIOClient from 'socket.io-client'
+import axios from 'axios'
+import { addScrollStyle } from '../util'
 import { colors } from '../../styling'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import GroupAddIcon from '@material-ui/icons/GroupAdd'
+
 const useStyles = makeStyles(theme => ({
   chatBox: {
     position: 'relative',
     background: colors.darkerGray,
     width: '100%',
     height: '100%',
+    overflow: 'hidden',
     marginLeft: '2px',
     background: 'black',
     outline: `0.5px solid ${colors.darkGray}`,
@@ -28,10 +36,10 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
   },
   reciever: {
-    position: 'absolute',
+    background: 'black',
     height: '7%',
+    minHeight: '60px',
     width: '100%',
-    top: 0,
     borderBottom: `0.5px solid ${colors.darkGray}`,
     display: 'flex',
     justifyContent: 'center',
@@ -65,28 +73,226 @@ const useStyles = makeStyles(theme => ({
     },
     fontSize: '32px',
     cursor: 'pointer',
-  }
-}));
+  },
+  chatRoom: ({ primaryColor = colors.blue }) =>
+    addScrollStyle(
+      primaryColor,
+      theme
+    )({
+      height: '82%',
+      marginBottom: '3%',
+      overflow: 'scroll',
+      overflowX: 'hidden',
+    }),
+  chat: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    color: 'black',
+  },
+  Uchat: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row-reverse',
+    color: 'black',
+  },
+  uText: {
+    maxWidth: '50%',
+    marginRight: '2%',
+    borderRadius: '10px',
+    background: colors.blue,
+    padding: '1%',
+  },
+  text: {
+    maxWidth: '50%',
+    marginLeft: '2%',
+    borderRadius: '10px',
+    background: colors.white80,
+    padding: '1%',
+  },
+  chatImg: {
+    width: '50px',
+    height: '50px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+  },
+  recipient: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+  },
+}))
 
-const ChatRoom = ({ friend }) => {
+const ChatRoom = ({  socket, roomId }) => {
+  const user = useSelector(selectors.getUser)
+  const { selectedFriend } = useContext(FriendsStateContext)
+
+  const roomIdRef = useRef(roomId)
+
+  useEffect(() => {
+    socket?.on('new_chat', () => {
+      console.log('triggered new chat ')
+      getMessages(roomIdRef.current)
+    })
+
+    return () => {
+      socket?.off('new_chat', () => {
+        getMessages(roomIdRef.current)
+      })
+    }
+  }, [socket])
+
   const classes = useStyles()
+  const [message, setMessage] = useState('')
+  const [userData, setUserData] = useState({})
+  const [allChats, setAllChats] = useState([])
+
+  const messageEl = useRef(null)
+
+  const scrollToBottom = () => {
+    messageEl?.current?.scrollIntoView({ behavior: 'auto' })
+  }
+
+  useEffect(scrollToBottom, [allChats])
+
+  const getProfileData = () => {
+    const baseId = 'appXoertP1WJjd4TQ'
+    let fetchSearch
+    if (user) {
+      const userId = user['id']
+      fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
+    }
+    fetch('/.netlify/functions/airtable-getprofile', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url: `${baseId}/UserProfile${fetchSearch}` }),
+    })
+      .then(response => response.json())
+      .then(function (response) {
+        setUserData(response.records[0])
+      })
+      .catch(error => {
+        console.log('error while data fetching', error)
+      })
+  }
+
+  const sendChat = e => {
+    e.preventDefault()
+    axios
+      .post('https://leagueday-api.herokuapp.com/chats/create', {
+        userId: user.id,
+        roomId: roomId,
+        message: message,
+        image: userData?.fields?.image
+          ? userData?.fields?.image
+          : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues=',
+      })
+      .then(res => {
+        socket.emit('new_chat', { message })
+        setMessage('')
+        console.log('sent message ', res)
+      })
+      .catch(err => {
+        console.log('message send error ', err)
+      })
+  }
+
+  const getMessages = (id) => {
+    axios
+      .post('https://leagueday-api.herokuapp.com/chats/list', {
+        roomId: id,
+      })
+      .then(res => {
+        console.log('res', res)
+        setAllChats(res.data.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  const listener = event => {
+    if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+      sendChat()
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', listener)
+    return () => {
+      document.removeEventListener('keydown', listener)
+    }
+  }, [])
+
+  useEffect(() => {
+    getProfileData()
+    getMessages(roomId)
+    roomIdRef.current = roomId
+  }, [user, selectedFriend])
 
   return (
     <div className={classes.chatBox}>
-      {!!friend ? (
+      {!!selectedFriend ? (
         <div className={classes.recipient}>
           <div className={classes.reciever}>
-            <img src={friend.image} alt="" className={classes.friendImg} />
-            <h3>{friend.name}</h3>
-            <GroupAddIcon className={classes.addIcon}/>
+            <img
+              src={selectedFriend.image}
+              alt=""
+              className={classes.friendImg}
+            />
+            <h3>{selectedFriend.name}</h3>
+            <GroupAddIcon className={classes.addIcon} />
           </div>
-
-          <input type="text" className={classes.message} />
-          <FontAwesomeIcon
-            icon={faPaperPlane}
-            className={classes.sendIcon}
-            size={'2x'}
-          />
+          <div className={classes.chatRoom}>
+            {allChats?.map((chat, ind) => (
+              <div
+                className={
+                  chat?.authorId === user?.id ? classes.Uchat : classes.chat
+                }
+                key={ind}
+              >
+                <img className={classes.chatImg} src={chat?.authorImg} alt="" />
+                <p
+                  className={
+                    chat?.authorId === user?.id ? classes.uText : classes.text
+                  }
+                >
+                  {chat?.message}
+                </p>
+              </div>
+            ))}
+            <div ref={messageEl} />
+          </div>
+          <div style={{ height: '8%', background: 'black' }}>
+            <form onSubmit={sendChat}>
+              <input
+                type="text"
+                className={classes.message}
+                value={message}
+                onChange={e => setMessage(e.target.value)}
+                onKeyDown={listener}
+              />
+              <button
+                type="submit"
+                style={{
+                  border: 'none',
+                  outline: 'none',
+                  background: 'transparent',
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faPaperPlane}
+                  className={classes.sendIcon}
+                  size={'2x'}
+                  onClick={sendChat}
+                />
+              </button>
+            </form>
+          </div>
         </div>
       ) : (
         <h1

@@ -7,14 +7,29 @@ import fetchUserData from '../api/fetchUserData'
 const UserData = () => {
   const dispatch = useDispatch()
   const user = useSelector(selectors.getUser)
+  const baseId = 'appXoertP1WJjd4TQ'
 
   React.useEffect(() => {
-    fetchUserData(user?.token?.access_token).then(maybeData => {
-      if (NODE_ENV === 'development') 
-      if (typeof maybeData === 'object') {
-        dispatch(actions.setUserData(maybeData))
-      }
+    let fetchSearch
+    if (user) {
+      const userId = user['id']
+      fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
+    }
+    fetch('/.netlify/functions/airtable-getprofile', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url: `${baseId}/UserProfile${fetchSearch}` }),
     })
+      .then(response => response.json())
+      .then(function (response) {
+        dispatch(actions.setUserData(response.records[0]))
+      })
+      .catch(error => {
+        console.log('error while data fetching', error)
+      })
   }, [user])
 
   return null

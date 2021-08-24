@@ -129,7 +129,7 @@ const EventScreen = ({ tag }) => {
         view: 'Grid view',
       })
       .eachPage(
-        async function page(records, fetchNextPage) {          
+        async function page(records, fetchNextPage) {
           allRecords = [...allRecords.reverse(), ...records]
           seteventDataFetch(allRecords.reverse())
           fetchNextPage()
@@ -145,7 +145,7 @@ const EventScreen = ({ tag }) => {
 
   const EvenScreeDatalCS = () => {
     const baseId = 'appXoertP1WJjd4TQ'
-    let urladd = `filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=liveDate&sort%5B0%5D%5Bdirection%5D=desc`
+    let urladd = `filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
@@ -174,10 +174,7 @@ const EventScreen = ({ tag }) => {
     tag === 'lcs'
       ? '/img/restyle_demo/lcs.png'
       : '/img/restyle_demo/LeagueNight2.png'
-  const subTitle =
-    tag === 'lcs'
-      ? 'LCS Spring Replays 2021'
-      : ''
+  const subTitle = tag === 'lcs' ? 'LCS Spring Replays 2021' : ''
   const title = tag === 'lcs' ? 'LCS Replays' : 'LeagueNight'
 
   const makeToggleIsExpanded = itemIndex =>
@@ -226,8 +223,8 @@ const EventScreen = ({ tag }) => {
                     accentColor={color}
                     className={classes.item}
                     date={
-                      item.fields.liveDate
-                        ? item.fields.liveDate.split('T')[0]
+                      item.fields.uploadDate
+                        ? item.fields.uploadDate.split('T')[0]
                         : ''
                     }
                     duration={''}
@@ -248,13 +245,13 @@ const EventScreen = ({ tag }) => {
             ? eventDataFetchlCS &&
               eventDataFetchlCS?.map((title, index) => (
                 <Item
-                audio={title}
+                  audio={title}
                   key={index}
                   accentColor={color}
                   className={classes.item}
                   date={
-                    title.fields.liveDate
-                      ? title.fields.liveDate.split('T')[0]
+                    title.fields.uploadDate
+                      ? title.fields.uploadDate.split('T')[0]
                       : ''
                   }
                   duration={''}

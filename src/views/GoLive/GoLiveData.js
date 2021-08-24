@@ -16,7 +16,6 @@ import { uploadFile } from 'react-s3';
 import('buffer').then(({Buffer}) => {global.Buffer = Buffer;})
 const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
 
-
 const primaryColor = colors.magenta
 
 const useStyles = makeStyles(theme => ({
@@ -168,14 +167,14 @@ const GoLiveData = (props) => {
     evt.preventDefault()
     //console.log("message fired",evt)
     return sleep(100).then(() => {
-    if(validateForm()){
+    // if(validateForm()){
     //console.log("title & descridption addedd")
     localStorage.setItem("title",formInput['title'])
     localStorage.setItem("description",formInput['description'])
     localStorage.setItem('channelImage',image)
     localStorage.setItem('file',image)
     dispatch(actions.pushHistory('/preview'))
-    }
+    // }
       })
 }
   const classes = useStyles({ primaryColor })
@@ -272,7 +271,7 @@ const GoLiveData = (props) => {
             variant="contained"
             color="primary"
             className={classes.button}
-            disabled={disable}
+            // disabled={disable}
           >
             Save & Preview
           </Button>

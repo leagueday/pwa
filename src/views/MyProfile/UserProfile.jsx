@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useDispatch } from 'react-redux'
+import axios from 'axios'
+import { Modal } from '@material-ui/core'
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
+import { selectors } from '../../store'
+import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import Airtable from 'airtable'
@@ -305,6 +309,46 @@ const useStyles = makeStyles(theme => ({
       fontSize: '80%',
     },
   },
+  modalWrapper: {
+    position: 'absolute',
+    width: 520,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: colors.darkGray,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    color: 'white',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    outline: 'none',
+    borderRadius: '5px',
+    height: 250,
+  },
+  createBtn: {
+    background: colors.blue,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+  },
+  accepted: {
+    width: '200px',
+    marginBottom: '5px',
+    background: colors.blue,
+    '&:hover': {
+      background: theme.palette.primary.active,
+    },
+  },
+  declined: {
+    width: '200px',
+    background: 'red',
+    '&:hover': {
+      background: 'red',
+      opacity: 0.8,
+    },
+  },
 }))
 
 const NoobTrophy = ({ classes }) => {
@@ -342,24 +386,36 @@ const TitanTrophy = ({ classes }) => {
     </div>
   )
 }
+const apiKey = 'keymd23kpZ12EriVi'
+const baseId = 'appXoertP1WJjd4TQ'
+const base = new Airtable({ apiKey }).base(baseId)
 
-const MyProfile = ({ userId }) => {
-  const { userData, loading, refreshData, getData } = useContext(
-    UserStateContext
+const UserProfile = ({ userId }) => {
+  const { userData, loading, getData } = useContext(UserStateContext)
+  const { sendRequest, declineFriendReq, acceptFriendReq } = useContext(
+    FriendsStateContext
   )
+
   const dispatch = useDispatch()
-  const baseId = 'appXoertP1WJjd4TQ'
-  const apiKey = 'keymd23kpZ12EriVi'
-  const base = new Airtable({ apiKey }).base(baseId)
+  const friendsList = useSelector(selectors.getFriendsList)
+  const user = useSelector(selectors.getUser)
+
   const [userRecordings, setUserRecordings] = useState([])
   const [audiocasts, setAudiocasts] = useState([])
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [trophieSelected, setTrophieSelected] = useState(false)
   const [creatorsSelected, setCreatorsSelected] = useState(false)
   const [channelSelected, setChannelSelected] = useState(false)
-  const [sent, setSent] = useState(false)
   const [channelList, setChannelList] = useState([])
+  const [accepted, setAccepted] = useState(false)
+  const [declined, setDeclined] = useState(false)
   const [creatorList, setCreatorList] = useState([])
+  const [open, setOpen] = useState(false)
+  const [alreadyFriends, setAlreadyFriends] = useState(false)
+  const [requestPending, setRequestPending] = useState(false)
+  const [sentRequest, setSentRequest] = useState(false)
+  const [declineId, setDeclineId] = useState('')
+  const [profileCreated, setProfileCreated] = useState(false)
 
   const handleCreatorClick = () => {
     setCreatorsSelected(true)
@@ -470,12 +526,95 @@ const MyProfile = ({ userId }) => {
       )
   }
 
+  const handleSend = () => {
+    if (!user) {
+      dispatch(actions.login())
+    } else if (user && profileCreated === false) {
+      setOpen(true)
+    } else {
+      sendRequest(userId)
+      setSentRequest(true)
+    }
+  }
+
+  const handleProfileStatus = async () => {
+    const baseId = 'appXoertP1WJjd4TQ'
+    let fetchSearch
+    if (user) {
+      const userId = user['id']
+      fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
+    }
+    await fetch('/.netlify/functions/airtable-getprofile', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url: `${baseId}/UserProfile${fetchSearch}` }),
+    })
+      .then(response => response.json())
+      .then(function (response) {
+        if (response.records.length > 0) {
+          setProfileCreated(true)
+          localStorage.setItem(
+            'profilecreated',
+            response.records[0].fields.profileCreated
+          )
+        } else {
+          setProfileCreated(false)
+        }
+      })
+      .catch(error => {
+        console.log('error while data fetching', error)
+      })
+  }
+
   useEffect(() => {
     getListData()
     getCreatorData()
     getData()
     getUserRecordings()
   }, [userId])
+
+  const handleAccept = () => {
+    acceptFriendReq(declineId)
+    setAccepted(true)
+  }
+
+  useEffect(() => {
+    friendsList?.sent?.map(friend => {
+      if (friend.friend.id === userId) {
+        setDeclineId(friend.id)
+        setSentRequest(true)
+      } else {
+        return
+      }
+    })
+
+    friendsList?.received?.map(friend => {
+      if (friend.friend.id === userId) {
+        setRequestPending(true)
+      } else {
+        return
+      }
+    })
+
+    friendsList?.accepted?.map(friend => {
+      if (friend.friend.id === userId) {
+        setAlreadyFriends(true)
+      } else {
+        return
+      }
+    })
+  }, [friendsList, userId])
+
+  useEffect(() => {
+    handleProfileStatus()
+  }, [])
+
+  useEffect(() => {
+    handleProfileStatus()
+  }, [user])
 
   return (
     <div className={classes.content}>
@@ -513,14 +652,63 @@ const MyProfile = ({ userId }) => {
               </div>
             )}
           </div>
-          <Button className={classes.editProfile} onClick={() => setSent(true)}> {sent ? 'Sent!' : 'Send Friend Request'} </Button>
+          <Modal open={open} onClose={() => setOpen(false)}>
+            <div className={classes.modalWrapper}>
+              <h4>Create a LeagueDay profile to send friend requests!</h4>
+              <Button
+                className={classes.createBtn}
+                onClick={() => dispatch(actions.pushHistory('/create'))}
+              >
+                Create Profile
+              </Button>
+            </div>
+          </Modal>
+          {requestPending ? (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              {!declined && (
+                <Button className={classes.accepted} onClick={handleAccept}>
+                  {accepted ? 'Accepted!' : 'Accept Friend Request'}
+                </Button>
+              )}
+              {!accepted && (
+                <Button
+                  className={classes.declined}
+                  onClick={() => {
+                    declineFriendReq(declineId)
+                    setDeclined(true)
+                  }}
+                >
+                  {declined ? 'Declined!' : 'Decline Friend Request'}
+                </Button>
+              )}
+            </div>
+          ) : (
+            <Button
+              className={classes.editProfile}
+              onClick={handleSend}
+              disabled={alreadyFriends ? alreadyFriends : sentRequest}
+            >
+              {' '}
+              {sentRequest
+                ? 'Request Pending'
+                : alreadyFriends
+                ? 'Already Friends!'
+                : 'Send Friend Request'}{' '}
+            </Button>
+          )}
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
               <p className={classes.userName}>{userData?.fields?.name}</p>
               <p style={{ width: '100%' }}>
-                  <span className={classes.socials}>Experience:</span>{' '}
-                  {userData?.fields?.credentials}
-                </p>
+                <span className={classes.socials}>Experience:</span>{' '}
+                {userData?.fields?.credentials}
+              </p>
             </div>
             <div className={classes.description}>
               <p>{userData?.fields?.description}</p>
@@ -698,4 +886,4 @@ const MyProfile = ({ userId }) => {
   )
 }
 
-export default MyProfile
+export default UserProfile

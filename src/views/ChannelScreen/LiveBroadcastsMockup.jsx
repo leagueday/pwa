@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import cx from 'classnames'
 import Color from 'color'
+import LiveStreams from './LiveStreams'
 import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '../../styling'
 import ComingSoon from '../ComingSoon'
@@ -191,11 +192,12 @@ const LiveBroadcastsMockup = ({ className, channel }) => {
 
   return (
     <div className={cx(classes.liveBroadcasts, className)}>
-      <ComingSoon
+      {/* <ComingSoon
         className={playbackurl ? classes.liveBroadcasts : classes.comingSoon}
         channel={channel}
         channelColor={channel.color}
-      />
+      /> */}
+      <LiveStreams channelTag={channel?.tag}/>
       <div id="sdwContainer"></div>
       {/* <ReplayLiveBroadCast   
             className={classes.replayBroadcasts}

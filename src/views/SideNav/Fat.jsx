@@ -171,7 +171,6 @@ const FatSideNav = ({ className, home }) => {
 
   const golive = () => dispatch(actions.pushHistory('/live'))
 
-
   return (
     <div className={cx(classes.sideNav, className)}>
       <React.Suspense fallback={<Loading />}>

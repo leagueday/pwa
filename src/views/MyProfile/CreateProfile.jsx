@@ -96,7 +96,11 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     margin: 'auto',
-    marginLeft: '10%',
+    color: 'white',
+    margin: 10,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
   },
   leftIcon: {
     marginRight: theme.spacing(1),
@@ -131,9 +135,6 @@ const useStyles = makeStyles(theme => ({
     width: 400,
   },
   root: {
-    // alignSelf: 'center',
-    // justifyContent: "center",
-    // alignItems: "center",
     display: 'flex',
     '& > *': {
       margin: theme.spacing(1),
@@ -145,10 +146,6 @@ const useStyles = makeStyles(theme => ({
   large: {
     width: theme.spacing(7),
     height: theme.spacing(7),
-  },
-  button: {
-    color: blue[900],
-    margin: 10,
   },
   radiotext: {
     margin: '10px 10px 0px 0px',
@@ -183,6 +180,7 @@ const CreateProfile = props => {
   const [rtmpLink, setrtmpLink] = useState('')
   const [streamKey, setsreamKey] = useState('')
   const [liveStreamId, setliveStreamId] = useState('')
+  const [loading, setLoading] = useState(false)
   const [experienceOptions, setExperienceOptions] = useState(options)
   const [selectedCredentials, setSelectedCredentials] = useState([])
   const [context, setContext] = React.useState([{ value: null }])
@@ -277,6 +275,7 @@ const CreateProfile = props => {
     console.log('called submit  ')
     evt.preventDefault()
     muxChannel()
+    setLoading(true)
     return sleep(3000).then(() => {
       if (validateForm()) {
         if (
@@ -335,11 +334,12 @@ const CreateProfile = props => {
             .catch(error => {
               console.log('error while data fetching', error.type)
             })
-          savedUserChannel()
           dispatch(actions.pushHistory('/myprofile'))
         }
       }
+      setLoading(false)
     })
+    setLoading(false)
   }
 
   const muxChannel = () => {
@@ -349,7 +349,7 @@ const CreateProfile = props => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ url: `video/v1/live-streams` }),
+      body: JSON.stringify({ url: `video/v1/live-streams`, passthrough: "lol" }),
     })
       .then(response => response.json())
       .then(function (livestreamData) {
@@ -363,81 +363,105 @@ const CreateProfile = props => {
       })
   }
 
-  const savedUserChannel = () => {
-    let data = {
-      records: [
-        {
-          fields: {
-            channelName: selectChannel.toString(),
-            date: new Date(),
-            userId: user.id,
-            channelTag: channelTag.toString(),
-          },
-        },
-      ],
-    }
+  // const savedUserChannel = () => {
+  //   let data = {
+  //     records: [
+  //       {
+  //         fields: {
+  //           channelName: selectChannel.toString(),
+  //           date: new Date(),
+  //           userId: user.id,
+  //           channelTag: channelTag.toString(),
+  //         },
+  //       },
+  //     ],
+  //   }
 
-    const baseId = 'appXoertP1WJjd4TQ'
-    fetch('/.netlify/functions/airtable-proxy', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/UserGames`, body: data }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        setContext('')
-        setChannelTag('')
-        setselectChannel('')
-        localStorage.setItem('userChannel', formInput.userChannelName)
-      })
-      .catch(error => {
-        console.log('error while data fetching', error.type)
-      })
-  }
+  //   const baseId = 'appXoertP1WJjd4TQ'
+  //   fetch('/.netlify/functions/airtable-proxy', {
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ url: `${baseId}/UserGames`, body: data }),
+  //   })
+  //     .then(response => response.json())
+  //     .then(function (response) {
+  //       setContext('')
+  //       setChannelTag('')
+  //       setselectChannel('')
+  //       localStorage.setItem('userChannel', formInput.userChannelName)
+  //     })
+  //     .catch(error => {
+  //       console.log('error while data fetching', error.type)
+  //     })
+  // }
 
   const handleSelect = e => {
     setSelectedCredentials(
       Array.isArray(e) ? e.map(topping => topping.label) : []
     )
   }
-  
+
   useEffect(() => {
     if (selectedCredentials?.length === 0) {
       setExperienceOptions(options)
     }
-    if (selectedCredentials[selectedCredentials.length - 1]?.includes('Pro Caster')) {
+    if (
+      selectedCredentials[selectedCredentials.length - 1]?.includes(
+        'Pro Caster'
+      )
+    ) {
       setExperienceOptions(
         experienceOptions?.filter(opt => !opt.label.includes('Amateur Caster'))
       )
     }
-    if (selectedCredentials[selectedCredentials.length - 1]?.includes('Amateur Caster')) {
+    if (
+      selectedCredentials[selectedCredentials.length - 1]?.includes(
+        'Amateur Caster'
+      )
+    ) {
       setExperienceOptions(
         experienceOptions?.filter(opt => !opt.label.includes('Pro Caster'))
       )
     }
-    if (selectedCredentials[selectedCredentials.length - 1]?.includes('Pro Streamer')) {
+    if (
+      selectedCredentials[selectedCredentials.length - 1]?.includes(
+        'Pro Streamer'
+      )
+    ) {
       setExperienceOptions(
         experienceOptions?.filter(
           opt => !opt.label.includes('Amateur Streamer')
         )
       )
     }
-    if (selectedCredentials[selectedCredentials.length - 1]?.includes('Amateur Streamer')) {
+    if (
+      selectedCredentials[selectedCredentials.length - 1]?.includes(
+        'Amateur Streamer'
+      )
+    ) {
       setExperienceOptions(
         experienceOptions?.filter(opt => !opt.label.includes('Pro Streamer'))
       )
     }
-    if (selectedCredentials[selectedCredentials.length - 1]?.includes('Pro Podcaster')) {
+    if (
+      selectedCredentials[selectedCredentials.length - 1]?.includes(
+        'Pro Podcaster'
+      )
+    ) {
       setExperienceOptions(
         experienceOptions?.filter(
           opt => !opt.label.includes('Amateur Podcaster')
         )
       )
     }
-    if (selectedCredentials[selectedCredentials.length - 1]?.includes('Amateur Podcaster')) {
+    if (
+      selectedCredentials[selectedCredentials.length - 1]?.includes(
+        'Amateur Podcaster'
+      )
+    ) {
       setExperienceOptions(
         experienceOptions?.filter(opt => !opt.label.includes('Pro Podcaster'))
       )
@@ -626,11 +650,13 @@ const CreateProfile = props => {
                   <br></br>
                   <br></br>
                 </Fragment>
+                {loading && <h4>Loading...</h4>}
                 <Button
                   type="submit"
                   variant="contained"
                   color="primary"
                   className={classes.button}
+                  disabled={loading}
                 >
                   Submit
                 </Button>
