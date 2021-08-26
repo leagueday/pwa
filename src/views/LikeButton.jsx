@@ -64,39 +64,8 @@ const LikeButton = ({ audio, channelTag, userId, size }) => {
   const [open, setOpen] = useState(false)
   const user = useSelector(selectors.getUser)
   const dispatch = useDispatch()
+  const userProfile = useSelector(selectors.getUserData)
   const [profileCreated, setProfileCreated] = useState(false)
-
-  const handleProfileStatus = async () => {
-    const baseId = 'appXoertP1WJjd4TQ'
-    let fetchSearch
-    if (user) {
-      const userId = user['id']
-      fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
-    }
-    await fetch('/.netlify/functions/airtable-getprofile', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/UserProfile${fetchSearch}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        if (response.records.length > 0) {
-          setProfileCreated(true)
-          localStorage.setItem(
-            'profilecreated',
-            response.records[0].fields.profileCreated
-          )
-        } else {
-          setProfileCreated(false)
-        }
-      })
-      .catch(error => {
-        console.log('error while data fetching', error)
-      })
-  }
 
   const handleLike = async () => {
     if (!user) {
@@ -216,12 +185,12 @@ const LikeButton = ({ audio, channelTag, userId, size }) => {
   }, [channelTag, audio])
 
   useEffect(() => {
-    handleProfileStatus()
+    if (userProfile) {
+      setProfileCreated(true)
+    } else {
+      setProfileCreated(false)
+    }
   }, [])
-
-  useEffect(() => {
-    handleProfileStatus()
-  }, [user])
 
   return (
     <div className={classes.like}>

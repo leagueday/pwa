@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import AudioCard from './AudioCard'
-import Airtable from 'airtable'
 import { useSelector } from 'react-redux'
 import { selectors } from '../../store'
 import { makeStyles } from '@material-ui/styles'
@@ -9,21 +8,17 @@ const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'flex',
     flexWrap: 'wrap',
-    height: '100%',
-    width: '100%',
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'space-evenly',
     },
   },
-}))
+}));
 
 const LiveStreams = ({ channelTag }) => {
   const classes = useStyles()
   const user = useSelector(selectors.getUser)
   const [userAudio, setUserAudio] = useState([])
   const baseId = 'appXoertP1WJjd4TQ'
-  const apiKey = 'keymd23kpZ12EriVi'
-  const base = new Airtable({ apiKey }).base(baseId)
 
   const getUserAudio = () => {
     let urladd = `filterByFormula={channelTag}='${channelTag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`

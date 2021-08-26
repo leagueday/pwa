@@ -3,10 +3,8 @@ import cx from 'classnames'
 import NextLive from '../NextLive'
 import { makeStyles } from '@material-ui/core/styles'
 import Audiocast from './Audiocast'
-import useFacets from '../../api/useFacets'
 import BottomBlock from '../BottomBlock'
 import ContentLayout from '../ContentLayout'
-import FacetedPodcastTiles from '../FacetedPodcastTiles'
 import PlusMinusButton from '../PlusMinusButton'
 import LiveBroadcastsMockup, {
   mockupGetHasBroadcasts as hasLiveMockupData,

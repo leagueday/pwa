@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import { Button } from '@material-ui/core'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core'
@@ -75,34 +76,7 @@ const FriendRequest = ({ friend }) => {
   const [accepted, setAccepted] = useState(false)
   const [declined, setDeclined] = useState(false)
   const classes = useStyles()
-
-  const acceptFriendReq = id => {
-    axios
-      .post('https://leagueday-api.herokuapp.com/friends/accept', {
-        id,
-      })
-      .then(res => {
-        setAccepted(true)
-        console.log('accepted friend ', res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
-  const declineFriendReq = id => {
-    axios
-      .post('https://leagueday-api.herokuapp.com/friends/decline', {
-        id,
-      })
-      .then(res => {
-        setDeclined(true)
-        console.log('declined friend ', res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
+  const { declineFriendReq, acceptFriendReq } = useContext(FriendsStateContext)
 
   return (
     <div
@@ -114,11 +88,22 @@ const FriendRequest = ({ friend }) => {
       }}
     >
       <div className={classes.friendReqImgCont}>
-        <img src={friend?.friend?.image} alt="" className={classes.friendReqImg} />
+        <img
+          src={friend?.friend?.image}
+          alt=""
+          className={classes.friendReqImg}
+        />
       </div>
 
       <p className={classes.friendReqNameCont}>{friend?.friend?.name}</p>
-      <div style={{ width: '70%', display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
+      <div
+        style={{
+          width: '70%',
+          display: 'flex',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
+        }}
+      >
         {accepted ? (
           <Button className={classes.accepted}>Accepted!</Button>
         ) : declined ? (
@@ -127,13 +112,19 @@ const FriendRequest = ({ friend }) => {
           <>
             <Button
               className={classes.editProfile}
-              onClick={() => acceptFriendReq(friend.id)}
+              onClick={() => {
+                setAccepted(true)
+                acceptFriendReq(friend.id)
+              }}
             >
               Accept
             </Button>
             <Button
               className={classes.deleteBtn}
-              onClick={() => declineFriendReq(friend.id)}
+              onClick={() => {
+                setDeclined(true)
+                declineFriendReq(friend.id)
+              }}
             >
               Decline
             </Button>

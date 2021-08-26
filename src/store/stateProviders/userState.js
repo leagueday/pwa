@@ -11,6 +11,7 @@ const apiKey = "keymd23kpZ12EriVi"
 function UserProfileProvider(props) {
     const base = new Airtable({ apiKey }).base(baseId)
     const activeUser = useSelector(selectors.getUser)
+    const userProfile = useSelector(selectors.getUserData)
     const [userData, setUserData] = useState([])
     const [userId, setUserId] = useState('')
     const [loading, setLoading] = useState(false);

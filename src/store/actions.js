@@ -97,7 +97,6 @@ export const setFriendsList = friendsList => ({
 })
 
 export const setChannelList = channelList => (
-  console.log('might work ', channelList),
   {
     type: ActionType.SET_CHANNEL_LIST,
     payload: {

@@ -126,7 +126,6 @@ const NavBar = () => {
   const [homeActive, setHomeActive] = useState(pathname === '/')
   const [creatorActive, setCreatorActive] = useState(pathname === '/creators')
   const [profileCreated, setProfileCreated] = useState(false)
-  const [userData, setUserData] = useState({})
   const user = useSelector(selectors.getUser)
   const userProfile = useSelector(selectors.getUserData)
   const [anchorEl, setAnchorEl] = useState(null)
@@ -137,39 +136,6 @@ const NavBar = () => {
 
   const handleClose = () => {
     setAnchorEl(null)
-  }
-
-  const getProfileData = () => {
-    const baseId = 'appXoertP1WJjd4TQ'
-    let fetchSearch
-    if (user) {
-      const userId = user['id']
-      fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
-    }
-    fetch('/.netlify/functions/airtable-getprofile', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/UserProfile${fetchSearch}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        if (response.records.length > 0) {
-          setUserData(response.records[0])
-          setProfileCreated(true)
-          localStorage.setItem(
-            'profilecreated',
-            response.records[0].fields.profileCreated
-          )
-        } else {
-          setProfileCreated(false)
-        }
-      })
-      .catch(error => {
-        console.log('error while data fetching', error)
-      })
   }
 
   const homeClick = () => {
@@ -183,13 +149,13 @@ const NavBar = () => {
   }
 
   useEffect(() => {
-    getProfileData()
-  }, [])
+    if (userProfile) setProfileCreated(true)
+  }, [userProfile])
 
   const myprofile = () => {
     dispatch(actions.pushHistory(`/profile/${user.id}`))
   }
-  
+
   const createProfile = () => dispatch(actions.pushHistory('/create'))
 
   return (
@@ -259,7 +225,13 @@ const NavBar = () => {
             </Menu>
           </>
         ) : (
-          <Button className={classes.inBtn} onClick={() => dispatch(actions.login())} size="medium">Sign In</Button>
+          <Button
+            className={classes.inBtn}
+            onClick={() => dispatch(actions.login())}
+            size="medium"
+          >
+            Sign In
+          </Button>
         )}
       </div>
     </div>

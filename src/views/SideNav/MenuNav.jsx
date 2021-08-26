@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({}))
 
 const PodcastMenuItem = ({ onClick, podcast }) => {
   const { rss } = usePodcast(podcast)
-
+  
   const title = channelSelectors.v2.title(rss)
   // const imageUrl = channelSelectors.v2.imageUrl(rss)
 
@@ -28,7 +28,7 @@ const MenuNav = ({ anchor, hide, home, isVisible }) => {
     hide()
     alsoDo()
   }
-
+  const myChannels = useSelector(selectors.getMyChannels);
   const dispatch = useDispatch()
 
   const user = useSelector(selectors.getUser)
@@ -42,8 +42,9 @@ const MenuNav = ({ anchor, hide, home, isVisible }) => {
     : ['Sign In', signIn]
 
   const goHome = home ? null : () => dispatch(actions.pushHistory('/'))
+  console.log('new channels ', myChannels)
 
-  const myChannels = useChannels().myList
+  // const myChannels = useChannels().myList
   const makeGotoChannel = channelTag =>
     hideAnd(() => dispatch(actions.pushHistory(`/channel/${channelTag}`)))
   const makeGotoPodcast = podcastId =>
@@ -61,8 +62,6 @@ const MenuNav = ({ anchor, hide, home, isVisible }) => {
       ? []
       : podcasts.filter(podcast => getIsOnMyList('podcast', podcast.id))
 
-  const classes = useStyles()
-
   return (
     <Menu
       id="menu-nav"
@@ -72,9 +71,9 @@ const MenuNav = ({ anchor, hide, home, isVisible }) => {
       onClose={hide}
     >
       {goHome && <MenuItem onClick={hideAnd(goHome)}>Home</MenuItem>}
-      {myChannels.map(({ tag, title, imageUrl }) => (
-        <MenuItem key={tag} onClick={makeGotoChannel(tag)}>
-          {title}
+      {myChannels.map(({fields}, ind) => (
+        <MenuItem key={ind} onClick={makeGotoChannel(fields.tag)}>
+          {fields.title}
         </MenuItem>
       ))}
       {myListPodcasts.map(podcast => (

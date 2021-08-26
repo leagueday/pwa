@@ -12,6 +12,9 @@ import { makeIconButton } from '../IconButton'
 import { IcoPlay, IcoPause } from '../icons'
 import Collapse from '@material-ui/core/Collapse'
 import { stripHtml } from '../util'
+import { useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+
 const PauseButton = makeIconButton(IcoPause)
 const PlayButton = makeIconButton(IcoPlay)
 const useStyles = makeStyles(theme => ({
@@ -22,17 +25,21 @@ const useStyles = makeStyles(theme => ({
   itemContainer: {
     width: '100%',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexWrap: 'no-wrap',
   },
   item: ({ backgroundColor }) => ({
     backgroundColor,
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
   }),
   itemNumber: {
     color: colors.white30,
-    padding: '0 1em',
+    padding: '0 .5em',
     fontFamily: theme.typography.family.secondary,
   },
   itemRow: ({ accentColor }) => ({
@@ -86,10 +93,11 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     fontWeight: theme.typography.weight.bold,
     minWidth: 0,
-    overflow: 'hidden',
     textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
     width: '100%',
+    [theme.breakpoints.only('sm')]: {
+      fontSize: '80%',
+    },
   },
 }))
 
@@ -106,6 +114,8 @@ const Item = ({
   description,
   audio,
 }) => {
+  const theme = useTheme()
+  const sm = useMediaQuery(theme.breakpoints.down('sm'))
   const classes = useStyles({
     accentColor,
     backgroundColor: computeZebraBackgroundColor(itemIndex),
@@ -113,7 +123,8 @@ const Item = ({
   const dispatch = useDispatch()
   const audioUrl = useSelector(selectors.getAudioUrl)
   const audioMode = useSelector(selectors.getAudioMode)
-  const { currentUserId } = useContext(UserStateContext)
+  const userProfile = useSelector(selectors.getUserData)
+  const currentUserId = userProfile?.id
   const isSelectedAudio = audioUrl && audioUrl === itemAudioUrl
   const isPlaying =
     isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
@@ -149,6 +160,7 @@ const Item = ({
         channelTag={audio?.fields?.channelTag}
         userId={currentUserId}
       />
+
       <div className={cx(classes.item, className)} onClick={toggleIsExpanded}>
         <div className={classes.itemRow}>
           <PopButton
@@ -178,4 +190,4 @@ const Item = ({
   )
 }
 
-export default Item;
+export default Item

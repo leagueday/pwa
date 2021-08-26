@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import 'react-h5-audio-player/lib/styles.css';
 import { ToastContainer, toast } from 'react-toastify';
+import Select from 'react-select';
+import { getMyList } from '../../api/getChannelList';
 import 'react-toastify/dist/ReactToastify.css';
 import { Button, Icon } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles'
@@ -87,82 +89,21 @@ const useStyles = makeStyles(theme => ({
   }),
 }))
 
+
 const DestributionPage = () => {
   const classes = useStyles({ primaryColor })
-  const [channelList, setChannelList] = useState({
-    rtmpLink: "",
-    streamKey: "",
-    liveStreamId: "",
-    channelTitle: '',
-    channelTag: ""
-  })
   const [playback, setplayback] = useState("")
   const [streamkey, setStreamkey] = useState("")
   const [create, setCreate] = useState(false);
   const [directLink, setdirectLink] = useState(false)
   const [button, setbutton] = useState(false);
-  const [userProfile, setUserProfile] = useState([])
-  const [userChannel, setuserChannel] = useState([])
-  const [playbackChannel, setplaybackChannel] = useState('')
-  const [liveStreamId, setLiveStreamId] = useState('')
-  const channels = useChannels().list
+  const [selectedChannel, setSelectedChannel] = useState()
   const user = useSelector(selectors.getUser)
-  const userData = useSelector(selectors.getUserData)
+  const userProfile = useSelector(selectors.getUserData)
   const userName = user?.user_metadata?.full_name
   const baseId = 'appXoertP1WJjd4TQ'
-
-  useEffect(() => {
-    const userId = user['id']
-    let fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
-
-    fetch('/.netlify/functions/airtable-getprofile', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ url: `${baseId}/UserProfile${fetchSearch}` })
-    }).then(response => response.json())
-      .then(
-        function (response) {
-          if (response.records[0].fields) {
-            setuserChannel([response.records[0]])
-            setUserProfile(response.records[0].fields.restrictedChannelTags.split(','))
-          }
-        }
-      ).catch((error) => {
-        console.log('error while data fetching', error)
-      })
-  }, [])
-
+  const filteredListRecords = getMyList();
   let playbackStream = `https://stream.mux.com`
-  let userChannelPush = {};
-  if (userChannel) {
-    userChannel.map(item => {
-      userChannelPush.title = item.fields.userChannel,
-        userChannelPush.rtmpLink = item.fields.rtmpLink,
-        userChannelPush.streamKey = item.fields.streamKey,
-        userChannelPush.liveStreamId = item.fields.liveStreamId
-    })
-  }
-
-  let channelsData = channels.concat(userChannelPush)
-
-  const onChannelChanged = (e, key) => {
-
-    let ChannelInfo = channelsData[key]
-    setChannelList({
-      ...channelList,
-      channelTitle: e.target.value,
-      rtmpLink: ChannelInfo.rtmpLink,
-      liveStreamId: ChannelInfo.liveStreamId,
-      streamKey: ChannelInfo.streamKey,
-      channelTag: ChannelInfo.tag
-    })
-    setCreate(true)
-    setbutton(true)
-    toast.success("Please click Create Direct Link below to stream to selected channel")
-  }
 
   const creatingDirectLink = async () => {
     const passthrough = channelList.channelTag
@@ -179,7 +120,6 @@ const DestributionPage = () => {
       .then(function (livestreamData) {
         console.log("doing it the right way ", livestreamData)
         setStreamkey(livestreamData.data.stream_key)
-        setLiveStreamId(livestreamData.data.id)
         setplayback(livestreamData.data.playback_ids[0].id)
         setdirectLink(true)
         setCreate(true)
@@ -188,19 +128,13 @@ const DestributionPage = () => {
       })
       .catch(error => {
         console.log("error ", error)
-        // toast.error(error.type)
       })
   }
 
-  console.log('mux vars ', liveStreamId, streamkey, playback)
-
   let playId = playback.playback;
   let playbackUrl = `${playbackStream}/${playId}.m3u8`
-  let playbachannelUrl = playbackChannel
-  const playerRef = useRef();
 
   function submitFormData(play_id, livestreamid, stream) {
-    console.log('data from submit form ', livestreamid, stream)
     let data = {
       "records": [
         {
@@ -209,7 +143,7 @@ const DestributionPage = () => {
             description: localStorage.getItem('description'),
             thumbnail: localStorage.getItem('channelImage'),
             uploadDate: new Date(),
-            channelTag: channelList.channelTag,
+            channelTag: selectedChannel,
             playbackUrl: `${playbackStream}/${play_id}.m3u8`,
             userId: user.id,
             liveStreamId: livestreamid,
@@ -217,8 +151,8 @@ const DestributionPage = () => {
             upvotes: 0,
             userEmail: user.email,
             type: 'livestream',
-            creatorImg: userData.fields.image,
-            username: userData.fields.name
+            creatorImg: userProfile.fields.image,
+            username: userProfile.fields.name
           }
         }
       ]
@@ -241,14 +175,6 @@ const DestributionPage = () => {
       })
   }
 
-  channelsData && channelsData.map((channel, index) => {
-    userProfile && userProfile.map((item) => {
-      if (channel.title === item) {
-        channelsData.splice(index, 1);
-      }
-    })
-  })
-
   const dispatch = useDispatch()
   const audioMode = useSelector(selectors.getAudioMode)
   const isSelectedAudio = playbackUrl && playbackUrl
@@ -261,7 +187,6 @@ const DestributionPage = () => {
       ev.stopPropagation()
     }
     : ev => {
-      //console.log('iskhkjds',isSelectedAudio)
       dispatch(actions.playAudio())
       dispatch(
         actions.selectAudio(
@@ -274,7 +199,6 @@ const DestributionPage = () => {
           ''
         )
       )
-
       dispatch(actions.playAudio())
       ev.stopPropagation()
     }
@@ -282,93 +206,74 @@ const DestributionPage = () => {
   return (
     <BasicLayout home>
       <ToastContainer />
-      {user ? (
-
-        <div className={classes.homeContent}>
-          <TitleBar
-            className={classes.titleBar}
-            primaryColor={primaryColor}
-            text={userName ? `Welcome back, ${userName}!` : 'Home'}
-          />
-          <div className={classes.primaryStripe} />
-          <div className={classes.listng_user_info}>
-            <div className="table_inner">
-              <div className="table-responsive">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Choose a LeagueDay channel to stream to</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {channelsData && channelsData.map((channel, index) => {
-                      return (
-                        <tr key={index}>
-                          <td rowSpan={3}>
-                            <input
-                              type="radio"
-                              className={classes.radio}
-                              onChange={(e) => onChannelChanged(e, index)}
-                              value={channel.title}
-                              name="channel"
-                            />{channel.title}</td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
-              </div>
-              {create && (
-                <ul>
-                  <header>
-                    <h3>Please link the keys below to OBS and then click Create Direct Link in order to go live on selected channel</h3>
-                  </header>
-                  <li >
-                    Stream Key: {streamkey}
-                  </li>
-                  <li>
-                    RTMP Link: <a className={classes.space} href={playbackUrl} target="_blank">
+      <div className={classes.homeContent}>
+        <TitleBar
+          className={classes.titleBar}
+          primaryColor={primaryColor}
+          text={userName ? `Welcome back, ${userName}!` : 'Home'}
+        />
+        <div className={classes.primaryStripe} />
+        <div className={classes.listng_user_info}>
+          <div className="table_inner">
+            <div className="table-responsive">
+              <h3>Choose a LeagueDay channel to livestream to</h3>
+              <Select
+              options={filteredListRecords}
+              className={classes.select}
+              styles={customStyles}
+              onChange={val => setSelectedChannel(val.value)}
+            />
+            </div>
+            {create && (
+              <ul>
+                <header>
+                  <h3>Please link the keys below to OBS and then click Create Direct Link in order to go live on selected channel</h3>
+                </header>
+                <li >
+                  Stream Key: {streamkey}
+                </li>
+                <li>
+                  RTMP Link: <a className={classes.space} href={playbackUrl} target="_blank">
                     rtmps://global-live.mux.com:443/app
-                    </a>
-                  </li>
-                </ul>
-              )}
-              {button && (
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  onClick={creatingDirectLink}
-                  className={classes.button}
-                >
-                  Create direct Link<Icon className={classes.rightIcon}></Icon>
-                </Button>
-              )}
+                  </a>
+                </li>
+              </ul>
+            )}
+            {button && (
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                onClick={creatingDirectLink}
+                className={classes.button}
+              >
+                Create direct Link<Icon className={classes.rightIcon}></Icon>
+              </Button>
+            )}
 
-              {directLink && (
-                <>
-                  {/* Your playBack url is: <a className={classes.playback} href={playbackUrl} target="_blank">
+            {directLink && (
+              <>
+                {/* Your playBack url is: <a className={classes.playback} href={playbackUrl} target="_blank">
                     {playbackUrl}
                   </a> */}
-                  <br></br>
-                  <br></br>
-                  Play Audio:
-                  <PopButton
-                    className={classes.popButton}
-                    iconClassName={classes.popButtonIcon}
-                    size="1.5em"
-                    onClick={onPopClick}
-                    shadowColor={colors.darkGray}
-                  />
+                <br></br>
+                <br></br>
+                Play Audio:
+                <PopButton
+                  className={classes.popButton}
+                  iconClassName={classes.popButtonIcon}
+                  size="1.5em"
+                  onClick={onPopClick}
+                  shadowColor={colors.darkGray}
+                />
 
-                  <br />
-                  <br />
-                </>
-              )}
-            </div>
+                <br />
+                <br />
+              </>
+            )}
           </div>
         </div>
-      ) : (window.location.href = '/')}
+      </div>
     </BasicLayout>
   )
 }
