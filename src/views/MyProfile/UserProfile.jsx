@@ -392,7 +392,17 @@ const baseId = 'appXoertP1WJjd4TQ'
 const base = new Airtable({ apiKey }).base(baseId)
 
 const UserProfile = ({ userId }) => {
-  const { userData, loading, getData } = useContext(UserStateContext)
+  const {
+    userData,
+    loading,
+    getData,
+    TitanTrophy,
+    PentaTrophy,
+    NoobTrophy,
+    creatorList,
+    userRecordings,
+    audiocasts,
+  } = useContext(UserStateContext)
   const { sendRequest, declineFriendReq, acceptFriendReq } = useContext(
     FriendsStateContext
   )
@@ -400,25 +410,20 @@ const UserProfile = ({ userId }) => {
   const dispatch = useDispatch()
   const friendsList = useSelector(selectors.getFriendsList)
   const user = useSelector(selectors.getUser)
-
-  const [userRecordings, setUserRecordings] = useState([])
-  const [audiocasts, setAudiocasts] = useState([])
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [trophieSelected, setTrophieSelected] = useState(false)
   const [creatorsSelected, setCreatorsSelected] = useState(false)
   const [channelSelected, setChannelSelected] = useState(false)
-  const [channelList, setChannelList] = useState([])
   const [accepted, setAccepted] = useState(false)
   const [declined, setDeclined] = useState(false)
-  const [creatorList, setCreatorList] = useState([])
   const [open, setOpen] = useState(false)
   const [alreadyFriends, setAlreadyFriends] = useState(false)
   const [requestPending, setRequestPending] = useState(false)
   const [sentRequest, setSentRequest] = useState(false)
   const [declineId, setDeclineId] = useState('')
   const [profileCreated, setProfileCreated] = useState(false)
-  const userProfile = useSelector(selectors.getUserData);
-  
+  const userProfile = useSelector(selectors.getUserData)
+
   const handleCreatorClick = () => {
     setCreatorsSelected(true)
     setLiveRecordings(false)
@@ -447,85 +452,11 @@ const UserProfile = ({ userId }) => {
     setTrophieSelected(false)
   }
 
-  const getUserRecordings = () => {
-    base('UserAudiocasts')
-      .select({
-        filterByFormula: `{userId} = '${userId}'`,
-        view: 'Grid view',
-      })
-      .eachPage(
-        async function page(records, fetchNextPage) {
-          setAudiocasts(records)
-        },
-        function done(err) {
-          if (err) {
-            console.error(err)
-            return
-          }
-        }
-      )
-
-    base('ChannelLiveData')
-      .select({
-        filterByFormula: `{userId} = '${userId}'`,
-        view: 'Grid view',
-      })
-      .eachPage(
-        async function page(records, fetchNextPage) {
-          setUserRecordings(records)
-        },
-        function done(err) {
-          if (err) {
-            console.error(err)
-            return
-          }
-        }
-      )
-  }
-
   const classes = useStyles({ primaryColor })
   let count = 1
 
   if (loading) {
     return <h1>Loading...</h1>
-  }
-
-  const getCreatorData = () => {
-    base('UserCreatorsList')
-      .select({
-        filterByFormula: `{userId} = '${userId}'`,
-        view: 'Grid view',
-      })
-      .eachPage(
-        async function page(records, fetchNextPage) {
-          setCreatorList(records)
-        },
-        function done(err) {
-          if (err) {
-            console.error(err)
-            return
-          }
-        }
-      )
-  }
-
-  const getListData = () => {
-    base('UserList')
-      .select({
-        filterByFormula: `{userId} = '${userId}'`,
-        view: 'Grid view',
-      })
-      .eachPage(
-        async function page(records, fetchNextPage) {
-          setChannelList(records)
-        },
-        function done(err) {
-          if (err) {
-            console.error(err)
-            return
-          }
-        }
-      )
   }
 
   const handleSend = () => {
@@ -538,13 +469,6 @@ const UserProfile = ({ userId }) => {
       setSentRequest(true)
     }
   }
-
-  useEffect(() => {
-    getListData()
-    getCreatorData()
-    getData()
-    getUserRecordings()
-  }, [userId])
 
   const handleAccept = () => {
     acceptFriendReq(declineId)
@@ -561,7 +485,7 @@ const UserProfile = ({ userId }) => {
     })
 
     friendsList?.received?.map(friend => {
-      console.log('from map ',friend)
+      console.log('from map ', friend)
       if (friend.friend.id === userId) {
         setRequestPending(true)
         setDeclineId(friend.id)
@@ -584,7 +508,6 @@ const UserProfile = ({ userId }) => {
       setProfileCreated(true)
     }
   }, [userProfile])
-
 
   return (
     <div className={classes.content}>

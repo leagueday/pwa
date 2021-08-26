@@ -22,7 +22,7 @@ function FriendsListProvider(props) {
                 console.log(err)
             })
     }
-
+    
     const acceptFriendReq = id => {
         axios
             .post('https://leagueday-api.herokuapp.com/friends/accept', {
