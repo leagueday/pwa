@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import { useDispatch, useSelector } from 'react-redux'
 import { Modal } from '@material-ui/core'
 import axios from 'axios'
@@ -9,7 +10,7 @@ import { colors } from '../../styling'
 import PlusMinusBtn from './PlusMinusBtn'
 import Square from '../Square'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
-import CheckIcon from '@material-ui/icons/Check';
+import CheckIcon from '@material-ui/icons/Check'
 
 const useStyles = makeStyles(theme => ({
   channelTile: {
@@ -118,68 +119,26 @@ const CreatorTile = ({ user }) => {
   const [alreadyFriends, setAlreadyFriends] = useState(false)
   const [requestPending, setRequestPending] = useState(false)
   const [sentRequest, setSentRequest] = useState(false)
+  const userProfile = useSelector(selectors.getUserData)
   const [sent, setSent] = useState(false)
+  const { sendRequest } = useContext(FriendsStateContext)
 
-  const handleProfileStatus = async () => {
-    const baseId = 'appXoertP1WJjd4TQ'
-    let fetchSearch
-    if (currentUser) {
-      const userId = currentUser['id']
-      fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
-    }
-    await fetch('/.netlify/functions/airtable-getprofile', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/UserProfile${fetchSearch}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        if (response.records.length > 0) {
-          setProfileCreated(true)
-          localStorage.setItem(
-            'profilecreated',
-            response.records[0].fields.profileCreated
-          )
-        } else {
-          setProfileCreated(false)
-        }
-      })
-      .catch(error => {
-        console.log('error while data fetching', error)
-      })
-  }
-
-  const sendRequest = () => {
+  const sendReq = () => {
     if (!currentUser) {
       dispatch(actions.login())
     } else if (currentUser && profileCreated === false) {
       setOpen(true)
     } else {
-      axios
-        .post('https://leagueday-api.herokuapp.com/friends/invite', {
-          userId: currentUser.id,
-          friendId: user.userId,
-        })
-        .then(res => {
-          console.log('invited friend ', res)
-          setSent(true)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      sendRequest(user.userId)
+      setSent(true)
     }
   }
 
   useEffect(() => {
-    handleProfileStatus()
-  }, [])
-
-  useEffect(() => {
-    handleProfileStatus()
-  }, [currentUser])
+    if (userProfile) {
+      setProfileCreated(true)
+    }
+  }, [userProfile])
 
   useEffect(() => {
     friendsList?.sent?.map(friend => {
@@ -246,15 +205,10 @@ const CreatorTile = ({ user }) => {
         {currentUser && (
           <Button
             className={classes.addFriend}
-            onClick={sendRequest}
+            onClick={sendReq}
             disabled={alreadyFriends || requestPending || sentRequest}
           >
-            {
-              sent ? 
-              <CheckIcon />
-              :
-              <PersonAddIcon />
-            }
+            {sent ? <CheckIcon /> : <PersonAddIcon />}
           </Button>
         )}
       </div>

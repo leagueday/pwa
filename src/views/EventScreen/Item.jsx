@@ -123,7 +123,8 @@ const Item = ({
   const dispatch = useDispatch()
   const audioUrl = useSelector(selectors.getAudioUrl)
   const audioMode = useSelector(selectors.getAudioMode)
-  const { currentUserId } = useContext(UserStateContext)
+  const userProfile = useSelector(selectors.getUserData)
+  const currentUserId = userProfile?.id
   const isSelectedAudio = audioUrl && audioUrl === itemAudioUrl
   const isPlaying =
     isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
@@ -154,14 +155,12 @@ const Item = ({
 
   return (
     <div className={classes.itemContainer}>
-      
-        {/* !sm && */}
       <LikeButton
         audio={audio}
         channelTag={audio?.fields?.channelTag}
         userId={currentUserId}
       />
-      
+
       <div className={cx(classes.item, className)} onClick={toggleIsExpanded}>
         <div className={classes.itemRow}>
           <PopButton

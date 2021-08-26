@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
-import { UserStateContext } from '../../store/stateProviders/userState'
 import { makeStyles } from '@material-ui/core/styles'
 import NavBar from '../NavBar'
 import { addScrollStyle } from '../util'

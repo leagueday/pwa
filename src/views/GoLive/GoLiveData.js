@@ -1,285 +1,253 @@
-import React,{ useReducer } from 'react'
-import { useSelector,useDispatch } from 'react-redux'
-import { Button, Icon, TextField, Paper, Typography } from "@material-ui/core";
+import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Button, TextField, Paper, Typography } from "@material-ui/core";
+import Select from 'react-select';
 import { makeStyles } from '@material-ui/core/styles'
 import 'react-h5-audio-player/lib/styles.css';
-import { ToastContainer, toast } from 'react-toastify';
-import useFacets from '../../api/useFacets'
-import { selectors,actions } from '../../store'
+import { getMyList } from '../../api/getChannelList';
+import { ToastContainer } from 'react-toastify';
+import { selectors, actions } from '../../store'
 import { colors } from '../../styling'
 import BasicLayout from '../BasicLayout'
-import FacetedPodcastTiles from '../FacetedPodcastTiles'
-import Loading from '../Loading'
 import { addScrollStyle } from '../util'
 import TitleBar from './TitleBar'
 import { uploadFile } from 'react-s3';
-import('buffer').then(({Buffer}) => {global.Buffer = Buffer;})
-const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
+import('buffer').then(({ Buffer }) => { global.Buffer = Buffer; })
 
 const primaryColor = colors.magenta
 
 const useStyles = makeStyles(theme => ({
-  channelCategories: {
-    marginTop: '0.5em',
-  },
-  homeContent: ({ primaryColor }) =>
-    addScrollStyle(
-      primaryColor,
-      theme
-    )({
-      display: 'flex',
-      flexDirection: 'column',
-      flex: 1,
-      height: '100%',
-      overflow: 'auto',
-      padding: '0.5em 0.5em 0 0.5em',
-      width: '100%',
-    }),
-  podcastTiles: {
+  container: () => addScrollStyle(primaryColor, theme)({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     height: '100%',
-    minHeight: 0,
-  },
-  primaryStripe: ({ primaryColor }) => ({
-    backgroundColor: primaryColor,
-    height: '0.25em',
-    width: '100%',
+    overflow: 'auto',
   }),
-  titleBar: {
-    marginBottom: '0.25em',
+  formCont: {
+    padding: '0 15%',
+    height: '80%',
   },
-  button: {
-    margin :"auto",
-     marginLeft:"10%",
-  },
-  leftIcon: {
-    marginRight: theme.spacing(1)
-  },
-  rightIcon: {
-    marginLeft: theme.spacing(1),
-    textAlign:"center"
-  },
-  iconSmall: {
-    fontSize: 20
-  },
-  root: {
-    padding: theme.spacing(3, 2)
+  form: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
   input: {
-    display: "none"
+    minWidth: '500px',
+    margin: '0 auto',
+    marginButton: '5%',
   },
-  container: {
-    display: "flex",
-    flexWrap: "wrap"
+  select: {
+    width: '60%',
+    minWidth: '400px',
   },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 400
+  submitBtn: {
+    background: colors.blue,
+    width: '200px',
+    marginTop: '3%',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+    [theme.breakpoints.down('md')]: {
+      width: '25%',
+      fontSize: '80%',
+    },
   }
 }))
 
+const customStyles = {
+  dropdownIndicator: () => ({
+    color: 'white',
+    fontsize: '1rem',
+  }),
+  option: () => ({
+    color: 'black',
+  }),
+  control: () => ({
+    border: '2px solid white',
+    borderRadius: '5px',
+    display: 'flex',
+  }),
+  placeholder: () => ({
+    color: 'white',
+  }),
+  singleValue: () => ({
+    color: 'white',
+  }),
+  input: () => ({
+    color: 'white'
+  })
+}
+
+const config = {
+  bucketName: "leagueday-prod-images",
+  dirName: "uploads",
+  region: 'us-east-1',
+  accessKeyId: "AKIA2NEES72FJV4VO343",
+  secretAccessKey: "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",
+};
+
+const baseId = 'appXoertP1WJjd4TQ'
+
 const GoLiveData = (props) => {
-  const [state,setFile] = React.useState({
-    mainState: "initial",
-    imageUploaded: 0,
-    selectedFile: null,
-    selectedFileError:"",
-    photoError:"",
-    image:""
+  const filteredListRecords = getMyList()
+  const dispatch = useDispatch()
+  const userProfile = useSelector(selectors.getUserData)
+  const [thumbnail, setThumbnail] = useState();
+  const [selectedChannel, setSelectedChannel] = useState();
+  const [loading, setLoading] = useState(false);
+  const [created, setCreated] = useState(false)
+  const [streamKey, setStreamKey] = useState('')
+  const [formValues, setFormValues] = useState({
+    title: "",
+    description: "",
   });
-  
-  const [image,setimage]=React.useState();
-  const [disable,setdisable]=React.useState(true);
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  const facetedPodcasts = useFacets('Home')
-  const [formInput, setFormInput] = React.useState(
-    {
-      title: "",
-      description: "",
-      thumbnail:'',
-      titleError:"",
-      descriptionError:"",
-    }
-  );
-  
-  const config = {
-    bucketName:"leagueday-prod-images",
-    dirName:"uploads",
-    region:'us-east-1',
-    accessKeyId:"AKIA2NEES72FJV4VO343",
-    secretAccessKey:"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",
-  };
-  
- const handleUploadClick = event => {
-    var file = event.target.files[0];
-    setFile({
-      ...state,
-      mainState: "uploaded",
-      selectedFile: URL.createObjectURL(file),
-      imageUploaded: 1,
-      photoError:""
-    });
-    const reader = new FileReader();
-    reader.onloadend = function(e) {
-      setFile({
-        ...state,
-        selectedFile: [reader.result],
-        photoError:""
+
+  const handleChange = e => {
+    setFormValues({
+      ...formValues,
+      [e.target.name]: e.target.value,
     })
-    }
-    reader.readAsDataURL(file)
-    return sleep(2).then(() => {
-      uploadFile(file, config)
-                .then(data => {
-                  setimage(data['location'])
-                  setdisable(false)                  
-              })
-                .catch(err => {
-                  setdisable(false)
-                  console.error(err)})
-      })
-  };
-  //console.log("onloaded",image)
-  // const handleInput = evt => {
-  //   const name = evt.target.name;
-  //   const newValue = evt.target.value;
-  //   setFormInput({ [name]: newValue });
-  // };
-  const validateForm=()=>{
-    let formIsValid = true;
-    if (formInput.title == "" || formInput.title == null ||!formInput.title ) {
-      formIsValid = false;
-      formInput.titleError = "Please Enter Title";
-    }
-    if (formInput.description == "" || formInput.description == null || !formInput.description) {
-      formIsValid = false;
-      formInput.descriptionError = "Please Enter Description";
-    }
-    if (!state.selectedFile || state.selectedFile.length==null ) {
-      formIsValid = false;
-      state.photoError = "Please Add Thumbnail";
-    }
-    return formIsValid;
   }
 
-  const dispatch = useDispatch()
-  const submit = (evt) => {
-    evt.preventDefault()
-    //console.log("message fired",evt)
-    return sleep(100).then(() => {
-    // if(validateForm()){
-    //console.log("title & descridption addedd")
-    localStorage.setItem("title",formInput['title'])
-    localStorage.setItem("description",formInput['description'])
-    localStorage.setItem('channelImage',image)
-    localStorage.setItem('file',image)
-    dispatch(actions.pushHistory('/preview'))
-    // }
+  const handleImageUpload = e => {
+    const file = e.target.files[0]
+    setLoading(true)
+    uploadFile(file, config)
+      .then(res => {
+        console.log(res.location)
+        setThumbnail(res.location)
+        setLoading(false)
       })
-}
+      .catch(err => console.log(err))
+  }
+
+  const createStreamKey = async () => {
+    await fetch('/.netlify/functions/mux-livestream', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url: `video/v1/live-streams`, passthrough: selectedChannel }),
+    })
+      .then(response => response.json())
+      .then(function (livestreamData) {
+        setCreated(true)
+        setStreamKey(livestreamData.data.stream_key)
+        handleSubmit(livestreamData.data.playback_ids[0].id, livestreamData.data.id, livestreamData.data.stream_key)
+      })
+      .catch(error => {
+        console.log("error ", error)
+      })
+  }
+
+  const handleSubmit = (play_id, livestreamid, stream) => {
+    let data = {
+      "records": [
+        {
+          "fields": {
+            title: formValues.title,
+            description: formValues.description,
+            thumbnail: thumbnail,
+            channelTag: selectedChannel,
+            playbackUrl: `https://stream.mux.com/${play_id}.m3u8`,
+            userId: userProfile.fields.userId,
+            liveStreamId: livestreamid,
+            streamKey: stream,
+            upvotes: 0,
+            userEmail: userProfile.fields.email,
+            type: 'livestream',
+            creatorImg: userProfile.fields.image,
+            username: userProfile.fields.name
+          }
+        }
+      ]
+    }
+
+    fetch('/.netlify/functions/airtable-proxy', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ url: `${baseId}/ChannelLiveData`, body: data })
+    }).then(response => response.json())
+      .then(
+        function (response) {
+          console.log("new channelLiveData entry ", response)
+          setCreated(true)
+        }
+      ).catch((error) => {
+        console.log("error while data fetching", error.type)
+      })
+  }
+
   const classes = useStyles({ primaryColor })
-  const user = useSelector(selectors.getUser)
-  const userName = user?.user_metadata?.full_name
 
   return (
     <BasicLayout home>
-      <ToastContainer/>
-      {user ?(
-      <div className={classes.homeContent}>
-      <TitleBar
-          className={classes.titleBar}
-          primaryColor={primaryColor}
-          text={userName ? `Welcome back, ${userName}!` : 'Home'}
-        />
-         <div>
-      <Paper className={classes.root}>
-        <Typography variant="h5" component="h3">
-          {props.formName}
-        </Typography>
-        <Typography component="p">{props.formDescription}</Typography>
-
-        <form  onSubmit={submit} >
-          <TextField
-            label="Title (Max 27 Characters)"
-            id="margin-normal"
-            name="title"
-            value={formInput.title}
-            defaultValue={formInput.title}
-            className={classes.textField}
-            helperText="Enter your Title"
-            inputProps={{ maxLength: 27 }}
-            onChange={(e) =>
-              setFormInput({
-                ...formInput,
-                title: e.target.value,
-                titleError: "",
-              })
-            }
-          />
-          <br/>
-             {formInput.titleError.length > 0 && (
-              <span style={{ color: "red" }}>
-              {formInput.titleError}
-              </span>
-            )}
-            <br/>
-            <br/>
-          <TextField
-            label="Description (Max 27 Characters)"
-            id="margin-normal"
-            name="description"
-            value={formInput.description}
-            defaultValue={formInput.description}
-            className={classes.textField}
-            helperText="Enter Your Description"
-            inputProps={{ maxLength: 27 }}
-            onChange={(e) =>
-              setFormInput({
-                ...formInput,
-                description: e.target.value,
-                descriptionError: "",
-              })
-            }
-          />
-          <br/>
-            {formInput.descriptionError.length > 0 && (
-              <span style={{ color: "red" }}>
-              {formInput.descriptionError}
-              </span>
-            )}
-          <br/>
-          <br/>
-          Add Thumbnail:  <input
-              accept="image/*"
-              id="contained-button-file"
-              multiple
-              type="file"
-              accept=".png, .jpg, .jpeg"
-              onChange={handleUploadClick}
+      <div className={classes.container}>
+        <h3>Enter Live Stream Information</h3>
+        <div className={classes.formCont}>
+          <form onSubmit={createStreamKey} className={classes.form}>
+            <TextField
+              label="Title of your Live Stream"
+              name="title"
+              value={formValues.title}
+              onChange={handleChange}
+              className={classes.input}
+              required
             />
-              <br/>
-            {state.photoError.length > 0 && (
-              <span style={{ color: "red" }}>
-              {state.photoError}
-              </span>
-            )}
-            <br></br>
-            <br></br>
-
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            // disabled={disable}
-          >
-            Save & Preview
-          </Button>
-        </form>
-      </Paper>
+            <TextField
+              label="Description of your Live Stream"
+              name="description"
+              value={formValues.description}
+              onChange={handleChange}
+              className={classes.input}
+              required
+            />
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
+              <h4 style={{ marginTop: '5%' }}>Upload Thumbnail</h4>
+              <input
+                aria-label="Select a thumbnail to upload"
+                type="file"
+                name="image"
+                onChange={handleImageUpload}
+                required={true}
+              />
+              {
+                thumbnail &&
+                <img src={thumbnail} alt="" style={{ width: '150px', height: '150px', objectFit: 'cover' }} />
+              }
+            </div>
+            <div>
+              <h4 style={{ marginTop: '5%' }}>Choose a LeagueDay channel to livestream to</h4>
+              <Select
+                options={filteredListRecords}
+                className={classes.select}
+                styles={customStyles}
+                onChange={val => setSelectedChannel(val.value)}
+              />
+            </div>
+            {
+              !created &&
+              <Button type="submit" className={classes.submitBtn} disabled={loading}>Create Stream Key</Button>
+            }
+          </form>
+        </div>
+        {
+          created &&
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
+            <h3 style={{ width: '50%', minWidth: '500px', textAlign: 'center' }}>Please paste the stream key and RTMP link below into OBS to start streaming. Once you start streaming, your live stream will show up in the selected channel.</h3>
+            <p> <b>Stream Key:</b>  {streamKey}</p>
+            <p> <b>RTMP link:</b>  rtmps://global-live.mux.com:443/app</p>
+          </div>
+        }
       </div>
-    </div>
-         ):(window.location.href='/')}
     </BasicLayout>
   )
 }

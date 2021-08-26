@@ -155,7 +155,6 @@ const UploadAudiocast = () => {
   const [audiocast, setAudiocast] = useState()
   const [thumbnail, setThumbnail] = useState()
   const [loading, setLoading] = useState(false)
-  const [channels, setChannels] = useState([])
   const filteredListRecords = getMyList()
   const user = useSelector(selectors.getUser)
 

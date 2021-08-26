@@ -1,21 +1,15 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Button, Icon, TextField, Paper, Typography } from "@material-ui/core";
+import { Button, } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import useFacets from '../../api/useFacets'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { actions, selectors } from '../../store'
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux'
 import { colors } from '../../styling'
 import BasicLayout from '../BasicLayout'
-import FacetedPodcastTiles from '../FacetedPodcastTiles'
-import Loading from '../Loading'
 import { addScrollStyle } from '../util'
 import TitleBar from './TitleBar'
-import GoLiveData from './GoLiveData';
-const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
-
 
 const primaryColor = colors.magenta
 
@@ -41,13 +35,13 @@ const useStyles = makeStyles(theme => ({
     minHeight: 0,
   },
   rightIcon: {
-    marginLeft: theme.spacing(1)
+    marginLeft: theme.spacing(1),
   },
   button: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
-  heading:{
-   marginTop:"2%"
+  heading: {
+    marginTop: '2%',
   },
   primaryStripe: ({ primaryColor }) => ({
     backgroundColor: primaryColor,
@@ -60,57 +54,53 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const GoLive = () => {
-  const facetedPodcasts = useFacets('Home')
   const classes = useStyles({ primaryColor })
-  const [select,setSelect]=useState("");
-  const [selectError,setSelectError]=useState("")
   const user = useSelector(selectors.getUser)
-  const userName = user?.user_metadata?.full_name
-  
+
   const dispatch = useDispatch()
-  function chooseselection(e){
-    //console.log("value choose",e.target.value)
-     setSelect({
-       select:e.target.value
-     })
+
+  const gotoliveScreen = () => {
+    dispatch(actions.pushHistory('/gotolive'))
   }
-  const gotoliveScreen = () =>{
-    // if(select.length==""|| !select){
-    //   toast.error("Please select OBS")
-    // }
-    // else{
-      dispatch(actions.pushHistory('/gotolive'))
-   // }
-  }
+
   return (
     <BasicLayout home>
       <ToastContainer />
-      {user ?(
-      <div className={classes.homeContent}>
-      <TitleBar
-          className={classes.titleBar}
-          primaryColor={primaryColor}
-          text="Go Live"
-        />
-        <div className={classes.primaryStripe} />
-        <div className={classes.podcastTiles}>
-        <div >
-        <input className={classes.heading} type="radio" value="USE OBS" defaultChecked='USE OBS' name="obs"/> USE OBS<br/>
-        {/* <input type="radio" value="Record or leagueDay" />Record or leagueDay */}
-      </div>
-     
-      <Button
-      type="submit"
-      variant="contained"
-      color="primary"
-      onClick={gotoliveScreen}
-      className={classes.button}
-          >
-            Next
-          </Button>
+      {user ? (
+        <div className={classes.homeContent}>
+          <TitleBar
+            className={classes.titleBar}
+            primaryColor={primaryColor}
+            text="Go Live"
+          />
+          <div className={classes.primaryStripe} />
+          <div className={classes.podcastTiles}>
+            <div>
+              <input
+                className={classes.heading}
+                type="radio"
+                value="USE OBS"
+                defaultChecked="USE OBS"
+                name="obs"
+              />{' '}
+              USE OBS
+              <br />
+            </div>
+
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              onClick={gotoliveScreen}
+              className={classes.button}
+            >
+              Next
+            </Button>
+          </div>
         </div>
-      </div>
-          ):(window.location.href='/')}
+      ) : (
+        (window.location.href = '/')
+      )}
     </BasicLayout>
   )
 }

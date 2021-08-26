@@ -386,6 +386,7 @@ const TitanTrophy = ({ classes }) => {
     </div>
   )
 }
+
 const apiKey = 'keymd23kpZ12EriVi'
 const baseId = 'appXoertP1WJjd4TQ'
 const base = new Airtable({ apiKey }).base(baseId)
@@ -416,7 +417,8 @@ const UserProfile = ({ userId }) => {
   const [sentRequest, setSentRequest] = useState(false)
   const [declineId, setDeclineId] = useState('')
   const [profileCreated, setProfileCreated] = useState(false)
-
+  const userProfile = useSelector(selectors.getUserData);
+  
   const handleCreatorClick = () => {
     setCreatorsSelected(true)
     setLiveRecordings(false)
@@ -537,38 +539,6 @@ const UserProfile = ({ userId }) => {
     }
   }
 
-  const handleProfileStatus = async () => {
-    const baseId = 'appXoertP1WJjd4TQ'
-    let fetchSearch
-    if (user) {
-      const userId = user['id']
-      fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
-    }
-    await fetch('/.netlify/functions/airtable-getprofile', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/UserProfile${fetchSearch}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        if (response.records.length > 0) {
-          setProfileCreated(true)
-          localStorage.setItem(
-            'profilecreated',
-            response.records[0].fields.profileCreated
-          )
-        } else {
-          setProfileCreated(false)
-        }
-      })
-      .catch(error => {
-        console.log('error while data fetching', error)
-      })
-  }
-
   useEffect(() => {
     getListData()
     getCreatorData()
@@ -584,7 +554,6 @@ const UserProfile = ({ userId }) => {
   useEffect(() => {
     friendsList?.sent?.map(friend => {
       if (friend.friend.id === userId) {
-        setDeclineId(friend.id)
         setSentRequest(true)
       } else {
         return
@@ -592,8 +561,10 @@ const UserProfile = ({ userId }) => {
     })
 
     friendsList?.received?.map(friend => {
+      console.log('from map ',friend)
       if (friend.friend.id === userId) {
         setRequestPending(true)
+        setDeclineId(friend.id)
       } else {
         return
       }
@@ -609,12 +580,11 @@ const UserProfile = ({ userId }) => {
   }, [friendsList, userId])
 
   useEffect(() => {
-    handleProfileStatus()
-  }, [])
+    if (userProfile) {
+      setProfileCreated(true)
+    }
+  }, [userProfile])
 
-  useEffect(() => {
-    handleProfileStatus()
-  }, [user])
 
   return (
     <div className={classes.content}>

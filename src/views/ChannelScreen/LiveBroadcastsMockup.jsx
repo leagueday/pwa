@@ -1,12 +1,8 @@
 import React, { useEffect } from 'react'
 import cx from 'classnames'
-import Color from 'color'
 import LiveStreams from './LiveStreams'
 import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '../../styling'
-import ComingSoon from '../ComingSoon'
-import ToggleImageButtonSmall from '../ToggleImageButtonSmall'
-import ReplayLiveBroadCast from './ReplayLiveBroadCast'
 
 const useStyles = makeStyles(theme => ({
   comingSoon: {
@@ -106,120 +102,13 @@ const mockupData = [
 const filterMockupData = tag =>
   mockupData.filter(({ tags }) => tags.find(thisTag => thisTag === tag))
 
-const transparent = 'rgba(0,0,0,1)'
-
-const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
-
-const EventImage = ({ classes, imageUrl }) => (
-  <img className={cx(classes.eventImage)} src={imageUrl} />
-)
-
-const EventTextplate = ({ channelColor, sectionData }) => {
-  const { name, variety } = sectionData
-
-  const classes = useStyles({ channelColor })
-
-  return (
-    <div className={classes.eventTextplate}>
-      <div className={cx(classes.sectionTitle)}>
-        <div className={classes.textEllipsisOverflow}>{name}</div>
-      </div>
-      <div className={cx(classes.sectionVariety)}>
-        <div className={classes.textEllipsisOverflow}>{variety}</div>
-      </div>
-    </div>
-  )
-}
-
-const Track = ({ classes }) => {
-  const [isPlaying, setIsPlaying] = React.useState(false)
-
-  const onClick = isPlaying
-    ? () => setIsPlaying(false)
-    : () => setIsPlaying(true)
-
-  return (
-    <div className={classes.track}>
-      <ToggleImageButtonSmall
-        className={classes.logoButton}
-        size="8vw"
-        on={isPlaying}
-        onClick={onClick}
-        onImage="/img/logo_live_pause.png"
-        offImage="/img/logo_live_play.png"
-        shadowColor={buttonShadowColor}
-      />
-      <div className={classes.trackText}>Stream</div>
-    </div>
-  )
-}
-
 const LiveBroadcastsMockup = ({ className, channel }) => {
-  useEffect(() => {
-    // ;(function (w, d, s) {
-    //   if (w.SDW) console.error('SDW widget already included')
-    //   ;(w.SDW = {}), (w.SDW._r = s)
-    //   let methods = [
-    //     'mount',
-    //     'unmount',
-    //     'addWidget',
-    //     'updateWidget',
-    //     'removeWidget',
-    //     'initStyles',
-    //   ]
-    //   w.SDW._q = []
-    //   methods.forEach(
-    //     method =>
-    //       (w.SDW[method] = function () {
-    //         w.SDW._q.push([method, arguments])
-    //       })
-    //   )
-    //   var script = d.createElement('script')
-    //   script.async = 1
-    //   script.src = s
-    //   var before = d.getElementsByTagName('script')[0]
-    //   before.parentNode.insertBefore(script, before)
-    // })(window, document, 'https://widgets.shadow.gg/realtime/scriptLoader.js')
-    SDW.mount({
-      clientId: 'v8rpx5ws1x3E8wNz7ck6MhaZJt5WQkK9',
-      // theme: { primary: '#ff0000' },
-    })
-    SDW.addWidget({ containerId: 'sdwContainer', type: 'calendar' })
-  }, [])
-
   const classes = useStyles()
-  let playbackurl = localStorage.getItem('playback')
 
   return (
     <div className={cx(classes.liveBroadcasts, className)}>
-      {/* <ComingSoon
-        className={playbackurl ? classes.liveBroadcasts : classes.comingSoon}
-        channel={channel}
-        channelColor={channel.color}
-      /> */}
-      <LiveStreams channelTag={channel?.tag}/>
+      <LiveStreams channelTag={channel?.tag} />
       <div id="sdwContainer"></div>
-      {/* <ReplayLiveBroadCast   
-            className={classes.replayBroadcasts}
-            channel={channel}
-            channelColor={channel.color}/> */}
-      {/* {filterMockupData(channel.tag).map(sectionData => (
-        <div key={sectionData.name}  className={classes.liveBroadcast}>
-          <div className={classes.eventImageAndText}>
-            <EventImage classes={classes} imageUrl={sectionData.imageUrl} />
-            <EventTextplate
-              channelColor={channel.color}
-              sectionData={sectionData}
-            />
-          </div>
-          <div className={classes.liveness}>
-            <div className={classes.livenessLeftPad}>&nbsp;</div>
-            <div className={classes.livenessContent}>
-              <Track classes={classes} />
-            </div>
-          </div>
-        </div>
-      ))} */}
     </div>
   )
 }

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Airtable from 'airtable'
 import cx from 'classnames'
 import LikeButton from '../LikeButton'
 import { makeStyles } from '@material-ui/core/styles'
@@ -8,9 +7,7 @@ import { colors } from '../../styling'
 import { actions, selectors, constants as storeConstants } from '../../store'
 import { IcoPause, IcoPlay, IcoPlus } from '../icons'
 import { UserStateContext } from '../../store/stateProviders/userState'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
-import { faThumbsUp as ThumbsUp } from '@fortawesome/free-solid-svg-icons'
+
 const useStyles = makeStyles(theme => ({
   clickable: {
     cursor: 'pointer',
@@ -295,93 +292,6 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
   )
 }
 
-const Track = ({
-  episodeData,
-  backgroundColor,
-  counter,
-  indexData,
-  itemaudioUrl,
-  channelColor,
-  liveUrl,
-  channe,
-}) => {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [canPlay, setcanPlay] = useState(false)
-
-  const dispatch = useDispatch()
-
-  const classes = useStyles({ backgroundColor, canPlay, channelColor })
-
-  const audioUrl = useSelector(selectors.getAudioUrl)
-
-  const isSelectedAudio =
-    audioUrl && audioUrl === episodeData.fields.playbackUrl
-
-  const audioMode = useSelector(selectors.getAudioMode)
-
-  const isPlayings =
-    isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
-
-  const PlayOrPauseIcon = isPlayings ? IcoPause : IcoPlay
-  const onPopClick = isPlayings
-    ? ev => {
-        dispatch(actions.pauseAudio())
-        ev.stopPropagation()
-      }
-    : ev => {
-        if (isSelectedAudio) dispatch(actions.playAudio())
-        else {
-          dispatch(
-            actions.selectAudio(
-              '',
-              '',
-              '',
-              episodeData.fields.playbackUrl,
-              indexData,
-              '',
-              ''
-            )
-          )
-          dispatch(actions.playAudio())
-        }
-        ev.stopPropagation()
-      }
-
-  return (
-    <>
-      <div className={classes.episodeRow}>
-        <div className={classes.episodeControls}>
-          <PlayOrPauseIcon
-            classes={{
-              inner: classes.episodePOP,
-              outer: classes.episodePOPCell,
-            }}
-            onClick={onPopClick}
-          />
-        </div>
-        <div className={classes.episodeTitleAndData}>
-          <div className={classes.episodeNumberAndTitle}>
-            <div className={classes.episodeNumber}>
-              {counter < 10 ? `0${counter}` : counter}
-            </div>
-            <div className={classes.episodeTitle}>
-              {episodeData.fields.title ? episodeData.fields.title : ''}
-            </div>
-          </div>
-          <div className={classes.episodeDateAndDuration}>
-            <div className={classes.episodeDateAndDurationLeftPad}>&nbsp;</div>
-            <div className={classes.episodeDate}>
-              {episodeData.fields.uploadDate
-                ? episodeData.fields.uploadDate.split('T')[0]
-                : ''}
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  )
-}
-
 export const Tracks = ({
   sectionData,
   channelColor,
@@ -515,168 +425,14 @@ export const Tracks1 = ({
   )
 }
 
-const TracksData = ({
-  leaugeNightData,
-  channelColor,
-  channel,
-  sectionName,
-}) => {
-  const [liveUrl, setLiveUrl] = useState([])
-  const classes = useStyles({ channelColor })
-  return (
-    <div className={classes.tracks}>
-      <div className={classes.tracksContent}>
-        {leaugeNightData && (
-          <div className={classes.replays}>
-            <span className={classes.replaySpan}>
-              {sectionName.toUpperCase()}
-            </span>{' '}
-            Replay Preview
-          </div>
-        )}
-
-        {(counter =>
-          leaugeNightData.map((episode, indexdata) => {
-            const bgC =
-              episodeBackgroundColors[counter % episodeBackgroundColors.length]
-            counter = counter + 1
-            return (
-              <Tracks1
-                key={counter}
-                indexdata={indexdata}
-                episodeData={episode}
-                backgroundColor={bgC}
-                counter={counter}
-                channelColor={channelColor}
-                liveUrl={liveUrl}
-                leaugeNightData={leaugeNightData}
-                channel={channel}
-              />
-            )
-          }))(0)}
-      </div>
-    </div>
-  )
-}
-
 const ReplayBroadcastsMockup = ({ className, channel, leagueNight }) => {
   const classes = useStyles()
-  const [RecordedData, setRecordedData] = useState([])
-  const [rescentAsscetid, setrescentAsscetId] = useState([])
-  const [leagueNightRecorded, setleagueNightRecorded] = useState([])
-
-  useEffect(() => {
-    showRecordedData()
-    leagueNightshowRecordedData()
-  }, [])
-
-  const showRecordedData = () => {
-    const baseId = 'appXoertP1WJjd4TQ'
-
-    let urladd = `maxRecords=3&filterByFormula={channelTag}=${JSON.stringify(
-      channel['tag']
-    )}&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
-
-    fetch('/.netlify/functions/commingsoon-proxy', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        if (response.records.length) {
-          setRecordedData(response.records)
-          seturl(response.records[0].fields.playbackUrl)
-        } else {
-        }
-      })
-      .catch(error => {
-        console.log('error while data fetching', error.type)
-      })
-  }
-
-  const leagueNightshowRecordedData = () => {
-    const baseId = 'appXoertP1WJjd4TQ'
-    let urladd = `maxRecords=3&filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
-    fetch('/.netlify/functions/commingsoon-proxy', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        if (response.records.length) {
-          setleagueNightRecorded(response.records)
-        }
-      })
-      .catch(error => {
-        console.log('error while data fetching', error.type)
-      })
-  }
 
   const dispatch = useDispatch()
+
   const makeGotoEvent = event => () => {
     dispatch(actions.pushHistory(`/event/${event}`))
   }
-
-  ;(function (w, d, s) {
-    if (w.SDW) console.error('SDW widget already included')
-    ;(w.SDW = {}), (w.SDW._r = s)
-    let methods = [
-      'mount',
-      'unmount',
-      'addWidget',
-      'updateWidget',
-      'removeWidget',
-    ]
-    w.SDW._q = []
-    methods.forEach(
-      method =>
-        (w.SDW[method] = function () {
-          w.SDW._q.push([method, arguments])
-        })
-    )
-    var script = d.createElement('script')
-    script.async = 1
-    script.src = s
-    var before = d.getElementsByTagName('script')[0]
-    before.parentNode.insertBefore(script, before)
-  })(window, document, 'https://widgets.shadow.gg/realtime/scriptLoader.js')
-  SDW.mount({
-    clientId: 'v8rpx5ws1x3E8wNz7ck6MhaZJt5WQkK9',
-    theme: {
-      background: '#f5f5f5',
-      'secondary-background': '#EDEDED',
-      'base-text': '#313131',
-      border: '#DEDEDE',
-      primary: '#eb3323',
-      secondary: '#DEDEDE',
-      red: '#ed553b',
-      blue: '#006495',
-      'hover-bg': '#DEDEDE',
-      'hover-text': '#313131',
-      dark: false,
-    },
-    baseUrl: 'https://widgets.shadow.gg',
-  })
-  SDW.addWidget({
-    containerId: 'shadow-container',
-    settings: {
-      groupCalendarByLive: false,
-      hasPlayerStats: false,
-      hasPlayerStatsOverlay: true,
-      hasDesktopLayout: true,
-      matchWidgetId: 'match-custom-shadow',
-      titleFilter: ['lol'],
-    },
-    type: 'calendar',
-  })
 
   return (
     <div className={cx(classes.replayBroadcasts, className)}>
@@ -743,4 +499,4 @@ export const mockupGetHasBroadcasts = channel => {
   return data.length > 0
 }
 
-export default ReplayBroadcastsMockup
+export default ReplayBroadcastsMockup;

@@ -5,16 +5,12 @@ import netlifyIdentity from 'netlify-identity-widget'
 import { actions, selectors } from '../store'
 
 const makeOnInit = dispatch => user => {
-  // console.log('init', JSON.stringify(user, null, 2))
-
   if (user) {
     dispatch(actions.setUser(user))
   }
 }
 
 const makeOnLogin = dispatch => user => {
-  console.log('login', JSON.stringify(user, null, 2))
-
   dispatch(actions.setUser(user))
 }
 
@@ -27,14 +23,6 @@ const makeOnLogout = dispatch => () => {
 const onError = err => {
   console.error('auth error', err)
 }
-
-// const onOpen = () => {
-//   console.log('auth opened')
-// }
-//
-// const onClose = () => {
-//   console.log('auth closed')
-// }
 
 const Auth = () => {
   const dispatch = useDispatch()
@@ -49,8 +37,6 @@ const Auth = () => {
     netlifyIdentity.on('login', makeOnLogin(dispatch))
     netlifyIdentity.on('logout', makeOnLogout(dispatch))
     netlifyIdentity.on('error', onError)
-    // netlifyIdentity.on('open', onOpen)
-    // netlifyIdentity.on('close', onClose)
 
     netlifyIdentity.init()
   }, [])

@@ -9,7 +9,6 @@ import ListStateProvider from './store/stateProviders/listState'
 import UserProfileProvider from './store/stateProviders/userState'
 import * as Sentry from '@sentry/react'
 import { Integrations } from '@sentry/tracing'
-import useChronicle from './api/useChronicle'
 import { Provider as StoreProvider } from './store'
 import ThemeProvider from './styling/ThemeProvider'
 import Audio from './views/Audio'
@@ -74,11 +73,6 @@ const StyledAppContent = () => {
     </div>
   )
 }
-
-// const Chronicle = () => {
-//   useChronicle()
-//   return null
-// }
 
 const App = () => {
   return (

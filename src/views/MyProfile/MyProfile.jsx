@@ -446,8 +446,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    width: '75%',
     margin: '2% 0',
+    paddingRight: '25%',
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },
@@ -458,7 +458,13 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
   },
   friendBtnCont: {
-    width: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'center',
+      width: '100%',
+      marginTop: 10,
+    },
   },
   friendName: {
     width: '25%',
@@ -515,7 +521,6 @@ const MyProfile = ({ userId }) => {
   const [friendsModal, setFriendsModal] = useState(false)
   const [open, setOpen] = useState(false)
   const friendList = useSelector(selectors.getFriendsList)
-  const [liveData, setLiveData] = useState([])
   // const { filteredListRecords, creatorList: cl } = getMyList()
   const filteredListRecords = useSelector(selectors.getMyChannels)
   const user = useSelector(selectors.getUser)
@@ -686,12 +691,12 @@ const MyProfile = ({ userId }) => {
     )
   }
 
-  useEffect(() => {
-    if (globalList.length === 0 && filteredListRecords.length > 0) {
-      console.log('set channel list ')
-      setGlobalList(filteredListRecords)
-    }
-  }, [filteredListRecords])
+  // useEffect(() => {
+  //   if (globalList.length === 0 && filteredListRecords.length > 0) {
+  //     console.log('set channel list ')
+  //     setGlobalList(filteredListRecords)
+  //   }
+  // }, [filteredListRecords])
 
   return (
     <div className={classes.content}>

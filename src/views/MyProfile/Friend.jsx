@@ -8,21 +8,12 @@ import { actions } from '../../store'
 const Friend = ({ friend, classes }) => {
   const dispatch = useDispatch()
   const [declined, setDeclined] = useState(false)
-  const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext)
-
-  const declineFriendReq = id => {
-    axios
-      .post('https://leagueday-api.herokuapp.com/friends/decline', {
-        id,
-      })
-      .then(res => {
-        setDeclined(true)
-        console.log('declined friend ', res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
+  const {
+    selectedFriend,
+    setSelectedFriend,
+    acceptFriendReq,
+    declineFriendReq,
+  } = useContext(FriendsStateContext)
 
   return (
     <div className={classes.friendList}>
@@ -44,7 +35,10 @@ const Friend = ({ friend, classes }) => {
             </Button>
             <Button
               className={classes.deleteBtn}
-              onClick={() => declineFriendReq(friend.id)}
+              onClick={() => {
+                setDeclined(true)
+                declineFriendReq(friend.id)
+              }}
             >
               Remove friend
             </Button>

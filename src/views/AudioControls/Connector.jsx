@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
+import {UserStateContext} from '../../store/stateProviders/userState'
 import useMyList from '../../api/useMyList'
 import {
   actions,
@@ -16,7 +16,6 @@ const Connector = ({ children }) => {
   const audioMode = useSelector(selectors.getAudioMode)
   const podcastId = useSelector(selectors.getAudioPodcastId)
   const itemUrl = useSelector(selectors.getAudioUrl)
-
   const [getIsOnMyList, addToMyList, removeFromMyList] = useMyList(
     user?.token?.access_token
   )

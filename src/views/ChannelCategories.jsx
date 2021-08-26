@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import cx from 'classnames'
-import CreatorTile from './CreatorTilesRow/CreatorTile'
 import { makeStyles } from '@material-ui/core/styles'
 import useAirtable from '../api/useAirtable'
 import useChannels from '../api/useChannels'
@@ -18,10 +17,9 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     display: 'flex',
     flexWrap: 'wrap',
-    // justifyContent: 'space-between',
     background: 'black',
     [theme.breakpoints.down('sm')]: {
-      background: 'inherit'
+      background: 'inherit',
     },
   },
   creator: {
@@ -39,8 +37,6 @@ const useStyles = makeStyles(theme => ({
   searchBar: {
     backgroundColor: colors.lightGray,
     margin: '0.5vw',
-    // position: 'absolute',
-    // right: 5,
     outline: 'none',
     border: 'none',
     color: 'white',
@@ -65,7 +61,6 @@ const ChannelCategories = ({ className }) => {
   const classes = useStyles()
   const { data } = useAirtable('appXoertP1WJjd4TQ', 'UserProfile')
   const [creators, setCreators] = useState([])
-  const [criteria, setCriteria] = useState('')
   const channels = useChannels().list
   const channelCategories = useChannelCategories()
 
@@ -98,32 +93,8 @@ const ChannelCategories = ({ className }) => {
           title={title}
         />
       ))}
-      {/* <div className={classes.creatorWrapper}>
-        <div className={classes.headerContainer}>
-          <span className={classes.line}></span>
-          <h2 className={classes.creator}>LeagueDay Creators</h2>
-          <span className={classes.line}></span>
-        </div> */}
-        {/* <input
-          className={classes.searchBar}
-          type="text"
-          placeholder="Search for Creators..."
-          value={criteria}
-          onChange={e => setCriteria(e.target.value)}
-        /> */}
-        {/* <div className={classes.creatorContainer}>
-          {creators
-            ?.filter(crea =>
-              crea.fields.name?.toLowerCase().includes(criteria?.toLowerCase())
-            )
-            .map((user, key) => {
-              const { fields } = user
-              return <CreatorTile user={fields} />
-            })}
-        </div>
-      </div> */}
     </div>
   )
 }
 
-export default ChannelCategories;
+export default ChannelCategories
