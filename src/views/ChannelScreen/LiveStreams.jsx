@@ -16,11 +16,10 @@ const useStyles = makeStyles(theme => ({
 
 const LiveStreams = ({ channelTag }) => {
   const classes = useStyles()
-  const user = useSelector(selectors.getUser)
   const [userAudio, setUserAudio] = useState([])
   const baseId = 'appXoertP1WJjd4TQ'
 
-  const getUserAudio = () => {
+  const getLiveData = () => {
     let urladd = `filterByFormula={channelTag}='${channelTag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
@@ -42,8 +41,8 @@ const LiveStreams = ({ channelTag }) => {
   }
 
   useEffect(() => {
-    getUserAudio()
-  }, [user, channelTag])
+    getLiveData()
+  }, [channelTag])
 
   const MuxComponent = ({ livestreamid, count, audio }) => {
     const [active, setActive] = useState(false)
@@ -60,7 +59,6 @@ const LiveStreams = ({ channelTag }) => {
     })
       .then(response => response.json())
       .then(function (response) {
-        console.log('response from mux ', response)
         if (response.data.status === 'active') {
           setActive(true)
         }

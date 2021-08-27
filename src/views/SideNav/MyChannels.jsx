@@ -35,7 +35,6 @@ const isChannelSelected = (locationPathname, channelTag) => {
 const MyChannels = ({ skinny }) => {
   const classes = useStyles()
   const { globalList, setGlobalList } = useContext(MyListContext)
-  // const { filteredListRecords } = getMyList()
   const dispatch = useDispatch()
   const user = useSelector(selectors.getUser)
   const channels = useSelector(selectors.getMyChannels)
@@ -44,20 +43,12 @@ const MyChannels = ({ skinny }) => {
 
   const locationPathname = useLocationPathname()
 
-  useEffect(() => {
-    if (user && globalList.length === 0 && channels.length > 0) {
-      console.log('set global state ')
-      setGlobalList(channels)
-    }
-  }, [channels])
-
   return (
     <div className={classes.myChannels}>
       {globalList?.map((channel, ind) => {
         return (
-          <div className={classes.item}>
+          <div className={classes.item} key={ind}>
             <Item
-              key={ind}
               title={channel?.fields?.title}
               imageUrl={channel?.fields?.channelImg}
               isSelected={isChannelSelected(
@@ -65,7 +56,6 @@ const MyChannels = ({ skinny }) => {
                 channel?.fields?.tag
               )}
               onClick={makeGotoThisChannel(channel?.fields?.tag)}
-              skinny={skinny}
             />
             <div className={classes.playPause}>
 

@@ -42,9 +42,10 @@ const SliderDots = ({ className, numPages, pageNum }) => {
 
   return (
     <div className={cx(classes.sliderDots, className)}>
-      {indexes.map(i =>
+      {indexes.map((i, k) =>
         (isCurrentPage => (
           <IcoDot
+            key={k}
             classes={{
               inner: cx(classes.dotInner, {
                 [classes.dotInnerCurrentPage]: isCurrentPage,

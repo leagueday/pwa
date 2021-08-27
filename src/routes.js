@@ -11,8 +11,6 @@ const CreatorScreen = React.lazy(() => import('./views/CreatorScreen'));
 const ChatScreen = React.lazy(() => import('./views/ChatScreen'));
 const PodcastScreen = React.lazy(() => import('./views/PodcastScreen'));
 const GoToLiveData = React.lazy(() => import('./views/GoLive/GoLiveData'));
-const PreviewPage = React.lazy(() => import('./views/GoLive/PreviewPage'));
-const DestributionPage = React.lazy(() => import('./views/GoLive/DestributionPage'));
 const CreateProfile = React.lazy(() => import('./views/MyProfile/CreateProfile'));
 const EditProfile = React.lazy(() => import('./views/MyProfile/EditProfile'));
 const matchFirstToken = match => pathTokens =>
@@ -68,8 +66,6 @@ export const routesConfig = [
   [matchFirstToken('creators'), () => true, CreatorScreen, () => ({})],
   [matchFirstToken('live'), () => true, GoLive, () => ({})],
   [matchFirstToken('gotolive'), () => true, GoToLiveData, () => ({})],
-  [matchFirstToken('preview'), () => true, PreviewPage, () => ({})],
-  [matchFirstToken('channelist'), () => true, DestributionPage, () => ({})],
   [matchFirstToken('create'), () => true, CreateProfile, () => ({})],
   [matchFirstToken('editprofile'), () => true, EditProfile, () => ({})],
   [() => true, () => true, HomeScreen, () => ({})],

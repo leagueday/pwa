@@ -1,16 +1,14 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Button, TextField, Paper, Typography } from "@material-ui/core";
+import { useSelector } from 'react-redux'
+import { Button, TextField } from "@material-ui/core";
 import Select from 'react-select';
 import { makeStyles } from '@material-ui/core/styles'
 import 'react-h5-audio-player/lib/styles.css';
 import { getMyList } from '../../api/getChannelList';
-import { ToastContainer } from 'react-toastify';
-import { selectors, actions } from '../../store'
+import { selectors } from '../../store'
 import { colors } from '../../styling'
 import BasicLayout from '../BasicLayout'
 import { addScrollStyle } from '../util'
-import TitleBar from './TitleBar'
 import { uploadFile } from 'react-s3';
 import('buffer').then(({ Buffer }) => { global.Buffer = Buffer; })
 
@@ -92,9 +90,8 @@ const config = {
 
 const baseId = 'appXoertP1WJjd4TQ'
 
-const GoLiveData = (props) => {
+const GoLiveData = () => {
   const filteredListRecords = getMyList()
-  const dispatch = useDispatch()
   const userProfile = useSelector(selectors.getUserData)
   const [thumbnail, setThumbnail] = useState();
   const [selectedChannel, setSelectedChannel] = useState();
@@ -125,7 +122,8 @@ const GoLiveData = (props) => {
       .catch(err => console.log(err))
   }
 
-  const createStreamKey = async () => {
+  const createStreamKey = async (e) => {
+    e.preventDefault();
     await fetch('/.netlify/functions/mux-livestream', {
       method: 'POST',
       headers: {

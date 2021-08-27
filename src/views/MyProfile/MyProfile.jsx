@@ -1,17 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Airtable from 'airtable'
-import AudioCard from '../ChannelScreen/AudioCard'
 import { useSelector, useDispatch } from 'react-redux'
 import Friend from './Friend'
 import FriendRequest from './FriendRequest'
-import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive'
-import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import { selectors } from '../../store'
-import { getMyList } from '../GetUserList'
-import { mockFriends } from '../ChatScreen/ChatScreen'
 import Modal from '@material-ui/core/Modal'
 import { MyListContext } from '../../store/stateProviders/listState'
 import { UserStateContext } from '../../store/stateProviders/userState'
@@ -500,19 +495,16 @@ const useStyles = makeStyles(theme => ({
     top: -5,
   },
 }))
+const apiKey = 'keymd23kpZ12EriVi'
+const baseId = 'appXoertP1WJjd4TQ'
+const base = new Airtable({ apiKey }).base(baseId)
 
 const MyProfile = ({ userId }) => {
-  const { globalList, creatorList, setGlobalList, setCreatorList } = useContext(
+  const { globalList, creatorList } = useContext(
     MyListContext
   )
-
-  const { userData, loading } = useContext(UserStateContext)
-  const baseId = 'appXoertP1WJjd4TQ'
-  const apiKey = 'keymd23kpZ12EriVi'
-  const base = new Airtable({ apiKey }).base(baseId)
-  const [userRecordings, setUserRecordings] = useState([])
+  const { userData, loading, getUserRecordings, userRecordings, audiocasts } = useContext(UserStateContext)
   const [liveRecordings, setLiveRecordings] = useState(true)
-  const [audiocasts, setAudiocasts] = useState([])
   const [channelSelected, setChannelSelected] = useState(false)
   const [friendSelected, setFriendSelected] = useState(false)
   const [trophieSelected, setTrophieSelected] = useState(false)
@@ -521,9 +513,6 @@ const MyProfile = ({ userId }) => {
   const [friendsModal, setFriendsModal] = useState(false)
   const [open, setOpen] = useState(false)
   const friendList = useSelector(selectors.getFriendsList)
-  // const { filteredListRecords, creatorList: cl } = getMyList()
-  const filteredListRecords = useSelector(selectors.getMyChannels)
-  const user = useSelector(selectors.getUser)
 
   const handleCreatorClick = () => {
     setCreatorsSelected(true)
@@ -567,42 +556,6 @@ const MyProfile = ({ userId }) => {
 
   const handleModalClose = () => {
     setOpen(false)
-  }
-
-  const getUserRecordings = () => {
-    base('UserAudiocasts')
-      .select({
-        filterByFormula: `{userId} = '${user?.id}'`,
-        view: 'Grid view',
-      })
-      .eachPage(
-        async function page(records, fetchNextPage) {
-          setAudiocasts(records)
-        },
-        function done(err) {
-          if (err) {
-            console.error(err)
-            return
-          }
-        }
-      )
-
-    base('ChannelLiveData')
-      .select({
-        filterByFormula: `{userId} = '${user?.id}'`,
-        view: 'Grid view',
-      })
-      .eachPage(
-        async function page(records, fetchNextPage) {
-          setUserRecordings(records)
-        },
-        function done(err) {
-          if (err) {
-            console.error(err)
-            return
-          }
-        }
-      )
   }
 
   const deleteAudiocast = audio => {
@@ -651,52 +604,6 @@ const MyProfile = ({ userId }) => {
   if (loading) {
     return <h1>Loading...</h1>
   }
-
-  //https://leagueday-api.herokuapp.com/
-
-  const NoobTrophy = ({ classes }) => {
-    return (
-      <div className={classes.trophyCont}>
-        <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
-        <p>
-          <span className={classes.trophyName}>Noob Award</span> <br></br>
-          <i>first stream created</i>
-        </p>
-      </div>
-    )
-  }
-
-  const PentaTrophy = ({ classes }) => {
-    return (
-      <div className={classes.trophyCont}>
-        <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
-        <p>
-          <span className={classes.trophyName}>Penta Cast</span> <br></br>
-          <i>5 streams created</i>
-        </p>
-      </div>
-    )
-  }
-
-  const TitanTrophy = ({ classes }) => {
-    return (
-      <div className={classes.trophyCont}>
-        <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
-        <p>
-          {' '}
-          <span className={classes.trophyName}>Gamer Audio Titan</span>
-          <br></br> <i>10 streams created</i>
-        </p>
-      </div>
-    )
-  }
-
-  // useEffect(() => {
-  //   if (globalList.length === 0 && filteredListRecords.length > 0) {
-  //     console.log('set channel list ')
-  //     setGlobalList(filteredListRecords)
-  //   }
-  // }, [filteredListRecords])
 
   return (
     <div className={classes.content}>
@@ -891,7 +798,7 @@ const MyProfile = ({ userId }) => {
           <div className={classes.userContent}>
             {channelSelected && (
               <div className={classes.channels}>
-                {filteredListRecords?.map((item, index) => {
+                {globalList?.map((item, index) => {
                   return (
                     <div
                       className={classes.channelsWrapper}

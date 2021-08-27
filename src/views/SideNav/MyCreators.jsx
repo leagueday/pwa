@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { MyListContext } from '../../store/stateProviders/listState'
 import { getMyList } from '../GetUserList'
-import { actions, selectors } from '../../store'
+import { actions, selectors, useLocationPathname } from '../../store'
 import Item from './Item'
 import PlusMinusBtn from '../CreatorTilesRow/PlusMinusBtn'
 import { makeStyles } from '@material-ui/styles'
@@ -19,46 +19,50 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const MyCreators = () => {
-  const dispatch = useDispatch()
-  const user = useSelector(selectors.getUser)
-  const creators = useSelector(selectors.getMyCreators);
-  // const { creatorList: cl } = getMyList();
-  const { creatorList, setCreatorList } = useContext(MyListContext)
-  const classes = useStyles()
+const isChannelSelected = (locationPathname, channelTag) => {
+  const path = locationPathname ?? ''
 
-  // useEffect(() => {
-  //   if (user && creatorList.length === 0 && cl.length > 0) {
-  //     console.log('set creator list')
-  //     setCreatorList(cl)
-  //   } 
-  // }, [cl])
+  if (path.substr(0, 9) !== '/profile/') {
+    return false
+  } else {
+    return path.substr(9) === channelTag
+  }
+}
+
+const MyCreators = ({ skinny }) => {
+  const dispatch = useDispatch()
+  const locationPathname = useLocationPathname()
+  const user = useSelector(selectors.getUser)
+  const { creatorList } = useContext(MyListContext)
+  const classes = useStyles()
 
   return (
     <div>
       {creatorList?.map((user, ind) => {
         const { fields } = user
         return (
-          <div className={classes.likeItem}>
+          <div className={classes.likeItem} key={ind}>
             <Item
-              key={ind}
               title={fields?.name}
               imageUrl={
                 fields?.image
                   ? fields?.image
                   : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues='
               }
-              // isSelected={isChannelSelected(
-              //   locationPathname,
-              //   fields?.tag
-              // )}
+              isSelected={isChannelSelected(
+                locationPathname,
+                fields?.creatorId
+              )}
               onClick={() =>
                 dispatch(actions.pushHistory(`/profile/${fields?.creatorId}`))
               }
-              // skinny={skinny}
             />
             <div className={classes.playPause}>
-              <PlusMinusBtn creator={fields} userId={fields.creatorId} size={'1.5em'} />
+              <PlusMinusBtn
+                creator={fields}
+                userId={fields.creatorId}
+                size={'1.5em'}
+              />
             </div>
           </div>
         )
