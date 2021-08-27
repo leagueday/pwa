@@ -59,7 +59,6 @@ const LiveStreams = ({ channelTag }) => {
     })
       .then(response => response.json())
       .then(function (response) {
-        console.log('response from mux ', response)
         if (response.data.status === 'active') {
           setActive(true)
         }

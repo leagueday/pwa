@@ -4,11 +4,10 @@ import * as ActionType from './actionTypes'
 
 // App
 
-export const addToMyList = (kind, id) => ({
+export const addToMyList = (title, tag, img) => ({
   type: ActionType.ADD_TO_MYLIST,
   payload: {
-    id,
-    kind,
+    title, tag, img
   },
 })
 

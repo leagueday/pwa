@@ -11,43 +11,45 @@ const GetMyList = () => {
   const user = useSelector(selectors.getUser)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    base('UserList')
-    .select({
-      filterByFormula: `{userId} = '${user?.id}'`,
-      view: 'Grid view',
-    })
-    .eachPage(
-      async function page(records, fetchNextPage) {
-        dispatch(actions.setChannelList(records))
-      },
-      function done(err) {
-        if (err) {
-          console.error(err)
-          return
-        }
-      }
-    )
+  // useEffect(() => {
+  //   if (user) {
+  //     base('UserList')
+  //       .select({
+  //         filterByFormula: `{userId} = '${user?.id}'`,
+  //         view: 'Grid view',
+  //       })
+  //       .eachPage(
+  //         async function page(records, fetchNextPage) {
+  //           dispatch(actions.setChannelList(records))
+  //         },
+  //         function done(err) {
+  //           if (err) {
+  //             console.error(err)
+  //             return
+  //           }
+  //         }
+  //       )
 
-    base('UserCreatorsList')
-    .select({
-      filterByFormula: `{userId} = '${user?.id}'`,
-      view: 'Grid view',
-    })
-    .eachPage(
-      async function page(records, fetchNextPage) {
-        dispatch(actions.setCreatorList(records))
-      },
-      function done(err) {
-        if (err) {
-          console.error(err)
-          return
-        }
-      }
-    )
-  }, [user])
+  //     base('UserCreatorsList')
+  //       .select({
+  //         filterByFormula: `{userId} = '${user?.id}'`,
+  //         view: 'Grid view',
+  //       })
+  //       .eachPage(
+  //         async function page(records, fetchNextPage) {
+  //           dispatch(actions.setCreatorList(records))
+  //         },
+  //         function done(err) {
+  //           if (err) {
+  //             console.error(err)
+  //             return
+  //           }
+  //         }
+  //       )
+  //   }
+  // }, [user])
 
   return null
 }
 
-export default GetMyList;
+export default GetMyList

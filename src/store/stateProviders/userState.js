@@ -164,7 +164,7 @@ function UserProfileProvider(props) {
     }, [userId])
 
     return (
-        <UserStateProvider value={{ loading, userData, setUserData, refreshData, getData, setUserId, currentUserId, getUserRecordings, TitanTrophy, PentaTrophy, NoobTrophy, creatorList, userRecordings, audiocasts }}>
+        <UserStateProvider value={{ loading, userData, setUserData, refreshData, getData, channelList, setUserId, currentUserId, getUserRecordings, TitanTrophy, PentaTrophy, NoobTrophy, creatorList, userRecordings, audiocasts }}>
             {props?.children}
         </UserStateProvider>
     )

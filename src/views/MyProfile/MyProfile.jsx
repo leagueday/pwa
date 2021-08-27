@@ -500,7 +500,7 @@ const baseId = 'appXoertP1WJjd4TQ'
 const base = new Airtable({ apiKey }).base(baseId)
 
 const MyProfile = ({ userId }) => {
-  const { globalList, creatorList, setGlobalList, setCreatorList } = useContext(
+  const { globalList, creatorList } = useContext(
     MyListContext
   )
   const { userData, loading, getUserRecordings, userRecordings, audiocasts } = useContext(UserStateContext)
@@ -513,8 +513,6 @@ const MyProfile = ({ userId }) => {
   const [friendsModal, setFriendsModal] = useState(false)
   const [open, setOpen] = useState(false)
   const friendList = useSelector(selectors.getFriendsList)
-  // const { filteredListRecords, creatorList: cl } = getMyList()
-  const filteredListRecords = useSelector(selectors.getMyChannels)
 
   const handleCreatorClick = () => {
     setCreatorsSelected(true)
@@ -606,13 +604,6 @@ const MyProfile = ({ userId }) => {
   if (loading) {
     return <h1>Loading...</h1>
   }
-
-  // useEffect(() => {
-  //   if (globalList.length === 0 && filteredListRecords.length > 0) {
-  //     console.log('set channel list ')
-  //     setGlobalList(filteredListRecords)
-  //   }
-  // }, [filteredListRecords])
 
   return (
     <div className={classes.content}>
@@ -807,7 +798,7 @@ const MyProfile = ({ userId }) => {
           <div className={classes.userContent}>
             {channelSelected && (
               <div className={classes.channels}>
-                {filteredListRecords?.map((item, index) => {
+                {globalList?.map((item, index) => {
                   return (
                     <div
                       className={classes.channelsWrapper}

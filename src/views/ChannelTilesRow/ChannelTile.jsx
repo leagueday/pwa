@@ -127,7 +127,6 @@ const ChannelTile = ({ channel }) => {
       })
         .then(response => response.json())
         .then(function (response) {
-          console.log('response from mux ', response)
           if (response.data.status === 'active') {
             setActive(true)
           }
@@ -137,9 +136,7 @@ const ChannelTile = ({ channel }) => {
         })
     )
   }, [userAudio])
-
-  console.log('live status ', active)
-
+  
   return (
     <div className={classes.channelTile}>
       <Square className={classes.imageSquare}>
@@ -148,7 +145,7 @@ const ChannelTile = ({ channel }) => {
           src={channel.imageUrl}
           onClick={gotoThisChannel}
         />
-        {active && <Button className={classes.liveSign}><b>Live</b></Button>}
+        {active && <Button className={classes.liveSign}><b style={{ fontWeight: 900 }}>Live</b></Button>}
         <PlusMinusButton
           size="25%"
           className={classes.plusMinusButton}

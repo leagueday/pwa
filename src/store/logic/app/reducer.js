@@ -23,14 +23,12 @@ const initialState = {
   myCreatorList: []
 }
 
-const addToMyList = (state = initialState, title, tag, img) => {
+const addToMyList = (state, title, tag, img) => {
+  console.log('add to list reducer func ', title, tag, img)
   const myList = state.myChannelList ?? []
   const nextMyList = [...myList, { fields: { title: title, tag: tag, channelImg: img } }]
 
-  return {
-    ...state,
-    myChannelList: nextMyList,
-  }
+  return nextMyList
 }
 
 const removeFromMyList = (userData, id, kind) => {
@@ -53,10 +51,10 @@ const removeFromMyList = (userData, id, kind) => {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.ADD_TO_MYLIST: {
-      const { id, kind } = action.payload
+      const { title, tag, img } = action.payload
       return {
         ...state,
-        userData: addToMyList(state.userData, id, kind),
+        myChannelList: addToMyList(state, title, tag, img),
       }
     }
     case ActionType.CONDENSE_AUDIO_CONTROLS: {

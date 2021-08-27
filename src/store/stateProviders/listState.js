@@ -72,7 +72,7 @@ function ListStateProvider(props) {
                 });
             });
         }
-        dispatch(actions.addToMyList(title, tag, img))
+        // dispatch(actions.addToMyList(title, tag, img))
         result.push({ fields: { title: title, tag: tag, channelImg: img } })
         setGlobalList(result.concat(globalList))
     }
@@ -82,8 +82,8 @@ function ListStateProvider(props) {
 
         setTimeout(() => (setDisabled(false)), 500)
 
-        const recordToDelete = globalList?.filter((item) => item.fields.tag === tag)
-        const newList = globalList?.filter((item) => item.fields.tag !== tag)
+        const recordToDelete = channelList?.filter((item) => item.fields.tag === tag)
+        const newList = channelList?.filter((item) => item.fields.tag !== tag)
         setGlobalList(newList)
 
         await Promise.all(recordToDelete)
@@ -184,9 +184,11 @@ function ListStateProvider(props) {
     }
 
     useEffect(() => {
-        getData();
-        getCreatorData();
-    }, [activeUser])
+        if (activeUser) {
+            getData();
+            getCreatorData();
+        }
+    }, [activeUser, channelList])
 
     return (
         <MyListProvider value={{ disabled, globalList, setGlobalList, getIsOnMyList, addToList, removeFromList, setGlobalList, creatorList, setCreatorList, isOnCreatorsList, addToCreatorList, removeFromCreatorList }}>

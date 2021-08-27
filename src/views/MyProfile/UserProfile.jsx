@@ -402,6 +402,7 @@ const UserProfile = ({ userId }) => {
     creatorList,
     userRecordings,
     audiocasts,
+    channelList
   } = useContext(UserStateContext)
   const { sendRequest, declineFriendReq, acceptFriendReq } = useContext(
     FriendsStateContext
