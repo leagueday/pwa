@@ -77,8 +77,8 @@ function ListStateProvider(props) {
 
         setTimeout(() => (setDisabled(false)), 500)
 
-        const recordToDelete = globalList?.filter((item) => item.fields.tag === tag)
-        const newList = globalList?.filter((item) => item.fields.tag !== tag)
+        const recordToDelete = channelList?.filter((item) => item.fields.tag === tag)
+        const newList = channelList?.filter((item) => item.fields.tag !== tag)
         setGlobalList(newList)
 
         await Promise.all(recordToDelete)

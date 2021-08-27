@@ -80,7 +80,6 @@ const useStyles = makeStyles(theme => ({
     paddingRight: '0.25em',
   },
 }))
-
 const baseId = 'appXoertP1WJjd4TQ'
 
 const ChannelTile = ({ channel }) => {
