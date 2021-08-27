@@ -80,6 +80,7 @@ const useStyles = makeStyles(theme => ({
     paddingRight: '0.25em',
   },
 }))
+
 const baseId = 'appXoertP1WJjd4TQ'
 
 const ChannelTile = ({ channel }) => {
@@ -145,7 +146,7 @@ const ChannelTile = ({ channel }) => {
           src={channel.imageUrl}
           onClick={gotoThisChannel}
         />
-        {active && <Button className={classes.liveSign}><b style={{ fontWeight: 900 }}>Live</b></Button>}
+        {active && <Button onClick={gotoThisChannel} className={classes.liveSign}><b style={{ fontWeight: 900 }}>Live</b></Button>}
         <PlusMinusButton
           size="25%"
           className={classes.plusMinusButton}
