@@ -55,18 +55,18 @@ module.exports = {
       clientsClaim: true,
       skipWaiting: true,
     }),
-    new SentryWebpackPlugin({
-      authToken: process.env.SENTRY_AUTH_TOKEN,
-      release: '0.0.1',
-      org: 'leagueday',
-      project: 'leagueday',
-      include: '.',
-      ignore: [
-        'node_modules',
-        'webpack-dev.config.js',
-        'webpack-prod.config.js',
-      ],
-    }),
+    // new SentryWebpackPlugin({
+    //   authToken: process.env.SENTRY_AUTH_TOKEN,
+    //   release: '0.0.1',
+    //   org: 'leagueday',
+    //   project: 'leagueday',
+    //   include: '.',
+    //   ignore: [
+    //     'node_modules',
+    //     'webpack-dev.config.js',
+    //     'webpack-prod.config.js',
+    //   ],
+    // }),
   ],
   resolve: {
     extensions: ['*', '.js', '.jsx'],

@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       width: '40%',
       marginLeft: '15px',
+      height: '25rem',
     },
   },
   images: {
@@ -91,6 +92,9 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      bottom: 10
+    },
   },
   like: {
     width: '20%',

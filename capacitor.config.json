@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.nameofyourapp",
-  "appName": "leagueday",
+  "appId": "com.leagueday.mobile",
+  "appName": "LeagueDay",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "dist",

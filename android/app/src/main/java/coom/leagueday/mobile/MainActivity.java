@@ -1,4 +1,4 @@
-package io.ionic.nameofyourapp;
+package coom.leagueday.mobile;
 
 import com.getcapacitor.BridgeActivity;
 

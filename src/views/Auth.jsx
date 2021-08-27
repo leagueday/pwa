@@ -52,7 +52,9 @@ const Auth = () => {
     // netlifyIdentity.on('open', onOpen)
     // netlifyIdentity.on('close', onClose)
 
-    netlifyIdentity.init()
+    netlifyIdentity.init({
+      APIUrl: 'https://app.leagueday.gg/.netlify/identity'
+    })
   }, [])
 
   React.useEffect(() => {
