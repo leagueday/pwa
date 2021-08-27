@@ -148,7 +148,7 @@ const ChannelTile = ({ channel }) => {
           src={channel.imageUrl}
           onClick={gotoThisChannel}
         />
-        {active && <Button className={classes.liveSign}>Live</Button>}
+        {active && <Button className={classes.liveSign}><b>Live</b></Button>}
         <PlusMinusButton
           size="25%"
           className={classes.plusMinusButton}
