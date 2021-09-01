@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { selectors } from '../../store'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectors, actions } from '../../store'
 import { makeStyles } from '@material-ui/styles'
-import { useDispatch } from 'react-redux'
 import Airtable from 'airtable'
 import AudioCard from './AudioCard'
 
@@ -19,6 +18,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Audiocast = ({ channelTag }) => {
+  const dispatch = useDispatch()
   const classes = useStyles()
   const user = useSelector(selectors.getUser)
   const [userAudio, setUserAudio] = useState([])
@@ -57,12 +57,20 @@ const Audiocast = ({ channelTag }) => {
     <div className={classes.wrapper}>
       {userAudio?.map((audio, key) => {
         return (
-          <AudioCard
-            audio={audio}
-            indexData={key}
-            key={key}
-            channelTag={channelTag}
-          />
+          // <div
+            // onClick={() =>
+            //   dispatch(
+            //     actions.pushHistory(`/audiocast/${audio?.fields?.audiocastId}`)
+            //   )
+            // }
+          // >
+            <AudioCard
+              audio={audio}
+              indexData={key}
+              key={key}
+              channelTag={channelTag}
+            />
+          // </div>
         )
       })}
     </div>

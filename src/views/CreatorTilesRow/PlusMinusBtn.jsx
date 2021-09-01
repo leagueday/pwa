@@ -15,18 +15,25 @@ const stopEventPropagation = handler => event => {
 const PlusMinusBtn = ({ className, size, userId, creator }) => {
   const user = useSelector(selectors.getUser)
   const isAuthenticated = !!user
-  const { disabled, isOnCreatorsList, addToCreatorList, removeFromCreatorList } = useContext(
-    MyListContext
-  )
+  const {
+    disabled,
+    isOnCreatorsList,
+    addToCreatorList,
+    removeFromCreatorList,
+  } = useContext(MyListContext)
 
   const MinusButton = makeIconButton(IcoMinus, disabled)
   const PlusButton = makeIconButton(IcoPlus, disabled)
 
-  const isOnMyList = isOnCreatorsList(creator?.name, userId)
+  const isOnMyList = isOnCreatorsList(creator?.username, userId)
+  console.log('plus btn ', creator?.username, userId)
 
   const [onClick, Button] = isOnMyList
     ? [() => removeFromCreatorList(userId), MinusButton]
-    : [() => addToCreatorList(creator?.name, userId, creator?.image), PlusButton]
+    : [
+        () => addToCreatorList(creator?.username, userId, creator?.image),
+        PlusButton,
+      ]
 
   const handler = stopEventPropagation(onClick)
 

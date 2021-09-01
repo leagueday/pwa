@@ -329,6 +329,16 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
         ev.stopPropagation()
       }
 
+  const onClick = () => {
+    live
+      ? dispatch(
+          actions.pushHistory(`/audiocast/${audio?.fields?.liveStreamId}`)
+        )
+      : dispatch(
+          actions.pushHistory(`/audiocast/${audio?.fields?.audiocastId}`)
+        )
+  }
+
   return (
     <div className={classes.audioCard}>
       <div
@@ -339,7 +349,7 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
           <Button
             onMouseOpen={() => setSeeMore(true)}
             className={classes.expandModal}
-            onClick={handleModalOpen}
+            onClick={onClick}
           >
             More
           </Button>
@@ -347,7 +357,7 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
         {live && <Button className={classes.liveSign}>Live</Button>}
         <img
           className={classes.creatorImg}
-          src={audio?.fields?.creatorImg}
+          src={audio?.fields?.image}
           alt=""
           style={{}}
           onClick={() =>
@@ -358,99 +368,12 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
           onMouseEnter={!sm ? () => setSeeMore(true) : null}
           className={classes.thumbnail}
           src={audio?.fields?.thumbnail}
-          onClick={handleModalOpen}
           style={{
             filter: seeMore ? 'brightness(50%)' : '',
           }}
           alt=""
         />
       </div>
-      <Modal
-        open={open}
-        onClose={handleModalClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <div className={classes.modalWrapper}>
-          <div className={classes.modalImages}>
-            <img
-              className={classes.audioThumbnail}
-              src={audio?.fields?.thumbnail}
-              alt=""
-            />
-            <div className={classes.creatorCreds}>
-              <div
-                className={classes.createdBy}
-                onClick={() =>
-                  dispatch(
-                    actions.pushHistory(`/profile/${audio?.fields?.userId}`)
-                  )
-                }
-              >
-                <img
-                  className={classes.userImg}
-                  src={audio?.fields?.creatorImg}
-                  alt=""
-                />
-                <p style={{ opacity: 0.8, marginLeft: 15 }}>
-                  By:
-                  <span className={classes.userName}>
-                    {audio?.fields?.username}
-                  </span>
-                </p>
-              </div>
-              <p style={{ color: colors.white80 }}>
-                Date:{' '}
-                <span style={{ color: colors.yellow, opacity: 0.8 }}>
-                  {audio?.fields?.uploadDate}
-                </span>
-              </p>
-              {!live && (
-                <p style={{ color: colors.white80 }}>
-                  Duration:{' '}
-                  <span style={{ color: colors.yellow, opacity: 0.8 }}>
-                    {durationLabel}
-                  </span>
-                </p>
-              )}
-            </div>
-          </div>
-          <div className={classes.audioDescription}>
-            <p style={{ fontSize: '20px', fontWeight: 300 }}>
-              <span style={{ fontWeight: 900 }}>Title: </span>
-              {audio?.fields?.title}
-            </p>
-            <p style={{ fontSize: '20px', fontWeight: 300 }}>
-              <span style={{ fontWeight: 900 }}>Description: </span>
-              {audio?.fields?.description}
-            </p>
-          </div>
-          <div>
-            <div className={classes.likeShare}>
-              <ToggleImageButton
-                className={classes.playBtnModal}
-                size="1vw"
-                on={isPlayings}
-                onClick={onPopClick}
-                onImage="/img/logo_live_pause.png"
-                offImage="/img/logo_live_play.png"
-                shadowColor={colors.lightGray}
-              />
-
-              <LikeButton
-                size={'32px'}
-                userId={currentUserId}
-                channelTag={channelTag}
-                audio={audio}
-              />
-              <div className={classes.shareBtn} onClick={openLinkModal}>
-                <LinkIcon style={{ fontSize: '32px' }} fontSize={'inherit'} />
-                <p style={{ padding: 0, margin: 0 }}> Share Link</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Modal>
       <Modal
         open={linkOpen}
         onClose={closeLinkModal}

@@ -43,7 +43,7 @@ const MyCreators = ({ skinny }) => {
         return (
           <div className={classes.likeItem} key={ind}>
             <Item
-              title={fields?.name}
+              title={fields?.username}
               imageUrl={
                 fields?.image
                   ? fields?.image
