@@ -20,12 +20,16 @@ import Modal from '@material-ui/core/Modal'
 import { maybeHmsToSecondsOnly, formatSecondsDuration } from '../dateutil'
 
 const useStyles = makeStyles(theme => ({
-  content: {
-    overflow: 'auto',
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-  },
+  content: ({ primaryColor = colors.blue }) =>
+    addScrollStyle(
+      primaryColor,
+      theme
+    )({
+      overflow: 'auto',
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+    }),
   audioThumbnail: {
     maxHeight: '15rem',
     maxWidth: '15rem',
@@ -90,18 +94,12 @@ const useStyles = makeStyles(theme => ({
     margin: '0 10px',
     height: '40px',
   },
-  sideColumn: ({ primaryColor = colors.blue }) =>
-    addScrollStyle(
-      primaryColor,
-      theme
-    )({
-      background: colors.darkerGray,
-      overflowY: 'scroll',
-      overflowX: 'hidden',
-      maxWidth: '25%',
-      minWidth: '320px',
-      borderLeft: `1px solid ${colors.white30}`,
-    }),
+  sideColumn: {
+    background: colors.darkerGray,
+    maxWidth: '25%',
+    minWidth: '320px',
+    borderLeft: `1px solid ${colors.white30}`,
+  },
   sideCast: {
     height: '100px',
     zIndex: 100,
@@ -168,22 +166,15 @@ const useStyles = makeStyles(theme => ({
   },
   message: {
     position: 'absolute',
-    bottom: 0,
+    top: 30,
     width: '70%',
-    left: '50%',
-    transform: 'translateX(-50%)',
+    right: '45%',
     width: '50%',
-    borderRadius: '70px',
-    padding: 10,
-    background: colors.lightGray,
-    color: 'white',
-    border: 'none',
-    outline: 'none',
   },
   sendIcon: {
     position: 'absolute',
-    bottom: 5,
-    right: '20%',
+    top: 50,
+    right: '41%',
     cursor: 'pointer',
     color: colors.blue,
     '&:hover': {
@@ -204,6 +195,14 @@ const useStyles = makeStyles(theme => ({
     outline: 'none',
     borderRadius: '5px',
     height: '12%',
+  },
+  commentImg: {
+    position: 'absolute',
+    top: 50,
+    left: 5,
+    height: '2rem',
+    width: '2rem',
+    borderRadius: '50%',
   },
 }))
 
@@ -521,9 +520,15 @@ const AudiocastScreen = ({ audiocastId }) => {
               )}
             </div>
             <div className={classes.chatRoom}></div>
-            <form style={{ margin: 0, padding: 0 }}>
+            <form>
+              <img
+                src={currentUser?.fields?.image}
+                className={classes.commentImg}
+              />
               <TextField
                 type="text"
+                label="Add a Comment"
+                name="Comment"
                 className={classes.message}
                 value={message}
                 onChange={e => setMessage(e.target.value)}
