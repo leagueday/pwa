@@ -536,7 +536,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      width: '100%',
+                      width: smDown ? '100%' : '50%',
                       justifyContent: 'space-evenly',
                     }}
                   >
