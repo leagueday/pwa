@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import PlusMinusBtn from '../CreatorTilesRow/PlusMinusBtn'
 import BasicLayout from '../BasicLayout'
 import { addScrollStyle } from '../util'
+import { TextField } from '@material-ui/core'
 import { useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { actions, constants, selectors } from '../../store'
@@ -20,19 +21,22 @@ import { maybeHmsToSecondsOnly, formatSecondsDuration } from '../dateutil'
 
 const useStyles = makeStyles(theme => ({
   content: {
-    overflow: 'hidden',
+    overflow: 'auto',
     width: '100%',
     height: '100%',
     display: 'flex',
   },
   audioThumbnail: {
-    height: '17rem',
-    width: '20rem',
+    maxHeight: '15rem',
+    maxWidth: '15rem',
+    width: '90%',
+    height: '90%',
     objectFit: 'contain',
   },
   audiocastInfo: {
     background: '#111',
-    minHeight: '45%',
+    minHeight: '350px',
+    height: '45%',
     display: 'flex',
     padding: 15,
   },
@@ -53,7 +57,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     display: 'flex',
-    padding: '5px 15px',
+    padding: '0px 15px',
     borderRadius: '70px',
     cursor: 'pointer',
     background: colors.darkGray,
@@ -84,7 +88,7 @@ const useStyles = makeStyles(theme => ({
   },
   playBtnModal: {
     margin: '0 10px',
-    height: '50px',
+    height: '40px',
   },
   sideColumn: ({ primaryColor = colors.blue }) =>
     addScrollStyle(
@@ -94,7 +98,8 @@ const useStyles = makeStyles(theme => ({
       background: colors.darkerGray,
       overflowY: 'scroll',
       overflowX: 'hidden',
-      minWidth: '25%',
+      maxWidth: '25%',
+      minWidth: '320px',
       borderLeft: `1px solid ${colors.white30}`,
     }),
   sideCast: {
@@ -364,7 +369,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                 />
                 <div className={classes.shareBtn}>
                   <LikeButton
-                    size={'32px'}
+                    size={'24px'}
                     userId={currentUserId}
                     channelTag={audiocast?.fields?.channelTag}
                     audio={audiocast}
@@ -474,7 +479,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                     </p>
                   )}
                 </div>
-                <h2>{audiocast?.fields?.title}</h2>
+                <h3>{audiocast?.fields?.title}</h3>
                 <p style={{ fontSize: '20px', fontWeight: 300 }}>
                   <span style={{ fontWeight: 900 }}>Description: </span>
                   {audiocast?.fields?.description}
@@ -517,7 +522,7 @@ const AudiocastScreen = ({ audiocastId }) => {
             </div>
             <div className={classes.chatRoom}></div>
             <form style={{ margin: 0, padding: 0 }}>
-              <input
+              <TextField
                 type="text"
                 className={classes.message}
                 value={message}
