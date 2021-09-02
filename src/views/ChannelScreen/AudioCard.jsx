@@ -368,6 +368,7 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
           onMouseEnter={!sm ? () => setSeeMore(true) : null}
           className={classes.thumbnail}
           src={audio?.fields?.thumbnail}
+          onClick={onClick}
           style={{
             filter: seeMore ? 'brightness(50%)' : '',
           }}

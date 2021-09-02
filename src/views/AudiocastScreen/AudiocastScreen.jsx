@@ -19,7 +19,7 @@ import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
 import Modal from '@material-ui/core/Modal'
 import { maybeHmsToSecondsOnly, formatSecondsDuration } from '../dateutil'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme, live) => ({
   content: ({ primaryColor = colors.blue }) =>
     addScrollStyle(
       primaryColor,
@@ -29,13 +29,21 @@ const useStyles = makeStyles(theme => ({
       width: '100%',
       height: '100%',
       display: 'flex',
+      [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+      },
     }),
   audioThumbnail: {
     maxHeight: '15rem',
     maxWidth: '15rem',
     width: '90%',
+    marginBottom: 20,
     height: '90%',
     objectFit: 'contain',
+    [theme.breakpoints.down('sm')]: {
+      height: '40%',
+      width: '40%',
+    },
   },
   audiocastInfo: {
     background: '#111',
@@ -43,12 +51,22 @@ const useStyles = makeStyles(theme => ({
     height: '45%',
     display: 'flex',
     padding: 15,
+    [theme.breakpoints.down('sm')]: {
+      minHeight: '70%',
+      height: 'auto',
+      flexDirection: 'column',
+    },
   },
   audiocastCreds: {
     padding: '0 20px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
+  },
+  castTitle: {
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.2rem',
+    },
   },
   sideColumn: {
     width: '20%',
@@ -73,6 +91,7 @@ const useStyles = makeStyles(theme => ({
     height: '3rem',
     width: '3rem',
     borderRadius: '50%',
+    objectFit: 'cover',
   },
   creatorName: {
     fontSize: '1rem',
@@ -99,6 +118,11 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '25%',
     minWidth: '320px',
     borderLeft: `1px solid ${colors.white30}`,
+    [theme.breakpoints.down('sm')]: {
+      height: 'auto',
+      width: '100%',
+      maxWidth: '100%',
+    },
   },
   sideCast: {
     height: '100px',
@@ -121,9 +145,13 @@ const useStyles = makeStyles(theme => ({
   },
   chatAndCast: {
     height: '100%',
+    width: '100%',
     minWidth: '70%',
     display: 'flex',
     flexDirection: 'column',
+    [theme.breakpoints.down('sm')]: {
+      background: '#111',
+    },
   },
   sideCastTitle: {
     padding: '10% 0',
@@ -133,6 +161,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-evenly',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+    },
   },
   chatBox: {
     minHeight: '55%',
@@ -140,11 +171,13 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    [theme.breakpoints.down('sm')]: {},
   },
   chatOptions: {
     display: 'flex',
     justifyContent: 'space-evenly',
     borderBottom: `.5px solid ${colors.white30}`,
+    [theme.breakpoints.down('sm')]: {},
   },
   chatOption: {
     cursor: 'pointer',
@@ -164,13 +197,16 @@ const useStyles = makeStyles(theme => ({
     padding: '3px 15px',
     borderBottom: `2px solid ${colors.magenta}`,
   },
-  message: {
+  message: ({ live }) => ({
     position: 'absolute',
     top: 30,
-    width: '70%',
     right: '45%',
     width: '50%',
-  },
+    [theme.breakpoints.down('sm')]: {
+      width: '70%',
+      transform: 'translateX(45%)',
+    },
+  }),
   sendIcon: {
     position: 'absolute',
     top: 50,
@@ -179,6 +215,9 @@ const useStyles = makeStyles(theme => ({
     color: colors.blue,
     '&:hover': {
       color: theme.palette.primary.active,
+    },
+    [theme.breakpoints.down('sm')]: {
+      right: '4%',
     },
   },
   linkModalWrapper: {
@@ -203,23 +242,35 @@ const useStyles = makeStyles(theme => ({
     height: '2rem',
     width: '2rem',
     borderRadius: '50%',
+    objectFit: 'cover',
+  },
+  toggleChatBtn: {
+    background: colors.blue,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+    marginBottom: 10,
   },
 }))
 
 const baseId = 'appXoertP1WJjd4TQ'
 
 const AudiocastScreen = ({ audiocastId }) => {
+  const theme = useTheme()
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'))
+
   const dispatch = useDispatch()
-  const classes = useStyles()
   const [audiocast, setAudiocast] = useState()
   const [sideColumn, setSideColumn] = useState([])
   const [selectedDuration, setSelectedDuration] = useState()
   const [partyChat, setPartyChat] = useState(true)
   const [qA, setQA] = useState(false)
   const [live, setLive] = useState(false)
+  const classes = useStyles({ live })
   const [message, setMessage] = useState('')
   const [linkOpen, setLinkOpen] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [chatSelected, setChatSelected] = useState(false)
 
   const audioMode = useSelector(selectors.getAudioMode)
   const audioUrl = useSelector(selectors.getAudioUrl)
@@ -350,39 +401,57 @@ const AudiocastScreen = ({ audiocastId }) => {
       <div className={classes.content}>
         <div className={classes.chatAndCast}>
           <div className={classes.audiocastInfo}>
-            <div>
-              <img
-                className={classes.audioThumbnail}
-                src={audiocast?.fields?.thumbnail}
-                alt=""
-              />
-              <div className={classes.likeShare}>
-                <ToggleImageButton
-                  className={classes.playBtnModal}
-                  size="2vw"
-                  on={isPlayings}
-                  onClick={onPopClick}
-                  onImage="/img/logo_live_pause.png"
-                  offImage="/img/logo_live_play.png"
-                  shadowColor={colors.lightGray}
+            <div
+              style={{
+                margin: 0,
+                marginBottom: 10,
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <img
+                  className={classes.audioThumbnail}
+                  src={audiocast?.fields?.thumbnail}
+                  alt=""
                 />
-                <div className={classes.shareBtn}>
-                  <LikeButton
-                    size={'24px'}
-                    userId={currentUserId}
-                    channelTag={audiocast?.fields?.channelTag}
-                    audio={audiocast}
+                {smDown && (
+                  <h3 className={classes.castTitle}>
+                    {audiocast?.fields?.title}
+                  </h3>
+                )}
+                <div className={classes.likeShare}>
+                  <ToggleImageButton
+                    className={classes.playBtnModal}
+                    size="2vw"
+                    on={isPlayings}
+                    onClick={onPopClick}
+                    onImage="/img/logo_live_pause.png"
+                    offImage="/img/logo_live_play.png"
+                    shadowColor={colors.lightGray}
                   />
-                  <FontAwesomeIcon
-                    style={{
-                      fontSize: '24px',
-                      marginRight: 20,
-                      cursor: 'pointer',
-                    }}
-                    fontSize={'inherit'}
-                    icon={faShareSquare}
-                    onClick={openLinkModal}
-                  />
+                  <div className={classes.shareBtn}>
+                    <LikeButton
+                      size={'24px'}
+                      userId={currentUserId}
+                      channelTag={audiocast?.fields?.channelTag}
+                      audio={audiocast}
+                    />
+                    <FontAwesomeIcon
+                      style={{
+                        fontSize: '24px',
+                        marginRight: 20,
+                        cursor: 'pointer',
+                      }}
+                      fontSize={'inherit'}
+                      icon={faShareSquare}
+                      onClick={openLinkModal}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -463,29 +532,125 @@ const AudiocastScreen = ({ audiocastId }) => {
                       creator={audiocast?.fields}
                     />
                   </div>
-                  <p style={{ color: colors.white80 }}>
-                    Date:{' '}
-                    <span style={{ color: colors.yellow, opacity: 0.8 }}>
-                      {audiocast?.fields?.uploadDate}
-                    </span>
-                  </p>
-                  {!live && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: '100%',
+                      justifyContent: 'space-evenly',
+                    }}
+                  >
                     <p style={{ color: colors.white80 }}>
-                      Duration:{' '}
+                      Date:{' '}
                       <span style={{ color: colors.yellow, opacity: 0.8 }}>
-                        {durationLabel}
+                        {audiocast?.fields?.uploadDate}
                       </span>
                     </p>
-                  )}
+                    {!live && (
+                      <p style={{ color: colors.white80 }}>
+                        Duration:{' '}
+                        <span style={{ color: colors.yellow, opacity: 0.8 }}>
+                          {durationLabel}
+                        </span>
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <h3>{audiocast?.fields?.title}</h3>
-                <p style={{ fontSize: '20px', fontWeight: 300 }}>
-                  <span style={{ fontWeight: 900 }}>Description: </span>
-                  {audiocast?.fields?.description}
+                {!smDown && (
+                  <h3 className={classes.castTitle}>
+                    {audiocast?.fields?.title}
+                  </h3>
+                )}
+                <p
+                  style={{
+                    fontSize: smDown ? '1rem' : '20px',
+                    fontWeight: 300,
+                  }}
+                >
+                  Description: {audiocast?.fields?.description}
                 </p>
               </div>
             </div>
           </div>
+          {!smDown && (
+            <div className={classes.chatBox}>
+              <div className={classes.chatOptions}>
+                {live ? (
+                  <>
+                    <b
+                      className={
+                        partyChat
+                          ? classes.chatOptionSelected
+                          : classes.chatOption
+                      }
+                      onClick={() => {
+                        setPartyChat(true)
+                        setQA(false)
+                      }}
+                    >
+                      Party Chat
+                    </b>
+                    <b
+                      className={
+                        qA ? classes.chatOptionSelected : classes.chatOption
+                      }
+                      onClick={() => {
+                        setPartyChat(false)
+                        setQA(true)
+                      }}
+                    >
+                      Q&A
+                    </b>
+                  </>
+                ) : (
+                  <b className={classes.chatOptionSelected}>Comments</b>
+                )}
+              </div>
+              <div className={classes.chatRoom}></div>
+              <form onSubmit={e => e.preventDefault()}>
+                <img
+                  src={currentUser?.fields?.image}
+                  className={classes.commentImg}
+                />
+                <TextField
+                  type="text"
+                  label={!live ? 'Add a Comment' : 'Send a Chat'}
+                  name="Comment"
+                  className={classes.message}
+                  value={message}
+                  onChange={e => setMessage(e.target.value)}
+                />
+                <button
+                  type="submit"
+                  style={{
+                    border: 'none',
+                    outline: 'none',
+                    background: 'transparent',
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faPaperPlane}
+                    className={classes.sendIcon}
+                    size={'2x'}
+                  />
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
+        {smDown && (
+          <Button
+            onClick={() => setChatSelected(!chatSelected)}
+            className={classes.toggleChatBtn}
+          >
+            {chatSelected
+              ? 'Explore Audiocasts'
+              : live && !chatSelected
+              ? 'See Party Chat'
+              : 'See Comments'}
+          </Button>
+        )}
+        {chatSelected && (
           <div className={classes.chatBox}>
             <div className={classes.chatOptions}>
               {live ? (
@@ -520,14 +685,14 @@ const AudiocastScreen = ({ audiocastId }) => {
               )}
             </div>
             <div className={classes.chatRoom}></div>
-            <form>
+            <form onSubmit={e => e.preventDefault()}>
               <img
                 src={currentUser?.fields?.image}
                 className={classes.commentImg}
               />
               <TextField
                 type="text"
-                label="Add a Comment"
+                label={!live ? 'Add a Comment' : 'Send a Chat'}
                 name="Comment"
                 className={classes.message}
                 value={message}
@@ -549,29 +714,31 @@ const AudiocastScreen = ({ audiocastId }) => {
               </button>
             </form>
           </div>
-        </div>
-        <div className={classes.sideColumn}>
-          {sideColumn?.map((audio, key) => (
-            <div
-              key={key}
-              className={classes.sideCast}
-              onClick={() =>
-                dispatch(
-                  actions.pushHistory(
-                    `/audiocast/${audio?.fields?.audiocastId}`
+        )}
+        {!chatSelected && (
+          <div className={classes.sideColumn}>
+            {sideColumn?.map((audio, key) => (
+              <div
+                key={key}
+                className={classes.sideCast}
+                onClick={() =>
+                  dispatch(
+                    actions.pushHistory(
+                      `/audiocast/${audio?.fields?.audiocastId}`
+                    )
                   )
-                )
-              }
-            >
-              <img
-                src={audio.fields.thumbnail}
-                alt=""
-                className={classes.sideCastImg}
-              />
-              <p className={classes.sideCastTitle}>{audio?.fields?.title}</p>
-            </div>
-          ))}
-        </div>
+                }
+              >
+                <img
+                  src={audio.fields.thumbnail}
+                  alt=""
+                  className={classes.sideCastImg}
+                />
+                <p className={classes.sideCastTitle}>{audio?.fields?.title}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </BasicLayout>
   )
