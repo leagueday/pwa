@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme, live) => ({
       primaryColor,
       theme
     )({
-      overflow: 'auto',
+      // overflow: 'auto',
       width: '100%',
       height: '100%',
       display: 'flex',
@@ -285,32 +285,62 @@ const useStyles = makeStyles((theme, live) => ({
     },
     marginBottom: 10,
   },
+  chatImg: {
+    width: '50px',
+    height: '50px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+  },
+  authorName: {
+    color: 'white',
+    fontSize: '.9rem',
+    position: 'absolute',
+    bottom: 5,
+    padding: 0,
+    margin: 0,
+  },
   chat: {
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
     color: 'black',
+    position: 'relative',
+    minHeight: '10%',
+    height: 'auto',
+    margin: '1% 0',
   },
   Uchat: {
+    position: 'relative',
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row-reverse',
     color: 'black',
+    minHeight: '10%',
+    height: 'auto',
+    margin: '1% 0',
   },
   uText: {
     maxWidth: '50%',
-    marginRight: '2%',
     borderRadius: '10px',
     background: colors.blue,
-    padding: '1%',
+    padding: '0 1%',
+    fontSize: '1rem',
+    position: 'absolute',
+    top: 5,
+    margin: 0,
+    right: '60px',
   },
   text: {
     maxWidth: '50%',
-    marginLeft: '2%',
     borderRadius: '10px',
     background: colors.white80,
-    padding: '1%',
+    padding: '0 1%',
+    fontSize: '1rem',
+    position: 'absolute',
+    top: 5,
+    margin: 0,
+    left: '60px',
   },
 }))
 
@@ -395,15 +425,44 @@ const AudiocastScreen = ({ audiocastId }) => {
     e.preventDefault()
     axios
       .post('https://leagueday-api.herokuapp.com/chats/create', {
-        userId: currentUser?.fields?.userId,
+        userId: currentUser.fields.userId,
         roomId: audiocastId,
         message: message,
-        image: currentUser?.fields?.image
-          ? currentUser?.fields?.image
+        authorName: currentUser.fields.name,
+        image: currentUser.fields.image
+          ? currentUser.fields.image
           : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues=',
       })
       .then(res => {
         socket.emit('new_chat', { message })
+        setMessage('')
+        console.log('sent message ', res)
+      })
+      .catch(err => {
+        console.log('message send error ', err)
+      })
+  }
+
+  const getComments = () => {
+    axios
+      .get(`https://leagueday-api.herokuapp.com/comments/get/${audiocastId}`)
+      .then(res => console.log('comments ', res))
+      .catch(err => console.log('error in AudiocastScreen ', err))
+  }
+
+  const postComment = e => {
+    e.preventDefault()
+    axios
+      .post('https://leagueday-api.herokuapp.com/comments/create', {
+        referenceId: audiocastId,
+        commentorId: currentUser.fields.userId,
+        comment: message,
+        commentorName: currentUser.fields.name,
+        commentorImg: currentUser.fields.image
+          ? currentUser.fields.image
+          : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues=',
+      })
+      .then(res => {
         setMessage('')
         console.log('sent message ', res)
       })
@@ -517,7 +576,7 @@ const AudiocastScreen = ({ audiocastId }) => {
 
   const listener = event => {
     if (event.code === 'Enter' || event.code === 'NumpadEnter') {
-      sendChat()
+      live ? sendChat() : postComment()
     }
   }
 
@@ -754,6 +813,21 @@ const AudiocastScreen = ({ audiocastId }) => {
                       alt=""
                     />
                     <p
+                      className={classes.authorName}
+                      style={{
+                        right:
+                          currentUser?.fields?.name === chat?.authorName
+                            ? '55px'
+                            : '',
+                        left:
+                          currentUser?.fields?.name === chat?.authorName
+                            ? ''
+                            : '50px',
+                      }}
+                    >
+                      {chat?.authorName}
+                    </p>
+                    <p
                       className={
                         chat?.authorId === currentUser?.fields?.userId
                           ? classes.uText
@@ -766,7 +840,10 @@ const AudiocastScreen = ({ audiocastId }) => {
                 ))}
                 <div ref={messageEl} />
               </div>
-              <form onSubmit={sendChat}>
+              <form
+                style={{ marginTop: 10, height: '10%', background: 'black' }}
+                onSubmit={live ? sendChat : postComment}
+              >
                 <img
                   src={currentUser?.fields?.image}
                   className={classes.commentImg}
@@ -779,7 +856,6 @@ const AudiocastScreen = ({ audiocastId }) => {
                   value={message}
                   onChange={e => setMessage(e.target.value)}
                   onKeyDown={listener}
-                  onSubmit={listener}
                 />
                 <button
                   type="submit"
@@ -788,7 +864,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                     outline: 'none',
                     background: 'transparent',
                   }}
-                  onClick={event => sendChat(audiocastId, socket)}
+                  onClick={() => live ? sendChat(audiocastId, socket) : postComment()}
                 >
                   <FontAwesomeIcon
                     icon={faPaperPlane}
@@ -860,8 +936,25 @@ const AudiocastScreen = ({ audiocastId }) => {
                     alt=""
                   />
                   <p
+                    className={classes.authorName}
+                    style={{
+                      right:
+                        currentUser?.fields?.name === chat?.authorName
+                          ? '55px'
+                          : '',
+                      left:
+                        currentUser?.fields?.name === chat?.authorName
+                          ? ''
+                          : '50px',
+                    }}
+                  >
+                    {chat?.authorName}
+                  </p>
+                  <p
                     className={
-                      chat?.authorId === user?.id ? classes.uText : classes.text
+                      chat?.authorId === currentUser?.fields?.userId
+                        ? classes.uText
+                        : classes.text
                     }
                   >
                     {chat?.message}
@@ -869,7 +962,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                 </div>
               ))}
             </div>
-            <form onSubmit={e => e.preventDefault()}>
+            <form onSubmit={live ? sendChat : postComment}>
               <img
                 src={currentUser?.fields?.image}
                 className={classes.commentImg}
@@ -889,7 +982,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                   outline: 'none',
                   background: 'transparent',
                 }}
-                onClick={event => sendChat(event, audiocastId, socket)}
+                onClick={() => live ? sendChat(audiocastId, socket) : postComment()}
               >
                 <FontAwesomeIcon
                   icon={faPaperPlane}
@@ -902,6 +995,7 @@ const AudiocastScreen = ({ audiocastId }) => {
         )}
         {!chatSelected && (
           <div className={classes.sideColumn}>
+            <h3 style={{ textAlign: 'center' }}>Explore Audiocasts</h3>
             {sideColumn?.map((audio, key) => (
               <div
                 key={key}
