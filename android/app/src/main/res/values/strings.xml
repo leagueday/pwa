@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">LeagueDay</string>
+    <string name="title_activity_main">LeagueDay</string>
+    <string name="package_name">coom.leagueday.mobile</string>
+    <string name="custom_url_scheme">coom.leagueday.mobile</string>
+</resources>

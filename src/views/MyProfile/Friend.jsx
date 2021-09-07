@@ -17,10 +17,12 @@ const Friend = ({ friend, classes }) => {
 
   return (
     <div className={classes.friendList}>
-      <div className={classes.friendImgCont}>
-        <img src={friend.friend.image} alt="" className={classes.friendImg} />
+      <div className={classes.friendBio}>
+        <div className={classes.friendImgCont}>
+          <img src={friend.friend.image} alt="" className={classes.friendImg} />
+        </div>
+        <p className={classes.friendName}>{friend.friend.name}</p>
       </div>
-      <p className={classes.friendName}>{friend.friend.name}</p>
       <div className={classes.friendBtnCont}>
         {!declined ? (
           <>
