@@ -6,6 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import FriendsListProvider from './store/stateProviders/toggleFriend'
 import Paper from '@material-ui/core/Paper'
 import ListStateProvider from './store/stateProviders/listState'
+import ChatStateProvider from './store/stateProviders/useChat'
 import UserProfileProvider from './store/stateProviders/userState'
 import * as Sentry from '@sentry/react'
 import { Integrations } from '@sentry/tracing'
@@ -81,16 +82,18 @@ const App = () => {
         <ListStateProvider>
           <UserProfileProvider>
             <FriendsListProvider>
-              <Audio />
-              <Auth />
-              {/* <Chronicle /> */}
-              <CssBaseline />
-              <ThemeProvider>
-                <StyledAppContent />
-              </ThemeProvider>
-              <UserData />
-              <FriendsList />
-              <GetMyList />
+              <ChatStateProvider>
+                <Audio />
+                <Auth />
+                {/* <Chronicle /> */}
+                <CssBaseline />
+                <ThemeProvider>
+                  <StyledAppContent />
+                </ThemeProvider>
+                <UserData />
+                <FriendsList />
+                <GetMyList />
+              </ChatStateProvider>
             </FriendsListProvider>
           </UserProfileProvider>
         </ListStateProvider>

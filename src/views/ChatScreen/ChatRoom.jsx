@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { selectors } from '../../store'
+import { ChatStateContext } from '../../store/stateProviders/useChat'
 import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import { useSelector } from 'react-redux'
 import SocketIOClient from 'socket.io-client'
@@ -124,11 +125,14 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ChatRoom = ({  socket, roomId }) => {
+const ChatRoom = ({ socket, roomId }) => {
   const user = useSelector(selectors.getUser)
   const { selectedFriend } = useContext(FriendsStateContext)
-  const userData = useSelector(selectors.getUserData)
+  const { message, setMessage, allChats, getMessages } = useContext(
+    ChatStateContext
+  )
   const roomIdRef = useRef(roomId)
+  const userData = useSelector(selectors.getUserData);
 
   useEffect(() => {
     socket?.on('new_chat', () => {
@@ -144,8 +148,6 @@ const ChatRoom = ({  socket, roomId }) => {
   }, [socket])
 
   const classes = useStyles()
-  const [message, setMessage] = useState('')
-  const [allChats, setAllChats] = useState([])
 
   const messageEl = useRef(null)
 
@@ -173,20 +175,6 @@ const ChatRoom = ({  socket, roomId }) => {
       })
       .catch(err => {
         console.log('message send error ', err)
-      })
-  }
-
-  const getMessages = (id) => {
-    axios
-      .post('https://leagueday-api.herokuapp.com/chats/list', {
-        roomId: id,
-      })
-      .then(res => {
-        console.log('res', res)
-        setAllChats(res.data.data)
-      })
-      .catch(err => {
-        console.log(err)
       })
   }
 
@@ -249,6 +237,7 @@ const ChatRoom = ({  socket, roomId }) => {
                 value={message}
                 onChange={e => setMessage(e.target.value)}
                 onKeyDown={listener}
+                onSubmit={listener}
               />
               <button
                 type="submit"

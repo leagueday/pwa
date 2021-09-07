@@ -1,7 +1,10 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useContext, useRef } from 'react'
 import ToggleImageButton from '../ToggleImageButton'
+import axios from 'axios'
 import LikeButton from '../LikeButton'
+import { ChatStateContext } from '../../store/stateProviders/useChat'
 import { useDispatch, useSelector } from 'react-redux'
+import SocketIOClient from 'socket.io-client'
 import PlusMinusBtn from '../CreatorTilesRow/PlusMinusBtn'
 import BasicLayout from '../BasicLayout'
 import { addScrollStyle } from '../util'
@@ -20,7 +23,7 @@ import Modal from '@material-ui/core/Modal'
 import { maybeHmsToSecondsOnly, formatSecondsDuration } from '../dateutil'
 
 const useStyles = makeStyles((theme, live) => ({
-  content: ({ primaryColor = colors.blue }) =>
+  contentt: ({ primaryColor = colors.blue }) =>
     addScrollStyle(
       primaryColor,
       theme
@@ -33,12 +36,21 @@ const useStyles = makeStyles((theme, live) => ({
         flexDirection: 'column',
       },
     }),
+  content: {
+    // overflow: 'auto',
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+    },
+  },
   audioThumbnail: {
     maxHeight: '15rem',
     maxWidth: '15rem',
-    width: '90%',
+    width: '50%',
     marginBottom: 20,
-    height: '90%',
+    height: '50%',
     objectFit: 'contain',
     [theme.breakpoints.down('sm')]: {
       height: '40%',
@@ -47,8 +59,7 @@ const useStyles = makeStyles((theme, live) => ({
   },
   audiocastInfo: {
     background: '#111',
-    minHeight: '350px',
-    height: '45%',
+    height: 'auto',
     display: 'flex',
     padding: 15,
     [theme.breakpoints.down('sm')]: {
@@ -72,6 +83,7 @@ const useStyles = makeStyles((theme, live) => ({
     width: '20%',
   },
   creator: {
+    width: '100%',
     display: 'flex',
     alignItems: 'center',
   },
@@ -113,7 +125,7 @@ const useStyles = makeStyles((theme, live) => ({
     margin: '0 10px',
     height: '40px',
   },
-  sideColumn: {
+  sideColumnn: {
     background: colors.darkerGray,
     maxWidth: '25%',
     minWidth: '320px',
@@ -124,6 +136,23 @@ const useStyles = makeStyles((theme, live) => ({
       maxWidth: '100%',
     },
   },
+  sideColumn: ({ primaryColor = colors.blue }) =>
+    addScrollStyle(
+      primaryColor,
+      theme
+    )({
+      overflowX: 'hidden',
+      overflow: 'scroll',
+      background: colors.darkerGray,
+      maxWidth: '25%',
+      minWidth: '320px',
+      borderLeft: `1px solid ${colors.white30}`,
+      [theme.breakpoints.down('sm')]: {
+        height: 'auto',
+        width: '100%',
+        maxWidth: '100%',
+      },
+    }),
   sideCast: {
     height: '100px',
     zIndex: 100,
@@ -158,6 +187,7 @@ const useStyles = makeStyles((theme, live) => ({
     textOverflow: 'ellipsis',
   },
   dateAndDesc: {
+    width: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-evenly',
@@ -199,7 +229,9 @@ const useStyles = makeStyles((theme, live) => ({
   },
   message: ({ live }) => ({
     position: 'absolute',
-    top: 30,
+    top: live ? '' : 30,
+    bottom: live ? 5 : '',
+    transform: live ? 'translateX(45%)' : '',
     right: '45%',
     width: '50%',
     [theme.breakpoints.down('sm')]: {
@@ -207,10 +239,11 @@ const useStyles = makeStyles((theme, live) => ({
       transform: 'translateX(45%)',
     },
   }),
-  sendIcon: {
+  sendIcon: ({ live }) => ({
     position: 'absolute',
-    top: 50,
-    right: '41%',
+    top: live ? '' : 50,
+    bottom: live ? 0 : '',
+    right: live ? '19%' : '41%',
     cursor: 'pointer',
     color: colors.blue,
     '&:hover': {
@@ -219,7 +252,17 @@ const useStyles = makeStyles((theme, live) => ({
     [theme.breakpoints.down('sm')]: {
       right: '4%',
     },
-  },
+  }),
+  commentImg: ({ live }) => ({
+    position: 'absolute',
+    top: live ? '' : 50,
+    bottom: live ? 2 : '',
+    left: live ? '23%' : 5,
+    height: '2rem',
+    width: '2rem',
+    borderRadius: '50%',
+    objectFit: 'cover',
+  }),
   linkModalWrapper: {
     position: 'absolute',
     width: '20%',
@@ -235,21 +278,39 @@ const useStyles = makeStyles((theme, live) => ({
     borderRadius: '5px',
     height: '12%',
   },
-  commentImg: {
-    position: 'absolute',
-    top: 50,
-    left: 5,
-    height: '2rem',
-    width: '2rem',
-    borderRadius: '50%',
-    objectFit: 'cover',
-  },
   toggleChatBtn: {
     background: colors.blue,
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
     marginBottom: 10,
+  },
+  chat: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    color: 'black',
+  },
+  Uchat: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row-reverse',
+    color: 'black',
+  },
+  uText: {
+    maxWidth: '50%',
+    marginRight: '2%',
+    borderRadius: '10px',
+    background: colors.blue,
+    padding: '1%',
+  },
+  text: {
+    maxWidth: '50%',
+    marginLeft: '2%',
+    borderRadius: '10px',
+    background: colors.white80,
+    padding: '1%',
   },
 }))
 
@@ -261,13 +322,15 @@ const AudiocastScreen = ({ audiocastId }) => {
 
   const dispatch = useDispatch()
   const [audiocast, setAudiocast] = useState()
+  const { message, setMessage, allChats, getMessages } = useContext(
+    ChatStateContext
+  )
   const [sideColumn, setSideColumn] = useState([])
   const [selectedDuration, setSelectedDuration] = useState()
   const [partyChat, setPartyChat] = useState(true)
   const [qA, setQA] = useState(false)
   const [live, setLive] = useState(false)
   const classes = useStyles({ live })
-  const [message, setMessage] = useState('')
   const [linkOpen, setLinkOpen] = useState(false)
   const [copied, setCopied] = useState(false)
   const [chatSelected, setChatSelected] = useState(false)
@@ -282,6 +345,29 @@ const AudiocastScreen = ({ audiocastId }) => {
   const durationLabel = useMemo(() => formatSecondsDuration(duration), [
     duration,
   ])
+
+  const [socket, setSocket] = useState(null)
+
+  useEffect(() => {
+    const newSocket = SocketIOClient('https://leagueday-api.herokuapp.com', {
+      query: audiocastId,
+    })
+    setSocket(newSocket)
+    return () => newSocket.close()
+  }, [setSocket])
+
+  useEffect(() => {
+    socket?.on('new_chat', () => {
+      console.log('triggered new chat ')
+      getMessages(audiocastId)
+    })
+
+    return () => {
+      socket?.off('new_chat', () => {
+        getMessages(audiocastId)
+      })
+    }
+  }, [socket])
 
   const au = document.createElement('audio')
 
@@ -303,6 +389,27 @@ const AudiocastScreen = ({ audiocastId }) => {
 
   const closeLinkModal = () => {
     setLinkOpen(false)
+  }
+
+  const sendChat = e => {
+    e.preventDefault()
+    axios
+      .post('https://leagueday-api.herokuapp.com/chats/create', {
+        userId: currentUser?.fields?.userId,
+        roomId: audiocastId,
+        message: message,
+        image: currentUser?.fields?.image
+          ? currentUser?.fields?.image
+          : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues=',
+      })
+      .then(res => {
+        socket.emit('new_chat', { message })
+        setMessage('')
+        console.log('sent message ', res)
+      })
+      .catch(err => {
+        console.log('message send error ', err)
+      })
   }
 
   useEffect(() => {
@@ -395,6 +502,31 @@ const AudiocastScreen = ({ audiocastId }) => {
         }
         ev.stopPropagation()
       }
+
+  const messageEl = useRef(null)
+
+  const scrollToBottom = () => {
+    messageEl?.current?.scrollIntoView({ behavior: 'auto' })
+  }
+
+  useEffect(scrollToBottom, [allChats])
+
+  useEffect(() => {
+    getMessages(audiocastId)
+  }, [audiocastId])
+
+  const listener = event => {
+    if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+      sendChat()
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', listener)
+    return () => {
+      document.removeEventListener('keydown', listener)
+    }
+  }, [])
 
   return (
     <BasicLayout>
@@ -590,7 +722,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                     >
                       Party Chat
                     </b>
-                    <b
+                    {/* <b
                       className={
                         qA ? classes.chatOptionSelected : classes.chatOption
                       }
@@ -600,14 +732,41 @@ const AudiocastScreen = ({ audiocastId }) => {
                       }}
                     >
                       Q&A
-                    </b>
+                    </b> */}
                   </>
                 ) : (
                   <b className={classes.chatOptionSelected}>Comments</b>
                 )}
               </div>
-              <div className={classes.chatRoom}></div>
-              <form onSubmit={e => e.preventDefault()}>
+              <div className={classes.chatRoom}>
+                {allChats?.map((chat, ind) => (
+                  <div
+                    className={
+                      chat?.authorId === currentUser?.fields?.userId
+                        ? classes.Uchat
+                        : classes.chat
+                    }
+                    key={ind}
+                  >
+                    <img
+                      className={classes.chatImg}
+                      src={chat?.authorImg}
+                      alt=""
+                    />
+                    <p
+                      className={
+                        chat?.authorId === currentUser?.fields?.userId
+                          ? classes.uText
+                          : classes.text
+                      }
+                    >
+                      {chat?.message}
+                    </p>
+                  </div>
+                ))}
+                <div ref={messageEl} />
+              </div>
+              <form onSubmit={sendChat}>
                 <img
                   src={currentUser?.fields?.image}
                   className={classes.commentImg}
@@ -619,6 +778,8 @@ const AudiocastScreen = ({ audiocastId }) => {
                   className={classes.message}
                   value={message}
                   onChange={e => setMessage(e.target.value)}
+                  onKeyDown={listener}
+                  onSubmit={listener}
                 />
                 <button
                   type="submit"
@@ -627,6 +788,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                     outline: 'none',
                     background: 'transparent',
                   }}
+                  onClick={event => sendChat(audiocastId, socket)}
                 >
                   <FontAwesomeIcon
                     icon={faPaperPlane}
@@ -668,7 +830,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                   >
                     Party Chat
                   </b>
-                  <b
+                  {/* <b
                     className={
                       qA ? classes.chatOptionSelected : classes.chatOption
                     }
@@ -678,13 +840,35 @@ const AudiocastScreen = ({ audiocastId }) => {
                     }}
                   >
                     Q&A
-                  </b>
+                  </b> */}
                 </>
               ) : (
                 <b className={classes.chatOptionSelected}>Comments</b>
               )}
             </div>
-            <div className={classes.chatRoom}></div>
+            <div className={classes.chatRoom}>
+              {allChats?.map((chat, ind) => (
+                <div
+                  className={
+                    chat?.authorId === user?.id ? classes.Uchat : classes.chat
+                  }
+                  key={ind}
+                >
+                  <img
+                    className={classes.chatImg}
+                    src={chat?.authorImg}
+                    alt=""
+                  />
+                  <p
+                    className={
+                      chat?.authorId === user?.id ? classes.uText : classes.text
+                    }
+                  >
+                    {chat?.message}
+                  </p>
+                </div>
+              ))}
+            </div>
             <form onSubmit={e => e.preventDefault()}>
               <img
                 src={currentUser?.fields?.image}
@@ -705,6 +889,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                   outline: 'none',
                   background: 'transparent',
                 }}
+                onClick={event => sendChat(event, audiocastId, socket)}
               >
                 <FontAwesomeIcon
                   icon={faPaperPlane}

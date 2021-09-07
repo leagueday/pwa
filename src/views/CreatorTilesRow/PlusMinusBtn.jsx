@@ -26,7 +26,6 @@ const PlusMinusBtn = ({ className, size, userId, creator }) => {
   const PlusButton = makeIconButton(IcoPlus, disabled)
 
   const isOnMyList = isOnCreatorsList(creator?.username, userId)
-  console.log('plus btn ', creator?.username, userId)
 
   const [onClick, Button] = isOnMyList
     ? [() => removeFromCreatorList(userId), MinusButton]
