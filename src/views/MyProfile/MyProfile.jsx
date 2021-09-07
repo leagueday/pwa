@@ -108,11 +108,15 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
+    textAlign: 'center',
     [theme.breakpoints.down('md')]: {
       flexDirection: 'column',
       alignItems: 'stretch',
       paddingLeft: '3%',
       paddingRight: '3%',
+    },
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'left'
     },
   },
   editProfile: {
@@ -124,6 +128,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('md')]: {
       width: '25%',
       fontSize: '80%',
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: 'fit-content'
     },
   },
   accepted: {
@@ -156,6 +163,12 @@ const useStyles = makeStyles(theme => ({
       width: '25%',
       fontSize: '80%',
     },
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+      position: 'relative',
+      top: 100,
+      left: 0,
+    },
   },
   deleteBtn: {
     background: 'transparent',
@@ -171,6 +184,9 @@ const useStyles = makeStyles(theme => ({
       width: '25%',
       fontSize: '80%',
     },
+    [theme.breakpoints.down('xs')]: {
+      width: 'fit-content'
+    },
   },
   buttons: {
     display: 'flex',
@@ -185,6 +201,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: '125%',
     },
+    [theme.breakpoints.down('sm')]: {
+      margin: 0,
+    },
   },
   userEditName: {
     display: 'flex',
@@ -194,6 +213,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('md')]: {
       flexDirection: 'row',
       justifyContent: 'space-between',
+    },
+    [theme.breakpoints.down('xs')]: {
+      margin: 0
     },
   },
   track: {
@@ -215,11 +237,17 @@ const useStyles = makeStyles(theme => ({
       height: '100%',
       maxHeight: '375px',
     },
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 0,
+    },
   },
   buttonSelector: {
     display: 'flex',
     width: '100%',
     borderBottom: '1px solid #333',
+    [theme.breakpoints.down('xs')]: {
+      overflowX: 'auto',
+    },
   },
   sectionButton: {
     position: 'relative',
@@ -239,6 +267,11 @@ const useStyles = makeStyles(theme => ({
       padding: 5,
       fontSize: '80%',
     },
+    [theme.breakpoints.down('xs')]: {
+      flex: 1,
+      width: '100%',
+      whiteSpace: 'nowrap'
+    },
   },
   selectedButton: {
     position: 'relative',
@@ -255,6 +288,11 @@ const useStyles = makeStyles(theme => ({
       fontSize: '80%',
       borderBottom: '1.5px solid orange',
     },
+    [theme.breakpoints.down('xs')]: {
+      flex: 1,
+      width: '100%',
+      whiteSpace: 'nowrap'
+    },
   },
   userContent: {
     disply: 'flex',
@@ -268,6 +306,11 @@ const useStyles = makeStyles(theme => ({
     opacity: 0.7,
     fontSize: '200%',
     width: '75%',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+      padding: 10,
+      textAlign: 'center'
+    },
   },
   goLiveButton: {
     width: '110px',
@@ -296,10 +339,20 @@ const useStyles = makeStyles(theme => ({
       width: '35%',
       height: '10%',
     },
+    [theme.breakpoints.down('xs')]: {
+      width: '80%',
+      position: 'relative',
+      marginTop: 20,
+      marginLeft: 'auto',
+      marginRight: 'auto'
+    },
   },
   socials: {
     fontWeight: theme.typography.fontWeightBold,
     marginLeft: '3%',
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 0
+    },
   },
   socialLinks: {
     display: 'flex',
@@ -311,6 +364,15 @@ const useStyles = makeStyles(theme => ({
       justifyContent: 'stretch',
       alignItems: 'center',
       marginLeft: '1%',
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: '3%'
+    },
+  },
+  socialLinksWrapper: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'flex',
+      width: '100%'
     },
   },
   socialIcon: {
@@ -338,6 +400,11 @@ const useStyles = makeStyles(theme => ({
     marginRight: '5%',
     '&:hover': {
       background: colors.lightGray,
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+      margin: 20
     },
   },
   channels: {
@@ -420,6 +487,10 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '5px',
     maxHeight: 750,
     height: 'auto',
+
+    [theme.breakpoints.down('xs')]: {
+      width: '90vw'
+    },
   },
   creator: {
     margin: 0,
@@ -440,15 +511,22 @@ const useStyles = makeStyles(theme => ({
   friendList: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     margin: '2% 0',
     paddingRight: '25%',
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },
+    [theme.breakpoints.down('xs')]: {
+      padding: 10,
+      flexDirection: 'column'
+    },
+  },
+  friendBio: {
+    display: 'flex',
+    alignItems: 'center'
   },
   friendImgCont: {
-    width: '25%',
     display: 'flex',
     alignItems: 'center',
   },
@@ -462,7 +540,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   friendName: {
-    width: '25%',
+    marginLeft: 25
   },
   friendReqList: {
     display: 'block',
@@ -629,17 +707,19 @@ const MyProfile = ({ userId }) => {
         />
       </div>
       <div className={classes.profileWrapper}>
-        <Button
-          onClick={() => setFriendsModal(true)}
-          className={classes.friendRequests}
-        >
-          Friend Requests
-          {friendList?.received?.length > 0 && (
-            <span className={classes.friendReqNot}>
-              {friendList?.received?.length}
-            </span>
-          )}
-        </Button>
+        <div>
+          <Button
+            onClick={() => setFriendsModal(true)}
+            className={classes.friendRequests}
+          >
+            Friend Requests
+            {friendList?.received?.length > 0 && (
+              <span className={classes.friendReqNot}>
+                {friendList?.received?.length}
+              </span>
+            )}
+          </Button>
+        </div>
         <div className={classes.credInfo}>
           <div className={classes.userImgContainer}>
             <img
@@ -676,45 +756,47 @@ const MyProfile = ({ userId }) => {
                   <span className={classes.socials}>Experience:</span>{' '}
                   {userData?.fields?.credentials}
                 </p>
-                <p className={classes.socials}>Socials:</p>
-                <p className={classes.socialLinks}>
-                  <FontAwesomeIcon
-                    icon={faTwitter}
-                    size={'lg'}
-                    className={classes.socialIcon}
-                  />
-                  <a
-                    className={classes.socialLinks}
-                    href={
-                      userData?.fields?.TwitterUrl?.includes('http')
-                        ? userData?.fields?.TwitterUrl
-                        : `https://twitter.com/${userData?.fields?.TwitterUrl}`
-                    }
-                    target="_blank"
-                    rel="noreferer"
-                  >
-                    {userData?.fields?.TwitterUrl}
-                  </a>
-                </p>
-                <p className={classes.socialLinks}>
-                  <FontAwesomeIcon
-                    icon={faTwitch}
-                    size={'lg'}
-                    className={classes.socialIcon}
-                  />
-                  <a
-                    className={classes.socialLinks}
-                    href={
-                      userData?.fields?.TwitchUrl?.includes('http')
-                        ? userData?.fields?.TwitchUrl
-                        : `https://twitch.com/${userData?.fields?.TwitchUrl}`
-                    }
-                    target="_blank"
-                    rel="noreferer"
-                  >
-                    {userData?.fields?.TwitchUrl}
-                  </a>
-                </p>
+                <div className={classes.socialLinksWrapper}>
+                  <p className={classes.socials}>Socials:</p>
+                  <p className={classes.socialLinks}>
+                    <FontAwesomeIcon
+                      icon={faTwitter}
+                      size={'lg'}
+                      className={classes.socialIcon}
+                    />
+                    <a
+                      className={classes.socialLinks}
+                      href={
+                        userData?.fields?.TwitterUrl?.includes('http')
+                          ? userData?.fields?.TwitterUrl
+                          : `https://twitter.com/${userData?.fields?.TwitterUrl}`
+                      }
+                      target="_blank"
+                      rel="noreferer"
+                    >
+                      {userData?.fields?.TwitterUrl}
+                    </a>
+                  </p>
+                  <p className={classes.socialLinks}>
+                    <FontAwesomeIcon
+                      icon={faTwitch}
+                      size={'lg'}
+                      className={classes.socialIcon}
+                    />
+                    <a
+                      className={classes.socialLinks}
+                      href={
+                        userData?.fields?.TwitchUrl?.includes('http')
+                          ? userData?.fields?.TwitchUrl
+                          : `https://twitch.com/${userData?.fields?.TwitchUrl}`
+                      }
+                      target="_blank"
+                      rel="noreferer"
+                    >
+                      {userData?.fields?.TwitchUrl}
+                    </a>
+                  </p>
+                </div>
               </div>
             </div>
           </div>

@@ -1,0 +1,7 @@
+{
+  "name": "leagueday",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

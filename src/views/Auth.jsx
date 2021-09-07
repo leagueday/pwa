@@ -38,7 +38,9 @@ const Auth = () => {
     netlifyIdentity.on('logout', makeOnLogout(dispatch))
     netlifyIdentity.on('error', onError)
 
-    netlifyIdentity.init()
+    netlifyIdentity.init({
+      APIUrl: 'https://app.leagueday.gg/.netlify/identity'
+    })
   }, [])
 
   React.useEffect(() => {

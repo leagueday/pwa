@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { hot } from 'react-hot-loader/root'
 import GetMyList from './views/GetUserList'
 import { makeStyles } from '@material-ui/core/styles'
@@ -18,6 +18,9 @@ import Mushipan from './views/MushipanRouter'
 import UserData from './views/UserData'
 import FriendsList from './views/FriendsList'
 import { routesConfig } from './routes'
+import { StatusBar, Style } from '@capacitor/status-bar';
+
+StatusBar.setOverlaysWebView({ overlay: true });
 
 Sentry.init({
   dsn:
@@ -76,6 +79,13 @@ const StyledAppContent = () => {
 }
 
 const App = () => {
+  useEffect(() => {
+    const hideStatusBar = async () => {
+      await StatusBar.hide();
+    }
+
+    hideStatusBar();
+  }, []);
   return (
     <Sentry.ErrorBoundary fallback={'An error has occurred'}>
       <StoreProvider>

@@ -2,7 +2,7 @@ import ReactGA from 'react-ga'
 
 const logTiming = NODE_ENV === 'development'
 
-ReactGA.initialize('UA-180940239-4')
+ReactGA.initialize('UA-180940239-3')
 
 export const pageview = pathname => ReactGA.pageview(pathname)
 

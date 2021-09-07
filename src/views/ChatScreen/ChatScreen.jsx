@@ -44,6 +44,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('md')]: {
       minWidth: '220px',
     },
+    [theme.breakpoints.down('xs')]: {
+      minWidth: 60
+    },
   },
   friend: {
     cursor: 'pointer',
@@ -60,6 +63,11 @@ const useStyles = makeStyles(theme => ({
       borderRight: `4px solid ${theme.palette.primary.active}`,
       filter: 'brightness(110%)',
       background: '#111',
+    },
+    [theme.breakpoints.down('xs')]: {
+      'p': {
+        display: 'none'
+      }
     },
   },
   selectedFriend: {
@@ -101,6 +109,16 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '70px',
     padding: 15,
   },
+  messageTitle: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none'
+    },
+  },
+  friendName: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none'
+    },
+  }
 }))
 
 const ChatScreen = () => {
@@ -137,7 +155,7 @@ const ChatScreen = () => {
               minHeight: '60px',
             }}
           >
-            <h3 style={{ textAlign: 'center' }}>Messages</h3>
+            <h3 className={classes.messageTitle} style={{ textAlign: 'center' }}>Messages</h3>
           </div>
           {friendList?.accepted?.map(item => (
             <div
