@@ -174,19 +174,12 @@ const CreateProfile = props => {
     InstagramUrl: '',
     TwitchUrl: '',
   })
-  const [selectChannel, setselectChannel] = useState([])
-  const [channelTag, setChannelTag] = useState([])
-  const [saveChannelImage, setsaveChannelImage] = useState('')
-  const [rtmpLink, setrtmpLink] = useState('')
-  const [streamKey, setsreamKey] = useState('')
-  const [liveStreamId, setliveStreamId] = useState('')
   const [loading, setLoading] = useState(false)
   const [experienceOptions, setExperienceOptions] = useState(options)
   const [selectedCredentials, setSelectedCredentials] = useState([])
   const [context, setContext] = React.useState([{ value: null }])
   const [saveContext, setsaveContext] = React.useState([])
   const [selectedFile, setSelectedFile] = useState(null)
-  const fileInput = React.useRef()
 
   const config = {
     bucketName: 'leagueday-prod-images',
@@ -339,7 +332,6 @@ const CreateProfile = props => {
       }
       setLoading(false)
     })
-    setLoading(false)
   }
 
   const muxChannel = () => {
@@ -353,50 +345,13 @@ const CreateProfile = props => {
     })
       .then(response => response.json())
       .then(function (livestreamData) {
-        setsreamKey(livestreamData.data['stream_key'])
         localStorage.setItem('channelStrkey', livestreamData.data['stream_key'])
         localStorage.setItem('channelStrId', livestreamData.data['id'])
-        setliveStreamId(livestreamData.data['id'])
       })
       .catch(error => {
         toast.error(error.type)
       })
   }
-
-  // const savedUserChannel = () => {
-  //   let data = {
-  //     records: [
-  //       {
-  //         fields: {
-  //           channelName: selectChannel.toString(),
-  //           date: new Date(),
-  //           userId: user.id,
-  //           channelTag: channelTag.toString(),
-  //         },
-  //       },
-  //     ],
-  //   }
-
-  //   const baseId = 'appXoertP1WJjd4TQ'
-  //   fetch('/.netlify/functions/airtable-proxy', {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ url: `${baseId}/UserGames`, body: data }),
-  //   })
-  //     .then(response => response.json())
-  //     .then(function (response) {
-  //       setContext('')
-  //       setChannelTag('')
-  //       setselectChannel('')
-  //       localStorage.setItem('userChannel', formInput.userChannelName)
-  //     })
-  //     .catch(error => {
-  //       console.log('error while data fetching', error.type)
-  //     })
-  // }
 
   const handleSelect = e => {
     setSelectedCredentials(

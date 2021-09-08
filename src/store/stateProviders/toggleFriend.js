@@ -49,7 +49,7 @@ function FriendsListProvider(props) {
                 console.log(err)
             })
     }
-
+    
     return (
         <FriendsStateProvider value={{ acceptFriendReq, sendRequest, declineFriendReq, selectedFriend, setSelectedFriend }}>
             {props?.children}

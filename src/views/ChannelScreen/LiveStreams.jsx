@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AudioCard from './AudioCard'
-import { useSelector } from 'react-redux'
-import { selectors } from '../../store'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectors, actions } from '../../store'
 import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
@@ -12,9 +12,10 @@ const useStyles = makeStyles(theme => ({
       justifyContent: 'space-evenly',
     },
   },
-}));
+}))
 
 const LiveStreams = ({ channelTag }) => {
+  const dispatch = useDispatch()
   const classes = useStyles()
   const [userAudio, setUserAudio] = useState([])
   const baseId = 'appXoertP1WJjd4TQ'
@@ -46,6 +47,7 @@ const LiveStreams = ({ channelTag }) => {
 
   const MuxComponent = ({ livestreamid, count, audio }) => {
     const [active, setActive] = useState(false)
+    console.log('livestreamid ', livestreamid)
 
     fetch('/.netlify/functions/mux-proxy', {
       method: 'POST',
@@ -69,12 +71,14 @@ const LiveStreams = ({ channelTag }) => {
 
     return (
       active && (
-        <AudioCard
-          channelTag={channelTag}
-          indexData={count}
-          audio={audio}
-          live={true}
-        />
+        // <div onClick={() => dispatch(`/audiocast/${livestreamid}`)}>
+          <AudioCard
+            channelTag={channelTag}
+            indexData={count}
+            audio={audio}
+            live={true}
+          />
+        // </div>
       )
     )
   }
@@ -82,12 +86,16 @@ const LiveStreams = ({ channelTag }) => {
   return (
     <div className={classes.wrapper}>
       {userAudio?.map((item, ind) => (
-        <MuxComponent
-          livestreamid={item?.fields?.liveStreamId}
-          key={ind}
-          count={ind}
-          audio={item}
-        />
+        // <div
+          // onClick={() => dispatch(`/audiocast/${item?.fields?.liveStreamId}`)}
+        // >
+          <MuxComponent
+            livestreamid={item?.fields?.liveStreamId}
+            key={ind}
+            count={ind}
+            audio={item}
+          />
+        // </div>
       ))}
     </div>
   )

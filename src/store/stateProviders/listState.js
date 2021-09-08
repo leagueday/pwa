@@ -124,7 +124,7 @@ function ListStateProvider(props) {
         base('UserCreatorsList').create([
             {
                 "fields": {
-                    "name": name,
+                    "username": name,
                     "user": [
                         currentUserId
                     ],
@@ -173,7 +173,7 @@ function ListStateProvider(props) {
 
         return !!creatorList?.find(
 
-            (creator) => creator?.fields?.name === name && creator?.fields?.creatorId === id
+            (creator) => creator?.fields?.username === name && creator?.fields?.creatorId === id
         )
     }
 

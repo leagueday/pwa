@@ -154,8 +154,8 @@ const useStyles = makeStyles(theme => ({
     zIndex: 10,
     right: 20,
     top: 20,
-    background: colors.blue,
     width: '200px',
+    background: colors.blue,
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
