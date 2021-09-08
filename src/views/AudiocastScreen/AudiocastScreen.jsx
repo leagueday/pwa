@@ -747,7 +747,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      width: smDown ? '100%' : '50%',
+                      width: '100%',
                       justifyContent: 'space-evenly',
                     }}
                   >
@@ -1122,7 +1122,7 @@ const AudiocastScreen = ({ audiocastId }) => {
         )}
         {!chatSelected && (
           <div className={smDown ? classes.sideColumnn : classes.sideColumn}>
-            <h3 style={{ textAlign: 'center' }}>Explore Audiocasts</h3>
+            <h3 style={{ textAlign: 'center', color: colors.yellow }}>Explore Audiocasts</h3>
             {sideColumn?.map((audio, key) => (
               <div
                 key={key}
