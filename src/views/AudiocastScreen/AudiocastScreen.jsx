@@ -28,20 +28,20 @@ const useStyles = makeStyles((theme, live) => ({
       primaryColor,
       theme
     )({
-      // overflow: 'auto',
       width: '100%',
       height: '100%',
       display: 'flex',
-      [theme.breakpoints.down('sm')]: {
-        flexDirection: 'column',
-      },
+      overflow: 'scroll',
+      overflowX: 'hidden',
+      flexDirection: 'column',
     }),
   content: {
-    // overflow: 'auto',
     width: '100%',
     height: '100%',
     display: 'flex',
+    overflow: 'hidden',
     [theme.breakpoints.down('sm')]: {
+      overflow: 'scroll',
       flexDirection: 'column',
     },
   },
@@ -78,9 +78,6 @@ const useStyles = makeStyles((theme, live) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: '1.2rem',
     },
-  },
-  sideColumn: {
-    width: '20%',
   },
   creator: {
     width: '100%',
@@ -127,30 +124,29 @@ const useStyles = makeStyles((theme, live) => ({
   },
   sideColumnn: {
     background: colors.darkerGray,
-    maxWidth: '25%',
-    minWidth: '320px',
     borderLeft: `1px solid ${colors.white30}`,
-    [theme.breakpoints.down('sm')]: {
-      height: 'auto',
-      width: '100%',
-      maxWidth: '100%',
-    },
+    height: 'auto',
+    width: '100%',
+    maxWidth: '100%',
   },
   sideColumn: ({ primaryColor = colors.blue }) =>
     addScrollStyle(
       primaryColor,
       theme
     )({
-      overflowX: 'hidden',
-      overflow: 'scroll',
       background: colors.darkerGray,
       maxWidth: '25%',
       minWidth: '320px',
       borderLeft: `1px solid ${colors.white30}`,
+      overflowX: 'hidden',
+      overflow: 'scroll',
       [theme.breakpoints.down('sm')]: {
+        overflowX: 'hidden',
+        overflow: 'none',
         height: 'auto',
         width: '100%',
         maxWidth: '100%',
+        border: 'none',
       },
     }),
   sideCast: {
@@ -226,24 +222,17 @@ const useStyles = makeStyles((theme, live) => ({
     cursor: 'pointer',
     padding: '3px 15px',
     borderBottom: `2px solid ${colors.magenta}`,
+    height: '30px',
   },
   message: ({ live }) => ({
-    position: 'absolute',
-    top: live ? '' : 30,
-    bottom: live ? 5 : '',
-    transform: live ? 'translateX(45%)' : '',
-    right: '45%',
     width: '50%',
     [theme.breakpoints.down('sm')]: {
       width: '70%',
-      transform: 'translateX(45%)',
+      transform: live ? 'translateX(45%)' : '',
     },
+    marginBottom: live ? '' : '1%',
   }),
   sendIcon: ({ live }) => ({
-    position: 'absolute',
-    top: live ? '' : 50,
-    bottom: live ? 0 : '',
-    right: live ? '19%' : '41%',
     cursor: 'pointer',
     color: colors.blue,
     '&:hover': {
@@ -254,10 +243,6 @@ const useStyles = makeStyles((theme, live) => ({
     },
   }),
   commentImg: ({ live }) => ({
-    position: 'absolute',
-    top: live ? '' : 50,
-    bottom: live ? 2 : '',
-    left: live ? '23%' : 5,
     height: '2rem',
     width: '2rem',
     borderRadius: '50%',
@@ -290,14 +275,17 @@ const useStyles = makeStyles((theme, live) => ({
     height: '50px',
     borderRadius: '50%',
     objectFit: 'cover',
+    cursor: 'pointer',
   },
   authorName: {
     color: 'white',
     fontSize: '.9rem',
     position: 'absolute',
-    bottom: 5,
+    top: 0,
     padding: 0,
     margin: 0,
+    fontWeight: 900,
+    cursor: 'pointer',
   },
   chat: {
     display: 'flex',
@@ -342,6 +330,26 @@ const useStyles = makeStyles((theme, live) => ({
     margin: 0,
     left: '60px',
   },
+  commentText: {
+    maxWidth: '60%',
+    borderRadius: '10px',
+    background: colors.white80,
+    padding: '0 1%',
+    fontSize: '1rem',
+    top: 0,
+    margin: 0,
+    left: '52px',
+    marginTop: '2%',
+  },
+  comment: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    color: 'black',
+    position: 'relative',
+    height: 'auto',
+    padding: 0,
+  },
 }))
 
 const baseId = 'appXoertP1WJjd4TQ'
@@ -349,6 +357,7 @@ const baseId = 'appXoertP1WJjd4TQ'
 const AudiocastScreen = ({ audiocastId }) => {
   const theme = useTheme()
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
+  const xsDown = useMediaQuery(theme.breakpoints.down('xs'))
 
   const dispatch = useDispatch()
   const [audiocast, setAudiocast] = useState()
@@ -364,6 +373,7 @@ const AudiocastScreen = ({ audiocastId }) => {
   const [linkOpen, setLinkOpen] = useState(false)
   const [copied, setCopied] = useState(false)
   const [chatSelected, setChatSelected] = useState(false)
+  const [comments, setComments] = useState([])
 
   const audioMode = useSelector(selectors.getAudioMode)
   const audioUrl = useSelector(selectors.getAudioUrl)
@@ -446,7 +456,19 @@ const AudiocastScreen = ({ audiocastId }) => {
   const getComments = () => {
     axios
       .get(`https://leagueday-api.herokuapp.com/comments/get/${audiocastId}`)
-      .then(res => console.log('comments ', res))
+      .then(res => {
+        setComments(
+          res.data.data.comments.sort((a, b) => {
+            return new Date(b.date) - new Date(a.date)
+          })
+        )
+        console.log(
+          'sorted response ',
+          res.data.data.comments.sort((a, b) => {
+            return new Date(b.date) - new Date(a.date)
+          })
+        )
+      })
       .catch(err => console.log('error in AudiocastScreen ', err))
   }
 
@@ -457,17 +479,14 @@ const AudiocastScreen = ({ audiocastId }) => {
         referenceId: audiocastId,
         commentorId: currentUser.fields.userId,
         comment: message,
-        commentorName: currentUser.fields.name,
-        commentorImg: currentUser.fields.image
-          ? currentUser.fields.image
-          : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues=',
       })
       .then(res => {
         setMessage('')
-        console.log('sent message ', res)
+        console.log('posted comment ', res)
+        getComments()
       })
       .catch(err => {
-        console.log('message send error ', err)
+        console.log('comment post error ', err)
       })
   }
 
@@ -572,6 +591,7 @@ const AudiocastScreen = ({ audiocastId }) => {
 
   useEffect(() => {
     getMessages(audiocastId)
+    getComments()
   }, [audiocastId])
 
   const listener = event => {
@@ -586,10 +606,10 @@ const AudiocastScreen = ({ audiocastId }) => {
       document.removeEventListener('keydown', listener)
     }
   }, [])
-
+  console.log('fucking bullshit ', xsDown)
   return (
     <BasicLayout>
-      <div className={classes.content}>
+      <div className={smDown ? classes.contentt : classes.content}>
         <div className={classes.chatAndCast}>
           <div className={classes.audiocastInfo}>
             <div
@@ -798,81 +818,134 @@ const AudiocastScreen = ({ audiocastId }) => {
                 )}
               </div>
               <div className={classes.chatRoom}>
-                {allChats?.map((chat, ind) => (
-                  <div
-                    className={
-                      chat?.authorId === currentUser?.fields?.userId
-                        ? classes.Uchat
-                        : classes.chat
-                    }
-                    key={ind}
-                  >
-                    <img
-                      className={classes.chatImg}
-                      src={chat?.authorImg}
-                      alt=""
-                    />
-                    <p
-                      className={classes.authorName}
-                      style={{
-                        right:
-                          currentUser?.fields?.name === chat?.authorName
-                            ? '55px'
-                            : '',
-                        left:
-                          currentUser?.fields?.name === chat?.authorName
-                            ? ''
-                            : '50px',
-                      }}
-                    >
-                      {chat?.authorName}
-                    </p>
-                    <p
-                      className={
-                        chat?.authorId === currentUser?.fields?.userId
-                          ? classes.uText
-                          : classes.text
-                      }
-                    >
-                      {chat?.message}
-                    </p>
-                  </div>
-                ))}
+                {!live && <div style={{ height: '60px' }}></div>}
+                {live
+                  ? allChats?.map((chat, ind) => (
+                      <div
+                        className={
+                          chat?.authorId === currentUser?.fields?.userId
+                            ? classes.Uchat
+                            : classes.chat
+                        }
+                        key={ind}
+                      >
+                        <img
+                          className={classes.chatImg}
+                          src={chat?.authorImg}
+                          alt=""
+                        />
+                        <p
+                          className={classes.authorName}
+                          style={{
+                            right:
+                              currentUser?.fields?.name === chat?.authorName
+                                ? '55px'
+                                : '',
+                            left:
+                              currentUser?.fields?.name === chat?.authorName
+                                ? ''
+                                : '50px',
+                          }}
+                        >
+                          {chat?.authorName}
+                        </p>
+                        <p
+                          className={
+                            chat?.authorId === currentUser?.fields?.userId
+                              ? classes.uText
+                              : classes.text
+                          }
+                        >
+                          {chat?.message}
+                        </p>
+                      </div>
+                    ))
+                  : comments?.map((comment, ind) => (
+                      <div
+                        className={classes.comment}
+                        style={{ marginTop: '1%' }}
+                        key={ind}
+                      >
+                        <img
+                          src={comment?.user?.image}
+                          className={classes.chatImg}
+                          alt=""
+                          onClick={() =>
+                            dispatch(
+                              actions.pushHistory(
+                                `/profile/${comment?.user?.id}`
+                              )
+                            )
+                          }
+                        />
+                        <p
+                          className={classes.authorName}
+                          onClick={() =>
+                            dispatch(
+                              actions.pushHistory(
+                                `/profile/${comment?.user?.id}`
+                              )
+                            )
+                          }
+                          style={{ left: '50px' }}
+                        >
+                          {comment?.user?.name}
+                        </p>
+                        <p className={classes.commentText}>{comment.comment}</p>
+                      </div>
+                    ))}
                 <div ref={messageEl} />
               </div>
-              <form
-                style={{ marginTop: 10, height: '10%', background: 'black' }}
-                onSubmit={live ? sendChat : postComment}
+              <div
+                style={{
+                  position: live ? '' : 'absolute',
+                  top: live ? '' : '30px',
+                  width: '100%',
+                }}
               >
-                <img
-                  src={currentUser?.fields?.image}
-                  className={classes.commentImg}
-                />
-                <TextField
-                  type="text"
-                  label={!live ? 'Add a Comment' : 'Send a Chat'}
-                  name="Comment"
-                  className={classes.message}
-                  value={message}
-                  onChange={e => setMessage(e.target.value)}
-                  onKeyDown={listener}
-                />
-                <button
-                  type="submit"
+                <form
                   style={{
-                    border: 'none',
-                    outline: 'none',
-                    background: 'transparent',
+                    background: xsDown ? colors.darkGray : 'black',
+                    display: 'flex',
+                    alignItems: 'center',
                   }}
-                  onClick={() => live ? sendChat(audiocastId, socket) : postComment()}
+                  onSubmit={live ? sendChat : postComment}
                 >
-                  <FontAwesomeIcon
-                    icon={faPaperPlane}
-                    className={classes.sendIcon}
-                    size={'2x'}
+                  <img
+                    src={currentUser?.fields?.image}
+                    className={classes.commentImg}
                   />
-                </button>
-              </form>
+                  <TextField
+                    type="text"
+                    label={
+                      !live && currentUser ? 'Add a Comment' : 'Send a Chat'
+                    }
+                    name="Comment"
+                    className={classes.message}
+                    value={message}
+                    onChange={e => setMessage(e.target.value)}
+                    onKeyDown={listener}
+                    disabled={!currentUser}
+                  />
+                  <button
+                    type="submit"
+                    style={{
+                      border: 'none',
+                      outline: 'none',
+                      background: 'transparent',
+                    }}
+                    onClick={() =>
+                      live ? sendChat(audiocastId, socket) : postComment()
+                    }
+                  >
+                    <FontAwesomeIcon
+                      icon={faPaperPlane}
+                      className={classes.sendIcon}
+                      size={'2x'}
+                    />
+                  </button>
+                </form>
+              </div>
             </div>
           )}
         </div>
@@ -923,78 +996,132 @@ const AudiocastScreen = ({ audiocastId }) => {
               )}
             </div>
             <div className={classes.chatRoom}>
-              {allChats?.map((chat, ind) => (
-                <div
-                  className={
-                    chat?.authorId === user?.id ? classes.Uchat : classes.chat
-                  }
-                  key={ind}
-                >
-                  <img
-                    className={classes.chatImg}
-                    src={chat?.authorImg}
-                    alt=""
-                  />
-                  <p
-                    className={classes.authorName}
-                    style={{
-                      right:
-                        currentUser?.fields?.name === chat?.authorName
-                          ? '55px'
-                          : '',
-                      left:
-                        currentUser?.fields?.name === chat?.authorName
-                          ? ''
-                          : '50px',
-                    }}
-                  >
-                    {chat?.authorName}
-                  </p>
-                  <p
-                    className={
-                      chat?.authorId === currentUser?.fields?.userId
-                        ? classes.uText
-                        : classes.text
-                    }
-                  >
-                    {chat?.message}
-                  </p>
-                </div>
-              ))}
+              {!live && <div style={{ height: '60px' }}></div>}
+              {live
+                ? allChats?.map((chat, ind) => (
+                    <div
+                      className={
+                        chat?.authorId === currentUser?.fields?.userId
+                          ? classes.Uchat
+                          : classes.chat
+                      }
+                      key={ind}
+                    >
+                      <img
+                        className={classes.chatImg}
+                        src={chat?.authorImg}
+                        alt=""
+                      />
+                      <p
+                        className={classes.authorName}
+                        style={{
+                          right:
+                            currentUser?.fields?.name === chat?.authorName
+                              ? '55px'
+                              : '',
+                          left:
+                            currentUser?.fields?.name === chat?.authorName
+                              ? ''
+                              : '50px',
+                        }}
+                      >
+                        {chat?.authorName}
+                      </p>
+                      <p
+                        className={
+                          chat?.authorId === currentUser?.fields?.userId
+                            ? classes.uText
+                            : classes.text
+                        }
+                      >
+                        {chat?.message}
+                      </p>
+                    </div>
+                  ))
+                : comments?.map((comment, ind) => (
+                    <div
+                      className={classes.comment}
+                      style={{ marginTop: '1%' }}
+                      key={ind}
+                    >
+                      <img
+                        src={comment?.user?.image}
+                        className={classes.chatImg}
+                        alt=""
+                        onClick={() =>
+                          dispatch(
+                            actions.pushHistory(`/profile/${comment?.user?.id}`)
+                          )
+                        }
+                      />
+                      <p
+                        className={classes.authorName}
+                        onClick={() =>
+                          dispatch(
+                            actions.pushHistory(`/profile/${comment?.user?.id}`)
+                          )
+                        }
+                        style={{ left: '50px' }}
+                      >
+                        {comment?.user?.name}
+                      </p>
+                      <p className={classes.commentText}>{comment.comment}</p>
+                    </div>
+                  ))}
+              <div ref={messageEl} />
             </div>
-            <form onSubmit={live ? sendChat : postComment}>
-              <img
-                src={currentUser?.fields?.image}
-                className={classes.commentImg}
-              />
-              <TextField
-                type="text"
-                label={!live ? 'Add a Comment' : 'Send a Chat'}
-                name="Comment"
-                className={classes.message}
-                value={message}
-                onChange={e => setMessage(e.target.value)}
-              />
-              <button
-                type="submit"
+            <div
+              style={{
+                position: live ? '' : 'absolute',
+                top: live ? '' : '30px',
+                width: '100%',
+              }}
+            >
+              <form
                 style={{
-                  border: 'none',
-                  outline: 'none',
-                  background: 'transparent',
+                  background: xsDown ? colors.darkGray : 'black',
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
-                onClick={() => live ? sendChat(audiocastId, socket) : postComment()}
+                onSubmit={live ? sendChat : postComment}
               >
-                <FontAwesomeIcon
-                  icon={faPaperPlane}
-                  className={classes.sendIcon}
-                  size={'2x'}
+                <img
+                  src={currentUser?.fields?.image}
+                  className={classes.commentImg}
                 />
-              </button>
-            </form>
+                <TextField
+                  type="text"
+                  label={!live && currentUser ? 'Add a Comment' : 'Send a Chat'}
+                  name="Comment"
+                  className={classes.message}
+                  value={message}
+                  onChange={e => setMessage(e.target.value)}
+                  onKeyDown={listener}
+                  disabled={!currentUser}
+                />
+                <button
+                  type="submit"
+                  style={{
+                    border: 'none',
+                    outline: 'none',
+                    background: 'transparent',
+                  }}
+                  onClick={() =>
+                    live ? sendChat(audiocastId, socket) : postComment()
+                  }
+                >
+                  <FontAwesomeIcon
+                    icon={faPaperPlane}
+                    className={classes.sendIcon}
+                    size={'2x'}
+                  />
+                </button>
+              </form>
+            </div>
           </div>
         )}
         {!chatSelected && (
-          <div className={classes.sideColumn}>
+          <div className={smDown ? classes.sideColumnn : classes.sideColumn}>
             <h3 style={{ textAlign: 'center' }}>Explore Audiocasts</h3>
             {sideColumn?.map((audio, key) => (
               <div
