@@ -208,7 +208,7 @@ const UploadAudiocast = () => {
             playbackUrl: audiocast,
             channelTag: selectedChannel,
             description: formValues.description,
-            creatorImg: userData?.fields?.image,
+            image: userData?.fields?.image,
             upvotes: 0,
             type: 'audiocast',
             username: userData?.fields?.name

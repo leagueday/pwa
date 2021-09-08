@@ -729,7 +729,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                     <div className={classes.creatorNameImg}>
                       <img
                         className={classes.userImg}
-                        src={audiocast?.fields?.creatorImg}
+                        src={audiocast?.fields?.image}
                         alt=""
                       />
                       <p className={classes.creatorName}>
@@ -899,7 +899,7 @@ const AudiocastScreen = ({ audiocastId }) => {
               <div
                 style={{
                   position: live ? '' : 'absolute',
-                  top: live ? '' : '30px',
+                  top: live ? '' : '32px',
                   width: '100%',
                 }}
               >
@@ -1073,7 +1073,7 @@ const AudiocastScreen = ({ audiocastId }) => {
             <div
               style={{
                 position: live ? '' : 'absolute',
-                top: live ? '' : '30px',
+                top: live ? '' : '32px',
                 width: '100%',
               }}
             >
