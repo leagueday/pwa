@@ -23,16 +23,7 @@ const Live = ({ playbackUrl }) => {
             .catch(error => {
               console.log('error while data fetching', error.type)
             })
-        } else {
-          setliveStatus(0)
-        }
-      }
-
-    return (
-        <div>
-            
-        </div>
-    )
+        } 
 }
 
 export default Live

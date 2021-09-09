@@ -71,6 +71,7 @@ const useStyles = makeStyles((theme, live) => ({
   audiocastCreds: {
     padding: '0 20px',
     display: 'flex',
+    width: '75%',
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
@@ -314,10 +315,10 @@ const useStyles = makeStyles((theme, live) => ({
     background: colors.blue,
     padding: '0 1%',
     fontSize: '1rem',
-    position: 'absolute',
-    top: 5,
-    margin: 0,
-    right: '60px',
+    marginTop: '2%',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '4%',
+    },
   },
   text: {
     maxWidth: '50%',
@@ -325,10 +326,10 @@ const useStyles = makeStyles((theme, live) => ({
     background: colors.white80,
     padding: '0 1%',
     fontSize: '1rem',
-    position: 'absolute',
-    top: 5,
-    margin: 0,
-    left: '60px',
+    marginTop: '2%',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '4%',
+    },
   },
   commentText: {
     maxWidth: '60%',
@@ -340,6 +341,9 @@ const useStyles = makeStyles((theme, live) => ({
     margin: 0,
     left: '52px',
     marginTop: '2%',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '4%',
+    },
   },
   comment: {
     display: 'flex',
@@ -606,7 +610,7 @@ const AudiocastScreen = ({ audiocastId }) => {
       document.removeEventListener('keydown', listener)
     }
   }, [])
-  console.log('fucking bullshit ', xsDown)
+
   return (
     <BasicLayout>
       <div className={smDown ? classes.contentt : classes.content}>
@@ -729,7 +733,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                     <div className={classes.creatorNameImg}>
                       <img
                         className={classes.userImg}
-                        src={audiocast?.fields?.image}
+                        src={!live ? audiocast?.fields?.image : audiocast?.fields?.creatorImg}
                         alt=""
                       />
                       <p className={classes.creatorName}>
@@ -849,6 +853,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                         >
                           {chat?.authorName}
                         </p>
+                        <div style={{ height: '20px' }}></div>
                         <p
                           className={
                             chat?.authorId === currentUser?.fields?.userId
@@ -900,6 +905,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                 style={{
                   position: live ? '' : 'absolute',
                   top: live ? '' : '32px',
+                  bottom: live ? '32px' : '',
                   width: '100%',
                 }}
               >
@@ -1027,6 +1033,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                       >
                         {chat?.authorName}
                       </p>
+                      <div style={{ height: '20px' }}></div>
                       <p
                         className={
                           chat?.authorId === currentUser?.fields?.userId
@@ -1074,6 +1081,7 @@ const AudiocastScreen = ({ audiocastId }) => {
               style={{
                 position: live ? '' : 'absolute',
                 top: live ? '' : '32px',
+                bottom: live ? '32px' : '',
                 width: '100%',
               }}
             >
