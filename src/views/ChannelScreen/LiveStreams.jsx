@@ -3,6 +3,7 @@ import AudioCard from './AudioCard'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectors, actions } from '../../store'
 import { makeStyles } from '@material-ui/styles'
+import axios from 'axios'
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -22,23 +23,15 @@ const LiveStreams = ({ channelTag }) => {
 
   const getLiveData = () => {
     let urladd = `filterByFormula={channelTag}='${channelTag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
-    fetch('/.netlify/functions/commingsoon-proxy', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
+    axios.post('https://leagueday-api.herokuapp.com/proxies/commingsoon', {
+      url: `${baseId}/ChannelLiveData?${urladd}`
+    }).then((response) => {
+      setUserAudio(
+        response.data.data.records.filter(item => !!item.fields.liveStreamId)
+      )
+    }).catch(error => {
+      console.log('error from LiveStream.jsx', error)
     })
-      .then(response => response.json())
-      .then(function (response) {
-        setUserAudio(
-          response.records.filter(item => !!item.fields.liveStreamId)
-        )
-      })
-      .catch(error => {
-        console.log('error from LiveStream.jsx', error)
-      })
   }
 
   useEffect(() => {
@@ -49,25 +42,15 @@ const LiveStreams = ({ channelTag }) => {
     const [active, setActive] = useState(false)
     console.log('livestreamid ', livestreamid)
 
-    fetch('/.netlify/functions/mux-proxy', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        url: `video/v1/live-streams/${livestreamid}?limit=200`,
-      }),
+    axios.post('https://leagueday-api.herokuapp.com/proxies/mux', {
+      url: `video/v1/live-streams/${livestreamid}?limit=200`,
+    }).then(({ data }) => {
+      if (data.data.data.status === 'active') {
+        setActive(true)
+      }
+    }).catch(error => {
+      console.log('error in LiveStream.jsx', error)
     })
-      .then(response => response.json())
-      .then(function (response) {
-        if (response.data.status === 'active') {
-          setActive(true)
-        }
-      })
-      .catch(error => {
-        console.log('error in LiveStream.jsx', error)
-      })
 
     return (
       active && (
