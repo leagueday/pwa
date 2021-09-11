@@ -71,6 +71,7 @@ const useStyles = makeStyles((theme, live) => ({
   audiocastCreds: {
     padding: '0 20px',
     display: 'flex',
+    width: '75%',
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
@@ -221,6 +222,7 @@ const useStyles = makeStyles((theme, live) => ({
   chatOptionSelected: {
     cursor: 'pointer',
     padding: '3px 15px',
+    marginBottom: '5px',
     borderBottom: `2px solid ${colors.magenta}`,
     height: '30px',
   },
@@ -314,10 +316,10 @@ const useStyles = makeStyles((theme, live) => ({
     background: colors.blue,
     padding: '0 1%',
     fontSize: '1rem',
-    position: 'absolute',
-    top: 5,
-    margin: 0,
-    right: '60px',
+    marginTop: '2%',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '4%',
+    },
   },
   text: {
     maxWidth: '50%',
@@ -325,10 +327,10 @@ const useStyles = makeStyles((theme, live) => ({
     background: colors.white80,
     padding: '0 1%',
     fontSize: '1rem',
-    position: 'absolute',
-    top: 5,
-    margin: 0,
-    left: '60px',
+    marginTop: '2%',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '4%',
+    },
   },
   commentText: {
     maxWidth: '60%',
@@ -340,6 +342,9 @@ const useStyles = makeStyles((theme, live) => ({
     margin: 0,
     left: '52px',
     marginTop: '2%',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '4%',
+    },
   },
   comment: {
     display: 'flex',
@@ -350,6 +355,22 @@ const useStyles = makeStyles((theme, live) => ({
     height: 'auto',
     padding: 0,
   },
+  formContainer: ({ live }) => ({
+    position: live ? '' : 'absolute',
+    top: live ? '' : '0px',
+    bottom: live ? '64px' : '',
+    width: '100%',
+    marginBottom: live ? '5%' : '',
+  }),
+  chatInput: {
+    background: 'black',
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '4%',
+      background: colors.darkGray,
+    },
+  },
 }))
 
 const baseId = 'appXoertP1WJjd4TQ'
@@ -357,7 +378,6 @@ const baseId = 'appXoertP1WJjd4TQ'
 const AudiocastScreen = ({ audiocastId }) => {
   const theme = useTheme()
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
-  const xsDown = useMediaQuery(theme.breakpoints.down('xs'))
 
   const dispatch = useDispatch()
   const [audiocast, setAudiocast] = useState()
@@ -492,6 +512,7 @@ const AudiocastScreen = ({ audiocastId }) => {
 
   useEffect(() => {
     if (!isNaN(audiocastId)) {
+      setLive(false)
       fetch('/.netlify/functions/airtable-getprofile', {
         method: 'POST',
         headers: {
@@ -606,7 +627,7 @@ const AudiocastScreen = ({ audiocastId }) => {
       document.removeEventListener('keydown', listener)
     }
   }, [])
-  console.log('fucking bullshit ', xsDown)
+
   return (
     <BasicLayout>
       <div className={smDown ? classes.contentt : classes.content}>
@@ -729,7 +750,11 @@ const AudiocastScreen = ({ audiocastId }) => {
                     <div className={classes.creatorNameImg}>
                       <img
                         className={classes.userImg}
-                        src={audiocast?.fields?.image}
+                        src={
+                          !live
+                            ? audiocast?.fields?.image
+                            : audiocast?.fields?.creatorImg
+                        }
                         alt=""
                       />
                       <p className={classes.creatorName}>
@@ -784,7 +809,7 @@ const AudiocastScreen = ({ audiocastId }) => {
             </div>
           </div>
           {!smDown && (
-            <div className={classes.chatBox}>
+            <>
               <div className={classes.chatOptions}>
                 {live ? (
                   <>
@@ -817,136 +842,131 @@ const AudiocastScreen = ({ audiocastId }) => {
                   <b className={classes.chatOptionSelected}>Comments</b>
                 )}
               </div>
-              <div className={classes.chatRoom}>
-                {!live && <div style={{ height: '60px' }}></div>}
-                {live
-                  ? allChats?.map((chat, ind) => (
-                      <div
-                        className={
-                          chat?.authorId === currentUser?.fields?.userId
-                            ? classes.Uchat
-                            : classes.chat
-                        }
-                        key={ind}
-                      >
-                        <img
-                          className={classes.chatImg}
-                          src={chat?.authorImg}
-                          alt=""
-                        />
-                        <p
-                          className={classes.authorName}
-                          style={{
-                            right:
-                              currentUser?.fields?.name === chat?.authorName
-                                ? '55px'
-                                : '',
-                            left:
-                              currentUser?.fields?.name === chat?.authorName
-                                ? ''
-                                : '50px',
-                          }}
-                        >
-                          {chat?.authorName}
-                        </p>
-                        <p
+              <div className={classes.chatBox}>
+                <div className={classes.chatRoom}>
+                  {!live && <div style={{ height: '60px' }}></div>}
+                  {live
+                    ? allChats?.map((chat, ind) => (
+                        <div
                           className={
                             chat?.authorId === currentUser?.fields?.userId
-                              ? classes.uText
-                              : classes.text
+                              ? classes.Uchat
+                              : classes.chat
                           }
+                          key={ind}
                         >
-                          {chat?.message}
-                        </p>
-                      </div>
-                    ))
-                  : comments?.map((comment, ind) => (
-                      <div
-                        className={classes.comment}
-                        style={{ marginTop: '1%' }}
-                        key={ind}
-                      >
-                        <img
-                          src={comment?.user?.image}
-                          className={classes.chatImg}
-                          alt=""
-                          onClick={() =>
-                            dispatch(
-                              actions.pushHistory(
-                                `/profile/${comment?.user?.id}`
-                              )
-                            )
-                          }
-                        />
-                        <p
-                          className={classes.authorName}
-                          onClick={() =>
-                            dispatch(
-                              actions.pushHistory(
-                                `/profile/${comment?.user?.id}`
-                              )
-                            )
-                          }
-                          style={{ left: '50px' }}
+                          <img
+                            className={classes.chatImg}
+                            src={chat?.authorImg}
+                            alt=""
+                          />
+                          <p
+                            className={classes.authorName}
+                            style={{
+                              right:
+                                currentUser?.fields?.name === chat?.authorName
+                                  ? '55px'
+                                  : '',
+                              left:
+                                currentUser?.fields?.name === chat?.authorName
+                                  ? ''
+                                  : '50px',
+                            }}
+                          >
+                            {chat?.authorName}
+                          </p>
+                          <div style={{ height: '20px' }}></div>
+                          <p
+                            className={
+                              chat?.authorId === currentUser?.fields?.userId
+                                ? classes.uText
+                                : classes.text
+                            }
+                          >
+                            {chat?.message}
+                          </p>
+                        </div>
+                      ))
+                    : comments?.map((comment, ind) => (
+                        <div
+                          className={classes.comment}
+                          style={{ marginTop: '1%' }}
+                          key={ind}
                         >
-                          {comment?.user?.name}
-                        </p>
-                        <p className={classes.commentText}>{comment.comment}</p>
-                      </div>
-                    ))}
-                <div ref={messageEl} />
-              </div>
-              <div
-                style={{
-                  position: live ? '' : 'absolute',
-                  top: live ? '' : '32px',
-                  width: '100%',
-                }}
-              >
-                <form
-                  style={{
-                    background: xsDown ? colors.darkGray : 'black',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                  onSubmit={live ? sendChat : postComment}
-                >
-                  <img
-                    src={currentUser?.fields?.image}
-                    className={classes.commentImg}
-                  />
-                  <TextField
-                    type="text"
-                    label={
-                      !live && currentUser ? 'Add a Comment' : 'Send a Chat'
-                    }
-                    name="Comment"
-                    className={classes.message}
-                    value={message}
-                    onChange={e => setMessage(e.target.value)}
-                    onKeyDown={listener}
-                    disabled={!currentUser}
-                  />
-                  <button
-                    type="submit"
-                    style={{
-                      border: 'none',
-                      outline: 'none',
-                      background: 'transparent',
-                    }}
-                    onClick={() =>
-                      live ? sendChat(audiocastId, socket) : postComment()
-                    }
+                          <img
+                            src={comment?.user?.image}
+                            className={classes.chatImg}
+                            alt=""
+                            onClick={() =>
+                              dispatch(
+                                actions.pushHistory(
+                                  `/profile/${comment?.user?.id}`
+                                )
+                              )
+                            }
+                          />
+                          <p
+                            className={classes.authorName}
+                            onClick={() =>
+                              dispatch(
+                                actions.pushHistory(
+                                  `/profile/${comment?.user?.id}`
+                                )
+                              )
+                            }
+                            style={{ left: '50px' }}
+                          >
+                            {comment?.user?.name}
+                          </p>
+                          <p className={classes.commentText}>
+                            {comment.comment}
+                          </p>
+                        </div>
+                      ))}
+                  <div ref={messageEl} />
+                </div>
+                <div className={classes.formContainer}>
+                  <form
+                    className={classes.chatInput}
+                    onSubmit={live ? sendChat : postComment}
                   >
-                    <FontAwesomeIcon
-                      icon={faPaperPlane}
-                      className={classes.sendIcon}
-                      size={'2x'}
+                    <img
+                      src={currentUser?.fields?.image}
+                      className={classes.commentImg}
                     />
-                  </button>
-                </form>
+                    <TextField
+                      type="text"
+                      label={
+                        !live && currentUser ? 'Add a Comment' : 'Send a Chat'
+                      }
+                      name="Comment"
+                      className={classes.message}
+                      value={message}
+                      onChange={e => setMessage(e.target.value)}
+                      onKeyDown={listener}
+                      disabled={!currentUser}
+                    />
+                    <button
+                      type="submit"
+                      style={{
+                        border: 'none',
+                        outline: 'none',
+                        background: 'transparent',
+                      }}
+                      onClick={() =>
+                        live ? sendChat(audiocastId, socket) : postComment()
+                      }
+                    >
+                      <FontAwesomeIcon
+                        icon={faPaperPlane}
+                        className={classes.sendIcon}
+                        size={'2x'}
+                      />
+                    </button>
+                  </form>
+                </div>
               </div>
-            </div>
+            </>
           )}
         </div>
         {smDown && (
@@ -962,7 +982,7 @@ const AudiocastScreen = ({ audiocastId }) => {
           </Button>
         )}
         {chatSelected && (
-          <div className={classes.chatBox}>
+          <>
             <div className={classes.chatOptions}>
               {live ? (
                 <>
@@ -995,6 +1015,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                 <b className={classes.chatOptionSelected}>Comments</b>
               )}
             </div>
+          <div className={classes.chatBox}>
             <div className={classes.chatRoom}>
               {!live && <div style={{ height: '60px' }}></div>}
               {live
@@ -1027,6 +1048,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                       >
                         {chat?.authorName}
                       </p>
+                      <div style={{ height: '20px' }}></div>
                       <p
                         className={
                           chat?.authorId === currentUser?.fields?.userId
@@ -1070,19 +1092,9 @@ const AudiocastScreen = ({ audiocastId }) => {
                   ))}
               <div ref={messageEl} />
             </div>
-            <div
-              style={{
-                position: live ? '' : 'absolute',
-                top: live ? '' : '32px',
-                width: '100%',
-              }}
-            >
+            <div className={classes.formContainer}>
               <form
-                style={{
-                  background: xsDown ? colors.darkGray : 'black',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
+                className={classes.chatInput}
                 onSubmit={live ? sendChat : postComment}
               >
                 <img
@@ -1119,10 +1131,13 @@ const AudiocastScreen = ({ audiocastId }) => {
               </form>
             </div>
           </div>
+          </>
         )}
         {!chatSelected && (
           <div className={smDown ? classes.sideColumnn : classes.sideColumn}>
-            <h3 style={{ textAlign: 'center', color: colors.yellow }}>Explore Audiocasts</h3>
+            <h3 style={{ textAlign: 'center', color: colors.yellow }}>
+              Explore Audiocasts
+            </h3>
             {sideColumn?.map((audio, key) => (
               <div
                 key={key}
