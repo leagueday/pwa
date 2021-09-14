@@ -358,24 +358,26 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
 
   const sendChat = e => {
     e.preventDefault()
-    axios
-      .post('https://leagueday-api.herokuapp.com/chats/create', {
-        userId: currentUser.fields.userId,
-        roomId: audiocastId,
-        message: message,
-        authorName: currentUser.fields.name,
-        image: currentUser.fields.image
-          ? currentUser.fields.image
-          : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues=',
-      })
-      .then(res => {
-        socket.emit('new_chat', { message })
-        setMessage('')
-        console.log('sent message ', res)
-      })
-      .catch(err => {
-        console.log('message send error ', err)
-      })
+    if (message) {
+      axios
+        .post('https://leagueday-api.herokuapp.com/chats/create', {
+          userId: currentUser.fields.userId,
+          roomId: audiocastId,
+          message: message,
+          authorName: currentUser.fields.name,
+          image: currentUser.fields.image
+            ? currentUser.fields.image
+            : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues=',
+        })
+        .then(res => {
+          socket.emit('new_chat', { message })
+          setMessage('')
+          console.log('sent message ', res)
+        })
+        .catch(err => {
+          console.log('message send error ', err)
+        })
+    }
   }
 
   const postComment = e => {

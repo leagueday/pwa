@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme, live) => ({
     background: '#111',
     height: 'auto',
     display: 'flex',
-    minHeight: '35%',
+    minHeight: '300px',
     padding: 15,
     [theme.breakpoints.down('sm')]: {
       minHeight: '70%',
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme, live) => ({
   audiocastCreds: {
     padding: '0 20px',
     display: 'flex',
-    width: '75%',
+    width: '65%',
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
@@ -81,6 +81,8 @@ const useStyles = makeStyles((theme, live) => ({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: '30px',
   },
   creatorNameImg: {
     justifyContent: 'space-evenly',
@@ -329,7 +331,7 @@ const AudiocastScreen = ({ audiocastId }) => {
       })
   }, [audiocastId])
 
-  console.log('from screen ',audiocast)  
+  console.log('from screen ', audiocast)
 
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY
 
@@ -371,7 +373,7 @@ const AudiocastScreen = ({ audiocastId }) => {
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: 'column',
+                  // flexDirection: 'column',
                   alignItems: 'center',
                 }}
               >
@@ -385,33 +387,96 @@ const AudiocastScreen = ({ audiocastId }) => {
                     {audiocast?.fields?.title}
                   </h3>
                 )}
-                <div className={classes.likeShare}>
-                  <ToggleImageButton
-                    className={classes.playBtnModal}
-                    size="2vw"
-                    on={isPlayings}
-                    onClick={onPopClick}
-                    onImage="/img/logo_live_pause.png"
-                    offImage="/img/logo_live_play.png"
-                    shadowColor={colors.lightGray}
-                  />
-                  <div className={classes.shareBtn}>
-                    <LikeButton
-                      size={'24px'}
-                      userId={currentUserId}
-                      channelTag={audiocast?.fields?.channelTag}
-                      audio={audiocast}
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'space-evenly'
+                  }}
+                >
+                  <div
+                    className={classes.creator}
+                    onClick={() =>
+                      dispatch(
+                        actions.pushHistory(
+                          `/profile/${audiocast?.fields?.userId}`
+                        )
+                      )
+                    }
+                  >
+                    <div className={classes.creatorNameImg}>
+                      <img
+                        className={classes.userImg}
+                        src={
+                          !live
+                            ? audiocast?.fields?.image
+                            : audiocast?.fields?.creatorImg
+                        }
+                        alt=""
+                      />
+                      <p className={classes.creatorName}>
+                        {audiocast?.fields?.username}
+                      </p>
+                    </div>
+                    <PlusMinusBtn
+                      size="2rem"
+                      className={classes.plusMinusButton}
+                      userId={audiocast?.fields?.userId[0]}
+                      creator={audiocast?.fields}
                     />
-                    <FontAwesomeIcon
-                      style={{
-                        fontSize: '24px',
-                        marginRight: 20,
-                        cursor: 'pointer',
-                      }}
-                      fontSize={'inherit'}
-                      icon={faShareSquare}
-                      onClick={openLinkModal}
+                  </div>
+                  <div className={classes.likeShare}>
+                    <ToggleImageButton
+                      className={classes.playBtnModal}
+                      size="2vw"
+                      on={isPlayings}
+                      onClick={onPopClick}
+                      onImage="/img/logo_live_pause.png"
+                      offImage="/img/logo_live_play.png"
+                      shadowColor={colors.lightGray}
                     />
+                    <div className={classes.shareBtn}>
+                      <LikeButton
+                        size={'24px'}
+                        userId={currentUserId}
+                        channelTag={audiocast?.fields?.channelTag}
+                        audio={audiocast}
+                      />
+                      <FontAwesomeIcon
+                        style={{
+                          fontSize: '24px',
+                          marginRight: 20,
+                          cursor: 'pointer',
+                        }}
+                        fontSize={'inherit'}
+                        icon={faShareSquare}
+                        onClick={openLinkModal}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: '100%',
+                      justifyContent: 'space-evenly',
+                    }}
+                  >
+                    <p style={{ color: colors.white80 }}>
+                      Date:{' '}
+                      <span style={{ color: colors.yellow, opacity: 0.8 }}>
+                        {audiocast?.fields?.uploadDate}
+                      </span>
+                    </p>
+                    {!live && (
+                      <p style={{ color: colors.white80 }}>
+                        Duration:{' '}
+                        <span style={{ color: colors.yellow, opacity: 0.8 }}>
+                          {durationLabel}
+                        </span>
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -465,62 +530,6 @@ const AudiocastScreen = ({ audiocastId }) => {
             </Modal>
             <div className={classes.audiocastCreds}>
               <div className={classes.audioDescription}>
-                <div className={classes.dateAndDesc}>
-                  <div
-                    className={classes.creator}
-                    onClick={() =>
-                      dispatch(
-                        actions.pushHistory(
-                          `/profile/${audiocast?.fields?.userId}`
-                        )
-                      )
-                    }
-                  >
-                    <div className={classes.creatorNameImg}>
-                      <img
-                        className={classes.userImg}
-                        src={
-                          !live
-                            ? audiocast?.fields?.image
-                            : audiocast?.fields?.creatorImg
-                        }
-                        alt=""
-                      />
-                      <p className={classes.creatorName}>
-                        {audiocast?.fields?.username}
-                      </p>
-                    </div>
-                    <PlusMinusBtn
-                      size="2rem"
-                      className={classes.plusMinusButton}
-                      userId={audiocast?.fields?.userId[0]}
-                      creator={audiocast?.fields}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      width: '100%',
-                      justifyContent: 'space-evenly',
-                    }}
-                  >
-                    <p style={{ color: colors.white80 }}>
-                      Date:{' '}
-                      <span style={{ color: colors.yellow, opacity: 0.8 }}>
-                        {audiocast?.fields?.uploadDate}
-                      </span>
-                    </p>
-                    {!live && (
-                      <p style={{ color: colors.white80 }}>
-                        Duration:{' '}
-                        <span style={{ color: colors.yellow, opacity: 0.8 }}>
-                          {durationLabel}
-                        </span>
-                      </p>
-                    )}
-                  </div>
-                </div>
                 {!smDown && (
                   <h3 className={classes.castTitle}>
                     {audiocast?.fields?.title}
@@ -538,7 +547,12 @@ const AudiocastScreen = ({ audiocastId }) => {
             </div>
           </div>
           {!smDown && (
-            <ChatRoom audiocastId={audiocastId} classes={classes} live={live} audiocast={audiocast}/>
+            <ChatRoom
+              audiocastId={audiocastId}
+              classes={classes}
+              live={live}
+              audiocast={audiocast}
+            />
           )}
         </div>
         {smDown && (
@@ -554,7 +568,12 @@ const AudiocastScreen = ({ audiocastId }) => {
           </Button>
         )}
         {chatSelected && (
-          <ChatRoom audiocastId={audiocastId} classes={classes} live={live} audiocast={audiocast}/>
+          <ChatRoom
+            audiocastId={audiocastId}
+            classes={classes}
+            live={live}
+            audiocast={audiocast}
+          />
         )}
         {!chatSelected && (
           <div className={smDown ? classes.sideColumnn : classes.sideColumn}>
