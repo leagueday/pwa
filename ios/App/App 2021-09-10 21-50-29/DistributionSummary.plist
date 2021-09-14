@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>App.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>3272CE83FD516C53F054779110C1C74151DB59CE</string>
+				<key>dateExpires</key>
+				<string>2022-09-07</string>
+				<key>type</key>
+				<string>Apple Development</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>3272CE83FD516C53F054779110C1C74151DB59CE</string>
+						<key>dateExpires</key>
+						<string>2022-09-07</string>
+						<key>type</key>
+						<string>Apple Development</string>
+					</dict>
+					<key>name</key>
+					<string>Capacitor.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>DF3J855U87</string>
+						<key>name</key>
+						<string>League Day, Inc.</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>3272CE83FD516C53F054779110C1C74151DB59CE</string>
+						<key>dateExpires</key>
+						<string>2022-09-07</string>
+						<key>type</key>
+						<string>Apple Development</string>
+					</dict>
+					<key>name</key>
+					<string>CapacitorStatusBar.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>DF3J855U87</string>
+						<key>name</key>
+						<string>League Day, Inc.</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>3272CE83FD516C53F054779110C1C74151DB59CE</string>
+						<key>dateExpires</key>
+						<string>2022-09-07</string>
+						<key>type</key>
+						<string>Apple Development</string>
+					</dict>
+					<key>name</key>
+					<string>Cordova.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>DF3J855U87</string>
+						<key>name</key>
+						<string>League Day, Inc.</string>
+					</dict>
+				</dict>
+			</array>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>DF3J855U87.com.leagueday.mobile</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>DF3J855U87</string>
+				<key>get-task-allow</key>
+				<true/>
+				<key>keychain-access-groups</key>
+				<array>
+					<string>DF3J855U87.com.leagueday.mobile</string>
+				</array>
+			</dict>
+			<key>name</key>
+			<string>App.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>934a5743-dc67-497c-86b1-7b52cae41bde</string>
+				<key>name</key>
+				<string>iOS Team Provisioning Profile: com.leagueday.mobile</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>DF3J855U87</string>
+				<key>name</key>
+				<string>League Day, Inc.</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

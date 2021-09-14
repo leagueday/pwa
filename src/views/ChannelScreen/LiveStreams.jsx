@@ -26,23 +26,15 @@ const LiveStreams = ({ channelTag }) => {
 
   const getLiveData = () => {
     let urladd = `filterByFormula={channelTag}='${channelTag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
-    fetch('/.netlify/functions/commingsoon-proxy', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
+    axios.post('https://leagueday-api.herokuapp.com/proxies/commingsoon', {
+      url: `${baseId}/ChannelLiveData?${urladd}`
+    }).then((response) => {
+      setUserAudio(
+        response.data.data.records.filter(item => !!item.fields.liveStreamId)
+      )
+    }).catch(error => {
+      console.log('error from LiveStream.jsx', error)
     })
-      .then(response => response.json())
-      .then(function (response) {
-        setUserAudio(
-          response.records.filter(item => !!item.fields.liveStreamId)
-        )
-      })
-      .catch(error => {
-        console.log('error from LiveStream.jsx', error)
-      })
   }
 
   useEffect(() => {
