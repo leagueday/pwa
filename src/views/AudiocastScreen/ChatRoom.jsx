@@ -281,7 +281,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
 
   const getQuestions = () => {
     axios
-      .get(`http://localhost:3000/questions/${audiocastId}`)
+      .get(`https://leagueday-api.herokuapp.com/questions/${audiocastId}`)
       .then(res => {
         setQuestions(
           res.data.data
@@ -300,7 +300,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
   const askQuestion = e => {
     e.preventDefault()
     axios
-      .post('http://localhost:3000/questions/create', {
+      .post('https://leagueday-api.herokuapp.com/questions/create', {
         audiocastId: audiocastId,
         question: message,
         authorId: currentUser.fields.userId,
@@ -316,23 +316,26 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
   }
 
   const acceptQuestion = async (id, question) => {
-    await axios
-      .delete(`http://localhost:3000/questions/delete/${selectedQuestion.id}`, {
-        id: id,
-      })
-      .then(res => {
-        console.log('accepted question ', res)
-      })
-      .catch(err => {
-        console.log('declined question ', err)
-      })
+    if (selectedQuestion) {
+      await axios
+        .delete(
+          `https://leagueday-api.herokuapp.com/questions/delete/${selectedQuestion.id}`
+        )
+        .then(res => {
+          console.log('accepted question ', res)
+        })
+        .catch(err => {
+          console.log('declined question ', err)
+        })
+    }
 
     await axios
-      .post('http://localhost:3000/questions/accept', {
+      .post('https://leagueday-api.herokuapp.com/questions/accept', {
         id: id,
       })
       .then(res => {
         console.log('accepted question ', res)
+        getQuestions()
       })
       .catch(err => {
         console.log('declined question ', err)
@@ -340,7 +343,6 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
     setSelectedQuestion(question)
   }
 
-  console.log('selected quesiton ', selectedQuestion)
   const getComments = () => {
     axios
       .get(`https://leagueday-api.herokuapp.com/comments/get/${audiocastId}`)
