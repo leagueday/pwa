@@ -6,7 +6,7 @@ export const ChatStateContext = createContext();
 const FriendsStateProvider = ChatStateContext.Provider
 
 function ChatStateProvider(props) {
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState()
     const [allChats, setAllChats] = useState([])
     const userData = useSelector(selectors.getUserData);
     const user = useSelector(selectors.getUser);

@@ -29,10 +29,10 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
   },
   deleteBtn: {
+    width: '150px',
     background: 'transparent',
     border: '1px solid red',
     color: 'red',
-    width: '150px',
     '&:hover': {
       transition: 'all .2s ease-in-out',
       backgroundColor: 'red',
@@ -60,8 +60,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   editProfile: {
-    background: colors.blue,
     width: '150px',
+    background: colors.blue,
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },

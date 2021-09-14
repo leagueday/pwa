@@ -44,15 +44,48 @@ const LiveStreams = ({ channelTag }) => {
   const MuxComponent = ({ livestreamid, count, audio }) => {
     const [active, setActive] = useState(false)
 
-    axios.post('https://leagueday-api.herokuapp.com/proxies/mux', {
-      url: `video/v1/live-streams/${livestreamid}?limit=200`,
-    }).then(({ data }) => {
-      if (data.data.data.status === 'active') {
-        setActive(true)
-      }
-    }).catch(error => {
-      console.log('error in LiveStream.jsx', error)
-    });
+    // const userName = 'e6dc9a66-fb63-414b-b187-6a39aaa6583f'
+    // const accessToken =
+    //   '2bGfOofUHoMPq5PtL6yb/peOp80MyN2VGsgLb5nIaREZhQ51iAtDdd4yR0pIp0bXYWWki2lcHVS'
+    // const authString = `${userName}:${accessToken}`
+    // const authStringEncoded = Buffer.from(authString).toString('base64')
+    // const headers = {
+    //   'Access-Control-Allow-Headers': 'Content-Type',
+    //   'Access-Control-Allow-Origin': '*',
+    //   'Access-Control-Allow-Methods': 'POST, GET, HEAD, OPTIONS',
+    //   Authorization: `Basic ${authStringEncoded}`,
+    //   'Content-Type': 'application/json',
+    // }
+
+    // axios
+    //   .get(
+    //     'https://api.mux.com/video/v1/live-streams/mIMTxXLqtyB7mOwKWr1zavoEMjtqbqWqZ902prJY01g6k',
+    //     {
+    //       headers,
+    //     }
+    //   )
+    //   .then(res => console.log('res', res))
+    //   .catch(err => console.log(err))
+    fetch('/.netlify/functions/mux-proxy', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        url: `video/v1/live-streams/${livestreamid}?limit=200`,
+      }),
+    })
+      .then(response => response.json())
+      .then(function (response) {
+        console.log('esp', response)
+        if (response.data.status === 'active') {
+          setActive(true)
+        }
+      })
+      .catch(error => {
+        console.log('error in LiveStream.jsx', error)
+      })
 
     return (
       active && (

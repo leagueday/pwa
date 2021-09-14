@@ -264,18 +264,11 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
   const sm = useMediaQuery(theme.breakpoints.down('sm'))
   const currentUserId = currentUser?.shift()?.id
   const audioUrl = useSelector(selectors.getAudioUrl)
-  const [open, setOpen] = useState(false)
-  const [linkOpen, setLinkOpen] = useState(false)
   const isSelectedAudio = audioUrl && audioUrl === audio.fields.playbackUrl
   const audioMode = useSelector(selectors.getAudioMode)
   const [selectedDuration, setSelectedDuration] = useState()
   const [seeMore, setSeeMore] = useState(false)
-  const [copied, setCopied] = useState(false)
   const duration = maybeHmsToSecondsOnly(selectedDuration)
-
-  const durationLabel = useMemo(() => formatSecondsDuration(duration), [
-    duration,
-  ])
 
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY
 
@@ -292,22 +285,6 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
     },
     false
   )
-
-  const handleModalClose = () => {
-    setOpen(false)
-  }
-
-  const handleModalOpen = () => {
-    setOpen(true)
-  }
-
-  const openLinkModal = () => {
-    setLinkOpen(true)
-  }
-
-  const closeLinkModal = () => {
-    setLinkOpen(false)
-  }
 
   const onPopClick = isPlayings
     ? ev => {
@@ -361,7 +338,7 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
         {live && <Button className={classes.liveSign}>Live</Button>}
         <img
           className={classes.creatorImg}
-          src={audio?.fields?.image}
+          src={live ? audio?.fields?.creatorImg : audio?.fields?.image}
           alt=""
           style={{}}
           onClick={() =>
@@ -379,53 +356,6 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
           alt=""
         />
       </div>
-      <Modal
-        open={linkOpen}
-        onClose={closeLinkModal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <div className={classes.linkModalWrapper}>
-          <a
-            target="_blank"
-            href={`https://www.facebook.com/sharer.php?u=https%3A%2F%2Fapp.leagueday.gg/channel/${audio?.fields?.channelTag}`}
-            style={{ color: colors.blue }}
-          >
-            <Facebook />
-          </a>{' '}
-          <a
-            target="_blank"
-            href={`https://twitter.com/intent/tweet?url=https%3A%2F%2Fapp.leagueday.gg/channel/${audio?.fields?.channelTag}`}
-            style={{ color: colors.blue }}
-          >
-            <Twitter />{' '}
-          </a>{' '}
-          <a
-            target="_blank"
-            href={`https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fapp.leagueday.gg/channel/${audio?.fields?.channelTag}`}
-            style={{ color: colors.blue }}
-          >
-            <LinkedIn />
-          </a>
-          <a
-            style={{ color: colors.blue }}
-            href={`mailto:?body= Check out this LeagueDay channel page! https://app.leagueday.gg/channel/${audio?.fields?.channelTag}`}
-            target="_blank"
-          >
-            {' '}
-            <Email />
-          </a>
-          <p
-            style={{ color: 'black', fontSize: '90%', cursor: 'pointer' }}
-            onClick={() => {
-              navigator.clipboard.writeText(window.location.href)
-              setCopied(true)
-            }}
-          >
-            {!copied ? 'Copy link' : 'Copied!'}
-          </p>
-        </div>
-      </Modal>
       <div style={{ overflow: 'hidden' }}>
         <h4
           style={{ filter: seeMore ? 'brightness(50%)' : '' }}

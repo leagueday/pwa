@@ -42,7 +42,6 @@ const MenuNav = ({ anchor, hide, home, isVisible }) => {
     : ['Sign In', signIn]
 
   const goHome = home ? null : () => dispatch(actions.pushHistory('/'))
-  console.log('new channels ', myChannels)
 
   // const myChannels = useChannels().myList
   const makeGotoChannel = channelTag =>
