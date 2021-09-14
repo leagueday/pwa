@@ -264,9 +264,26 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
       getMessages(audiocastId)
     })
 
+    socket?.on('accepted_question', () => {
+      console.log('socket accepted question')
+      getQuestions(audiocastId)
+    })
+
+    socket?.on('new_question', () => {
+      console.log('new question')
+      getQuestions(audiocastId)
+    })
+
     return () => {
       socket?.off('new_chat', () => {
         getMessages(audiocastId)
+      })
+      socket?.off('accepted_question', () => {
+        getQuestions(audiocastId)
+      })
+      socket?.off('new_question', () => {
+        console.log('new question')
+        getQuestions(audiocastId)
       })
     }
   }, [socket])
@@ -279,8 +296,9 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
 
   useEffect(scrollToBottom, [allChats, comments, questions, selectedQuestion])
 
-  const getQuestions = () => {
-    axios
+  const getQuestions = async () => {
+    console.log('hello')
+    await axios
       .get(`https://leagueday-api.herokuapp.com/questions/${audiocastId}`)
       .then(res => {
         setQuestions(
@@ -307,7 +325,11 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
       })
       .then(res => {
         console.log('asked question ', res)
-        getQuestions()
+        socket.emit('new_question', {
+          audiocastId: audiocastId,
+          question: message,
+          authorId: currentUser.fields.userId,
+        })
         setMessage('')
       })
       .catch(err => {
@@ -322,7 +344,8 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
           `https://leagueday-api.herokuapp.com/questions/delete/${selectedQuestion.id}`
         )
         .then(res => {
-          console.log('accepted question ', res)
+          socket.emit('new_question', question)
+          console.log('deleted question ', res)
         })
         .catch(err => {
           console.log('declined question ', err)
@@ -334,13 +357,13 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
         id: id,
       })
       .then(res => {
+        socket.emit('new_question', question)
         console.log('accepted question ', res)
-        getQuestions()
       })
       .catch(err => {
         console.log('declined question ', err)
       })
-    setSelectedQuestion(question)
+    // setSelectedQuestion(question)
   }
 
   const getComments = () => {
