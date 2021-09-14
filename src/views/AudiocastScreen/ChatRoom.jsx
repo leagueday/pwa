@@ -71,6 +71,7 @@ const useStyles = makeStyles(theme => ({
   chatImg: {
     width: '50px',
     height: '50px',
+    margin: '0 10px',
     borderRadius: '50%',
     objectFit: 'cover',
     cursor: 'pointer',
@@ -164,12 +165,13 @@ const useStyles = makeStyles(theme => ({
   },
   questionText: {
     borderRadius: '10px',
-    background: colors.white80,
+    background: 'white',
     padding: '0 1%',
     fontSize: '1rem',
-    width: '100%',
-    margin: 0,
-    marginTop: '2%',
+    marginTop: '4%',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '4%',
+    },
     [theme.breakpoints.down('sm')]: {
       marginTop: '4%',
     },
@@ -587,10 +589,10 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                     <p className={classes.authorName} style={{ right: '55px' }}>
                       {item?.user?.name}
                     </p>
-                    <div>
+                    {/* <div style={{ border: '2px solid orange' }}> */}
                       <div style={{ height: '20px' }}></div>
                       <p className={classes.questionText}>{item?.question}</p>
-                    </div>
+                    {/* </div> */}
                   </div>
                   {isHost && (
                     <div className={classes.questionBtns}>
