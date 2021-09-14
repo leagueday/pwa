@@ -12,6 +12,7 @@ import TitleBar from './TitleBar'
 import blue from '@material-ui/core/colors/blue'
 import { uploadFile } from 'react-s3'
 import Select from 'react-select'
+import axios from 'axios';
 import('buffer').then(({ Buffer }) => {
   global.Buffer = Buffer
 })
@@ -335,6 +336,16 @@ const CreateProfile = props => {
   }
 
   const muxChannel = () => {
+    // axios.post('https://leagueday-api.herokuapp.com/proxies/mux-livestream', {
+    //   url: 'video/v1/live-streams',
+    //   passthrough: 'lol'
+    // }).then(({ data }) => {
+    //   localStorage.setItem('channelStrkey', livestreamData.data['stream_key'])
+    //   localStorage.setItem('channelStrId', livestreamData.data['id'])
+    // }).catch(error => {
+    //   toast.error("Failed to get live stream");
+    // });
+
     fetch('/.netlify/functions/mux-livestream', {
       method: 'POST',
       headers: {
