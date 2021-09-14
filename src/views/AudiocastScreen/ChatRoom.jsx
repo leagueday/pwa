@@ -167,7 +167,7 @@ const useStyles = makeStyles(theme => ({
     background: colors.white80,
     padding: '0 1%',
     fontSize: '1rem',
-    top: 0,
+    width: '100%',
     margin: 0,
     marginTop: '2%',
     [theme.breakpoints.down('sm')]: {
