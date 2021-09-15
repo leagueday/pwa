@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MyCreators from './MyCreators'
 import cx from 'classnames'
 import Loading from '../Loading'
+import { Modal } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { Button } from '@material-ui/core'
 import { colors } from '../../styling'
 import { addScrollStyle } from '../util'
 import Expander from './Expander'
@@ -60,6 +62,7 @@ const useStyles = makeStyles(theme => ({
     minHeight: 0,
     overflowY: 'auto',
     width: '100%',
+    maxHeight: '35%',
   }),
   scrollerChild: {
     minHeight: '100%',
@@ -69,28 +72,39 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: colors.darkerGray,
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
     fontSize: 'max(min(1.6vw, 14px), 12px)',
     height: '100%',
     width: 'min(19%, 15em)',
   },
-  signInOutButton: {
+  userGuideBtn: {
+    backgroundColor: colors.blue,
     fontSize: '95%',
     whiteSpace: 'nowrap',
     width: '45%',
-    position: 'absolute',
     color: 'white',
+    marginTop: '5%',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
   },
-  signInOutButtonContainer: {
-    paddingTop: '0.25vw',
-    position: 'relative',
-    marginTop: '25px',
-    marginBottom: '25px',
-    width: '100%',
-  },
-  signInOut: {
+  modalWrapper: {
+    position: 'absolute',
+    width: 500,
     display: 'flex',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: colors.darkGray,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    color: 'white',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    outline: 'none',
+    borderRadius: '5px',
+    height: 250,
   },
   inNOutButton: {
     '&:hover': {
@@ -113,12 +127,16 @@ const useStyles = makeStyles(theme => ({
 
 const FatSideNav = ({ className, home }) => {
   const classes = useStyles({ home })
+  const [open, setOpen] = useState(false)
+
+  const handleModalClose = () => {
+    setOpen(false)
+  }
 
   return (
     <div className={cx(classes.sideNav, className)}>
       <React.Suspense fallback={<Loading />}>
-        <div className={classes.controls}>
-        </div>
+        <div className={classes.controls}></div>
         <div className={classes.scroller}>
           <div className={classes.scrollerChild}>
             <Expander
@@ -128,17 +146,32 @@ const FatSideNav = ({ className, home }) => {
             >
               <MyChannels />
             </Expander>
-              <Expander
+          </div>
+        </div>
+        <div className={classes.scroller}>
+          <div className={classes.scrollerChild}>
+            <Expander
               className={classes.expander}
               text="MY CREATORS"
               tag="poca"
-              >
+            >
               <MyCreators />
-              </Expander>
-            <MyPodcasts />
+            </Expander>
           </div>
         </div>
+        <Button className={classes.userGuideBtn} onClick={() => setOpen(true)}>user guide</Button>
+        <MyPodcasts />
       </React.Suspense>
+      <Modal
+        open={open}
+        onClose={handleModalClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div className={classes.modalWrapper}>
+          <img src="/img/userGuide.png" alt="" />
+        </div>
+      </Modal>
     </div>
   )
 }

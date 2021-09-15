@@ -82,7 +82,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: 0,
     padding: 0,
-    margin: 0,
+    margin: '0 10px',
     fontWeight: 900,
     cursor: 'pointer',
   },
@@ -143,9 +143,10 @@ const useStyles = makeStyles(theme => ({
       marginTop: '4%',
     },
   },
-  comment: {
+  commentCont: {
+    border: '2px solid red',
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     color: 'black',
     position: 'relative',
@@ -296,7 +297,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
     messageEl?.current?.scrollIntoView({ behavior: 'auto' })
   }
 
-  useEffect(scrollToBottom, [allChats, comments, questions, selectedQuestion])
+  useEffect(scrollToBottom, [allChats, comments, questions, selectedQuestion, partyChat, qA])
 
   const getQuestions = async () => {
     console.log('hello')
@@ -609,8 +610,8 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
           {!live &&
             comments?.map((comment, ind) => (
               <div
-                className={classes.comment}
-                style={{ marginTop: '1%' }}
+                className={classes.commentCont}
+                style={{ marginTop: ind === 0 ? '70px': '1%' }}
                 key={ind}
               >
                 <img
