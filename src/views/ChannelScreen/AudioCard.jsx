@@ -93,7 +93,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
-      bottom: 10
+      bottom: 10,
     },
   },
   like: {
@@ -288,8 +288,8 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
 
   const onPopClick = isPlayings
     ? ev => {
-        dispatch(actions.pauseAudio())
         ev.stopPropagation()
+        dispatch(actions.pauseAudio())
       }
     : ev => {
         if (isSelectedAudio) dispatch(actions.playAudio())

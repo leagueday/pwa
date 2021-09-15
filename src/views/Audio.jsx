@@ -332,14 +332,14 @@ const Audio = () => {
         <video
           ref={setAudioPlayerRef}
           id="audioPlayer"
-          autoPlay={true}
+          autoPlay={false}
           format="m3u8"
           type="m3u8"
         />
       ) : (
         <ReactHlsPlayer
           src={scrubbedAudioUrl}
-          autoPlay={true}
+          autoPlay={false}
           controls={false}
           width="20%"
           height="auto"
