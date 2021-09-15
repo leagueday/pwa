@@ -589,10 +589,8 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                     <p className={classes.authorName} style={{ right: '55px' }}>
                       {item?.user?.name}
                     </p>
-                    {/* <div style={{ border: '2px solid orange' }}> */}
                       <div style={{ height: '20px' }}></div>
                       <p className={classes.questionText}>{item?.question}</p>
-                    {/* </div> */}
                   </div>
                   {isHost && (
                     <div className={classes.questionBtns}>
