@@ -144,7 +144,6 @@ const useStyles = makeStyles(theme => ({
     },
   },
   commentCont: {
-    border: '2px solid red',
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',

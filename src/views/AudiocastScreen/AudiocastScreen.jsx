@@ -44,9 +44,9 @@ const useStyles = makeStyles((theme, live) => ({
   audioThumbnail: {
     maxHeight: '15rem',
     maxWidth: '15rem',
-    width: '40%',
+    width: '100%',
     marginBottom: 20,
-    height: '40%',
+    height: '100%',
     objectFit: 'contain',
     [theme.breakpoints.down('sm')]: {
       height: '40%',
@@ -373,15 +373,17 @@ const AudiocastScreen = ({ audiocastId }) => {
               <div
                 style={{
                   display: 'flex',
-                  // flexDirection: 'column',
                   alignItems: 'center',
                 }}
               >
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <img
                   className={classes.audioThumbnail}
                   src={audiocast?.fields?.thumbnail}
                   alt=""
                 />
+                <p>Listens: {audiocast?.fields?.listens}</p>
+                </div>
                 {smDown && (
                   <h3 className={classes.castTitle}>
                     {audiocast?.fields?.title}
@@ -392,7 +394,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    justifyContent: 'space-evenly'
+                    justifyContent: 'space-evenly',
                   }}
                 >
                   <div

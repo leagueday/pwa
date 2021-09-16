@@ -8,14 +8,12 @@ import { actions, constants, selectors } from '../../store'
 import { colors } from '../../styling'
 import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import { LinkedIn, Twitter, Facebook, Email } from '@material-ui/icons'
-import LinkIcon from '@material-ui/icons/Link'
-import useAirtable from '../../api/useAirtable'
-import Modal from '@material-ui/core/Modal'
+import Airtable from 'airtable'
+import { Person } from '@material-ui/icons'
 import { maybeHmsToSecondsOnly, formatSecondsDuration } from '../dateutil'
 
 const useStyles = makeStyles(theme => ({
-  audioCard: {
+  audioCard: () => ({
     width: '15rem',
     height: '18rem',
     border: '.5px solid white',
@@ -26,12 +24,19 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    cursor: 'pointer',
+    transition: 'all 0.1s ease-in-out',
     [theme.breakpoints.down('sm')]: {
       width: '40%',
       marginLeft: '15px',
       height: '25rem',
     },
-  },
+    '&:hover': {
+      transform: 'scale(1.05)',
+      borderLeft: `5px solid ${colors.magenta}`,
+      borderBottom: `4px solid #610037`,
+    },
+  }),
   images: {
     width: '100%',
   },
@@ -251,24 +256,69 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const baseId = 'appXoertP1WJjd4TQ'
+const apiKey = 'keymd23kpZ12EriVi'
+const base = new Airtable({ apiKey }).base(baseId)
 
 const AudioCard = ({ audio, indexData, channelTag, live }) => {
   const dispatch = useDispatch()
-  const classes = useStyles()
   const activeUser = useSelector(selectors.getUser)
-  const { data } = useAirtable(baseId, 'UserProfile')
-  const currentUser = data?.filter(
-    user => user?.fields?.userId === activeUser?.id
-  )
+  const currentUser = useSelector(selectors.getUserData)
   const theme = useTheme()
   const sm = useMediaQuery(theme.breakpoints.down('sm'))
-  const currentUserId = currentUser?.shift()?.id
+  const currentUserId = currentUser?.fields?.userId
   const audioUrl = useSelector(selectors.getAudioUrl)
   const isSelectedAudio = audioUrl && audioUrl === audio.fields.playbackUrl
   const audioMode = useSelector(selectors.getAudioMode)
   const [selectedDuration, setSelectedDuration] = useState()
   const [seeMore, setSeeMore] = useState(false)
+  const classes = useStyles()
   const duration = maybeHmsToSecondsOnly(selectedDuration)
+
+  console.log(audio?.fields?.listens)
+
+  const handleListen = async () => {
+    if (audio?.fields?.type === 'audiocast') {
+      base('UserAudiocasts').update(
+        [
+          {
+            id: audio.id,
+            fields: {
+              listens: audio.fields.listens + 1,
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            console.log('listen recorded  ', record)
+          })
+        }
+      )
+    } else if (audio.fields.type === 'livestream') {
+      base('ChannelLiveData').update(
+        [
+          {
+            id: audio.id,
+            fields: {
+              listens: audio.fields.listens + 1,
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            console.log('listen recorded  ', record)
+          })
+        }
+      )
+    }
+  }
 
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY
 
@@ -292,6 +342,7 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
         dispatch(actions.pauseAudio())
       }
     : ev => {
+        handleListen()
         if (isSelectedAudio) dispatch(actions.playAudio())
         else {
           dispatch(
@@ -321,11 +372,12 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
   }
 
   return (
-    <div className={classes.audioCard}>
-      <div
-        className={classes.images}
-        onMouseLeave={!sm ? () => setSeeMore(false) : null}
-      >
+    <div
+      className={classes.audioCard}
+      onMouseLeave={!sm ? () => setSeeMore(false) : null}
+      onMouseEnter={!sm ? () => setSeeMore(true) : null}
+    >
+      <div className={classes.images}>
         {seeMore && (
           <Button
             onMouseOpen={() => setSeeMore(true)}
@@ -345,18 +397,24 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
             dispatch(actions.pushHistory(`/profile/${audio?.fields?.userId}`))
           }
         />
-        <img
-          onMouseEnter={!sm ? () => setSeeMore(true) : null}
-          className={classes.thumbnail}
-          src={audio?.fields?.thumbnail}
-          onClick={onClick}
-          style={{
-            filter: seeMore ? 'brightness(50%)' : '',
-          }}
-          alt=""
-        />
+        <div style={{ height: '150px' }}>
+          {audio?.fields?.thumbnail && (
+            <img
+              className={classes.thumbnail}
+              src={audio?.fields?.thumbnail}
+              onClick={onClick}
+              style={{
+                filter: seeMore ? 'brightness(50%)' : '',
+              }}
+              alt=""
+            />
+          )}
+        </div>
       </div>
-      <div style={{ overflow: 'hidden' }}>
+      <div
+        style={{ overflow: 'hidden' }}
+        // onMouseEnter={!sm ? () => setSeeMore(true) : null}
+      >
         <h4
           style={{ filter: seeMore ? 'brightness(50%)' : '' }}
           className={classes.title}
@@ -364,7 +422,10 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
           {audio?.fields?.title}
         </h4>
       </div>
-      <div className={classes.playLike}>
+      <div
+        className={classes.playLike}
+        // onMouseEnter={!sm ? () => setSeeMore(true) : null}
+      >
         <ToggleImageButton
           className={classes.playBtn}
           size="5vw"
@@ -374,11 +435,23 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
           offImage="/img/logo_live_play.png"
           shadowColor={colors.lightGray}
         />
-        <LikeButton
-          userId={currentUserId}
-          channelTag={channelTag}
-          audio={audio}
-        />
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-evenly',
+          }}
+        >
+          <LikeButton
+            userId={currentUserId}
+            channelTag={channelTag}
+            audio={audio}
+          />
+          <p style={{ display: 'flex', alignItems: 'center', opacity: 0.6 }}>
+            <Person /> {audio?.fields?.listens}
+          </p>
+        </div>
       </div>
     </div>
   )
