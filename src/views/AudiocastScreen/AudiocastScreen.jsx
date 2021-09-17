@@ -230,6 +230,7 @@ const baseId = 'appXoertP1WJjd4TQ'
 const AudiocastScreen = ({ audiocastId }) => {
   const theme = useTheme()
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
+  const lgUp = useMediaQuery(theme.breakpoints.up('lg'))
   const dispatch = useDispatch()
   const [audiocast, setAudiocast] = useState()
 
@@ -381,7 +382,7 @@ const AudiocastScreen = ({ audiocastId }) => {
               }}
             >
               <div className={classes.container}>
-                {!smDown && (
+                {lgUp && (
                   <div
                     style={{
                       display: 'flex',
@@ -395,7 +396,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                       alt=""
                     />
                     {audiocast?.fields?.listeners && (
-                      <p>Listens: {audiocast?.fields?.listeners}</p>
+                      <p>Listens: {audiocast?.fields?.listeners?.length}</p>
                     )}
                   </div>
                 )}
