@@ -44,9 +44,9 @@ const useStyles = makeStyles((theme, live) => ({
   audioThumbnail: {
     maxHeight: '15rem',
     maxWidth: '15rem',
-    width: '40%',
+    width: '100%',
     marginBottom: 20,
-    height: '40%',
+    height: '100%',
     objectFit: 'contain',
     [theme.breakpoints.down('sm')]: {
       height: '40%',
@@ -65,12 +65,22 @@ const useStyles = makeStyles((theme, live) => ({
       flexDirection: 'column',
     },
   },
+  container: {
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+    },
+  },
   audiocastCreds: {
     padding: '0 20px',
     display: 'flex',
     width: '65%',
     flexDirection: 'column',
     justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    },
   },
   castTitle: {
     [theme.breakpoints.down('sm')]: {
@@ -220,6 +230,7 @@ const baseId = 'appXoertP1WJjd4TQ'
 const AudiocastScreen = ({ audiocastId }) => {
   const theme = useTheme()
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
+  const lgUp = useMediaQuery(theme.breakpoints.up('lg'))
   const dispatch = useDispatch()
   const [audiocast, setAudiocast] = useState()
 
@@ -370,29 +381,32 @@ const AudiocastScreen = ({ audiocastId }) => {
                 marginBottom: 10,
               }}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  // flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <img
-                  className={classes.audioThumbnail}
-                  src={audiocast?.fields?.thumbnail}
-                  alt=""
-                />
-                {smDown && (
-                  <h3 className={classes.castTitle}>
-                    {audiocast?.fields?.title}
-                  </h3>
+              <div className={classes.container}>
+                {lgUp && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <img
+                      className={classes.audioThumbnail}
+                      src={audiocast?.fields?.thumbnail}
+                      alt=""
+                    />
+                    {audiocast?.fields?.listeners && (
+                      <p>Listens: {audiocast?.fields?.listeners?.length}</p>
+                    )}
+                  </div>
                 )}
+
                 <div
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    justifyContent: 'space-evenly'
+                    justifyContent: 'space-evenly',
                   }}
                 >
                   <div
@@ -530,11 +544,9 @@ const AudiocastScreen = ({ audiocastId }) => {
             </Modal>
             <div className={classes.audiocastCreds}>
               <div className={classes.audioDescription}>
-                {!smDown && (
-                  <h3 className={classes.castTitle}>
-                    {audiocast?.fields?.title}
-                  </h3>
-                )}
+                <h3 className={classes.castTitle}>
+                  {audiocast?.fields?.title}
+                </h3>
                 <p
                   style={{
                     fontSize: smDown ? '1rem' : '20px',

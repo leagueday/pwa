@@ -83,7 +83,7 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     width: '45%',
     color: 'white',
-    marginTop: '5%',
+    marginTop: '50%',
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
