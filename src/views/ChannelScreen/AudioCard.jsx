@@ -265,16 +265,12 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
   const currentUser = useSelector(selectors.getUserData)
   const theme = useTheme()
   const sm = useMediaQuery(theme.breakpoints.down('sm'))
-  const currentUserId = currentUser?.fields?.userId
+  const currentUserId = currentUser?.id
   const audioUrl = useSelector(selectors.getAudioUrl)
   const isSelectedAudio = audioUrl && audioUrl === audio.fields.playbackUrl
   const audioMode = useSelector(selectors.getAudioMode)
-  const [selectedDuration, setSelectedDuration] = useState()
   const [seeMore, setSeeMore] = useState(false)
   const classes = useStyles()
-  const duration = maybeHmsToSecondsOnly(selectedDuration)
-
-  console.log(audio?.fields?.listens)
 
   const handleListen = async () => {
     if (audio?.fields?.type === 'audiocast') {
@@ -283,7 +279,9 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
           {
             id: audio.id,
             fields: {
-              listens: audio.fields.listens + 1,
+              listeners: audio?.fields?.listeners
+                ? [...audio?.fields?.listeners, currentUserId]
+                : [currentUserId],
             },
           },
         ],
@@ -303,7 +301,9 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
           {
             id: audio.id,
             fields: {
-              listens: audio.fields.listens + 1,
+              listeners: audio?.fields?.listeners
+                ? [...audio?.fields?.listeners, currentUserId]
+                : [currentUserId],
             },
           },
         ],
@@ -321,20 +321,6 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
   }
 
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY
-
-  const au = document.createElement('audio')
-
-  au.src = audio?.fields?.playbackUrl
-
-  au.addEventListener(
-    'loadedmetadata',
-    function () {
-      const duration = au.duration
-
-      setSelectedDuration(duration)
-    },
-    false
-  )
 
   const onPopClick = isPlayings
     ? ev => {
@@ -411,10 +397,7 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
           )}
         </div>
       </div>
-      <div
-        style={{ overflow: 'hidden' }}
-        // onMouseEnter={!sm ? () => setSeeMore(true) : null}
-      >
+      <div style={{ overflow: 'hidden' }}>
         <h4
           style={{ filter: seeMore ? 'brightness(50%)' : '' }}
           className={classes.title}
@@ -422,10 +405,7 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
           {audio?.fields?.title}
         </h4>
       </div>
-      <div
-        className={classes.playLike}
-        // onMouseEnter={!sm ? () => setSeeMore(true) : null}
-      >
+      <div className={classes.playLike}>
         <ToggleImageButton
           className={classes.playBtn}
           size="5vw"
@@ -449,7 +429,8 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
             audio={audio}
           />
           <p style={{ display: 'flex', alignItems: 'center', opacity: 0.6 }}>
-            <Person /> {audio?.fields?.listens}
+            <Person />{' '}
+            {audio?.fields?.listeners ? audio?.fields?.listeners?.length : 0}
           </p>
         </div>
       </div>
