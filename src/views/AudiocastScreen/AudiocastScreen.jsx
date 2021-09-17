@@ -65,12 +65,22 @@ const useStyles = makeStyles((theme, live) => ({
       flexDirection: 'column',
     },
   },
+  container: {
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+    },
+  },
   audiocastCreds: {
     padding: '0 20px',
     display: 'flex',
     width: '65%',
     flexDirection: 'column',
     justifyContent: 'space-between',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    },
   },
   castTitle: {
     [theme.breakpoints.down('sm')]: {
@@ -370,25 +380,26 @@ const AudiocastScreen = ({ audiocastId }) => {
                 marginBottom: 10,
               }}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <img
-                  className={classes.audioThumbnail}
-                  src={audiocast?.fields?.thumbnail}
-                  alt=""
-                />
-                <p>Listens: {audiocast?.fields?.listens}</p>
-                </div>
-                {smDown && (
-                  <h3 className={classes.castTitle}>
-                    {audiocast?.fields?.title}
-                  </h3>
+              <div className={classes.container}>
+                {!smDown && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <img
+                      className={classes.audioThumbnail}
+                      src={audiocast?.fields?.thumbnail}
+                      alt=""
+                    />
+                    {audiocast?.fields?.listeners && (
+                      <p>Listens: {audiocast?.fields?.listeners}</p>
+                    )}
+                  </div>
                 )}
+
                 <div
                   style={{
                     display: 'flex',
@@ -532,11 +543,9 @@ const AudiocastScreen = ({ audiocastId }) => {
             </Modal>
             <div className={classes.audiocastCreds}>
               <div className={classes.audioDescription}>
-                {!smDown && (
-                  <h3 className={classes.castTitle}>
-                    {audiocast?.fields?.title}
-                  </h3>
-                )}
+                <h3 className={classes.castTitle}>
+                  {audiocast?.fields?.title}
+                </h3>
                 <p
                   style={{
                     fontSize: smDown ? '1rem' : '20px',
