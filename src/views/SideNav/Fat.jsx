@@ -126,7 +126,10 @@ const useStyles = makeStyles(theme => ({
   },
   patreonBtn: {
     width: '100%',
-    objectFit: 'contain',
+    objectFit: 'cover',
+    borderRadius: '5px',
+    height: '35px',
+    background: 'transparent'
   },
 }))
 
