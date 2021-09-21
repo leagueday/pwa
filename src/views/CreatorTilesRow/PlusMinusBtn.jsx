@@ -30,7 +30,7 @@ const PlusMinusBtn = ({ className, size, userId, creator }) => {
   const [onClick, Button] = isOnMyList
     ? [() => removeFromCreatorList(userId), MinusButton]
     : [
-        () => addToCreatorList(creator?.username, userId, creator?.image),
+        () => addToCreatorList(creator?.name, userId, creator?.image),
         PlusButton,
       ]
 

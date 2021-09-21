@@ -83,7 +83,8 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     width: '45%',
     color: 'white',
-    marginTop: '50%',
+    marginTop: '40%',
+    marginBottom: '10%',
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
@@ -123,6 +124,13 @@ const useStyles = makeStyles(theme => ({
       whiteSpace: 'nowrap',
     }),
   },
+  patreonBtn: {
+    width: '100%',
+    objectFit: 'cover',
+    borderRadius: '5px',
+    height: '35px',
+    background: 'transparent'
+  },
 }))
 
 const FatSideNav = ({ className, home }) => {
@@ -159,7 +167,16 @@ const FatSideNav = ({ className, home }) => {
             </Expander>
           </div>
         </div>
-        <Button className={classes.userGuideBtn} onClick={() => setOpen(true)}>user guide</Button>
+        <Button className={classes.userGuideBtn} onClick={() => setOpen(true)}>
+          user guide
+        </Button>
+        <a
+          style={{ width: '45%' }}
+          href="https://www.patreon.com/leaguedaygg"
+          target="_blank"
+        >
+          <img className={classes.patreonBtn} src="/img/patreon.png" alt="" />
+        </a>
         <MyPodcasts />
       </React.Suspense>
       <Modal

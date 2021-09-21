@@ -10,6 +10,7 @@ import { selectors } from '../../store'
 import Modal from '@material-ui/core/Modal'
 import { MyListContext } from '../../store/stateProviders/listState'
 import { UserStateContext } from '../../store/stateProviders/userState'
+import { ChatStateContext } from '../../store/stateProviders/useChat'
 import { colors } from '../../styling'
 import { addScrollStyle } from '../util'
 import { actions } from '../../store'
@@ -116,7 +117,7 @@ const useStyles = makeStyles(theme => ({
       paddingRight: '3%',
     },
     [theme.breakpoints.down('xs')]: {
-      textAlign: 'left'
+      textAlign: 'left',
     },
   },
   editProfile: {
@@ -130,7 +131,7 @@ const useStyles = makeStyles(theme => ({
       fontSize: '80%',
     },
     [theme.breakpoints.down('xs')]: {
-      width: 'fit-content'
+      width: 'fit-content',
     },
   },
   accepted: {
@@ -185,7 +186,7 @@ const useStyles = makeStyles(theme => ({
       fontSize: '80%',
     },
     [theme.breakpoints.down('xs')]: {
-      width: 'fit-content'
+      width: 'fit-content',
     },
   },
   buttons: {
@@ -215,7 +216,7 @@ const useStyles = makeStyles(theme => ({
       justifyContent: 'space-between',
     },
     [theme.breakpoints.down('xs')]: {
-      margin: 0
+      margin: 0,
     },
   },
   track: {
@@ -270,7 +271,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       flex: 1,
       width: '100%',
-      whiteSpace: 'nowrap'
+      whiteSpace: 'nowrap',
     },
   },
   selectedButton: {
@@ -291,7 +292,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       flex: 1,
       width: '100%',
-      whiteSpace: 'nowrap'
+      whiteSpace: 'nowrap',
     },
   },
   userContent: {
@@ -309,7 +310,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       width: '100%',
       padding: 10,
-      textAlign: 'center'
+      textAlign: 'center',
     },
   },
   goLiveButton: {
@@ -344,14 +345,14 @@ const useStyles = makeStyles(theme => ({
       position: 'relative',
       marginTop: 20,
       marginLeft: 'auto',
-      marginRight: 'auto'
+      marginRight: 'auto',
     },
   },
   socials: {
     fontWeight: theme.typography.fontWeightBold,
     marginLeft: '3%',
     [theme.breakpoints.down('xs')]: {
-      marginLeft: 0
+      marginLeft: 0,
     },
   },
   socialLinks: {
@@ -366,13 +367,13 @@ const useStyles = makeStyles(theme => ({
       marginLeft: '1%',
     },
     [theme.breakpoints.down('xs')]: {
-      marginLeft: '3%'
+      marginLeft: '3%',
     },
   },
   socialLinksWrapper: {
     [theme.breakpoints.down('xs')]: {
       display: 'flex',
-      width: '100%'
+      width: '100%',
     },
   },
   socialIcon: {
@@ -404,7 +405,7 @@ const useStyles = makeStyles(theme => ({
 
     [theme.breakpoints.down('xs')]: {
       width: '100%',
-      margin: 20
+      margin: 20,
     },
   },
   channels: {
@@ -489,7 +490,7 @@ const useStyles = makeStyles(theme => ({
     height: 'auto',
 
     [theme.breakpoints.down('xs')]: {
-      width: '90vw'
+      width: '90vw',
     },
   },
   creator: {
@@ -519,12 +520,12 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.down('xs')]: {
       padding: 10,
-      flexDirection: 'column'
+      flexDirection: 'column',
     },
   },
   friendBio: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   friendImgCont: {
     display: 'flex',
@@ -540,7 +541,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   friendName: {
-    marginLeft: 25
+    marginLeft: 25,
   },
   friendReqList: {
     display: 'block',
@@ -578,10 +579,15 @@ const baseId = 'appXoertP1WJjd4TQ'
 const base = new Airtable({ apiKey }).base(baseId)
 
 const MyProfile = ({ userId }) => {
-  const { globalList, creatorList } = useContext(
-    MyListContext
-  )
-  const { userData, loading, getUserRecordings, userRecordings, audiocasts } = useContext(UserStateContext)
+  const { globalList, creatorList } = useContext(MyListContext)
+  const {
+    userData,
+    loading,
+    getUserRecordings,
+    userRecordings,
+    audiocasts,
+  } = useContext(UserStateContext)
+  const { newChats } = useContext(ChatStateContext)
   const [liveRecordings, setLiveRecordings] = useState(true)
   const [channelSelected, setChannelSelected] = useState(false)
   const [friendSelected, setFriendSelected] = useState(false)
@@ -682,6 +688,8 @@ const MyProfile = ({ userId }) => {
   if (loading) {
     return <h1>Loading...</h1>
   }
+
+  console.log(newChats)
 
   return (
     <div className={classes.content}>
@@ -841,14 +849,21 @@ const MyProfile = ({ userId }) => {
               onClick={handleFriendClick}
             >
               Friends
-              <NotificationsActiveIcon
-                style={{
-                  position: 'absolute',
-                  color: colors.blue,
-                  right: -5,
-                  top: -5,
-                }}
-              />
+              {/* {newChats?.length > 0 && (
+                <span
+                  style={{
+                    position: 'absolute',
+                    color: 'white',
+                    background: 'red',
+                    borderRadius: '50%',
+                    opactity: 1,
+                    right: -5,
+                    top: -5,
+                  }}
+                >
+                  {newChats?.length}
+                </span>
+              )} */}
             </span>
             <span
               className={
