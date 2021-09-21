@@ -7,13 +7,12 @@ const FriendsStateProvider = ChatStateContext.Provider
 
 function ChatStateProvider(props) {
     const [message, setMessage] = useState()
-    const [allChats, setAllChats] = useState([])
+    const [allChatsByRoom, setAllChatsByRoom] = useState([])
+    const [newChats, setNewChats] = useState([])
     const userData = useSelector(selectors.getUserData);
     const user = useSelector(selectors.getUser);
 
     const sendChat = (roomId, socket) => {
-        // e.preventDefault()
-        console.log('called send ')
         axios
             .post('https://leagueday-api.herokuapp.com/chats/create', {
                 userId: user.id,
@@ -33,21 +32,41 @@ function ChatStateProvider(props) {
             })
     }
 
-    const getMessages = id => {
+    const getMessagesByRoom = id => {
         axios
             .post('https://leagueday-api.herokuapp.com/chats/list', {
                 roomId: id,
             })
             .then(res => {
-                setAllChats(res.data.data)
+                setAllChatsByRoom(res.data.data)
             })
             .catch(err => {
                 console.log(err)
             })
     }
 
+    const getAllMessages = () => {
+        axios
+            .post('https://leagueday-api.herokuapp.com/chats/all', {
+                userId: user.id,
+            })
+            .then(res => {
+                console.log('all chats ', res.data.data.filter(chat => chat.authorId !== user.id && chat.read === false))
+                setNewChats(res.data.data.filter(chat => chat.authorId !== user.id && chat.read === false))
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+    useEffect(() => {
+        if (user) {
+            getAllMessages()
+        }
+    }, [user])
+
     return (
-        <FriendsStateProvider value={{ message, setMessage, allChats, sendChat, getMessages }}>
+        <FriendsStateProvider value={{ message, setMessage, allChatsByRoom, sendChat, getMessagesByRoom, getAllMessages, newChats }}>
             {props?.children}
         </FriendsStateProvider>
     )

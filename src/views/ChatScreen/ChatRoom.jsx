@@ -128,7 +128,7 @@ const useStyles = makeStyles(theme => ({
 const ChatRoom = ({ socket, roomId }) => {
   const user = useSelector(selectors.getUser)
   const { selectedFriend } = useContext(FriendsStateContext)
-  const { message, setMessage, allChats, getMessages } = useContext(
+  const { message, setMessage, allChatsByRoom, getMessagesByRoom } = useContext(
     ChatStateContext
   )
   const roomIdRef = useRef(roomId)
@@ -137,12 +137,12 @@ const ChatRoom = ({ socket, roomId }) => {
   useEffect(() => {
     socket?.on('new_chat', () => {
       console.log('triggered new chat ')
-      getMessages(roomIdRef.current)
+      getMessagesByRoom(roomIdRef.current)
     })
 
     return () => {
       socket?.off('new_chat', () => {
-        getMessages(roomIdRef.current)
+        getMessagesByRoom(roomIdRef.current)
       })
     }
   }, [socket])
@@ -155,7 +155,7 @@ const ChatRoom = ({ socket, roomId }) => {
     messageEl?.current?.scrollIntoView({ behavior: 'auto' })
   }
 
-  useEffect(scrollToBottom, [allChats])
+  useEffect(scrollToBottom, [allChatsByRoom])
 
   const sendChat = e => {
     e.preventDefault()
@@ -192,7 +192,7 @@ const ChatRoom = ({ socket, roomId }) => {
   }, [])
 
   useEffect(() => {
-    getMessages(roomId)
+    getMessagesByRoom(roomId)
     roomIdRef.current = roomId
   }, [user, selectedFriend])
 
@@ -210,7 +210,7 @@ const ChatRoom = ({ socket, roomId }) => {
             <GroupAddIcon className={classes.addIcon} />
           </div>
           <div className={classes.chatRoom}>
-            {allChats?.map((chat, ind) => (
+            {allChatsByRoom?.map((chat, ind) => (
               <div
                 className={
                   chat?.authorId === user?.id ? classes.Uchat : classes.chat

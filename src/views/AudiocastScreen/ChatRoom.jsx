@@ -238,7 +238,7 @@ const useStyles = makeStyles(theme => ({
 
 const ChatRoom = ({ audiocastId, live, audiocast }) => {
   const classes = useStyles({ live })
-  const { allChats, getMessages, message, setMessage } = useContext(
+  const { allChatsByRoom, getMessagesByRoom, message, setMessage } = useContext(
     ChatStateContext
   )
   const dispatch = useDispatch()
@@ -263,7 +263,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
   useEffect(() => {
     socket?.on('new_chat', () => {
       console.log('triggered new chat ')
-      getMessages(audiocastId)
+      getMessagesByRoom(audiocastId)
     })
 
     socket?.on('accepted_question', () => {
@@ -278,7 +278,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
 
     return () => {
       socket?.off('new_chat', () => {
-        getMessages(audiocastId)
+        getMessagesByRoom(audiocastId)
       })
       socket?.off('accepted_question', () => {
         getQuestions(audiocastId)
@@ -296,7 +296,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
     messageEl?.current?.scrollIntoView({ behavior: 'auto' })
   }
 
-  useEffect(scrollToBottom, [allChats, comments, questions, selectedQuestion, partyChat, qA])
+  useEffect(scrollToBottom, [allChatsByRoom, comments, questions, selectedQuestion, partyChat, qA])
 
   const getQuestions = async () => {
     console.log('hello')
@@ -424,7 +424,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
   }
 
   useEffect(() => {
-    getMessages(audiocastId)
+    getMessagesByRoom(audiocastId)
     getComments()
     getQuestions()
     if (audiocast?.fields?.userId === currentUser?.fields?.userId) {
@@ -485,7 +485,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
         <div className={classes.chatRoom}>
           {live &&
             partyChat &&
-            allChats?.map((chat, ind) => (
+            allChatsByRoom?.map((chat, ind) => (
               <div
                 className={
                   chat?.authorId === currentUser?.fields?.userId
