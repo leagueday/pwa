@@ -849,7 +849,7 @@ const MyProfile = ({ userId }) => {
               onClick={handleFriendClick}
             >
               Friends
-              {newChats?.length > 0 && (
+              {/* {newChats?.length > 0 && (
                 <span
                   style={{
                     position: 'absolute',
@@ -863,7 +863,7 @@ const MyProfile = ({ userId }) => {
                 >
                   {newChats?.length}
                 </span>
-              )}
+              )} */}
             </span>
             <span
               className={
