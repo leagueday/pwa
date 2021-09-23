@@ -689,8 +689,6 @@ const MyProfile = ({ userId }) => {
     return <h1>Loading...</h1>
   }
 
-  console.log(newChats)
-
   return (
     <div className={classes.content}>
       <Modal open={friendsModal} onClose={() => setFriendsModal(false)}>
@@ -849,21 +847,27 @@ const MyProfile = ({ userId }) => {
               onClick={handleFriendClick}
             >
               Friends
-              {/* {newChats?.length > 0 && (
+              {newChats?.length > 0 && (
                 <span
                   style={{
                     position: 'absolute',
                     color: 'white',
                     background: 'red',
                     borderRadius: '50%',
+                    width: '22px',
+                    height: '22px',
+                    fontSize: '16px',
                     opactity: 1,
                     right: -5,
                     top: -5,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
                   {newChats?.length}
                 </span>
-              )} */}
+              )}
             </span>
             <span
               className={
@@ -946,7 +950,12 @@ const MyProfile = ({ userId }) => {
             {friendSelected && (
               <div>
                 {friendList?.accepted?.map((friend, index) => (
-                  <Friend friend={friend} key={index} classes={classes} />
+                  <Friend
+                    friend={friend}
+                    key={index}
+                    classes={classes}
+                    newChats={newChats}
+                  />
                 ))}
               </div>
             )}

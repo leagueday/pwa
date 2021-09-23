@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import BasicLayout from '../BasicLayout'
 import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
+import { ChatStateContext } from '../../store/stateProviders/useChat'
+import Friend from './Friend'
 import { useSelector } from 'react-redux'
 import { selectors, actions } from '../../store'
 import SocketIOClient from 'socket.io-client'
@@ -45,7 +47,7 @@ const useStyles = makeStyles(theme => ({
       minWidth: '220px',
     },
     [theme.breakpoints.down('xs')]: {
-      minWidth: 60
+      minWidth: 60,
     },
   },
   friend: {
@@ -65,9 +67,9 @@ const useStyles = makeStyles(theme => ({
       background: '#111',
     },
     [theme.breakpoints.down('xs')]: {
-      'p': {
-        display: 'none'
-      }
+      p: {
+        display: 'none',
+      },
     },
   },
   selectedFriend: {
@@ -111,20 +113,21 @@ const useStyles = makeStyles(theme => ({
   },
   messageTitle: {
     [theme.breakpoints.down('xs')]: {
-      display: 'none'
+      display: 'none',
     },
   },
   friendName: {
     [theme.breakpoints.down('xs')]: {
-      display: 'none'
+      display: 'none',
     },
-  }
+  },
 }))
 
 const ChatScreen = () => {
   const classes = useStyles()
   const friendList = useSelector(selectors.getFriendsList)
   const user = useSelector(selectors.getUser)
+  const { newChats, getAllMessages } = useContext(ChatStateContext)
   const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext)
   const [friend, setFriend] = useState(selectedFriend?.friend)
 
@@ -155,24 +158,15 @@ const ChatScreen = () => {
               minHeight: '60px',
             }}
           >
-            <h3 className={classes.messageTitle} style={{ textAlign: 'center' }}>Messages</h3>
-          </div>
-          {friendList?.accepted?.map(item => (
-            <div
-              className={
-                item?.friend?.username === selectedFriend?.username
-                  ? classes.selectedFriend
-                  : classes.friend
-              }
-              onClick={() => setSelectedFriend(item?.friend)}
+            <h3
+              className={classes.messageTitle}
+              style={{ textAlign: 'center' }}
             >
-              <img
-                src={item?.friend?.image}
-                alt=""
-                className={classes.friendImg}
-              />
-              <p>{item?.friend?.username}</p>
-            </div>
+              Messages
+            </h3>
+          </div>
+          {friendList?.accepted?.map((item, key) => (
+            <Friend friend={item} key={key} newChats={newChats} classes={classes} />
           ))}
         </div>
         <ChatRoom
