@@ -689,6 +689,8 @@ const MyProfile = ({ userId }) => {
     return <h1>Loading...</h1>
   }
 
+  console.log(newChats)
+
   return (
     <div className={classes.content}>
       <Modal open={friendsModal} onClose={() => setFriendsModal(false)}>
