@@ -138,6 +138,7 @@ const ChatRoom = ({ socket, roomId }) => {
     socket?.on('new_chat', () => {
       console.log('triggered new chat ')
       getMessagesByRoom(roomIdRef.current)
+      
     })
 
     return () => {

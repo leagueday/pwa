@@ -51,7 +51,6 @@ function ChatStateProvider(props) {
                 userId: user.id,
             })
             .then(res => {
-                console.log('all chats ', res.data.data.filter(chat => chat.authorId !== user.id && chat.read === false))
                 setNewChats(res.data.data.filter(chat => chat.authorId !== user.id && chat.read === false))
             })
             .catch(err => {

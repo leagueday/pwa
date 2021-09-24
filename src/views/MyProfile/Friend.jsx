@@ -1,19 +1,30 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import { Button } from '@material-ui/core'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { actions } from '../../store'
 
-const Friend = ({ friend, classes }) => {
+const Friend = ({ friend, classes, newChats }) => {
   const dispatch = useDispatch()
   const [declined, setDeclined] = useState(false)
+  const [newMessageCount, setNewMessageCount] = useState(0)
   const {
     selectedFriend,
     setSelectedFriend,
     acceptFriendReq,
     declineFriendReq,
   } = useContext(FriendsStateContext)
+
+  const getCount = () => {
+    setNewMessageCount(
+      newChats?.filter(chat => chat.authorId === friend.friend.id).length
+    )
+  }
+
+  useEffect(() => {
+    getCount()
+  }, [newChats])
 
   return (
     <div className={classes.friendList}>
@@ -34,6 +45,27 @@ const Friend = ({ friend, classes }) => {
               }}
             >
               Chat
+              {newMessageCount > 0 && (
+                <span
+                  style={{
+                    position: 'absolute',
+                    color: 'white',
+                    background: 'red',
+                    borderRadius: '50%',
+                    width: '22px',
+                    height: '22px',
+                    fontSize: '16px',
+                    opactity: 1,
+                    left: -5,
+                    top: -5,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {newMessageCount}
+                </span>
+              )}
             </Button>
             <Button
               className={classes.deleteBtn}
