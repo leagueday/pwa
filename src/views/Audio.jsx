@@ -327,22 +327,23 @@ const Audio = () => {
   return audioUrl ? (
     <span>
       {!srcUrl ? (
-        <audio ref={setAudioRef} src={audioUrl} />
+        <audio autoPlay={true} controls={true} ref={setAudioRef} src={audioUrl} />
       ) : /* Player Element */
       window.innerWidth > 945 ? (
         /* Player Element */
         <video
           ref={setAudioPlayerRef}
           id="audioPlayer"
-          autoPlay={false}
+          autoPlay={true}
+          controls={true}
           format="m3u8"
           type="m3u8"
         />
       ) : (
         <ReactHlsPlayer
           src={audioUrl}
-          autoPlay={false}
-          controls={false}
+          autoPlay={true}
+          controls={true}
           width="20%"
           height="auto"
         />
