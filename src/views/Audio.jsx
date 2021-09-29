@@ -335,7 +335,6 @@ const Audio = () => {
           ref={setAudioPlayerRef}
           id="audioPlayer"
           autoPlay={true}
-          controls={true}
           format="m3u8"
           type="m3u8"
         />
@@ -343,7 +342,6 @@ const Audio = () => {
         <ReactHlsPlayer
           src={audioUrl}
           autoPlay={true}
-          controls={true}
           width="20%"
           height="auto"
         />
