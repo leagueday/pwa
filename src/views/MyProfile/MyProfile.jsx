@@ -460,6 +460,20 @@ const useStyles = makeStyles(theme => ({
       transform: 'scale(1.2)',
     },
   },
+  closeBtn: {
+    position: 'absolute',
+    right: 15,
+    top: 0,
+    marginLeft: '1%',
+    cursor: 'pointer',
+    color: 'red',
+    fontWeight: theme.typography.fontWeightBold,
+    opacity: 0.6,
+    '&:hover': {
+      opacity: 1,
+      transform: 'scale(1.2)',
+    },
+  },
   modalWrapper: {
     position: 'absolute',
     width: 500,
@@ -978,6 +992,9 @@ const MyProfile = ({ userId }) => {
           aria-describedby="simple-modal-description"
         >
           <form className={classes.editModalWrapper}>
+            <p onClick={() => setEditOpen(false)} className={classes.closeBtn}>
+              &#10005;
+            </p>
             <div
               style={{
                 display: 'flex',
@@ -1019,8 +1036,15 @@ const MyProfile = ({ userId }) => {
               type="file"
               onChange={handleAudioUpload}
             />
-            <Button className={classes.submitEditBtn} onClick={submitEdit}>
-              Edit
+
+            {editLoading && <p style={{ marginTop: '10%' }}>Loading ... </p>}
+            <Button
+              disabled={editLoading}
+              className={classes.submitEditBtn}
+              onClick={submitEdit}
+              style={{ marginTop: editLoading ? '' : '10%' }}
+            >
+              Save
             </Button>
           </form>
         </Modal>

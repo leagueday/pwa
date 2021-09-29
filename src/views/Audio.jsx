@@ -322,13 +322,14 @@ const Audio = () => {
       }
     }
   }, [volume, scrubbedAudioUrl])
+
+  console.log('playback url ',scrubbedAudioUrl)
+
   return audioUrl ? (
     <span>
-      {!srcUrl ? (
-        <audio ref={setAudioRef} src={scrubbedAudioUrl} />
-      ) : /* Player Element */
-      window.innerWidth > 945 ? (
-        /* Player Element */
+      {/* {!srcUrl ? ( */}
+        {/* <audio ref={setAudioRef} src={scrubbedAudioUrl} /> */}
+
         <video
           ref={setAudioPlayerRef}
           id="audioPlayer"
@@ -336,15 +337,15 @@ const Audio = () => {
           format="m3u8"
           type="m3u8"
         />
-      ) : (
-        <ReactHlsPlayer
-          src={scrubbedAudioUrl}
-          autoPlay={false}
-          controls={false}
-          width="20%"
-          height="auto"
-        />
-      )}
+      {/* // ) : (
+      //   <ReactHlsPlayer */}
+      {/* //     src={scrubbedAudioUrl}
+      //     autoPlay={false}
+      //     controls={false}
+      //     width="20%"
+      //     height="auto"
+      //   />
+      // )} */}
     </span>
   ) : null
 }
