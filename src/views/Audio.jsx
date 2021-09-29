@@ -321,15 +321,13 @@ const Audio = () => {
       }
     }
   }, [volume, scrubbedAudioUrl])
-
-  console.log('playback url', audioUrl)
-
+  
   return audioUrl ? (
     <span>
-      {/* {!srcUrl ? (
-        <audio autoPlay={true} ref={setAudioRef} src={audioUrl} />
-      ) : /* Player Element */
-      // window.innerWidth > 945 ? (
+      {
+        /* {!srcUrl ? (
+        ) : /* Player Element */
+        // window.innerWidth > 945 ? (
         /* Player Element */
         // <video
         //   ref={setAudioPlayerRef}
@@ -340,15 +338,19 @@ const Audio = () => {
         //   preload=""
         //   muted=""
         // />
-      // ) : (
+        // ) : (
         // )} */}
       }
+      {audioUrl.includes('stream.mux.com') ? (
         <ReactHlsPlayer
           src={audioUrl}
           autoPlay={true}
           width="20%"
           height="auto"
         />
+      ) : (
+        <audio autoPlay={true} ref={setAudioRef} src={audioUrl} />
+      )}
     </span>
   ) : null
 }
