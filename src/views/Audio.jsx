@@ -182,7 +182,6 @@ const Audio = () => {
   const audioMode = useSelector(selectors.getAudioMode)
   const audioUrl = useSelector(selectors.getAudioUrl)
   const volume = useSelector(selectors.getAudioVolume)
-
   // const events = useSelector(selectors.getAudioEvents)
   const position = useSelector(selectors.getAudioPosition)
   const taps = useSelector(selectors.getAudioTaps)
@@ -322,28 +321,35 @@ const Audio = () => {
       }
     }
   }, [volume, scrubbedAudioUrl])
+  
   return audioUrl ? (
     <span>
-      {!srcUrl ? (
-        <audio ref={setAudioRef} src={scrubbedAudioUrl} />
-      ) : /* Player Element */
-      window.innerWidth > 945 ? (
+      {
+        /* {!srcUrl ? (
+        ) : /* Player Element */
+        // window.innerWidth > 945 ? (
         /* Player Element */
-        <video
-          ref={setAudioPlayerRef}
-          id="audioPlayer"
-          autoPlay={false}
-          format="m3u8"
-          type="m3u8"
-        />
-      ) : (
+        // <video
+        //   ref={setAudioPlayerRef}
+        //   id="audioPlayer"
+        //   autoPlay={true}
+        //   format="m3u8"
+        //   type="m3u8"
+        //   preload=""
+        //   muted=""
+        // />
+        // ) : (
+        // )} */}
+      }
+      {audioUrl.includes('stream.mux.com') ? (
         <ReactHlsPlayer
-          src={scrubbedAudioUrl}
-          autoPlay={false}
-          controls={false}
+          src={audioUrl}
+          autoPlay={true}
           width="20%"
           height="auto"
         />
+      ) : (
+        <audio autoPlay={true} ref={setAudioRef} src={audioUrl} />
       )}
     </span>
   ) : null

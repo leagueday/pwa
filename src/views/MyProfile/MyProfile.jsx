@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Airtable from 'airtable'
 import { useSelector, useDispatch } from 'react-redux'
+import { TextField } from '@material-ui/core'
 import Friend from './Friend'
 import FriendRequest from './FriendRequest'
-import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive'
+import EditIcon from '@mui/icons-material/Edit'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import { selectors } from '../../store'
@@ -17,6 +18,10 @@ import { actions } from '../../store'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
+import { uploadFile } from 'react-s3'
+import('buffer').then(({ Buffer }) => {
+  global.Buffer = Buffer
+})
 
 const primaryColor = colors.magenta
 
@@ -455,6 +460,20 @@ const useStyles = makeStyles(theme => ({
       transform: 'scale(1.2)',
     },
   },
+  closeBtn: {
+    position: 'absolute',
+    right: 15,
+    top: 0,
+    marginLeft: '1%',
+    cursor: 'pointer',
+    color: 'red',
+    fontWeight: theme.typography.fontWeightBold,
+    opacity: 0.6,
+    '&:hover': {
+      opacity: 1,
+      transform: 'scale(1.2)',
+    },
+  },
   modalWrapper: {
     position: 'absolute',
     width: 500,
@@ -473,6 +492,31 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '5px',
     height: 250,
   },
+  editModalWrapper: {
+    position: 'absolute',
+    width: 500,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    backgroundColor: colors.darkGray,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    color: 'white',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    outline: 'none',
+    borderRadius: '5px',
+    height: 'auto',
+  },
+  submitEditBtn: {
+    background: colors.blue,
+    width: '75px',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+  },
   friendsModalWrapper: {
     position: 'absolute',
     width: 650,
@@ -488,7 +532,6 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '5px',
     maxHeight: 750,
     height: 'auto',
-
     [theme.breakpoints.down('xs')]: {
       width: '90vw',
     },
@@ -501,6 +544,9 @@ const useStyles = makeStyles(theme => ({
   ldCreatorImg: {
     width: '15%',
     marginLeft: '2%',
+  },
+  text: {
+    marginTop: '10%',
   },
   ldCreatorBadge: {
     marginTop: '30%',
@@ -578,6 +624,14 @@ const apiKey = 'keymd23kpZ12EriVi'
 const baseId = 'appXoertP1WJjd4TQ'
 const base = new Airtable({ apiKey }).base(baseId)
 
+const config = {
+  bucketName: 'leagueday-prod-images',
+  dirName: 'uploads',
+  region: 'us-east-1',
+  accessKeyId: 'AKIA2NEES72FJV4VO343',
+  secretAccessKey: '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',
+}
+
 const MyProfile = ({ userId }) => {
   const { globalList, creatorList } = useContext(MyListContext)
   const {
@@ -595,8 +649,18 @@ const MyProfile = ({ userId }) => {
   const [creatorsSelected, setCreatorsSelected] = useState(false)
   const [recordToDelete, setRecordToDelete] = useState({})
   const [friendsModal, setFriendsModal] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
   const [open, setOpen] = useState(false)
+  const [editCast, setEditCast] = useState()
   const friendList = useSelector(selectors.getFriendsList)
+  const [formValues, setFormvalues] = useState({
+    title: '',
+    description: '',
+  })
+  const [formFile, setFormFile] = useState()
+  const [saved, setSaved] = useState(false)
+  const [thumbnail, setThumbnail] = useState()
+  const [editLoading, setEditLoading] = useState()
 
   const handleCreatorClick = () => {
     setCreatorsSelected(true)
@@ -647,6 +711,25 @@ const MyProfile = ({ userId }) => {
     setRecordToDelete(audio)
   }
 
+  const editAudiocast = audio => {
+    setEditOpen(true)
+    setEditCast(audio)
+  }
+
+  const handleAudioUpload = e => {
+    const file = e.target.files[0]
+    console.log('file ', file)
+    setEditLoading(true)
+    uploadFile(e.target.files[0], config)
+      .then(res => {
+        console.log(res.location)
+        setFormFile(res.location)
+        setEditLoading(false)
+      })
+      .catch(err => console.log(err))
+    console.log(formFile)
+  }
+
   const deleteRecord = () => {
     if (recordToDelete.fields.type === 'audiocast') {
       base('UserAudiocasts').destroy(
@@ -675,6 +758,25 @@ const MyProfile = ({ userId }) => {
     getUserRecordings()
   }
 
+  const handleChange = e => {
+    setFormvalues({
+      ...formValues,
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  const handleImageUpload = e => {
+    const file = e.target.files[0]
+    setEditLoading(true)
+    uploadFile(file, config)
+      .then(res => {
+        console.log(res.location)
+        setThumbnail(res.location)
+        setEditLoading(false)
+      })
+      .catch(err => console.log(err))
+  }
+
   useEffect(() => {
     getUserRecordings()
   }, [open, userId])
@@ -689,7 +791,60 @@ const MyProfile = ({ userId }) => {
     return <h1>Loading...</h1>
   }
 
-  console.log(newChats)
+  const submitEdit = e => {
+    e.preventDefault()
+    if (editCast?.fields?.type === 'livestream') {
+      base('ChannelLiveData').update(
+        [
+          {
+            id: editCast?.id,
+            fields: {
+              title: formValues.title,
+              thumbnail: formFile,
+              description: formValues.description,
+              playbackUrl: formFile,
+              image: thumbnail,
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            if (record) setSaved(true)
+            console.log('edited livestream ', record)
+          })
+        }
+      )
+    } else {
+      base('UserAudiocasts').update(
+        [
+          {
+            id: editCast?.id,
+            fields: {
+              title: formValues.title,
+              thumbnail: formFile,
+              description: formValues.description,
+              playbackUrl: formFile,
+              image: thumbnail,
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err)
+            return
+          }
+          records.forEach(function (record) {
+            if (record) setSaved(true)
+            console.log('edited audiocast ', record)
+          })
+        }
+      )
+    }
+  }
 
   return (
     <div className={classes.content}>
@@ -831,6 +986,83 @@ const MyProfile = ({ userId }) => {
               </Button>
             </div>
           </div>
+        </Modal>
+        <Modal
+          open={editOpen}
+          onClose={() => setEditOpen(false)}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          {!saved ? (
+            <form className={classes.editModalWrapper}>
+              <p
+                onClick={() => setEditOpen(false)}
+                className={classes.closeBtn}
+              >
+                &#10005;
+              </p>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <p>Thumbnail</p>
+                <img
+                  src={thumbnail ? thumbnail : editCast?.fields?.thumbnail}
+                  alt=""
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    objectFit: 'cover',
+                  }}
+                />
+                <input
+                  aria-label="Select a thumbnail to upload"
+                  type="file"
+                  name="image"
+                  onChange={handleImageUpload}
+                />
+              </div>
+              <TextField
+                placeholder={editCast?.fields?.title}
+                name="title"
+                value={formValues.title}
+                onChange={handleChange}
+                className={classes.text}
+              />
+              <TextField
+                placeholder={editCast?.fields?.description}
+                name="description"
+                value={formValues.description}
+                onChange={handleChange}
+                className={classes.text}
+              />
+              <p style={{ marginTop: '10%' }}>Audio File</p>
+              <input
+                aria-label="Select an .mp3 file to upload"
+                accept="audio/MPEG"
+                type="file"
+                onChange={handleAudioUpload}
+              />
+
+              {editLoading && <p style={{ marginTop: '10%' }}>Loading ... </p>}
+              <Button
+                disabled={editLoading}
+                className={classes.submitEditBtn}
+                onClick={submitEdit}
+                style={{ marginTop: editLoading ? '' : '10%' }}
+              >
+                Save
+              </Button>
+            </form>
+          ) : (
+            <>
+              <Button className={classes.submitEditBtn}>saved</Button>
+              <p>(Refresh to see changes)</p>
+            </>
+          )}
         </Modal>
         <div className={classes.userGamesWrapper}>
           <div className={classes.buttonSelector}>
@@ -998,6 +1230,12 @@ const MyProfile = ({ userId }) => {
                             className={classes.xBtn}
                           >
                             &#10005;
+                          </p>
+                          <p
+                            onClick={() => editAudiocast(rec)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            <EditIcon />
                           </p>
                         </div>
                       )

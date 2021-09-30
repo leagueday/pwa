@@ -11,9 +11,9 @@ import { colors } from '../../styling'
 import { addScrollStyle } from '../util'
 import { Button } from '@material-ui/core'
 import { UserStateContext } from '../../store/stateProviders/userState'
-import { uploadFile } from 'react-s3'
 const primaryColor = colors.magenta
 
+import { uploadFile } from 'react-s3'
 import('buffer').then(({ Buffer }) => {
   global.Buffer = Buffer
 })
@@ -43,7 +43,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-start',
-    // overflow: 'scroll',
     [theme.breakpoints.down('md')]: {
       marginTop: '10%',
       flexDirection: 'column-reverse',

@@ -103,8 +103,6 @@ const useStyles = makeStyles(theme => ({
     border: `1px solid ${colors.blue}`,
     borderRadius: '5px',
     transition: '.2s all ease-in-out',
-    // width: '100%',
-    // height: '100%',
     '&:hover': {
       background: colors.blue,
     },
