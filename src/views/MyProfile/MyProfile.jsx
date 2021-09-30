@@ -658,6 +658,7 @@ const MyProfile = ({ userId }) => {
     description: '',
   })
   const [formFile, setFormFile] = useState()
+  const [saved, setSaved] = useState(false)
   const [thumbnail, setThumbnail] = useState()
   const [editLoading, setEditLoading] = useState()
 
@@ -791,6 +792,7 @@ const MyProfile = ({ userId }) => {
   }
 
   const submitEdit = e => {
+    e.preventDefault()
     if (editCast?.fields?.type === 'livestream') {
       base('ChannelLiveData').update(
         [
@@ -811,6 +813,7 @@ const MyProfile = ({ userId }) => {
             return
           }
           records.forEach(function (record) {
+            if (record) setSaved(true)
             console.log('edited livestream ', record)
           })
         }
@@ -835,14 +838,13 @@ const MyProfile = ({ userId }) => {
             return
           }
           records.forEach(function (record) {
+            if (record) setSaved(true)
             console.log('edited audiocast ', record)
           })
         }
       )
     }
   }
-
-  console.log(formValues, formFile, thumbnail, editCast)
 
   return (
     <div className={classes.content}>
@@ -991,62 +993,76 @@ const MyProfile = ({ userId }) => {
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
-          <form className={classes.editModalWrapper}>
-            <p onClick={() => setEditOpen(false)} className={classes.closeBtn}>
-              &#10005;
-            </p>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
-              <p>Thumbnail</p>
-              <img
-                src={thumbnail ? thumbnail : editCast?.fields?.thumbnail}
-                alt=""
-                style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+          {!saved ? (
+            <form className={classes.editModalWrapper}>
+              <p
+                onClick={() => setEditOpen(false)}
+                className={classes.closeBtn}
+              >
+                &#10005;
+              </p>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <p>Thumbnail</p>
+                <img
+                  src={thumbnail ? thumbnail : editCast?.fields?.thumbnail}
+                  alt=""
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    objectFit: 'cover',
+                  }}
+                />
+                <input
+                  aria-label="Select a thumbnail to upload"
+                  type="file"
+                  name="image"
+                  onChange={handleImageUpload}
+                />
+              </div>
+              <TextField
+                placeholder={editCast?.fields?.title}
+                name="title"
+                value={formValues.title}
+                onChange={handleChange}
+                className={classes.text}
               />
+              <TextField
+                placeholder={editCast?.fields?.description}
+                name="description"
+                value={formValues.description}
+                onChange={handleChange}
+                className={classes.text}
+              />
+              <p style={{ marginTop: '10%' }}>Audio File</p>
               <input
-                aria-label="Select a thumbnail to upload"
+                aria-label="Select an .mp3 file to upload"
+                accept="audio/MPEG"
                 type="file"
-                name="image"
-                onChange={handleImageUpload}
+                onChange={handleAudioUpload}
               />
-            </div>
-            <TextField
-              placeholder={editCast?.fields?.title}
-              name="title"
-              value={formValues.title}
-              onChange={handleChange}
-              className={classes.text}
-            />
-            <TextField
-              placeholder={editCast?.fields?.description}
-              name="description"
-              value={formValues.description}
-              onChange={handleChange}
-              className={classes.text}
-            />
-            <p style={{ marginTop: '10%' }}>Audio File</p>
-            <input
-              aria-label="Select an .mp3 file to upload"
-              accept="audio/MPEG"
-              type="file"
-              onChange={handleAudioUpload}
-            />
 
-            {editLoading && <p style={{ marginTop: '10%' }}>Loading ... </p>}
-            <Button
-              disabled={editLoading}
-              className={classes.submitEditBtn}
-              onClick={submitEdit}
-              style={{ marginTop: editLoading ? '' : '10%' }}
-            >
-              Save
-            </Button>
-          </form>
+              {editLoading && <p style={{ marginTop: '10%' }}>Loading ... </p>}
+              <Button
+                disabled={editLoading}
+                className={classes.submitEditBtn}
+                onClick={submitEdit}
+                style={{ marginTop: editLoading ? '' : '10%' }}
+              >
+                Save
+              </Button>
+            </form>
+          ) : (
+            <>
+              <Button className={classes.submitEditBtn}>saved</Button>
+              <p>(Refresh to see changes)</p>
+            </>
+          )}
         </Modal>
         <div className={classes.userGamesWrapper}>
           <div className={classes.buttonSelector}>
