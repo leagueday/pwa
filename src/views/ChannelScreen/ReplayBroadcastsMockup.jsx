@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import AudioCard from './AudioCard'
 import cx from 'classnames'
 import LikeButton from '../LikeButton'
 import { makeStyles } from '@material-ui/core/styles'
@@ -130,22 +131,29 @@ const useStyles = makeStyles(theme => ({
     },
   },
   eventImage: {
-    height: '6vw',
-    width: '6vw',
+    width: '100%',
+    height: '150px',
+    objectFit: 'cover',
   },
   eventImageFormobileView: {
     height: '15vw',
     width: '15vw',
   },
   eventImageAndText: {
+    position: 'relative',
     display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     [theme.breakpoints.up('lg')]: {
       background: '#111',
       '&:hover': {
         background: '#222',
       },
-      width: '40%',
     },
+    width: '15rem',
+    height: '18rem',
+    border: '.5px solid white',
+    borderRadius: '5px',
   },
   eventTextplate: {
     display: 'flex',
@@ -157,9 +165,30 @@ const useStyles = makeStyles(theme => ({
     },
   },
   replayBroadcast: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     marginTop: 15,
+  },
+  creatorImg: {
+    zIndex: 10,
+    cursor: 'pointer',
+    position: 'absolute',
+    borderRadius: '50%',
+    width: '5rem',
+    height: '5rem',
+    objectFit: 'cover',
+    right: -15,
+    top: -15,
+    border: '2px solid white',
+    transition: 'all .1s ease-in-out',
+    '&:hover': {
+      transform: 'scale(1.1)',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '4rem',
+      height: '4rem',
+    },
   },
   viewAll: {
     cursor: 'pointer',
@@ -168,11 +197,10 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.fontWeightMedium,
   },
   sectionTitle: ({ channelColor }) => ({
-    color: channelColor,
     display: 'flex',
     fontSize: '125%',
     overflowX: 'hidden',
-    textTransform: 'uppercase',
+    fontWeight: theme.typography.weight.bold,
     [theme.breakpoints.only('xs')]: {
       fontSize: '85%',
     },
@@ -187,9 +215,13 @@ const useStyles = makeStyles(theme => ({
     },
   },
   textEllipsisOverflow: {
-    overflowX: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
+    margin: 0,
+    padding: 0,
+    textAlign: 'center',
+    fontSize: '100%',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '80%',
+    },
   },
   tracks: {
     display: 'flex',
@@ -277,14 +309,16 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
         className={cx(classes.sectionTitle, classes.clickable)}
         onClick={onClick}
       >
-        <div className={classes.textEllipsisOverflow}>{name}</div>
+        <div className={classes.textEllipsisOverflow}>
+          <span style={{ color: colors.magenta }}>LCS</span> Replays
+        </div>
       </div>
-      <div
+      {/* <div
         className={cx(classes.sectionVariety, classes.clickable)}
         onClick={onClick}
       >
         <div className={classes.textEllipsisOverflow}>{variety}</div>
-      </div>
+      </div> */}
       <div onClick={onClick} className={classes.viewAll}>
         View All Replays
       </div>
@@ -450,6 +484,18 @@ const ReplayBroadcastsMockup = ({ className, channel, leagueNight }) => {
                     className={classes.eventImageAndText}
                     onClick={makeGotoEvent(sectionData.event)}
                   >
+                    <img
+                      className={classes.creatorImg}
+                      src="https://leagueday-prod-images.s3.amazonaws.com/uploads/LCS%20team.png"
+                      alt="LCS replays"
+                      onClick={() =>
+                        dispatch(
+                          actions.pushHistory(
+                            '/profile/cbfba6e1-54eb-43aa-80a9-cb1bd4c04948'
+                          )
+                        )
+                      }
+                    />
                     <EventImage
                       classes={classes}
                       imageUrl={sectionData.imageUrl}
@@ -499,4 +545,4 @@ export const mockupGetHasBroadcasts = channel => {
   return data.length > 0
 }
 
-export default ReplayBroadcastsMockup;
+export default ReplayBroadcastsMockup

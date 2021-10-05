@@ -1,6 +1,6 @@
 {
   "name": "leagueday_pwa",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "LeagueDay v.2 webapp",
   "scripts": {
     "build-prod-webpack": "webpack --config webpack-prod.config.js",

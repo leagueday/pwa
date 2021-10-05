@@ -1,13 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/Users/benaiahvarner/Downloads/deployment_cert (1).der')
+            storePassword 'LeagueDay1'
+            keyAlias 'leagueday'
+            keyPassword 'LeagueDay1'
+        }
+    }
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.leagueday.mobile"
+        applicationId 'com.leagueday.mobile'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 14
-        versionName "2.0"
+        versionCode 15
+        versionName '2.1'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
