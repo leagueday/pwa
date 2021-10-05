@@ -378,7 +378,6 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
           className={classes.creatorImg}
           src={live ? audio?.fields?.creatorImg : audio?.fields?.image}
           alt=""
-          style={{}}
           onClick={() =>
             dispatch(actions.pushHistory(`/profile/${audio?.fields?.userId}`))
           }
