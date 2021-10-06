@@ -91,7 +91,6 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
       {hasBroadcasts && channel.title !== 'League of Legends' && 'LCS Coverage'}
       {channel.title === 'League of Legends' && 'Live AudioCasts and Replays'}
     </div>
-    <NextLive titleStart={channel.title} />
   </div>
 )
 
@@ -119,19 +118,13 @@ const AggregatorContent = ({ channel }) => {
           channel={channel}
           channelColor={channel.color}
         />
-        <ReplayBroadcastsMockup
-          className={classes.replayBroadcasts}
-          channel={channel}
-          channelColor={channel.color}
-          leagueNight={false}
-        />
       </BottomBlock>
       <BottomBlock
         accentColor={channel.color}
         titleStart={channel.title}
         titleRest="Recorded Audiocasts"
       >
-        <Audiocast channelTag={channel.tag} />
+        <Audiocast channelTag={channel.tag} channel={channel} parClasses={classes} />
         <ReplayBroadcastsMockup
           className={classes.replayBroadcasts}
           channel={channel}

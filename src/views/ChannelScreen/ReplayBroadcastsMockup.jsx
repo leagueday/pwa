@@ -168,7 +168,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    marginTop: 15,
+    marginLeft: '35px',
   },
   creatorImg: {
     zIndex: 10,
