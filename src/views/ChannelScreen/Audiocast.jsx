@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { selectors, actions } from '../../store'
 import { makeStyles } from '@material-ui/styles'
 import Airtable from 'airtable'
+import ReplayBroadcastsMockup from './ReplayBroadcastsMockup'
 import AudioCard from './AudioCard'
 
 const useStyles = makeStyles(theme => ({
@@ -17,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Audiocast = ({ channelTag }) => {
+const Audiocast = ({ channelTag, channel, parClasses }) => {
   const dispatch = useDispatch()
   const classes = useStyles()
   const user = useSelector(selectors.getUser)
@@ -55,22 +56,20 @@ const Audiocast = ({ channelTag }) => {
 
   return (
     <div className={classes.wrapper}>
+      <ReplayBroadcastsMockup
+        className={parClasses.replayBroadcasts}
+        channel={channel}
+        channelColor={channel.color}
+        leagueNight={false}
+      />
       {userAudio?.map((audio, key) => {
         return (
-          // <div
-            // onClick={() =>
-            //   dispatch(
-            //     actions.pushHistory(`/audiocast/${audio?.fields?.audiocastId}`)
-            //   )
-            // }
-          // >
-            <AudioCard
-              audio={audio}
-              indexData={key}
-              key={key}
-              channelTag={channelTag}
-            />
-          // </div>
+          <AudioCard
+            audio={audio}
+            indexData={key}
+            key={key}
+            channelTag={channelTag}
+          />
         )
       })}
     </div>

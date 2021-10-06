@@ -168,7 +168,27 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    marginTop: 15,
+    marginLeft: '35px',
+  },
+  creatorImg: {
+    zIndex: 10,
+    cursor: 'pointer',
+    position: 'absolute',
+    borderRadius: '50%',
+    width: '5rem',
+    height: '5rem',
+    objectFit: 'cover',
+    right: -15,
+    top: -15,
+    border: '2px solid white',
+    transition: 'all .1s ease-in-out',
+    '&:hover': {
+      transform: 'scale(1.1)',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '4rem',
+      height: '4rem',
+    },
   },
   creatorImg: {
     zIndex: 10,
