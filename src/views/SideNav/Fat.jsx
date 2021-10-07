@@ -83,8 +83,8 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     width: '45%',
     color: 'white',
-    marginTop: '40%',
-    marginBottom: '10%',
+    marginTop: '30%',
+    marginBottom: '2%',
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
@@ -129,7 +129,8 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
     borderRadius: '5px',
     height: '35px',
-    background: 'transparent'
+    background: 'white',
+    marginTop: '5%',
   },
 }))
 
@@ -176,6 +177,18 @@ const FatSideNav = ({ className, home }) => {
           target="_blank"
         >
           <img className={classes.patreonBtn} src="/img/patreon.png" alt="" />
+        </a>
+        <a
+          style={{ width: '45%' }}
+          href="
+          https://www.kickstarter.com/projects/nickvantzos/leagueday"
+          target="_blank"
+        >
+          <img
+            className={classes.patreonBtn}
+            src="/img/kickstarter.png"
+            alt=""
+          />
         </a>
         <MyPodcasts />
       </React.Suspense>
