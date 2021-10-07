@@ -186,8 +186,8 @@ const FatSideNav = ({ className, home }) => {
         >
           <img
             className={classes.patreonBtn}
-            src="/img/kickstarter.png"
-            alt=""
+            src="/img/kickstarterGreen.png"
+            alt="kickstarter"
           />
         </a>
         <MyPodcasts />
