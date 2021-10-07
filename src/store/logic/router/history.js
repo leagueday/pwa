@@ -1,5 +1,5 @@
 import { createBrowserHistory } from 'history'
-import { createReduxHistoryContext, reachify } from 'redux-first-history'
+import { createReduxHistoryContext } from 'redux-first-history'
 
 let history = null
 

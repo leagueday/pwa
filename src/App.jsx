@@ -18,7 +18,7 @@ import Mushipan from './views/MushipanRouter'
 import UserData from './views/UserData'
 import FriendsList from './views/FriendsList'
 import { routesConfig } from './routes'
-import { StatusBar, Style } from '@capacitor/status-bar';
+import { StatusBar } from '@capacitor/status-bar';
 
 StatusBar.setOverlaysWebView({ overlay: true });
 
@@ -29,9 +29,6 @@ Sentry.init({
   release: '0.0.1',
   tracesSampleRate: 0.7,
 })
-
-// const userAgent = navigator.userAgent
-// const isChrome = userAgent.indexOf('Chrome') >= 0
 
 const useStyles = makeStyles(theme => ({
   app: {
@@ -95,7 +92,6 @@ const App = () => {
               <ChatStateProvider>
                 <Audio />
                 <Auth />
-                {/* <Chronicle /> */}
                 <CssBaseline />
                 <ThemeProvider>
                   <StyledAppContent />

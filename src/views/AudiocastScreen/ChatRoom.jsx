@@ -299,7 +299,6 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
   useEffect(scrollToBottom, [allChatsByRoom, comments, questions, selectedQuestion, partyChat, qA])
 
   const getQuestions = async () => {
-    console.log('hello')
     await axios
       .get(`https://leagueday-api.herokuapp.com/questions/${audiocastId}`)
       .then(res => {

@@ -169,6 +169,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     marginLeft: '35px',
+    [theme.breakpoints.down('sm')]: {
+      width: '40%',
+      marginLeft: '15px',
+      height: '25rem',
+    },
   },
   creatorImg: {
     zIndex: 10,
@@ -313,12 +318,6 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
           <span style={{ color: colors.magenta }}>LCS</span> Replays
         </div>
       </div>
-      {/* <div
-        className={cx(classes.sectionVariety, classes.clickable)}
-        onClick={onClick}
-      >
-        <div className={classes.textEllipsisOverflow}>{variety}</div>
-      </div> */}
       <div onClick={onClick} className={classes.viewAll}>
         View All Replays
       </div>
