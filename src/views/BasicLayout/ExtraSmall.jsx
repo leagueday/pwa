@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const XsBasicLayout = props => {
-  const platforms = getPlatforms()
+  const platform = isPlatform('hybrid')
   const classes = useStyles()
 
   const audioItemUrl = useSelector(selectors.getAudioUrl)
@@ -58,8 +58,12 @@ const XsBasicLayout = props => {
 
   return (
     <div className={classes.basicLayoutCol}>
-      {platforms.includes('mobileweb') && (
-        <AppBar className={classes.appBar} home={props.home} />
+      {!platform && (
+        <AppBar
+          className={classes.appBar}
+          home={props.home}
+          platform={platform}
+        />
       )}
       <BrandGradientHorizontalStripe className={classes.brandStripe} />
       <div className={classes.contentFrame}>{props.children}</div>
@@ -72,7 +76,7 @@ const XsBasicLayout = props => {
           />
         </>
       )}
-      {!platforms.includes('mobileweb') && <MobileNav />}
+      {platform && <MobileNav />}
     </div>
   )
 }

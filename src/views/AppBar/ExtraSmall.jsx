@@ -1,10 +1,8 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import cx from 'classnames'
-import { getPlatforms } from '@ionic/react';
 import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe'
 import { makeStyles } from '@material-ui/core'
-import { isPlatform } from '@ionic/react'
 import { actions, selectors } from '../../store'
 import { colors } from '../../styling'
 import MenuNav from '../SideNav/MenuNav'
@@ -15,8 +13,7 @@ import { IcoMenu } from '../icons'
 const MenuButton = makeIconButton(IcoMenu)
 
 const useStyles = makeStyles(theme => ({
-  appBar: ({ iphone }) => ({
-    height: '52px',
+  appBar: {
     position: 'relative',
     top: 0,
     alignItems: 'center',
@@ -25,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     padding: '2vw',
-  }),
+  },
   logo: {
     display: 'block',
     height: 'auto',
@@ -47,8 +44,7 @@ const useStyles = makeStyles(theme => ({
 //
 const XsAppBar = ({ className, home }) => {
   const dispatch = useDispatch()
-  const iphone = getPlatforms().includes('mobile')
-  const classes = useStyles({ iphone })
+  const classes = useStyles()
   
   const [anchorRef, setAnchorRef] = React.useState()
   const navButtonRef = React.useRef()

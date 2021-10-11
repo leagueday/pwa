@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { useLocationPathname } from '../../store'
 import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '../../styling'
-
 import { useTheme } from '@material-ui/core/styles'
+import { isPlatform } from '@ionic/react'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined'
@@ -32,7 +32,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const MobileNav = () => {
-  
   const pathname = useLocationPathname()
   const dispatch = useDispatch()
   const classes = useStyles()
@@ -42,7 +41,7 @@ const MobileNav = () => {
   const [homeActive, setHomeActive] = useState(pathname === '/')
   const [creatorActive, setCreatorActive] = useState(pathname === '/creators')
   const [profileActive, setProfileActive] = useState(
-    pathname === `/profile/${user.id}`
+    pathname === `/profile/${user?.id}`
   )
 
   return (

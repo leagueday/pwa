@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { hot } from 'react-hot-loader/root'
 import GetMyList from './views/GetUserList'
-import { isPlatform, getPlatforms } from '@ionic/react'
+import { isPlatform } from '@ionic/react'
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import FriendsListProvider from './store/stateProviders/toggleFriend'
@@ -32,7 +32,7 @@ Sentry.init({
 })
 
 const useStyles = makeStyles(theme => ({
-  app: {
+  app: ({ platform }) => ({
     backgroundColor: theme.palette.background.default,
     bottom: 0,
     color: theme.palette.text.primary,
@@ -44,7 +44,8 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     right: 0,
     top: 0,
-  },
+    paddingTop: platform && '20px',
+  }),
   appCanvas: {
     alignItems: 'stretch',
     display: 'flex',
@@ -63,7 +64,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const StyledAppContent = () => {
-  const classes = useStyles()
+  const platform = isPlatform('hybrid')
+  const classes = useStyles({ platform })
 
   return (
     <div className={classes.app}>
@@ -77,16 +79,13 @@ const StyledAppContent = () => {
 }
 
 const App = () => {
-  const platform = isPlatform('hybrid')
-
-  console.log('yo ', getPlatforms(), window.location, 'platform ',platform)
-
   useEffect(() => {
     const hideStatusBar = async () => {
       await StatusBar.hide()
     }
     hideStatusBar()
   }, [])
+
   return (
     <Sentry.ErrorBoundary fallback={'An error has occurred'}>
       <StoreProvider>
