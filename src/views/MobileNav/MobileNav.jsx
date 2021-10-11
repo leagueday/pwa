@@ -38,11 +38,20 @@ const MobileNav = () => {
   const theme = useTheme()
   const smUp = useMediaQuery(theme.breakpoints.down('xs'))
   const user = useSelector(selectors.getUser)
-  const [homeActive, setHomeActive] = useState(pathname === '/')
-  const [creatorActive, setCreatorActive] = useState(pathname === '/creators')
-  const [profileActive, setProfileActive] = useState(
-    pathname === `/profile/${user?.id}`
-  )
+  const profile = useSelector(selectors.getUserData)
+  const homeActive = pathname === '/'
+  const creatorActive = pathname === '/creators'
+  const profileActive = pathname === `/profile/${user?.id}`
+
+  const handleProfileClick = e => {
+    if (!user) {
+      dispatch(actions.login())
+    } else if (user && !profile) {
+      dispatch(actions.pushHistory('/create'))
+    } else if (profile) {
+      dispatch(actions.pushHistory(`/profile/${user?.id}`))
+    }
+  }
 
   return (
     smUp && (
@@ -61,10 +70,7 @@ const MobileNav = () => {
           {creatorActive ? <GroupAddIcon /> : <GroupAddOutlinedIcon />}
           <span className={classes.text}>Social</span>
         </p>
-        <p
-          className={classes.link}
-          onClick={() => dispatch(actions.pushHistory(`/profile/${user?.id}`))}
-        >
+        <p className={classes.link} onClick={handleProfileClick}>
           {profileActive ? <PersonIcon /> : <PersonOutlineIcon />}
           <span className={classes.text}>Profile</span>
         </p>

@@ -336,16 +336,6 @@ const CreateProfile = props => {
   }
 
   const muxChannel = () => {
-    // axios.post('https://leagueday-api.herokuapp.com/proxies/mux-livestream', {
-    //   url: 'video/v1/live-streams',
-    //   passthrough: 'lol'
-    // }).then(({ data }) => {
-    //   localStorage.setItem('channelStrkey', livestreamData.data['stream_key'])
-    //   localStorage.setItem('channelStrId', livestreamData.data['id'])
-    // }).catch(error => {
-    //   toast.error("Failed to get live stream");
-    // });
-
     fetch('/.netlify/functions/mux-livestream', {
       method: 'POST',
       headers: {
@@ -547,23 +537,6 @@ const CreateProfile = props => {
                   </label>
                   <br></br>
                   <br></br>
-                  {/* <TextField
-            label="FacebookUrl"
-            id="margin-normal"
-            name="facebookUrl"
-            value={formInput.facebookUrl}
-            defaultValue={formInput.facebookUrl}
-            className={classes.textField}
-            helperText="Enter Your facebook url"
-            onChange={(e) =>
-              setFormInput({
-                ...formInput,
-                facebookUrl: e.target.value,
-              })
-            }
-          /> */}
-                  {/* <br></br>
-          <br></br> */}
                   <TextField
                     label="TwitterUrl"
                     id="margin-normal"
@@ -579,23 +552,6 @@ const CreateProfile = props => {
                       })
                     }
                   />
-                  {/* <br></br>
-          <br></br> */}
-                  {/* <TextField
-            label="InstagramUrl"
-            id="margin-normal"
-            name="TwitterUrl"
-            value={formInput.InstagramUrl}
-            defaultValue={formInput.InstagramUrl}
-            className={classes.textField}
-            helperText="Enter Your Instagram url"
-            onChange={(e) =>
-              setFormInput({
-                ...formInput,
-                InstagramUrl: e.target.value,
-              })
-            }
-          /> */}
                   <br></br>
                   <br></br>
                   <TextField

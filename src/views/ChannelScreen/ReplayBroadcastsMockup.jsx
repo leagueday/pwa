@@ -154,6 +154,10 @@ const useStyles = makeStyles(theme => ({
     height: '18rem',
     border: '.5px solid white',
     borderRadius: '5px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: '100%',
+    },
   },
   eventTextplate: {
     display: 'flex',
@@ -170,7 +174,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     marginLeft: '35px',
     [theme.breakpoints.down('sm')]: {
-      width: '40%',
+      width: '90%',
       marginLeft: '15px',
       height: '25rem',
     },
@@ -292,12 +296,7 @@ const episodeBackgroundColors = ['#070709', transparent, '#0E0E11', transparent]
 
 const EventImage = ({ classes, imageUrl, onClick }) => (
   <img
-    className={cx(
-      window.innerWidth > 945
-        ? classes.eventImage
-        : classes.eventImageFormobileView,
-      classes.clickable
-    )}
+    className={cx(classes.eventImage, classes.clickable)}
     onClick={onClick}
     src={imageUrl}
   />
