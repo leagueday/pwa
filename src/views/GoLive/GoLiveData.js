@@ -37,10 +37,22 @@ const useStyles = makeStyles(theme => ({
     minWidth: '500px',
     margin: '0 auto',
     marginButton: '5%',
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '250px'
+    },
+  },
+  channel: {
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    },
   },
   select: {
     width: '60%',
     minWidth: '400px',
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '0px',
+      width: '100%'
+    },
   },
   submitBtn: {
     background: colors.blue,
@@ -50,7 +62,7 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.primary.active,
     },
     [theme.breakpoints.down('md')]: {
-      width: '25%',
+      width: '100%',
       fontSize: '80%',
     },
   }
@@ -223,7 +235,7 @@ const GoLiveData = () => {
               }
             </div>
             <div>
-              <h4 style={{ marginTop: '5%' }}>Choose a LeagueDay channel to livestream to</h4>
+              <h4 style={{ marginTop: '5%' }} className={classes.channel}>Choose a LeagueDay channel to livestream to</h4>
               <Select
                 options={filteredListRecords}
                 className={classes.select}

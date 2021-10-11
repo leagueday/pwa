@@ -16,7 +16,7 @@ const MenuButton = makeIconButton(IcoMenu)
 
 const useStyles = makeStyles(theme => ({
   appBar: ({ iphone }) => ({
-    height: iphone ? '52px' : '',
+    height: '52px',
     position: 'relative',
     top: 0,
     alignItems: 'center',

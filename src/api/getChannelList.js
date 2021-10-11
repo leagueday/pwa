@@ -15,13 +15,50 @@ The official JavaScript client has built-in retry logic.
 If you anticipate a higher read volume, we recommend using a caching proxy. This rate limit is the same for all plans
 and increased limits are not currently available.
 */
+const baseId = 'appXoertP1WJjd4TQ'
+const apiKey = 'keymd23kpZ12EriVi'
+const base = new Airtable({ apiKey }).base(baseId)
 
 export const getMyList = () => {
     const [filteredListRecords, setFilteredListRecords] = useState([])
     let result = []
 
     const getListData = async () => {
-        const baseId = 'appXoertP1WJjd4TQ'
+
+        // await base('Channels')
+        //     .select({
+        //         view: 'Grid view',
+        //     })
+        //     .eachPage(
+        //          function page(records, fetchNextPage) {
+        //             setAudiocast(records[0])
+        //             records?.forEach(item => {
+        //                 result.push({
+        //                     value: item.fields.tag,
+        //                     label: item.fields.title,
+        //                 })
+        //             })
+        //             setFilteredListRecords(result.sort((a, b) => {
+        //                 let fa = a?.value?.toLowerCase(),
+        //                     fb = b?.value?.toLowerCase();
+
+        //                 if (fa < fb) {
+        //                     return -1;
+        //                 }
+        //                 if (fa > fb) {
+        //                     return 1;
+        //                 }
+        //                 return 0;
+        //             }))
+        //         },
+        //         function done(err) {
+        //             if (err) {
+        //                 console.log('error from AudioScreen.jsx', err)
+        //                 return
+        //             }
+        //         }
+        //     )
+
         await fetch('/.netlify/functions/airtable-getprofile', {
             method: 'POST',
             headers: {

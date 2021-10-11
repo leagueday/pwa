@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { hot } from 'react-hot-loader/root'
 import GetMyList from './views/GetUserList'
+import { isPlatform, getPlatforms } from '@ionic/react'
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import FriendsListProvider from './store/stateProviders/toggleFriend'
@@ -18,9 +19,9 @@ import Mushipan from './views/MushipanRouter'
 import UserData from './views/UserData'
 import FriendsList from './views/FriendsList'
 import { routesConfig } from './routes'
-import { StatusBar } from '@capacitor/status-bar';
+import { StatusBar } from '@capacitor/status-bar'
 
-StatusBar.setOverlaysWebView({ overlay: true });
+StatusBar.setOverlaysWebView({ overlay: true })
 
 Sentry.init({
   dsn:
@@ -76,13 +77,16 @@ const StyledAppContent = () => {
 }
 
 const App = () => {
+  const platform = isPlatform('hybrid')
+
+  console.log('please work ', getPlatforms())
+
   useEffect(() => {
     const hideStatusBar = async () => {
-      await StatusBar.hide();
+      await StatusBar.hide()
     }
-
-    hideStatusBar();
-  }, []);
+    hideStatusBar()
+  }, [])
   return (
     <Sentry.ErrorBoundary fallback={'An error has occurred'}>
       <StoreProvider>

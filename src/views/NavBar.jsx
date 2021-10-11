@@ -118,11 +118,11 @@ const useStyles = makeStyles(theme => ({
 
 const NavBar = () => {
   const pathname = useLocationPathname()
+  const [homeActive, setHomeActive] = useState(pathname === '/')
+  const [creatorActive, setCreatorActive] = useState(pathname === '/creators')
   const classes = useStyles()
   const dispatch = useDispatch()
   const goHome = () => dispatch(actions.pushHistory('/'))
-  const [homeActive, setHomeActive] = useState(pathname === '/')
-  const [creatorActive, setCreatorActive] = useState(pathname === '/creators')
   const [profileCreated, setProfileCreated] = useState(false)
   const user = useSelector(selectors.getUser)
   const userProfile = useSelector(selectors.getUserData)

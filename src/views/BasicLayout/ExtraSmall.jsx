@@ -1,8 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
+import MobileNav from '../MobileNav'
 import { makeStyles } from '@material-ui/core/styles'
-
 import { actions, selectors } from '../../store'
 import { colors } from '../../styling'
 import AppBar from '../AppBar'
@@ -69,6 +68,7 @@ const XsBasicLayout = props => {
           />
         </>
       )}
+      <MobileNav />
     </div>
   )
 }
