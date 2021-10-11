@@ -79,7 +79,7 @@ const StyledAppContent = () => {
 const App = () => {
   const platform = isPlatform('hybrid')
 
-  console.log('please work ', getPlatforms())
+  console.log('yo ', getPlatforms(), window.location, 'platform ',platform)
 
   useEffect(() => {
     const hideStatusBar = async () => {

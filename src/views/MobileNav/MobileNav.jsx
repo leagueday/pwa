@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useLocationPathname } from '../../store'
 import { makeStyles } from '@material-ui/core/styles'
 import { colors } from '../../styling'
+
 import { useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
@@ -31,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const MobileNav = () => {
+  
   const pathname = useLocationPathname()
   const dispatch = useDispatch()
   const classes = useStyles()
