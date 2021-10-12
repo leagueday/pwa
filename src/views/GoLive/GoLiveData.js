@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import axios from 'axios'
+import { base } from '../..';
 import { Button, TextField } from "@material-ui/core";
 import Select from 'react-select';
 import { makeStyles } from '@material-ui/core/styles'
@@ -136,64 +138,47 @@ const GoLiveData = () => {
 
   const createStreamKey = async (e) => {
     e.preventDefault();
-    await fetch('/.netlify/functions/mux-livestream', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `video/v1/live-streams`, passthrough: selectedChannel }),
-    })
-      .then(response => response.json())
-      .then(function (livestreamData) {
-        setCreated(true)
-        setStreamKey(livestreamData.data.stream_key)
-        handleSubmit(livestreamData.data.playback_ids[0].id, livestreamData.data.id, livestreamData.data.stream_key)
-      })
-      .catch(error => {
-        console.log("error ", error)
-      })
+
+    await axios.post('https://leagueday-api.herokuapp.com/proxies/mux-livestream', {
+      url: "video/v1/live-streams",
+      passthrough: selectedChannel
+    }).then((livestreamData) => {
+      const data = JSON.parse(livestreamData.data.data)
+      setCreated(true)
+      setStreamKey(data.data.stream_key)
+      handleSubmit(data.data.playback_ids[0].id, data.data.id, data.data.stream_key)
+    }).catch(err => console.log('error from GoLiveData.js ', err))
   }
 
   const handleSubmit = (play_id, livestreamid, stream) => {
     let data = {
-      "records": [
-        {
-          "fields": {
-            title: formValues.title,
-            description: formValues.description,
-            thumbnail: thumbnail,
-            channelTag: selectedChannel,
-            playbackUrl: `https://stream.mux.com/${play_id}.m3u8`,
-            userId: userProfile.fields.userId,
-            liveStreamId: livestreamid,
-            streamKey: stream,
-            upvotes: 0,
-            userEmail: userProfile.fields.email,
-            type: 'livestream',
-            creatorImg: userProfile.fields.image,
-            username: userProfile.fields.name
-          }
-        }
-      ]
+      fields: {
+        title: formValues.title,
+        description: formValues.description,
+        thumbnail: thumbnail,
+        channelTag: selectedChannel,
+        playbackUrl: `https://stream.mux.com/${play_id}.m3u8`,
+        userId: userProfile.fields.userId,
+        liveStreamId: livestreamid,
+        streamKey: stream,
+        upvotes: 0,
+        userEmail: userProfile.fields.email,
+        type: 'livestream',
+        creatorImg: userProfile.fields.image,
+        username: userProfile.fields.name,
+      }
     }
 
-    fetch('/.netlify/functions/airtable-proxy', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ url: `${baseId}/ChannelLiveData`, body: data })
-    }).then(response => response.json())
-      .then(
-        function (response) {
-          console.log("new channelLiveData entry ", response)
-          setCreated(true)
-        }
-      ).catch((error) => {
-        console.log("error while data fetching", error.type)
-      })
+    base('ChannelLiveData').create([data], function (err, records) {
+      if (records) {
+        console.log("new channelLiveData entry ", records)
+        setCreated(true)
+      }
+      if (err) {
+        console.error(err)
+        return
+      }
+    })
   }
 
   const classes = useStyles({ primaryColor })

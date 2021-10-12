@@ -45,6 +45,7 @@ const useStyles = makeStyles(theme => ({
     right: 0,
     top: 0,
     paddingTop: platform && '20px',
+    paddingBottom: platform && '10px',
   }),
   appCanvas: {
     alignItems: 'stretch',

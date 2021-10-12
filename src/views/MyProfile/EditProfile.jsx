@@ -1,19 +1,14 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Button, Icon, TextField, Paper, Typography } from '@material-ui/core'
+import { Button, TextField, Paper, Typography } from '@material-ui/core'
+import { base } from '../..'
 import { UserStateContext } from '../../store/stateProviders/userState'
 import { makeStyles } from '@material-ui/core/styles'
 import 'react-h5-audio-player/lib/styles.css'
-import { ToastContainer, toast } from 'react-toastify'
 import { selectors, actions } from '../../store'
-import useChannels from '../../api/useChannels'
 import { colors } from '../../styling'
 import BasicLayout from '../BasicLayout'
-import Loading from '../Loading'
 import { addScrollStyle } from '../util'
-import TitleBar from './TitleBar'
-import useAirTable from '../../api/useAirtable'
-import blue from '@material-ui/core/colors/blue'
 import { uploadFile } from 'react-s3'
 import CameraAltIcon from '@material-ui/icons/CameraAlt'
 
@@ -197,10 +192,10 @@ const useStyles = makeStyles(theme => ({
     padding: 5,
     cursor: 'pointer',
     [theme.breakpoints.down('md')]: {
-      bottom: '72%'
+      bottom: '72%',
     },
     [theme.breakpoints.down('xs')]: {
-        bottom: '85%'
+      bottom: '85%',
     },
   },
   images: {
@@ -217,14 +212,15 @@ const useStyles = makeStyles(theme => ({
   form: {
     margin: 0,
   },
-}));
+}))
 
 const EditProfile = props => {
   const dispatch = useDispatch()
-  const [profileInfo, setProfileInfo] = useState()
   const [image, setimage] = useState()
   const [heroImg, setHeroImg] = useState()
-  const { refreshData, getData } = useContext(UserStateContext)
+  const { getData } = useContext(UserStateContext)
+  const profileInfo = useSelector(selectors.getUserData)
+
   const [state, setFile] = useState({
     mainState: 'initial',
     imageUploaded: 0,
@@ -253,7 +249,6 @@ const EditProfile = props => {
     })
   }, [profileInfo])
 
-  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
   const [formInput, setFormInput] = useState({
     name: '',
     nameError: '',
@@ -266,96 +261,8 @@ const EditProfile = props => {
     userChannelImage: '',
   })
 
-  const [userChannelnput, setuserChannelInput] = useState({
-    userChannelName: '',
-    userChannelImageSaved: '',
-    streamKey: '',
-    liveStreamId: '',
-  });
-
-  const [selectChannel, setselectChannel] = useState([])
-  const [context, setContext] = useState([{ value: null }])
-  const [saveChannelImage, setsaveChannelImage] = useState('')
-  const [contextvalue, setcontextvalue] = useState([])
-  const [userId, setuserId] = useState('')
   const [formChanged, setFormChanged] = useState(false)
-  const [channelId, setChannelId] = useState('recO33VCPMOJ6yWju')
-  const [channelTag, setChannelTag] = useState([])
   const user = useSelector(selectors.getUser)
-
-  useEffect(() => {
-    getuserChannelData()
-    getProfileData()
-  }, [])
-
-  const getProfileData = async () => {
-    const baseId = 'appXoertP1WJjd4TQ'
-    const userId = user['id']
-    let fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
-
-    fetch('/.netlify/functions/airtable-getprofile', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/UserProfile${fetchSearch}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        setProfileInfo(response.records[0])
-        if (response.records[0].fields) {
-          setFormInput({
-            ...formInput,
-            name: response.records[0].fields.name,
-            description: response.records[0].fields.description,
-            facebookUrl: response.records[0].fields.FacebookUrl,
-            TwitterUrl: response.records[0].fields.TwitterUrl,
-            InstagramUrl: response.records[0].fields.InstagramUrl,
-            TwitchUrl: response.records[0].fields.TwitchUrl,
-          })
-          setuserChannelInput({
-            ...userChannelnput,
-            userChannelName: response.records[0].fields.userChannel,
-            userChannelImageSaved: response.records[0].fields.channelImage,
-            streamKey: response.records[0].fields.streamKey,
-            liveStreamId: response.records[0].fields.liveStreamId,
-          })
-          setuserId(response.records[0].id)
-          let contextUpdate = [...context]
-          contextUpdate['value'] = response.records[0].fields.MyContext.split(
-            ','
-          )
-          setcontextvalue(response.records[0].fields.MyContext.split(','))
-          setContext(contextUpdate)
-        }
-      })
-      .catch(error => {
-        console.log('error while data fetching', error)
-      })
-  }
-
-  const getuserChannelData = async () => {
-    const baseId = 'appXoertP1WJjd4TQ'
-    const userId = user['id']
-    let fetchSearch = `?filterByFormula=({userId}=${JSON.stringify(userId)})`
-    fetch('/.netlify/functions/airtable-getprofile', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/UserGames?${fetchSearch}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        setselectChannel(response.records[0].fields.channelName.split(','))
-        setChannelId(response.records[0].id)
-      })
-      .catch(error => {
-        console.log('error while data fetching', error)
-      })
-  }
 
   const config = {
     bucketName: 'leagueday-prod-images',
@@ -426,169 +333,53 @@ const EditProfile = props => {
     setHeroImg(file)
     console.log('hero ', image)
   }
-
-  const validateForm = () => {
-    let formIsValid = true
-    if (
-      formInput.name === '' ||
-      formInput.name === undefined ||
-      formInput.name === null ||
-      !formInput.name
-    ) {
-      formIsValid = false
-      formInput.nameError = 'Please Enter Title'
-    }
-    if (
-      formInput.description === '' ||
-      formInput.description === undefined ||
-      formInput.description === null ||
-      !formInput.description
-    ) {
-      formIsValid = false
-      formInput.descriptionError = 'Please Enter Description'
-    }
-
-    return formIsValid
-  }
-
   const classes = useStyles({ primaryColor })
 
   const submit = evt => {
     evt.preventDefault()
-    return sleep(3).then(() => {
-      if (validateForm()) {
-        let data = {
-          records: [
-            {
-              id: userId,
-              fields: {
-                name: formInput.name,
-                description: formInput.description,
-                image: image,
-                heroImg: heroImg,
-                date: new Date(),
-                userId: user.id,
-                email: user.email,
-                TwitterUrl: formInput.TwitterUrl,
-                TwitchUrl: formInput.TwitchUrl,
-                MyContext: contextvalue.toString(),
-                userChannel: userChannelnput.userChannelName,
-                userChannelTag: userChannelnput?.userChannelName
-                  ?.toLowerCase()
-                  .replace(/\s/g, ''),
-                channelImage: saveChannelImage
-                  ? saveChannelImage
-                  : userChannelnput.userChannelImageSaved,
-                rtmpLink: 'rtmps://global-live.mux.com:443/app',
-                liveStreamId: userChannelnput.liveStreamId,
-                streamKey: userChannelnput.streamKey,
-                UserList: !!profileInfo.fields.UserList
-                  ? profileInfo.fields.UserList
-                  : [],
-                UserCreatorsList: !!profileInfo.fields.UserCreatorsList
-                  ? profileInfo.fields.UserCreatorsList
-                  : [],
-                admin: profileInfo.fields.admin,
-                UserAudiocasts: profileInfo.fields.UserAudiocasts,
-                profileCreated: 'yes',
-                likedAudio: !!profileInfo.fields.likedAudio
-                ? profileInfo.fields.likedAudio
-                : [],
-                ChannelLiveData: !!profileInfo.fields.ChannelLiveData
-                ? profileInfo.fields.ChannelLiveData
-                : [],
-              },
-            },
-          ],
-        }
-        const baseId = 'appXoertP1WJjd4TQ'
-        fetch('/.netlify/functions/airtable-update', {
-          method: 'PUT',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ url: `${baseId}/UserProfile`, body: data }),
-        })
-          .then(response => response.json())
-          .then(function (response) {
-            setimage('')
-          })
-          .catch(error => {
-            console.log('error while data fetching', error.type)
-          })
-        savedUserChannel()
-      }
-      dispatch(actions.pushHistory(`/profile/${user.id}`))
-      getData();
-    })
-  }
-
-  const savedUserChannel = () => {
-    let data = {
-      records: [
+    base('UserProfile').update(
+      [
         {
-          id: channelId,
+          id: profileInfo.id,
           fields: {
-            channelName: selectChannel.toString(),
+            name: formInput.name,
+            description: formInput.description,
+            image: image,
+            heroImg: heroImg,
             date: new Date(),
             userId: user.id,
-            channelTag: channelTag.toString(),
+            email: user.email,
+            TwitterUrl: formInput.TwitterUrl,
+            TwitchUrl: formInput.TwitchUrl,
+            UserList: !!profileInfo.fields.UserList
+              ? profileInfo.fields.UserList
+              : [],
+            UserCreatorsList: !!profileInfo.fields.UserCreatorsList
+              ? profileInfo.fields.UserCreatorsList
+              : [],
+            admin: profileInfo.fields.admin,
+            UserAudiocasts: profileInfo.fields.UserAudiocasts,
+            profileCreated: 'yes',
+            likedAudio: !!profileInfo.fields.likedAudio
+              ? profileInfo.fields.likedAudio
+              : [],
+            ChannelLiveData: !!profileInfo.fields.ChannelLiveData
+              ? profileInfo.fields.ChannelLiveData
+              : [],
           },
         },
       ],
-    }
-
-    const baseId = 'appXoertP1WJjd4TQ'
-    fetch('/.netlify/functions/airtable-update', {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/UserGames`, body: data }),
-    })
-      .then(response => response.json())
-      .then(function (response) {})
-      .catch(error => {
-        console.log('error while data fetching', error.type)
-      })
-  }
-
-  var dataContext = []
-  context['value'] &&
-    context['value'].map((item, i, arr) => {
-      if (item) {
-        dataContext.push(arr[i])
+      function (err, records) {
+        console.log('edit profile ', records)
+        if (err) {
+          console.error(err)
+          return
+        }
+        dispatch(actions.pushHistory(`/profile/${user.id}`))
+        getData()
       }
-    })
-
-  const handleChanges = (i, e, arr) => {
-    let addArr = [...contextvalue]
-    addArr[i] = e.target.value
-    setcontextvalue(addArr)
-  }
-
-  var fieldsArray = []
-  dataContext.map((item, index, arr) => {
-    fieldsArray.push(
-      <div>
-        <label>
-          <div className="label"></div>
-          <TextField
-            type="text"
-            id="margin-normal"
-            defaultValue={item}
-            name={item}
-            autocomplete="off"
-            className={classes.textField}
-            helperText="Enter Context description"
-            onChange={e => handleChanges(index, e, arr)}
-          />
-        </label>
-      </div>
     )
-  })
+  }
 
   const hiddenHeroInput = useRef(null)
   const hiddenProfileInput = useRef(null)

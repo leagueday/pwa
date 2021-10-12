@@ -305,6 +305,9 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     marginTop: '.5%',
     width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      background: 'black',
+    },
   },
   placeHolder: {
     opacity: 0.7,
@@ -386,6 +389,9 @@ const useStyles = makeStyles(theme => ({
   channelImg: {
     borderRadius: '50%',
     width: '20%',
+    [theme.breakpoints.down('xs')]: {
+      width: '50px',
+    },
   },
   channelsWrapper: {
     background: colors.darkGray,
@@ -914,10 +920,12 @@ const MyProfile = ({ userId }) => {
                 {userData?.fields?.description}
               </p>
               <div className={classes.socialContainer}>
-                <p style={{ width: '100%' }}>
-                  <span className={classes.socials}>Experience:</span>{' '}
-                  {userData?.fields?.credentials}
-                </p>
+                {userData?.fields?.credentials && (
+                  <p style={{ width: '100%' }}>
+                    <span className={classes.socials}>Experience:</span>{' '}
+                    {userData?.fields?.credentials}
+                  </p>
+                )}
                 <div className={classes.socialLinksWrapper}>
                   <p className={classes.socials}>Socials:</p>
                   <p className={classes.socialLinks}>
@@ -1174,7 +1182,9 @@ const MyProfile = ({ userId }) => {
                         src={item.fields.image}
                         alt="creator image"
                       />
-                      <p className={classes.channelName}>{item.fields.name}</p>
+                      <p className={classes.channelName}>
+                        {item.fields.username}
+                      </p>
                     </div>
                   )
                 })}
