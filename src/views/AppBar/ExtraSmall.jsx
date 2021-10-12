@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import cx from 'classnames'
 import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe'
 import { makeStyles } from '@material-ui/core'
-
 import { actions, selectors } from '../../store'
 import { colors } from '../../styling'
 import MenuNav from '../SideNav/MenuNav'
@@ -33,7 +32,6 @@ const useStyles = makeStyles(theme => ({
   logoContainer: {
     width: '8vw',
   },
-  menuButton: {},
   menuButtonContainer: {
     marginLeft: 'auto',
   },
@@ -41,19 +39,19 @@ const useStyles = makeStyles(theme => ({
     padding: '0 2vw',
     cursor: 'pointer',
   },
-}));
+}))
 
 //
 const XsAppBar = ({ className, home }) => {
   const dispatch = useDispatch()
   const classes = useStyles()
-
+  
   const [anchorRef, setAnchorRef] = React.useState()
   const navButtonRef = React.useRef()
-  // for xs nav is by default closed
   const isMenuNavVisible = true === useSelector(selectors.getNavVisibility)
   const hideMenuNav = () => dispatch(actions.hideNav())
   const showMenuNav = () => dispatch(actions.showNav())
+
   const toggleMenuNavVisibility = () => {
     if (isMenuNavVisible) {
       hideMenuNav()
@@ -67,29 +65,32 @@ const XsAppBar = ({ className, home }) => {
 
   return (
     <>
-    <div className={cx(classes.appBar, className)}>
-      <div className={classes.logoContainer} onClick={maybeGoHome}>
-        <img className={classes.logo} src="/img/logo_square_transparent.png" />
-      </div>
-      <div className={classes.title} onClick={maybeGoHome}>
-        LeagueDay
-      </div>
-      <div className={classes.menuButtonContainer}>
-        <span ref={navButtonRef}>
-          <MenuButton
-            className={classes.menuButton}
-            strokeWidth={3}
-            onClick={toggleMenuNavVisibility}
+      <div className={cx(classes.appBar, className)}>
+        <div className={classes.logoContainer} onClick={maybeGoHome}>
+          <img
+            className={classes.logo}
+            src="/img/logo_square_transparent.png"
           />
-        </span>
-        <MenuNav
-          anchor={anchorRef}
-          isVisible={isMenuNavVisible}
-          hide={hideMenuNav}
-          home={home}
-        />
+        </div>
+        <div className={classes.title} onClick={maybeGoHome}>
+          LeagueDay
+        </div>
+        <div className={classes.menuButtonContainer}>
+          <span ref={navButtonRef}>
+            <MenuButton
+              className={classes.menuButton}
+              strokeWidth={3}
+              onClick={toggleMenuNavVisibility}
+            />
+          </span>
+          <MenuNav
+            anchor={anchorRef}
+            isVisible={isMenuNavVisible}
+            hide={hideMenuNav}
+            home={home}
+          />
+        </div>
       </div>
-    </div>
     </>
   )
 }

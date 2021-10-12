@@ -1,8 +1,9 @@
 import React from 'react'
-
+import { useDispatch } from 'react-redux'
+import { actions } from '../../store'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import { colors } from '../../styling'
 import { addScrollStyle } from '../util'
 
@@ -27,7 +28,7 @@ const useStyles = makeStyles(theme => ({
       marginLeft: '0.25em',
       overflowX: 'hidden',
       overflowY: 'scroll',
-      background: 'black'
+      background: 'black',
     }),
   topSection: {
     flexShrink: 0,
@@ -49,10 +50,18 @@ const ContentLayout = ({
   renderTopRight,
 }) => {
   const classes = useStyles({ accentColor })
+  const dispatch = useDispatch()
 
   return (
     <div className={classes.content}>
       <div className={classes.topSection}>
+        <p
+          onClick={() => dispatch(actions.pushHistory('/'))}
+          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', fontSize: '.85rem' }}
+        >
+          <ArrowBackIosIcon style={{ fontSize: 'inherit' }} />
+          Go back
+        </p>
         {renderTop ? (
           renderTop()
         ) : (

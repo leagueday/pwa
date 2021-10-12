@@ -1,8 +1,8 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
+import MobileNav from '../MobileNav'
 import { makeStyles } from '@material-ui/core/styles'
-
+import { isPlatform, getPlatforms } from '@ionic/react'
 import { actions, selectors } from '../../store'
 import { colors } from '../../styling'
 import AppBar from '../AppBar'
@@ -48,6 +48,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const XsBasicLayout = props => {
+  const platform = isPlatform('hybrid')
   const classes = useStyles()
 
   const audioItemUrl = useSelector(selectors.getAudioUrl)
@@ -57,7 +58,13 @@ const XsBasicLayout = props => {
 
   return (
     <div className={classes.basicLayoutCol}>
-      <AppBar className={classes.appBar} home={props.home} />
+      {!platform && (
+        <AppBar
+          className={classes.appBar}
+          home={props.home}
+          platform={platform}
+        />
+      )}
       <BrandGradientHorizontalStripe className={classes.brandStripe} />
       <div className={classes.contentFrame}>{props.children}</div>
       {isAudioDisplayed && (
@@ -69,6 +76,7 @@ const XsBasicLayout = props => {
           />
         </>
       )}
+      {platform && <MobileNav />}
     </div>
   )
 }

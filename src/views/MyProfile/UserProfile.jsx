@@ -80,6 +80,9 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     flexDirection: 'column',
     [theme.breakpoints.down('sm')]: {
+      minHeight: '0px',
+      width: '0rem',
+      height: '4rem',
       width: '75%',
     },
   },
@@ -126,10 +129,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
   },
   userGamesWrapper: {
     background: 'black',
@@ -194,6 +193,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     [theme.breakpoints.down('sm')]: {
       paddingLeft: '5%',
+      background: 'black'
     },
   },
   placeHolder: {
@@ -252,15 +252,20 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       background: colors.lightGray,
     },
+    [theme.breakpoints.down('sm')]: {
+      width: 'auto',
+    },
   },
   channels: {
     display: 'flex',
     flexWrap: 'wrap',
   },
   recordings: {
-    width: '',
     marginTop: '2%',
     zIndex: '-1',
+    [theme.breakpoints.down('sm')]: {
+      background: 'black'
+    },
   },
   trophy: {
     marginTop: '2%',
@@ -305,7 +310,7 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.primary.active,
     },
     [theme.breakpoints.down('md')]: {
-      width: '25%',
+      width: 'auto',
       fontSize: '80%',
     },
   },
@@ -351,42 +356,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const NoobTrophy = ({ classes }) => {
-  return (
-    <div className={classes.trophyCont}>
-      <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
-      <p>
-        <span className={classes.trophyName}>Noob Award</span> <br></br>
-        <i>first stream created</i>
-      </p>
-    </div>
-  )
-}
-
-const PentaTrophy = ({ classes }) => {
-  return (
-    <div className={classes.trophyCont}>
-      <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
-      <p>
-        <span className={classes.trophyName}>Penta Cast</span> <br></br>
-        <i>5 streams created</i>
-      </p>
-    </div>
-  )
-}
-
-const TitanTrophy = ({ classes }) => {
-  return (
-    <div className={classes.trophyCont}>
-      <img className={classes.trophy} src="/img/noobTrophy1.png" alt="" />
-      <p>
-        <span className={classes.trophyName}>Gamer Audio Titan</span>
-        <br></br> <i>10 streams created</i>
-      </p>
-    </div>
-  )
-}
-
 const apiKey = 'keymd23kpZ12EriVi'
 const baseId = 'appXoertP1WJjd4TQ'
 const base = new Airtable({ apiKey }).base(baseId)
@@ -402,7 +371,7 @@ const UserProfile = ({ userId }) => {
     creatorList,
     userRecordings,
     audiocasts,
-    channelList
+    channelList,
   } = useContext(UserStateContext)
   const { sendRequest, declineFriendReq, acceptFriendReq } = useContext(
     FriendsStateContext
@@ -599,10 +568,12 @@ const UserProfile = ({ userId }) => {
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
               <p className={classes.userName}>{userData?.fields?.name}</p>
-              <p style={{ width: '100%' }}>
-                <span className={classes.socials}>Experience:</span>{' '}
-                {userData?.fields?.credentials}
-              </p>
+              {userData?.fields?.credentials && (
+                <p style={{ width: '100%' }}>
+                  <span className={classes.socials}>Experience:</span>{' '}
+                  {userData?.fields?.credentials}
+                </p>
+              )}
             </div>
             <div className={classes.description}>
               <p>{userData?.fields?.description}</p>
@@ -746,7 +717,7 @@ const UserProfile = ({ userId }) => {
                         src={item.fields.image}
                         alt="creator image"
                       />
-                      <p className={classes.channelName}>{item.fields.name}</p>
+                      <p className={classes.channelName}>{item.fields.username}</p>
                     </div>
                   )
                 })}

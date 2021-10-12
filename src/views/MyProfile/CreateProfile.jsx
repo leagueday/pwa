@@ -1,7 +1,8 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Button, Icon, TextField, Paper, Typography } from '@material-ui/core'
+import { Button, TextField, Paper, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { base } from '../..'
 import 'react-h5-audio-player/lib/styles.css'
 import { ToastContainer, toast } from 'react-toastify'
 import { selectors, actions } from '../../store'
@@ -9,13 +10,12 @@ import { colors } from '../../styling'
 import BasicLayout from '../BasicLayout'
 import { addScrollStyle } from '../util'
 import TitleBar from './TitleBar'
-import blue from '@material-ui/core/colors/blue'
 import { uploadFile } from 'react-s3'
 import Select from 'react-select'
-import axios from 'axios';
 import('buffer').then(({ Buffer }) => {
   global.Buffer = Buffer
 })
+
 const primaryColor = colors.magenta
 
 const options = [
@@ -87,11 +87,6 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     minHeight: 0,
   },
-  primaryStripe: ({ primaryColor }) => ({
-    backgroundColor: primaryColor,
-    height: '0.25em',
-    width: '100%',
-  }),
   titleBar: {
     marginBottom: '0.25em',
   },
@@ -116,9 +111,6 @@ const useStyles = makeStyles(theme => ({
   iconSmall: {
     fontSize: 20,
   },
-  root: {
-    padding: theme.spacing(3, 2),
-  },
   input: {
     display: 'none',
   },
@@ -134,6 +126,15 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: 400,
+    [theme.breakpoints.down('xs')]: {
+      width: 300,
+    },
+  },
+  select: {
+    width: 400,
+    [theme.breakpoints.down('xs')]: {
+      width: 300,
+    },
   },
   root: {
     display: 'flex',
@@ -154,6 +155,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CreateProfile = props => {
+  const dispatch = useDispatch()
+  const user = useSelector(selectors.getUser)
   const [state, setFile] = React.useState({
     mainState: 'initial',
     imageUploaded: 0,
@@ -164,7 +167,6 @@ const CreateProfile = props => {
     image: '',
   })
   const [image, setimage] = React.useState('')
-  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
   const [formInput, setFormInput] = React.useState({
     name: '',
     nameError: '',
@@ -178,9 +180,6 @@ const CreateProfile = props => {
   const [loading, setLoading] = useState(false)
   const [experienceOptions, setExperienceOptions] = useState(options)
   const [selectedCredentials, setSelectedCredentials] = useState([])
-  const [context, setContext] = React.useState([{ value: null }])
-  const [saveContext, setsaveContext] = React.useState([])
-  const [selectedFile, setSelectedFile] = useState(null)
 
   const config = {
     bucketName: 'leagueday-prod-images',
@@ -192,8 +191,6 @@ const CreateProfile = props => {
 
   const handleUploadClick = async event => {
     var filesSaved = event.target.files[0]
-    setSelectedFile(event.target.files[0])
-    let newFileName = filesSaved.name.replace(/\..+$/, '')
     uploadFile(filesSaved, config)
       .then(data => {
         setimage(data['location'])
@@ -220,148 +217,55 @@ const CreateProfile = props => {
     reader.readAsDataURL(event.target.files[0])
   }
 
-  const validateForm = () => {
-    let formIsValid = true
-    if (
-      formInput.name === '' ||
-      formInput.name === undefined ||
-      formInput.name === null ||
-      !formInput.name
-    ) {
-      formIsValid = false
-      formInput.nameError = 'Please Enter Title'
-    }
-    if (
-      formInput.description === '' ||
-      formInput.description === undefined ||
-      formInput.description === null ||
-      !formInput.description
-    ) {
-      formIsValid = false
-      formInput.descriptionError = 'Please Enter Description'
-    }
-    return formIsValid
-  }
-
-  const dispatch = useDispatch()
-  function handleAdd() {
-    const values = [...context]
-    values.push({ value: null })
-    setContext(values)
-  }
-
-  function handleChange(i, event) {
-    const values = [...context]
-    values[i].value = event.target.value
-    setContext(values)
-    var arr = []
-    for (var i = 0; i < context.length; i++) {
-      arr.push(context[i].value)
-    }
-    setsaveContext(arr)
-  }
-
   const classes = useStyles({ primaryColor })
-  const user = useSelector(selectors.getUser)
   const userName = user?.user_metadata?.full_name
 
   const submit = evt => {
-    console.log('called submit  ')
     evt.preventDefault()
-    muxChannel()
     setLoading(true)
-    return sleep(3000).then(() => {
-      if (validateForm()) {
-        if (
-          localStorage.getItem('channelStrkey') &&
-          localStorage.getItem('channelStrId')
-        ) {
-          let data = {
-            records: [
-              {
-                fields: {
-                  name: formInput.name,
-                  description: formInput.description,
-                  image: image,
-                  date: new Date(),
-                  userId: user.id,
-                  email: user.email,
-                  TwitterUrl: formInput.TwitterUrl,
-                  TwitchUrl: formInput.TwitchUrl,
-                  MyContext: saveContext.toString(),
-                  rtmpLink: 'rtmps://global-live.mux.com:443/app',
-                  streamKey: localStorage.getItem('channelStrkey'),
-                  liveStreamId: localStorage.getItem('channelStrId'),
-                  profileCreated: 'yes',
-                  credentials: selectedCredentials?.join(),
-                },
-              },
-            ],
-          }
 
-          const baseId = 'appXoertP1WJjd4TQ'
-          fetch('/.netlify/functions/airtable-proxy', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ url: `${baseId}/UserProfile`, body: data }),
-          })
-            .then(response => response.json())
-            .then(function (response) {
-              setFormInput({
-                ...formInput,
-                name: '',
-                description: '',
-                descriptionError: '',
-                nameError: '',
-              })
-              setFile({
-                ...state,
-                selectedFile: '',
-                fileupload: '',
-                photoError: '',
-              })
-              localStorage.setItem('name', formInput.name)
-            })
-            .catch(error => {
-              console.log('error while data fetching', error.type)
-            })
-          dispatch(actions.pushHistory('/myprofile'))
+    base('UserProfile').create(
+      [
+        {
+          fields: {
+            name: formInput.name,
+            description: formInput.description,
+            image: image,
+            date: new Date(),
+            userId: user.id,
+            email: user.email,
+            TwitterUrl: formInput.TwitterUrl,
+            TwitchUrl: formInput.TwitchUrl,
+            profileCreated: 'yes',
+            credentials: selectedCredentials?.join(),
+            admin: 'true',
+          },
+        },
+      ],
+      function (err, records) {
+        setFormInput({
+          ...formInput,
+          name: '',
+          description: '',
+          descriptionError: '',
+          nameError: '',
+        })
+        setFile({
+          ...state,
+          selectedFile: '',
+          fileupload: '',
+          photoError: '',
+        })
+        setCreated(true)
+        setLoading(false)
+        if (err) {
+          console.error(err)
+          return
         }
+        dispatch(actions.setUserData(records[0]))
       }
-      setLoading(false)
-    })
-  }
-
-  const muxChannel = () => {
-    // axios.post('https://leagueday-api.herokuapp.com/proxies/mux-livestream', {
-    //   url: 'video/v1/live-streams',
-    //   passthrough: 'lol'
-    // }).then(({ data }) => {
-    //   localStorage.setItem('channelStrkey', livestreamData.data['stream_key'])
-    //   localStorage.setItem('channelStrId', livestreamData.data['id'])
-    // }).catch(error => {
-    //   toast.error("Failed to get live stream");
-    // });
-
-    fetch('/.netlify/functions/mux-livestream', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `video/v1/live-streams`, passthrough: "lol" }),
-    })
-      .then(response => response.json())
-      .then(function (livestreamData) {
-        localStorage.setItem('channelStrkey', livestreamData.data['stream_key'])
-        localStorage.setItem('channelStrId', livestreamData.data['id'])
-      })
-      .catch(error => {
-        toast.error(error.type)
-      })
+    )
+    dispatch(actions.pushHistory(`/profile/${user.id}`))
   }
 
   const handleSelect = e => {
@@ -444,191 +348,130 @@ const CreateProfile = props => {
             primaryColor={primaryColor}
             text={userName ? `Welcome back, ${userName}!` : 'Home'}
           />
-          <div>
-            <Paper className={classes.root}>
-              <Typography variant="h5" component="h3">
-                {props.formName}
-              </Typography>
-              <Typography component="p">{props.formDescription}</Typography>
-
-              <form onSubmit={submit}>
-                <br></br>
-                <TextField
-                  label="Name"
-                  id="margin-normal"
-                  name="name"
-                  value={formInput.name}
-                  defaultValue={formInput.name}
-                  className={classes.textField}
-                  helperText="Enter your Name"
-                  onChange={e =>
-                    setFormInput({
-                      ...formInput,
-                      name: e.target.value,
-                      nameError: '',
-                    })
-                  }
-                />
-                <br />
-                {formInput.nameError.length > 0 && (
-                  <span style={{ color: 'red' }}>{formInput.nameError}</span>
-                )}
-                <br />
-                <TextField
-                  label="Description"
-                  id="margin-normal"
-                  name="description"
-                  value={formInput.description}
-                  defaultValue={formInput.description}
-                  className={classes.textField}
-                  helperText="Enter Your Description"
-                  onChange={e =>
-                    setFormInput({
-                      ...formInput,
-                      description: e.target.value,
-                      descriptionError: '',
-                    })
-                  }
-                />
-                <br></br>
-                {formInput.descriptionError.length > 0 && (
-                  <span style={{ color: 'red' }}>
-                    {formInput.descriptionError}
-                  </span>
-                )}
-                <br />
-                <br />
-                <h3>Select Your Focus Area(s) and Experience:</h3>
-                <Select
-                  options={experienceOptions}
-                  styles={customStyles}
-                  onChange={handleSelect}
-                  isMulti
-                />
-                <br></br>
-                <br></br>
-                <div className={classes.root}>
-                  Upload Profile Image: <br></br>
-                  <br></br>
-                  <input
-                    accept="image/*"
-                    id="contained-button-file"
-                    multiple
-                    type="file"
-                    onChange={handleUploadClick}
-                  />
-                  {state.selectedFile && (
-                    <img src={state.selectedFile} width="5%" />
-                  )}
-                  <br></br>
-                  <br></br>
-                </div>
-                <Fragment>
-                  <label for="My Context">About Me</label>
-                  {'  '} {'  '}
-                  <button type="button" onClick={() => handleAdd()}>
-                    +
-                  </button>
-                  {context.map((contexts, idx) => {
-                    return (
-                      <div key={`${contexts}-${idx}`}>
-                        <br></br>
-                        <TextField
-                          type="text"
-                          label="Enter Context description"
-                          onChange={e => handleChange(idx, e)}
-                        />
-                      </div>
-                    )
-                  })}
-                  <br></br>
-                  <label for="My Context">
-                    <u>Link Your Socials</u>
-                  </label>
-                  <br></br>
-                  <br></br>
-                  {/* <TextField
-            label="FacebookUrl"
-            id="margin-normal"
-            name="facebookUrl"
-            value={formInput.facebookUrl}
-            defaultValue={formInput.facebookUrl}
-            className={classes.textField}
-            helperText="Enter Your facebook url"
-            onChange={(e) =>
-              setFormInput({
-                ...formInput,
-                facebookUrl: e.target.value,
-              })
-            }
-          /> */}
-                  {/* <br></br>
-          <br></br> */}
-                  <TextField
-                    label="TwitterUrl"
-                    id="margin-normal"
-                    name="TwitterUrl"
-                    value={formInput.TwitterUrl}
-                    defaultValue={formInput.TwitterUrl}
-                    className={classes.textField}
-                    helperText="Enter Your Twitter url"
-                    onChange={e =>
-                      setFormInput({
-                        ...formInput,
-                        TwitterUrl: e.target.value,
-                      })
-                    }
-                  />
-                  {/* <br></br>
-          <br></br> */}
-                  {/* <TextField
-            label="InstagramUrl"
-            id="margin-normal"
-            name="TwitterUrl"
-            value={formInput.InstagramUrl}
-            defaultValue={formInput.InstagramUrl}
-            className={classes.textField}
-            helperText="Enter Your Instagram url"
-            onChange={(e) =>
-              setFormInput({
-                ...formInput,
-                InstagramUrl: e.target.value,
-              })
-            }
-          /> */}
-                  <br></br>
-                  <br></br>
-                  <TextField
-                    label="TwitchUrl"
-                    id="margin-normal"
-                    name="TwitterUrl"
-                    value={formInput.TwitchUrl}
-                    defaultValue={formInput.TwitchUrl}
-                    className={classes.textField}
-                    helperText="Enter Your Twitch url"
-                    onChange={e =>
-                      setFormInput({
-                        ...formInput,
-                        TwitchUrl: e.target.value,
-                      })
-                    }
-                  />
-                  <br></br>
-                  <br></br>
-                </Fragment>
-                {loading && <h4>Loading...</h4>}
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  disabled={loading}
-                >
-                  Submit
-                </Button>
-              </form>
-            </Paper>
-          </div>
+          <form onSubmit={submit}>
+            <br></br>
+            <TextField
+              label="Name"
+              id="margin-normal"
+              name="name"
+              value={formInput.name}
+              defaultValue={formInput.name}
+              className={classes.textField}
+              helperText="Enter your Name"
+              onChange={e =>
+                setFormInput({
+                  ...formInput,
+                  name: e.target.value,
+                  nameError: '',
+                })
+              }
+            />
+            <br />
+            {formInput.nameError.length > 0 && (
+              <span style={{ color: 'red' }}>{formInput.nameError}</span>
+            )}
+            <br />
+            <TextField
+              label="Description"
+              id="margin-normal"
+              name="description"
+              value={formInput.description}
+              defaultValue={formInput.description}
+              className={classes.textField}
+              helperText="Enter Your Description"
+              onChange={e =>
+                setFormInput({
+                  ...formInput,
+                  description: e.target.value,
+                  descriptionError: '',
+                })
+              }
+            />
+            <br></br>
+            {formInput.descriptionError.length > 0 && (
+              <span style={{ color: 'red' }}>{formInput.descriptionError}</span>
+            )}
+            <br />
+            <br />
+            <h3>Select Your Focus Area(s) and Experience:</h3>
+            <Select
+              className={classes.select}
+              options={experienceOptions}
+              styles={customStyles}
+              onChange={handleSelect}
+              isMulti
+            />
+            <br></br>
+            <br></br>
+            <div className={classes.root}>
+              Upload Profile Image: <br></br>
+              <br></br>
+              <input
+                accept="image/*"
+                id="contained-button-file"
+                multiple
+                type="file"
+                onChange={handleUploadClick}
+              />
+              {state.selectedFile && (
+                <img src={state.selectedFile} width="5%" />
+              )}
+              <br></br>
+              <br></br>
+            </div>
+            <Fragment>
+              <br></br>
+              <label for="My Context">
+                <u>Link Your Socials</u>
+              </label>
+              <br></br>
+              <br></br>
+              <TextField
+                label="TwitterUrl"
+                id="margin-normal"
+                name="TwitterUrl"
+                value={formInput.TwitterUrl}
+                defaultValue={formInput.TwitterUrl}
+                className={classes.textField}
+                helperText="Enter Your Twitter url"
+                onChange={e =>
+                  setFormInput({
+                    ...formInput,
+                    TwitterUrl: e.target.value,
+                  })
+                }
+              />
+              <br></br>
+              <br></br>
+              <TextField
+                label="TwitchUrl"
+                id="margin-normal"
+                name="TwitterUrl"
+                value={formInput.TwitchUrl}
+                defaultValue={formInput.TwitchUrl}
+                className={classes.textField}
+                helperText="Enter Your Twitch url"
+                onChange={e =>
+                  setFormInput({
+                    ...formInput,
+                    TwitchUrl: e.target.value,
+                  })
+                }
+              />
+              <br></br>
+              <br></br>
+            </Fragment>
+            {loading && <h4>Loading...</h4>}
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              disabled={loading}
+            >
+              Submit
+            </Button>
+          </form>
         </div>
       ) : (
         (window.location.href = '/')

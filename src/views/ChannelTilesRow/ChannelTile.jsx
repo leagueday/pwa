@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import { actions } from '../../store'
@@ -92,7 +92,7 @@ const ChannelTile = ({ channel }) => {
   const [userAudio, setUserAudio] = useState([])
   const [active, setActive] = useState(false)
 
-  useEffect(() => {
+  useMemo(() => {
     let urladd = `filterByFormula={channelTag}='${channel?.tag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
@@ -111,7 +111,7 @@ const ChannelTile = ({ channel }) => {
       .catch(error => {
         console.log('error from LiveStream.jsx', error)
       })
-  }, [])
+  }, [baseId])
 
   useEffect(() => {
     userAudio?.map(item =>

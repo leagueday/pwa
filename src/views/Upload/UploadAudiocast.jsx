@@ -24,9 +24,6 @@ const useStyles = makeStyles(theme => ({
       primaryColor,
       theme
     )({
-      alignItems: 'stretch',
-      display: 'flex',
-      flexDirection: 'column',
       height: '100%',
       overflowX: 'hidden',
       overflowY: 'auto',
@@ -40,9 +37,6 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: '100%',
     background: 'black',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
     [theme.breakpoints.down('md')]: {
       marginTop: '10%',
       flexDirection: 'column-reverse',
@@ -59,6 +53,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     overflow: 'auto',
+    margin: '0 auto',
     [theme.breakpoints.down('md')]: {
       width: '100%',
       height: '100%',
@@ -157,6 +152,8 @@ const UploadAudiocast = () => {
   const filteredListRecords = getMyList()
   const user = useSelector(selectors.getUser)
 
+  console.log('yo ',filteredListRecords)
+
   useEffect(() => {
     setUserId(user.id)
   }, [user])
@@ -172,7 +169,7 @@ const UploadAudiocast = () => {
 
   const handleAudioUpload = e => {
     const file = e.target.files[0]
-    console.log('file ',file)
+    console.log('file ', file)
     setLoading(true)
     uploadFile(e.target.files[0], config)
       .then(res => {
@@ -210,7 +207,7 @@ const UploadAudiocast = () => {
             image: userData?.fields?.image,
             upvotes: 0,
             type: 'audiocast',
-            username: userData?.fields?.name
+            username: userData?.fields?.name,
           },
         },
       ],
@@ -248,8 +245,8 @@ const UploadAudiocast = () => {
       color: 'white',
     }),
     input: () => ({
-      color: 'white'
-    })
+      color: 'white',
+    }),
   }
 
   return (

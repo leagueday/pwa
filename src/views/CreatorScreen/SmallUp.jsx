@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
   creatorWrapper: {
     position: 'relative',
     minHeight: '25vh',
-    // background: colors.darkerGray,
+    overflowX: 'hidden',
     [theme.breakpoints.down('sm')]: {
       overflow: 'scroll',
     },

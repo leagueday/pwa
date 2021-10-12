@@ -131,9 +131,9 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
-    [theme.breakpoints.down('md')]: {
-      width: '25%',
-      fontSize: '80%',
+    [theme.breakpoints.down('sm')]: {
+      width: '20%',
+      fontSize: '60%',
     },
     [theme.breakpoints.down('xs')]: {
       width: 'fit-content',
@@ -204,10 +204,8 @@ const useStyles = makeStyles(theme => ({
     fontSize: '150%',
     height: 'auto',
     marginTop: 0,
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '125%',
-    },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '1rem',
       margin: 0,
     },
   },
@@ -307,6 +305,9 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     marginTop: '.5%',
     width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      background: 'black',
+    },
   },
   placeHolder: {
     opacity: 0.7,
@@ -327,10 +328,10 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
-    [theme.breakpoints.down('md')]: {},
-    [theme.breakpoints.down('sm')]: {
-      width: '30%',
-      height: '15%',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '.6rem',
+      width: '70px',
+      height: '30px',
     },
   },
   uploadButton: {
@@ -344,13 +345,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       width: '35%',
       height: '10%',
-    },
-    [theme.breakpoints.down('xs')]: {
-      width: '80%',
-      position: 'relative',
-      marginTop: 20,
-      marginLeft: 'auto',
-      marginRight: 'auto',
+      fontSize: '.6rem',
+      width: '90px',
+      height: '30px',
     },
   },
   socials: {
@@ -392,6 +389,9 @@ const useStyles = makeStyles(theme => ({
   channelImg: {
     borderRadius: '50%',
     width: '20%',
+    [theme.breakpoints.down('xs')]: {
+      width: '50px',
+    },
   },
   channelsWrapper: {
     background: colors.darkGray,
@@ -446,8 +446,8 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    height: '3%',
     justifyContent: 'center',
+    height: '3%',
   },
   xBtn: {
     marginLeft: '1%',
@@ -640,6 +640,9 @@ const MyProfile = ({ userId }) => {
     getUserRecordings,
     userRecordings,
     audiocasts,
+    TitanTrophy,
+    PentaTrophy,
+    NoobTrophy,
   } = useContext(UserStateContext)
   const { newChats } = useContext(ChatStateContext)
   const [liveRecordings, setLiveRecordings] = useState(true)
@@ -913,12 +916,16 @@ const MyProfile = ({ userId }) => {
               </Button>
             </div>
             <div className={classes.description}>
-              <p>{userData?.fields?.description}</p>
+              <p style={{ fontSize: '1rem' }}>
+                {userData?.fields?.description}
+              </p>
               <div className={classes.socialContainer}>
-                <p style={{ width: '100%' }}>
-                  <span className={classes.socials}>Experience:</span>{' '}
-                  {userData?.fields?.credentials}
-                </p>
+                {userData?.fields?.credentials && (
+                  <p style={{ width: '100%' }}>
+                    <span className={classes.socials}>Experience:</span>{' '}
+                    {userData?.fields?.credentials}
+                  </p>
+                )}
                 <div className={classes.socialLinksWrapper}>
                   <p className={classes.socials}>Socials:</p>
                   <p className={classes.socialLinks}>
@@ -1175,7 +1182,9 @@ const MyProfile = ({ userId }) => {
                         src={item.fields.image}
                         alt="creator image"
                       />
-                      <p className={classes.channelName}>{item.fields.name}</p>
+                      <p className={classes.channelName}>
+                        {item.fields.username}
+                      </p>
                     </div>
                   )
                 })}

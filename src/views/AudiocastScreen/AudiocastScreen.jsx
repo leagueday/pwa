@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react'
+import Airtable from 'airtable'
 import ChatRoom from './ChatRoom'
 import ToggleImageButton from '../ToggleImageButton'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import LikeButton from '../LikeButton'
 import { useDispatch, useSelector } from 'react-redux'
 import PlusMinusBtn from '../CreatorTilesRow/PlusMinusBtn'
@@ -30,8 +32,10 @@ const useStyles = makeStyles((theme, live) => ({
       overflow: 'scroll',
       overflowX: 'hidden',
       flexDirection: 'column',
+      position: 'relative',
     }),
   content: {
+    position: 'relative',
     width: '100%',
     height: '100%',
     display: 'flex',
@@ -46,6 +50,7 @@ const useStyles = makeStyles((theme, live) => ({
     maxWidth: '15rem',
     width: '100%',
     marginBottom: 20,
+    marginTop: 5,
     height: '100%',
     objectFit: 'contain',
     [theme.breakpoints.down('sm')]: {
@@ -79,7 +84,7 @@ const useStyles = makeStyles((theme, live) => ({
     flexDirection: 'column',
     justifyContent: 'space-between',
     [theme.breakpoints.down('sm')]: {
-      width: '100%'
+      width: '100%',
     },
   },
   castTitle: {
@@ -226,6 +231,8 @@ const useStyles = makeStyles((theme, live) => ({
 }))
 
 const baseId = 'appXoertP1WJjd4TQ'
+const apiKey = 'keymd23kpZ12EriVi'
+const base = new Airtable({ apiKey }).base(baseId)
 
 const AudiocastScreen = ({ audiocastId }) => {
   const theme = useTheme()
@@ -279,70 +286,62 @@ const AudiocastScreen = ({ audiocastId }) => {
   useEffect(() => {
     if (!isNaN(audiocastId)) {
       setLive(false)
-      fetch('/.netlify/functions/airtable-getprofile', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          url: `${baseId}/UserAudiocasts`,
-        }),
-      })
-        .then(response => response.json())
-        .then(function (response) {
-          setAudiocast(
-            response.records.filter(
-              item => item.fields.audiocastId === audiocastId * 1
-            )[0]
-          )
+      base('UserAudiocasts')
+        .select({
+          view: 'Grid view',
         })
-        .catch(error => {
-          console.log('error while data fetching', error)
-        })
+        .eachPage(
+          function page(records, fetchNextPage) {
+            setAudiocast(
+              records.filter(
+                item => item.fields.audiocastId === audiocastId * 1
+              )[0]
+            )
+          },
+          function done(err) {
+            if (err) {
+              console.log( 'error from AudioScreen.jsx', err)
+              return
+            }
+          }
+        )
     } else {
       setLive(true)
-      let urladd = `filterByFormula={liveStreamId}='${audiocastId}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
-      fetch('/.netlify/functions/commingsoon-proxy', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
-      })
-        .then(response => response.json())
-        .then(function (response) {
-          setAudiocast(response.records[0])
+      base('UserAudiocasts')
+        .select({
+          filterByFormula: `{liveStreamId} = '${audiocastId}'`,
+          view: 'Grid view',
         })
-        .catch(error => {
-          console.log('error from LiveStream.jsx', error)
-        })
-    }
-    fetch('/.netlify/functions/airtable-getprofile', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        url: `${baseId}/UserAudiocasts`,
-      }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        setSideColumn(
-          response.records.filter(
-            item => item.fields.audiocastId !== audiocastId * 1
-          )
+        .eachPage(
+          function page(records, fetchNextPage) {
+            setAudiocast(records[0])
+          },
+          function done(err) {
+            if (err) {
+              console.log( 'error from AudioScreen.jsx', err)
+              return
+            }
+          }
         )
+    }
+    base('UserAudiocasts')
+      .select({
+        view: 'Grid view',
       })
-      .catch(error => {
-        console.log('error while data fetching', error)
-      })
+      .eachPage(
+        function page(records, fetchNextPage) {
+          setSideColumn(
+            records.filter(item => item.fields.audiocastId !== audiocastId * 1)
+          )
+        },
+        function done(err) {
+          if (err) {
+            console.log( 'error from AudioScreen.jsx', err)
+            return
+          }
+        }
+      )
   }, [audiocastId])
-
-  console.log('from screen ', audiocast)
 
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY
 
@@ -373,6 +372,25 @@ const AudiocastScreen = ({ audiocastId }) => {
   return (
     <BasicLayout>
       <div className={smDown ? classes.contentt : classes.content}>
+        <p
+          onClick={() =>
+            dispatch(
+              actions.pushHistory(`/channel/${audiocast?.fields?.channelTag}`)
+            )
+          }
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 5,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            fontSize: '.85rem',
+          }}
+        >
+          <ArrowBackIosIcon style={{ fontSize: 'inherit' }} />
+          Go back
+        </p>
         <div className={classes.chatAndCast}>
           <div className={classes.audiocastInfo}>
             <div

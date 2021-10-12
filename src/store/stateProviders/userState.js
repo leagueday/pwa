@@ -5,11 +5,9 @@ import { useSelector } from 'react-redux';
 import useAirtable from '../../api/useAirtable';
 export const UserStateContext = createContext();
 const UserStateProvider = UserStateContext.Provider
-const baseId = 'appXoertP1WJjd4TQ'
-const apiKey = "keymd23kpZ12EriVi"
+import { base, baseId } from '../..';
 
 function UserProfileProvider(props) {
-    const base = new Airtable({ apiKey }).base(baseId)
     const activeUser = useSelector(selectors.getUser)
     const [userData, setUserData] = useState([])
     const [audiocasts, setAudiocasts] = useState([])
@@ -18,13 +16,9 @@ function UserProfileProvider(props) {
     const [creatorList, setCreatorList] = useState([])
     const [userId, setUserId] = useState('')
     const [loading, setLoading] = useState(false);
-    const { data } = useAirtable(baseId, 'UserProfile')
+    const currentUser = useSelector(selectors.getUserData)
 
-    const currentUser = data?.filter(
-        user => user?.fields?.userId === activeUser?.id
-    )
-
-    const currentUserId = currentUser?.shift()?.id
+    const currentUserId = currentUser?.id
 
     const getData = async (idx) => {
         setLoading(true)
