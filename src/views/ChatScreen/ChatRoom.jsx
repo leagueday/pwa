@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     bottom: 15,
     width: '80%',
     left: '45%',
-    transform: 'translateX(-50%)',    
+    transform: 'translateX(-50%)',
     padding: 15,
     color: 'white',
   },
@@ -133,6 +133,7 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
   } = useContext(ChatStateContext)
   const roomIdRef = useRef(roomId)
   const userData = useSelector(selectors.getUserData)
+  const [loading, setLoading] = useState([])
 
   useEffect(() => {
     socket?.on('new_chat', () => {
@@ -192,7 +193,7 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
   }, [])
 
   useEffect(async () => {
-    const rooms = await getMessagesByRoom(roomId)
+    getMessagesByRoom(roomId)
     roomIdRef.current = roomId
   }, [user, selectedFriend])
 
@@ -226,7 +227,11 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
             >
               {!xs && (
                 <img
-                  src={selectedFriend.image}
+                  src={
+                    selectedFriend.image
+                      ? selectedFriend.image
+                      : '/img/profilePic.jpeg'
+                  }
                   alt=""
                   className={classes.friendImg}
                 />
@@ -235,32 +240,23 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
             </div>
           </div>
           <div className={classes.chatRoom}>
-            {loading ? (
-              <h3>Loading ... </h3>
-            ) : (
-              allChatsByRoom?.map((chat, ind) => (
-                <div
+            {allChatsByRoom?.map((chat, ind) => (
+              <div
+                className={
+                  chat?.authorId === user?.id ? classes.Uchat : classes.chat
+                }
+                key={ind}
+              >
+                <img className={classes.chatImg} src={chat?.authorImg} alt="" />
+                <p
                   className={
-                    chat?.authorId === user?.id ? classes.Uchat : classes.chat
+                    chat?.authorId === user?.id ? classes.uText : classes.text
                   }
-                  key={ind}
                 >
-                  <img
-                    className={classes.chatImg}
-                    src={chat?.authorImg}
-                    alt=""
-                  />
-                  <p
-                    className={
-                      chat?.authorId === user?.id ? classes.uText : classes.text
-                    }
-                  >
-                    {chat?.message}
-                  </p>
-                </div>
-              ))
-            )}
-
+                  {chat?.message}
+                </p>
+              </div>
+            ))}
             <div ref={messageEl} />
           </div>
           <div style={{ height: '8%', background: 'black' }}>

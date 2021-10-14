@@ -69,7 +69,7 @@ const Friend = ({ friend, classes }) => {
         readMessages()
       }}
     >
-      <img src={friend?.friend?.image} alt="" className={classes.friendImg} />
+      <img src={friend?.friend?.image ? friend?.friend?.image : '/img/profilePic.jpeg'} alt="" className={classes.friendImg} />
       <p>{friend?.friend?.username}</p>
       {newMessageCount.length > 0 && selectedFriend?.id !== friend.friend.id ? (
         <p

@@ -137,8 +137,6 @@ const ChatScreen = () => {
     }
   }, [selectedFriend])
 
-  console.log('is chat expanded ', chatExpanded)
-
   return (
     <BasicLayout>
       <div className={classes.wrapper}>

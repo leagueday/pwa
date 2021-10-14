@@ -9,7 +9,7 @@ function ChatStateProvider(props) {
     const [message, setMessage] = useState()
     const [allChatsByRoom, setAllChatsByRoom] = useState([])
     const [newChats, setNewChats] = useState([])
-    const [loading, setLoading] = useState([]);
+    
     const userData = useSelector(selectors.getUserData);
     const user = useSelector(selectors.getUser);
 
@@ -34,14 +34,12 @@ function ChatStateProvider(props) {
     }
 
     const getMessagesByRoom = id => {
-        setLoading(true)
         axios
             .post('https://leagueday-api.herokuapp.com/chats/list', {
                 roomId: id,
             })
             .then(res => {
                 setAllChatsByRoom(res.data.data)
-                setLoading(false)
             })
             .catch(err => {
                 console.log(err)
@@ -68,7 +66,7 @@ function ChatStateProvider(props) {
     }, [user])
 
     return (
-        <FriendsStateProvider value={{ message, setMessage, allChatsByRoom, sendChat, getMessagesByRoom, getAllMessages, newChats, loading }}>
+        <FriendsStateProvider value={{ message, setMessage, allChatsByRoom, sendChat, getMessagesByRoom, getAllMessages, newChats }}>
             {props?.children}
         </FriendsStateProvider>
     )
