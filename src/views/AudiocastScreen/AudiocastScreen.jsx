@@ -253,7 +253,7 @@ const AudiocastScreen = ({ audiocastId }) => {
   const currentUser = useSelector(selectors.getUserData)
   const currentUserId = currentUser?.id
 
-  const isSelectedAudio = audioUrl && audioUrl === audiocast.fields.playbackUrl
+  const isSelectedAudio = audioUrl && audioUrl === audiocast?.fields?.playbackUrl
   const duration = maybeHmsToSecondsOnly(selectedDuration)
   const durationLabel = useMemo(() => formatSecondsDuration(duration), [
     duration,
