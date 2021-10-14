@@ -17,17 +17,18 @@ import { useDispatch, useSelector } from 'react-redux'
 const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'flex',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
     alignItems: 'center',
     background: colors.darkerGray,
   },
   text: {
-    fontSize: '.5rem',
+    fontSize: '.75rem',
   },
   link: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    fontSize: '1.5rem',
   },
 }))
 
@@ -60,18 +61,30 @@ const MobileNav = () => {
           className={classes.link}
           onClick={() => dispatch(actions.pushHistory(`/`))}
         >
-          {homeActive ? <HomeIcon /> : <HomeOutlinedIcon />}
+          {homeActive ? (
+            <HomeIcon fontSize={'inherit'} />
+          ) : (
+            <HomeOutlinedIcon fontSize={'inherit'} />
+          )}
           <span className={classes.text}>Discover</span>
         </p>
         <p
           className={classes.link}
           onClick={() => dispatch(actions.pushHistory(`/creators`))}
         >
-          {creatorActive ? <GroupAddIcon /> : <GroupAddOutlinedIcon />}
+          {creatorActive ? (
+            <GroupAddIcon fontSize={'inherit'} />
+          ) : (
+            <GroupAddOutlinedIcon fontSize={'inherit'} />
+          )}
           <span className={classes.text}>Social</span>
         </p>
         <p className={classes.link} onClick={handleProfileClick}>
-          {profileActive ? <PersonIcon /> : <PersonOutlineIcon />}
+          {profileActive ? (
+            <PersonIcon fontSize={'inherit'} />
+          ) : (
+            <PersonOutlineIcon fontSize={'inherit'} />
+          )}
           <span className={classes.text}>Profile</span>
         </p>
       </div>

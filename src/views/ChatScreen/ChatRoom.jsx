@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useEffect, useRef, useContext, useState } from 'react'
 import { makeStyles } from '@material-ui/styles'
+import { TextField } from '@material-ui/core'
 import { selectors } from '../../store'
 import { ChatStateContext } from '../../store/stateProviders/useChat'
 import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import { useSelector } from 'react-redux'
-import SocketIOClient from 'socket.io-client'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import axios from 'axios'
 import { addScrollStyle } from '../util'
 import { colors } from '../../styling'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
-import GroupAddIcon from '@material-ui/icons/GroupAdd'
 
 const useStyles = makeStyles(theme => ({
   chatBox: {
@@ -26,14 +26,10 @@ const useStyles = makeStyles(theme => ({
   message: {
     position: 'absolute',
     bottom: 15,
-    width: '70%',
-    left: '50%',
+    width: '80%',
+    left: '45%',
     transform: 'translateX(-50%)',
-    border: 'none',
-    outline: 'none',
-    borderRadius: '70px',
     padding: 15,
-    background: colors.lightGray,
     color: 'white',
   },
   reciever: {
@@ -56,7 +52,7 @@ const useStyles = makeStyles(theme => ({
   },
   sendIcon: {
     position: 'absolute',
-    bottom: 15,
+    bottom: 25,
     right: '10%',
     cursor: 'pointer',
     color: colors.blue,
@@ -125,20 +121,20 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ChatRoom = ({ socket, roomId }) => {
+const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
   const user = useSelector(selectors.getUser)
-  const { selectedFriend } = useContext(FriendsStateContext)
+  const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext)
   const { message, setMessage, allChatsByRoom, getMessagesByRoom } = useContext(
     ChatStateContext
   )
   const roomIdRef = useRef(roomId)
-  const userData = useSelector(selectors.getUserData);
+  const userData = useSelector(selectors.getUserData)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     socket?.on('new_chat', () => {
       console.log('triggered new chat ')
       getMessagesByRoom(roomIdRef.current)
-      
     })
 
     return () => {
@@ -192,8 +188,10 @@ const ChatRoom = ({ socket, roomId }) => {
     }
   }, [])
 
-  useEffect(() => {
-    getMessagesByRoom(roomId)
+  useEffect(async () => {
+    setLoading(true)
+    await getMessagesByRoom(roomId)
+    setLoading(false)
     roomIdRef.current = roomId
   }, [user, selectedFriend])
 
@@ -202,37 +200,77 @@ const ChatRoom = ({ socket, roomId }) => {
       {!!selectedFriend ? (
         <div className={classes.recipient}>
           <div className={classes.reciever}>
-            <img
-              src={selectedFriend.image}
-              alt=""
-              className={classes.friendImg}
-            />
-            <h3>{selectedFriend.username}</h3>
-            <GroupAddIcon className={classes.addIcon} />
+            {xs && (
+              <p
+                onClick={() => {
+                  setSelectedFriend()
+                  setChatExpanded(false)
+                }}
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: '.85rem',
+                }}
+              >
+                <ArrowBackIosIcon /> Messages
+              </p>
+            )}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+                width: 'auto',
+              }}
+            >
+              {!xs && (
+                <img
+                  src={
+                    selectedFriend.image
+                      ? selectedFriend.image
+                      : '/img/profilePic.jpeg'
+                  }
+                  alt=""
+                  className={classes.friendImg}
+                />
+              )}
+              <h3 style={{ marginLeft: 10, fontSize: '1.1rem', whiteSpace: 'nowrap' }}>{selectedFriend.username}</h3>
+            </div>
           </div>
           <div className={classes.chatRoom}>
-            {allChatsByRoom?.map((chat, ind) => (
-              <div
-                className={
-                  chat?.authorId === user?.id ? classes.Uchat : classes.chat
-                }
-                key={ind}
-              >
-                <img className={classes.chatImg} src={chat?.authorImg} alt="" />
-                <p
+            {loading ? (
+              <h3>Loading...</h3>
+            ) : (
+              allChatsByRoom?.map((chat, ind) => (
+                <div
                   className={
-                    chat?.authorId === user?.id ? classes.uText : classes.text
+                    chat?.authorId === user?.id ? classes.Uchat : classes.chat
                   }
+                  key={ind}
                 >
-                  {chat?.message}
-                </p>
-              </div>
-            ))}
+                  <img
+                    className={classes.chatImg}
+                    src={chat?.authorImg}
+                    alt=""
+                  />
+                  <p
+                    className={
+                      chat?.authorId === user?.id ? classes.uText : classes.text
+                    }
+                  >
+                    {chat?.message}
+                  </p>
+                </div>
+              ))
+            )}
             <div ref={messageEl} />
           </div>
           <div style={{ height: '8%', background: 'black' }}>
             <form onSubmit={sendChat}>
-              <input
+              <TextField
+                placeholder="Enter Message"
                 type="text"
                 className={classes.message}
                 value={message}

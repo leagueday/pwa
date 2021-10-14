@@ -30,7 +30,7 @@ const Friend = ({ friend, classes, newChats }) => {
     <div className={classes.friendList}>
       <div className={classes.friendBio}>
         <div className={classes.friendImgCont}>
-          <img src={friend.friend.image} alt="" className={classes.friendImg} />
+          <img src={friend.friend.image ? friend.friend.image : '/img/profilePic.jpeg'} alt="" className={classes.friendImg} />
         </div>
         <p className={classes.friendName}>{friend.friend.username}</p>
       </div>

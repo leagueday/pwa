@@ -22,7 +22,7 @@ const FriendsList = () => {
       .catch(err => {
         console.log(err)
       })
-  }, [user, acceptFriendReq, declineFriendReq, count])
+  }, [user, count])
 
   return null
 }

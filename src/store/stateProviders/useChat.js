@@ -9,6 +9,7 @@ function ChatStateProvider(props) {
     const [message, setMessage] = useState()
     const [allChatsByRoom, setAllChatsByRoom] = useState([])
     const [newChats, setNewChats] = useState([])
+    
     const userData = useSelector(selectors.getUserData);
     const user = useSelector(selectors.getUser);
 
