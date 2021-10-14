@@ -236,7 +236,7 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
                   className={classes.friendImg}
                 />
               )}
-              <h3 style={{ fontSize: '1.1rem', whiteSpace: 'nowrap' }}>{selectedFriend.username}</h3>
+              <h3 style={{ marginLeft: 10, fontSize: '1.1rem', whiteSpace: 'nowrap' }}>{selectedFriend.username}</h3>
             </div>
           </div>
           <div className={classes.chatRoom}>
