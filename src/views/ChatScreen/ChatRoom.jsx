@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useContext } from 'react'
+import React, { useEffect, useRef, useContext, useState } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { TextField } from '@material-ui/core'
 import { selectors } from '../../store'
@@ -124,16 +124,12 @@ const useStyles = makeStyles(theme => ({
 const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
   const user = useSelector(selectors.getUser)
   const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext)
-  const {
-    message,
-    setMessage,
-    allChatsByRoom,
-    getMessagesByRoom,
-    loading,
-  } = useContext(ChatStateContext)
+  const { message, setMessage, allChatsByRoom, getMessagesByRoom } = useContext(
+    ChatStateContext
+  )
   const roomIdRef = useRef(roomId)
   const userData = useSelector(selectors.getUserData)
-  const [loading, setLoading] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     socket?.on('new_chat', () => {
@@ -193,7 +189,9 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
   }, [])
 
   useEffect(async () => {
-    getMessagesByRoom(roomId)
+    setLoading(true)
+    await getMessagesByRoom(roomId)
+    setLoading(false)
     roomIdRef.current = roomId
   }, [user, selectedFriend])
 
@@ -223,6 +221,8 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: 'space-evenly',
+                width: 'auto',
               }}
             >
               {!xs && (
@@ -236,27 +236,35 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
                   className={classes.friendImg}
                 />
               )}
-              <h3>{selectedFriend.username}</h3>
+              <h3 style={{ fontSize: '1.1rem', whiteSpace: 'nowrap' }}>{selectedFriend.username}</h3>
             </div>
           </div>
           <div className={classes.chatRoom}>
-            {allChatsByRoom?.map((chat, ind) => (
-              <div
-                className={
-                  chat?.authorId === user?.id ? classes.Uchat : classes.chat
-                }
-                key={ind}
-              >
-                <img className={classes.chatImg} src={chat?.authorImg} alt="" />
-                <p
+            {loading ? (
+              <h3>Loading...</h3>
+            ) : (
+              allChatsByRoom?.map((chat, ind) => (
+                <div
                   className={
-                    chat?.authorId === user?.id ? classes.uText : classes.text
+                    chat?.authorId === user?.id ? classes.Uchat : classes.chat
                   }
+                  key={ind}
                 >
-                  {chat?.message}
-                </p>
-              </div>
-            ))}
+                  <img
+                    className={classes.chatImg}
+                    src={chat?.authorImg}
+                    alt=""
+                  />
+                  <p
+                    className={
+                      chat?.authorId === user?.id ? classes.uText : classes.text
+                    }
+                  >
+                    {chat?.message}
+                  </p>
+                </div>
+              ))
+            )}
             <div ref={messageEl} />
           </div>
           <div style={{ height: '8%', background: 'black' }}>

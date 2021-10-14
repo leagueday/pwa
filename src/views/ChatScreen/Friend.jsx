@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useMemo } from 'react'
 import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import { ChatStateContext } from '../../store/stateProviders/useChat'
 import axios from 'axios'
@@ -15,7 +15,6 @@ const Friend = ({ friend, classes }) => {
   const { newChats, getAllMessages } = useContext(ChatStateContext)
 
   const getCount = () => {
-    console.log('called')
     setNewMessageCount(
       newChats?.filter(chat => chat.authorId === friend.friend.id)
     )
@@ -33,11 +32,11 @@ const Friend = ({ friend, classes }) => {
     }
   }
 
-  useEffect(() => {
+  useMemo(() => {
     getCount()
   }, [])
 
-  useEffect(() => {
+  useMemo(() => {
     if (newMessageIds.length === newMessageCount.length) {
       return
     } else {
@@ -45,7 +44,7 @@ const Friend = ({ friend, classes }) => {
     }
   }, [newMessageCount])
 
-  useEffect(() => {
+  useMemo(() => {
     if (newMessageIds.length > 0 && selectedFriend?.id === friend.friend.id) {
       axios
         .patch('https://leagueday-api.herokuapp.com/chats/update', {
