@@ -171,7 +171,6 @@ function ListStateProvider(props) {
         if (!creatorList) return false
 
         return !!creatorList?.find(
-
             (creator) => creator?.fields?.username === name && creator?.fields?.creatorId === id
         )
     }

@@ -261,7 +261,6 @@ const base = new Airtable({ apiKey }).base(baseId)
 
 const AudioCard = ({ audio, indexData, channelTag, live }) => {
   const dispatch = useDispatch()
-  const activeUser = useSelector(selectors.getUser)
   const currentUser = useSelector(selectors.getUserData)
   const theme = useTheme()
   const sm = useMediaQuery(theme.breakpoints.down('sm'))

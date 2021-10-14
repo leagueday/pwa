@@ -207,7 +207,7 @@ const ChatRoom = ({ socket, roomId }) => {
               alt=""
               className={classes.friendImg}
             />
-            <h3>{selectedFriend.name}</h3>
+            <h3>{selectedFriend.username}</h3>
             <GroupAddIcon className={classes.addIcon} />
           </div>
           <div className={classes.chatRoom}>

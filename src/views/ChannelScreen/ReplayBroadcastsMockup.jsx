@@ -174,7 +174,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     marginLeft: '35px',
     [theme.breakpoints.down('sm')]: {
-      width: '90%',
+      width: '80%',
       marginLeft: '15px',
       height: '25rem',
     },

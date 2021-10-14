@@ -352,30 +352,27 @@ const useStyles = makeStyles(theme => ({
   },
   socials: {
     fontWeight: theme.typography.fontWeightBold,
-    marginLeft: '3%',
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: 0,
-    },
   },
   socialLinks: {
     display: 'flex',
     fontSize: '90%',
-    alignItems: 'center',
+    // alignItems: 'center',
     textDecoration: 'underline',
+    justifyContent: 'space-evenly',
     color: 'white',
     [theme.breakpoints.down('md')]: {
       justifyContent: 'stretch',
       alignItems: 'center',
       marginLeft: '1%',
     },
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: '3%',
-    },
+    // [theme.breakpoints.down('xs')]: {
+    //   marginLeft: '3%',
+    // },
   },
   socialLinksWrapper: {
     [theme.breakpoints.down('xs')]: {
       display: 'flex',
-      width: '100%',
+      flexDirection: 'column',
     },
   },
   socialIcon: {
@@ -910,7 +907,7 @@ const MyProfile = ({ userId }) => {
           </div>
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
-              <p className={classes.userName}>{userData?.fields?.name}</p>
+              <p className={classes.userName}>{userData?.fields?.username}</p>
               <Button onClick={editProfile} className={classes.editProfile}>
                 Edit profile
               </Button>

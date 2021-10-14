@@ -60,7 +60,7 @@ const Friend = ({ friend, classes }) => {
   return (
     <div
       className={
-        friend?.friend?.name === selectedFriend?.name
+        friend?.friend?.username === selectedFriend?.username
           ? classes.selectedFriend
           : classes.friend
       }
@@ -71,7 +71,7 @@ const Friend = ({ friend, classes }) => {
       }}
     >
       <img src={friend?.friend?.image} alt="" className={classes.friendImg} />
-      <p>{friend?.friend?.name}</p>
+      <p>{friend?.friend?.username}</p>
       {newMessageCount.length > 0 && selectedFriend?.id !== friend.friend.id ? (
         <p
           style={{

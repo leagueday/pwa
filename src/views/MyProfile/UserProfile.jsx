@@ -567,7 +567,7 @@ const UserProfile = ({ userId }) => {
           )}
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
-              <p className={classes.userName}>{userData?.fields?.name}</p>
+              <p className={classes.userName}>{userData?.fields?.username}</p>
               {userData?.fields?.credentials && (
                 <p style={{ width: '100%' }}>
                   <span className={classes.socials}>Experience:</span>{' '}

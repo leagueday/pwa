@@ -67,6 +67,12 @@ const useStyles = makeStyles(theme => ({
       width: '100%',
       fontSize: '80%',
     },
+  },
+  liveNote: {
+    width: '50%', minWidth: '500px', textAlign: 'center',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '200px',
+    },
   }
 }))
 
@@ -165,7 +171,7 @@ const GoLiveData = () => {
         userEmail: userProfile.fields.email,
         type: 'livestream',
         creatorImg: userProfile.fields.image,
-        username: userProfile.fields.name,
+        username: userProfile.fields.username,
       }
     }
 
@@ -237,7 +243,7 @@ const GoLiveData = () => {
         {
           created &&
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
-            <h3 style={{ width: '50%', minWidth: '500px', textAlign: 'center' }}>Please paste the stream key and RTMP link below into OBS to start streaming. Once you start streaming, your live stream will show up in the selected channel.</h3>
+            <h3 className={classes.liveNote}>Please paste the stream key and RTMP link below into OBS to start streaming. Once you start streaming, your live stream will show up in the selected channel.</h3>
             <p> <b>Stream Key:</b>  {streamKey}</p>
             <p> <b>RTMP link:</b>  rtmps://global-live.mux.com:443/app</p>
           </div>

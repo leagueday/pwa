@@ -207,7 +207,7 @@ const UploadAudiocast = () => {
             image: userData?.fields?.image,
             upvotes: 0,
             type: 'audiocast',
-            username: userData?.fields?.name,
+            username: userData?.fields?.username,
           },
         },
       ],

@@ -201,7 +201,7 @@ const CreatorTile = ({ user }) => {
         </div>
       </Modal>
       <div className={classes.textBox}>
-        <div className={classes.text}>{user.name}</div>
+        <div className={classes.text}>{user.username}</div>
         {currentUser && (
           <Button
             className={classes.addFriend}

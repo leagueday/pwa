@@ -364,7 +364,6 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
       .catch(err => {
         console.log('declined question ', err)
       })
-    // setSelectedQuestion(question)
   }
 
   const getComments = () => {
@@ -388,7 +387,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
           userId: currentUser.fields.userId,
           roomId: audiocastId,
           message: message,
-          authorName: currentUser.fields.name,
+          authorName: currentUser.fields.username,
           image: currentUser.fields.image
             ? currentUser.fields.image
             : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues=',
@@ -498,11 +497,11 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                   className={classes.authorName}
                   style={{
                     right:
-                      currentUser?.fields?.name === chat?.authorName
+                      currentUser?.fields?.username === chat?.authorName
                         ? '55px'
                         : '',
                     left:
-                      currentUser?.fields?.name === chat?.authorName
+                      currentUser?.fields?.username === chat?.authorName
                         ? ''
                         : '50px',
                   }}
@@ -560,7 +559,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                       fontSize: '1rem',
                     }}
                   >
-                    {selectedQuestion?.user?.name}
+                    {selectedQuestion?.user?.username}
                   </p>
                 </div>
                 <p className={classes.selectedText}>
@@ -586,7 +585,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                       }
                     />
                     <p className={classes.authorName} style={{ right: '55px' }}>
-                      {item?.user?.name}
+                      {item?.user?.username}
                     </p>
                       <div style={{ height: '20px' }}></div>
                       <p className={classes.questionText}>{item?.question}</p>
@@ -631,7 +630,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                   }
                   style={{ left: '50px' }}
                 >
-                  {comment?.user?.name}
+                  {comment?.user?.username}
                 </p>
                 <p className={classes.commentText}>{comment.comment}</p>
               </div>
