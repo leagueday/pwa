@@ -11,7 +11,7 @@ export const getMyList = () => {
                 view: 'Grid view',
             })
             .eachPage(
-                 function page(records, fetchNextPage) {
+                function page(records, fetchNextPage) {
                     // setAudiocast(records[0])
                     records?.forEach(item => {
                         result.push({

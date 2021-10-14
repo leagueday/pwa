@@ -46,7 +46,6 @@ const Friend = ({ friend, classes }) => {
   }, [newMessageCount])
 
   useEffect(() => {
-    console.log('messag ids useEffect ', newMessageIds)
     if (newMessageIds.length > 0 && selectedFriend?.id === friend.friend.id) {
       axios
         .patch('https://leagueday-api.herokuapp.com/chats/update', {

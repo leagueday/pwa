@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import BasicLayout from '../BasicLayout'
 import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
+import { useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { ChatStateContext } from '../../store/stateProviders/useChat'
 import Friend from './Friend'
 import { useSelector } from 'react-redux'
@@ -11,21 +13,6 @@ import { makeStyles } from '@material-ui/styles'
 import { colors } from '../../styling'
 import ChatRoom from './ChatRoom'
 
-export const mockFriends = [
-  {
-    friend: {
-      name: 'Nick',
-      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg',
-    },
-  },
-  {
-    friend: {
-      name: 'Sam',
-      image: 'https://leagueday-prod-images.s3.amazonaws.com/uploads/nick1.jpg',
-    },
-  },
-]
-
 const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'flex',
@@ -34,22 +21,22 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     padding: 0,
   },
-  friendsList: {
+  friendsList: ({ chatExpanded }) => ({
     padding: 0,
     width: '20%',
-    minWidth: '280px',
     background: 'black',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     outline: `0.5px solid ${colors.darkGray}`,
-    [theme.breakpoints.down('md')]: {
+    transition: 'all 0.2s ease-in-out',
+    [theme.breakpoints.up('lg')]: {
+      minWidth: '280px',
+    },
+    [theme.breakpoints.only('md')]: {
       minWidth: '220px',
     },
-    [theme.breakpoints.down('xs')]: {
-      minWidth: 60,
-    },
-  },
+  }),
   friend: {
     cursor: 'pointer',
     height: '6%',
@@ -111,11 +98,6 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '70px',
     padding: 15,
   },
-  messageTitle: {
-    [theme.breakpoints.down('xs')]: {
-      display: 'none',
-    },
-  },
   friendName: {
     [theme.breakpoints.down('xs')]: {
       display: 'none',
@@ -124,12 +106,14 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const ChatScreen = () => {
-  const classes = useStyles()
+  const theme = useTheme()
+  const xs = useMediaQuery(theme.breakpoints.down('xs'))
+  const [chatExpanded, setChatExpanded] = useState(false)
+  const classes = useStyles({ chatExpanded })
   const friendList = useSelector(selectors.getFriendsList)
   const user = useSelector(selectors.getUser)
   const { newChats, getAllMessages } = useContext(ChatStateContext)
   const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext)
-  const [friend, setFriend] = useState(selectedFriend?.friend)
 
   const roomId = [selectedFriend?.id, user?.id]
     .sort((a, b) => (a > b ? 1 : -1))
@@ -145,10 +129,25 @@ const ChatScreen = () => {
     return () => newSocket.close()
   }, [setSocket])
 
+  useEffect(() => {
+    if (selectedFriend) {
+      setChatExpanded(true)
+    } else {
+      setChatExpanded(false)
+    }
+  }, [selectedFriend])
+
+  console.log('is chat expanded ', chatExpanded)
+
   return (
     <BasicLayout>
       <div className={classes.wrapper}>
-        <div className={classes.friendsList}>
+        <div
+          className={classes.friendsList}
+          style={{
+            width: chatExpanded && xs ? '0px' : !chatExpanded && xs && '100%',
+          }}
+        >
           <div
             style={{
               outline: `0.5px solid ${colors.darkGray}`,
@@ -158,22 +157,37 @@ const ChatScreen = () => {
               minHeight: '60px',
             }}
           >
-            <h3
-              className={classes.messageTitle}
-              style={{ textAlign: 'center' }}
-            >
-              Messages
-            </h3>
+            <h3 style={{ textAlign: 'center' }}>Messages</h3>
           </div>
           {friendList?.accepted?.map((item, key) => (
-            <Friend friend={item} key={key} newChats={newChats} classes={classes} />
+            <Friend
+              friend={item}
+              key={key}
+              newChats={newChats}
+              classes={classes}
+            />
           ))}
         </div>
-        <ChatRoom
-          selectedFriend={selectedFriend}
-          roomId={roomId}
-          socket={socket}
-        />
+        {!xs ? (
+          <ChatRoom
+            xs={xs}
+            setChatExpanded={setChatExpanded}
+            selectedFriend={selectedFriend}
+            roomId={roomId}
+            socket={socket}
+          />
+        ) : (
+          xs &&
+          chatExpanded && (
+            <ChatRoom
+              xs={xs}
+              setChatExpanded={setChatExpanded}
+              selectedFriend={selectedFriend}
+              roomId={roomId}
+              socket={socket}
+            />
+          )
+        )}
       </div>
     </BasicLayout>
   )

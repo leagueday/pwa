@@ -5,6 +5,7 @@ import { ChatStateContext } from '../../store/stateProviders/useChat'
 import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import { useSelector } from 'react-redux'
 import SocketIOClient from 'socket.io-client'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import axios from 'axios'
 import { addScrollStyle } from '../util'
 import { colors } from '../../styling'
@@ -125,20 +126,23 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const ChatRoom = ({ socket, roomId }) => {
+const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
   const user = useSelector(selectors.getUser)
-  const { selectedFriend } = useContext(FriendsStateContext)
-  const { message, setMessage, allChatsByRoom, getMessagesByRoom } = useContext(
-    ChatStateContext
-  )
+  const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext)
+  const {
+    message,
+    setMessage,
+    allChatsByRoom,
+    getMessagesByRoom,
+    loading,
+  } = useContext(ChatStateContext)
   const roomIdRef = useRef(roomId)
-  const userData = useSelector(selectors.getUserData);
+  const userData = useSelector(selectors.getUserData)
 
   useEffect(() => {
     socket?.on('new_chat', () => {
       console.log('triggered new chat ')
       getMessagesByRoom(roomIdRef.current)
-      
     })
 
     return () => {
@@ -192,8 +196,8 @@ const ChatRoom = ({ socket, roomId }) => {
     }
   }, [])
 
-  useEffect(() => {
-    getMessagesByRoom(roomId)
+  useEffect(async () => {
+    const rooms = await getMessagesByRoom(roomId)
     roomIdRef.current = roomId
   }, [user, selectedFriend])
 
@@ -202,32 +206,67 @@ const ChatRoom = ({ socket, roomId }) => {
       {!!selectedFriend ? (
         <div className={classes.recipient}>
           <div className={classes.reciever}>
-            <img
-              src={selectedFriend.image}
-              alt=""
-              className={classes.friendImg}
-            />
-            <h3>{selectedFriend.username}</h3>
-            <GroupAddIcon className={classes.addIcon} />
+            {xs && (
+              <p
+                onClick={() => {
+                  setSelectedFriend()
+                  setChatExpanded(false)
+                }}
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: '.85rem',
+                }}
+              >
+                <ArrowBackIosIcon /> Messages
+              </p>
+            )}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                // justifyContent: 'space-evenly',
+              }}
+            >
+              {!xs && (
+                <img
+                  src={selectedFriend.image}
+                  alt=""
+                  className={classes.friendImg}
+                />
+              )}
+              <h3>{selectedFriend.username}</h3>
+            </div>
           </div>
           <div className={classes.chatRoom}>
-            {allChatsByRoom?.map((chat, ind) => (
-              <div
-                className={
-                  chat?.authorId === user?.id ? classes.Uchat : classes.chat
-                }
-                key={ind}
-              >
-                <img className={classes.chatImg} src={chat?.authorImg} alt="" />
-                <p
+            {loading ? (
+              <h3>Loading ... </h3>
+            ) : (
+              allChatsByRoom?.map((chat, ind) => (
+                <div
                   className={
-                    chat?.authorId === user?.id ? classes.uText : classes.text
+                    chat?.authorId === user?.id ? classes.Uchat : classes.chat
                   }
+                  key={ind}
                 >
-                  {chat?.message}
-                </p>
-              </div>
-            ))}
+                  <img
+                    className={classes.chatImg}
+                    src={chat?.authorImg}
+                    alt=""
+                  />
+                  <p
+                    className={
+                      chat?.authorId === user?.id ? classes.uText : classes.text
+                    }
+                  >
+                    {chat?.message}
+                  </p>
+                </div>
+              ))
+            )}
+
             <div ref={messageEl} />
           </div>
           <div style={{ height: '8%', background: 'black' }}>
