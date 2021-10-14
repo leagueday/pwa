@@ -117,6 +117,9 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     height: '50%',
     width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      height: '150px',
+    },
   },
   heroImg: {
     width: '100%',
@@ -159,6 +162,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: '180%',
       width: '35%',
+      height: '3rem',
     },
   },
   userImg: {
@@ -195,11 +199,15 @@ const useStyles = makeStyles(theme => ({
       bottom: '72%',
     },
     [theme.breakpoints.down('xs')]: {
-      bottom: '85%',
+      bottom: '55%',
     },
   },
   images: {
+    background: 'black',
     height: '50%',
+    [theme.breakpoints.down('sm')]: {
+      height: '200px',
+    },
   },
   userCreds: {
     marginLeft: '10%',
@@ -220,6 +228,7 @@ const EditProfile = props => {
   const [heroImg, setHeroImg] = useState()
   const { getData } = useContext(UserStateContext)
   const profileInfo = useSelector(selectors.getUserData)
+  const [loading, setLoading] = useState(false)
 
   const [state, setFile] = useState({
     mainState: 'initial',
@@ -250,15 +259,17 @@ const EditProfile = props => {
   }, [profileInfo])
 
   const [formInput, setFormInput] = useState({
-    name: '',
+    name: profileInfo.fields.username ? profileInfo.fields.username : '',
     nameError: '',
-    description: '',
+    description: profileInfo.fields.description
+      ? profileInfo.fields.description
+      : '',
     descriptionError: '',
     facebookUrl: '',
-    TwitterUrl: '',
-    InstagramUrl: '',
-    TwitchUrl: '',
-    userChannelImage: '',
+    TwitterUrl: profileInfo.fields.TwitterUrl
+      ? profileInfo.fields.TwitterUrl
+      : '',
+    TwitchUrl: profileInfo.fields.TwitchUrl ? profileInfo.fields.TwitchUrl : '',
   })
 
   const [formChanged, setFormChanged] = useState(false)
@@ -337,12 +348,13 @@ const EditProfile = props => {
 
   const submit = evt => {
     evt.preventDefault()
+    setLoading(true)
     base('UserProfile').update(
       [
         {
           id: profileInfo.id,
           fields: {
-            name: formInput.name,
+            username: formInput.name,
             description: formInput.description,
             image: image,
             heroImg: heroImg,
@@ -375,6 +387,7 @@ const EditProfile = props => {
           console.error(err)
           return
         }
+        setLoading(false)
         dispatch(actions.pushHistory(`/profile/${user.id}`))
         getData()
       }
@@ -576,7 +589,7 @@ const EditProfile = props => {
                 onClick={submit}
                 disabled={!formChanged}
               >
-                Update Profile
+                {loading ? 'Loading...' : 'Update Profile'}
               </Button>
             </form>
           </Paper>

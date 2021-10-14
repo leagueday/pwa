@@ -240,10 +240,8 @@ const AudiocastScreen = ({ audiocastId }) => {
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'))
   const dispatch = useDispatch()
   const [audiocast, setAudiocast] = useState()
-
   const [sideColumn, setSideColumn] = useState([])
   const [selectedDuration, setSelectedDuration] = useState()
-
   const [live, setLive] = useState(false)
   const classes = useStyles({ live })
   const [linkOpen, setLinkOpen] = useState(false)
@@ -307,7 +305,7 @@ const AudiocastScreen = ({ audiocastId }) => {
         )
     } else {
       setLive(true)
-      base('UserAudiocasts')
+      base('ChannelLiveData')
         .select({
           filterByFormula: `{liveStreamId} = '${audiocastId}'`,
           view: 'Grid view',
@@ -368,7 +366,7 @@ const AudiocastScreen = ({ audiocastId }) => {
         }
         ev.stopPropagation()
       }
-
+console.log(audiocast)
   return (
     <BasicLayout>
       <div className={smDown ? classes.contentt : classes.content}>

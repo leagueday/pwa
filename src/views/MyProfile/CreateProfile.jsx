@@ -228,7 +228,7 @@ const CreateProfile = props => {
       [
         {
           fields: {
-            name: formInput.name,
+            username: formInput.name,
             description: formInput.description,
             image: image,
             date: new Date(),

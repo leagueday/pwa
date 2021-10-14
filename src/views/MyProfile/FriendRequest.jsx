@@ -95,7 +95,7 @@ const FriendRequest = ({ friend }) => {
         />
       </div>
 
-      <p className={classes.friendReqNameCont}>{friend?.friend?.name}</p>
+      <p className={classes.friendReqNameCont}>{friend?.friend?.username}</p>
       <div
         style={{
           width: '70%',
