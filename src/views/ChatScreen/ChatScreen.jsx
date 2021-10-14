@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     outline: `0.5px solid ${colors.darkGray}`,
-    transition: 'all 0.2s ease-in-out',
+    transition: 'width 0.2s ease-in-out',
     [theme.breakpoints.up('lg')]: {
       minWidth: '280px',
     },
@@ -146,6 +146,7 @@ const ChatScreen = () => {
           className={classes.friendsList}
           style={{
             width: chatExpanded && xs ? '0px' : !chatExpanded && xs && '100%',
+            opacity: chatExpanded && xs ? 0 : !chatExpanded && xs && 1,
           }}
         >
           <div

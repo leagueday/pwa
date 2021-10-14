@@ -1,17 +1,16 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useEffect, useRef, useContext } from 'react'
 import { makeStyles } from '@material-ui/styles'
+import { TextField } from '@material-ui/core'
 import { selectors } from '../../store'
 import { ChatStateContext } from '../../store/stateProviders/useChat'
 import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
 import { useSelector } from 'react-redux'
-import SocketIOClient from 'socket.io-client'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import axios from 'axios'
 import { addScrollStyle } from '../util'
 import { colors } from '../../styling'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
-import GroupAddIcon from '@material-ui/icons/GroupAdd'
 
 const useStyles = makeStyles(theme => ({
   chatBox: {
@@ -27,14 +26,10 @@ const useStyles = makeStyles(theme => ({
   message: {
     position: 'absolute',
     bottom: 15,
-    width: '70%',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    border: 'none',
-    outline: 'none',
-    borderRadius: '70px',
+    width: '80%',
+    left: '45%',
+    transform: 'translateX(-50%)',    
     padding: 15,
-    background: colors.lightGray,
     color: 'white',
   },
   reciever: {
@@ -57,7 +52,7 @@ const useStyles = makeStyles(theme => ({
   },
   sendIcon: {
     position: 'absolute',
-    bottom: 15,
+    bottom: 25,
     right: '10%',
     cursor: 'pointer',
     color: colors.blue,
@@ -227,7 +222,6 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                // justifyContent: 'space-evenly',
               }}
             >
               {!xs && (
@@ -271,7 +265,8 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
           </div>
           <div style={{ height: '8%', background: 'black' }}>
             <form onSubmit={sendChat}>
-              <input
+              <TextField
+                placeholder="Enter Message"
                 type="text"
                 className={classes.message}
                 value={message}
