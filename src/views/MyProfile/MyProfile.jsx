@@ -1217,7 +1217,7 @@ const MyProfile = ({ userId }) => {
                 <div className={classes.recordings}>
                   {audiocasts.concat(userRecordings)?.length < 1 ? (
                     <p className={classes.placeHolder}>
-                      No Recorded Streams yet
+                      No Audiocasts yet
                     </p>
                   ) : (
                     audiocasts?.concat(userRecordings)?.map((rec, index) => {

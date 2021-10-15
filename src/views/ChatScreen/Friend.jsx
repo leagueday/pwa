@@ -68,8 +68,27 @@ const Friend = ({ friend, classes }) => {
         readMessages()
       }}
     >
-      <img src={friend?.friend?.image ? friend?.friend?.image : '/img/profilePic.jpeg'} alt="" className={classes.friendImg} />
-      <p>{friend?.friend?.username}</p>
+      <img
+        src={
+          friend?.friend?.image ? friend?.friend?.image : '/img/profilePic.jpeg'
+        }
+        alt=""
+        className={classes.friendImg}
+      />
+        <p
+          style={{
+            minWidth: 0,
+            marginLeft: 10,
+            maxHeight: '58px',
+            whiteSpace: 'nowrap',
+            // display: 'block',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            width: '70%',
+          }}
+        >
+          {friend?.friend?.username}
+        </p>
       {newMessageCount.length > 0 && selectedFriend?.id !== friend.friend.id ? (
         <p
           style={{
