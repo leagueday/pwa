@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
+import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { actions } from '../../store'
 import { colors } from '../../styling'
 import { Button } from '@material-ui/core'
+import { useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import PlusMinusButton from '../PlusMinusButton'
 import Square from '../Square'
 
@@ -84,7 +87,8 @@ const baseId = 'appXoertP1WJjd4TQ'
 
 const ChannelTile = ({ channel }) => {
   const classes = useStyles({ textColor: channel.color })
-
+  const theme = useTheme()
+  const xs = useMediaQuery(theme.breakpoints.down('xs'))
   const dispatch = useDispatch()
   const gotoThisChannel = () =>
     dispatch(actions.pushHistory(`/channel/${channel.tag}`))
@@ -93,50 +97,44 @@ const ChannelTile = ({ channel }) => {
   const [active, setActive] = useState(false)
 
   useMemo(() => {
-    let urladd = `filterByFormula={channelTag}='${channel?.tag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
-    fetch('/.netlify/functions/commingsoon-proxy', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
-        setUserAudio(
-          response.records.filter(item => !!item.fields.liveStreamId)
-        )
-      })
-      .catch(error => {
-        console.log('error from LiveStream.jsx', error)
-      })
-  }, [baseId])
-
-  useEffect(() => {
-    userAudio?.map(item =>
-      fetch('/.netlify/functions/mux-proxy', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          url: `video/v1/live-streams/${item?.fields?.liveStreamId}?limit=200`,
-        }),
-      })
-        .then(response => response.json())
-        .then(function (response) {
-          if (response.data.status === 'active') {
-            setActive(true)
-          }
+    if (!xs) {
+      let urladd = `filterByFormula={channelTag}='${channel?.tag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
+      axios
+        .post('https://leagueday-api.herokuapp.com/proxies/commingsoon', {
+          url: `${baseId}/ChannelLiveData?${urladd}`,
+        })
+        .then(response => {
+          setUserAudio(
+            response.data.data.records.filter(
+              item => !!item.fields.liveStreamId
+            )
+          )
         })
         .catch(error => {
-          console.log('error in LiveStream.jsx', error)
+          console.log('error from LiveStream.jsx getLiveData', error)
         })
-    )
+    }
+  }, [baseId])
+
+  useMemo(() => {
+    if (!xs) {
+      userAudio?.map(item => {
+        axios
+          .post('https://leagueday-api.herokuapp.com/proxies/mux', {
+            url: `video/v1/live-streams/${item?.fields?.liveStreamId}`,
+          })
+          .then(({ data }) => {
+            if (data.data.data.status === 'active') {
+              setActive(true)
+            }
+          })
+          .catch(error => {
+            console.log('error in LiveStream.jsx MuxComponent', error)
+          })
+      })
+    }
   }, [userAudio])
-  
+
   return (
     <div className={classes.channelTile}>
       <Square className={classes.imageSquare}>
