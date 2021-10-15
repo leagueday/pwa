@@ -209,12 +209,13 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
                 style={{
                   position: 'absolute',
                   left: 0,
+                  bottom: 10,
                   display: 'flex',
                   alignItems: 'center',
                   fontSize: '.85rem',
                 }}
               >
-                <ArrowBackIosIcon /> Messages
+                <ArrowBackIosIcon color={colors.blue} fontSize="medium" /> 
               </p>
             )}
             <div

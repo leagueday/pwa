@@ -33,7 +33,7 @@ const LiveStreams = ({ channelTag }) => {
         response.data.data.records.filter(item => !!item.fields.liveStreamId)
       )
     }).catch(error => {
-      console.log('error from LiveStream.jsx', error)
+      console.log('error from LiveStream.jsx getLiveData', error)
     })
   }
 
@@ -45,13 +45,13 @@ const LiveStreams = ({ channelTag }) => {
     const [active, setActive] = useState(false)
 
     axios.post('https://leagueday-api.herokuapp.com/proxies/mux', {
-      url: `video/v1/live-streams/${livestreamid}?limit=200`,
+      url: `video/v1/live-streams/${livestreamid}`,
     }).then(({ data }) => {
       if (data.data.data.status === 'active') {
         setActive(true)
       }
     }).catch(error => {
-      console.log('error in LiveStream.jsx', error)
+      console.log('error in LiveStream.jsx MuxComponent', error)
     });
 
     return (
