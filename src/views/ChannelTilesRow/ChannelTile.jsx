@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useContext } from 'react'
 import { useDispatch } from 'react-redux'
+import { UserStateContext } from '../../store/stateProviders/userState'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { actions } from '../../store'
@@ -92,12 +93,10 @@ const ChannelTile = ({ channel }) => {
   const dispatch = useDispatch()
   const gotoThisChannel = () =>
     dispatch(actions.pushHistory(`/channel/${channel.tag}`))
-
   const [userAudio, setUserAudio] = useState([])
   const [active, setActive] = useState(false)
 
   useMemo(() => {
-    if (!xs) {
       let urladd = `filterByFormula={channelTag}='${channel?.tag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
       axios
         .post('https://leagueday-api.herokuapp.com/proxies/commingsoon', {
@@ -111,13 +110,11 @@ const ChannelTile = ({ channel }) => {
           )
         })
         .catch(error => {
-          console.log('error from LiveStream.jsx getLiveData', error)
+          console.log('error in ChannelTile.jsx', error)
         })
-    }
   }, [baseId])
 
   useMemo(() => {
-    if (!xs) {
       userAudio?.map(item => {
         axios
           .post('https://leagueday-api.herokuapp.com/proxies/mux', {
@@ -129,10 +126,9 @@ const ChannelTile = ({ channel }) => {
             }
           })
           .catch(error => {
-            console.log('error in LiveStream.jsx MuxComponent', error)
+            console.log('error in ChannelTile.jsx', error)
           })
       })
-    }
   }, [userAudio])
 
   return (
@@ -143,7 +139,11 @@ const ChannelTile = ({ channel }) => {
           src={channel.imageUrl}
           onClick={gotoThisChannel}
         />
-        {active && <Button onClick={gotoThisChannel} className={classes.liveSign}><b style={{ fontWeight: 900 }}>Live</b></Button>}
+        {active && (
+          <Button onClick={gotoThisChannel} className={classes.liveSign}>
+            <b style={{ fontWeight: 900 }}>Live</b>
+          </Button>
+        )}
         <PlusMinusButton
           size="25%"
           className={classes.plusMinusButton}

@@ -17,6 +17,8 @@ function UserProfileProvider(props) {
     const [userId, setUserId] = useState('')
     const [loading, setLoading] = useState(false);
     const currentUser = useSelector(selectors.getUserData)
+    // This is for live channels, isnt relevant to users but didn't want to make a whole new state provider or redux flow
+    const [liveChannels, setLiveChannels] = useState([])
 
     const currentUserId = currentUser?.id
 
@@ -157,7 +159,7 @@ function UserProfileProvider(props) {
     }, [userId])
 
     return (
-        <UserStateProvider value={{ loading, userData, setUserData, refreshData, getData, channelList, setUserId, currentUserId, getUserRecordings, TitanTrophy, PentaTrophy, NoobTrophy, creatorList, userRecordings, audiocasts }}>
+        <UserStateProvider value={{ loading, userData, setUserData, refreshData, getData, channelList, setUserId, currentUserId, getUserRecordings, TitanTrophy, PentaTrophy, NoobTrophy, creatorList, userRecordings, audiocasts, liveChannels, setLiveChannels }}>
             {props?.children}
         </UserStateProvider>
     )
