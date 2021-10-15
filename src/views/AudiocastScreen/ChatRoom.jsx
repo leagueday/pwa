@@ -49,14 +49,17 @@ const useStyles = makeStyles(theme => ({
   },
   message: ({ live }) => ({
     width: '50%',
+    paddingBottom: '1%',
     [theme.breakpoints.down('sm')]: {
       width: '70%',
-      transform: live ? 'translateX(45%)' : '',
     },
-    paddingBottom: '1%',
+    [theme.breakpoints.down('xs')]: {
+      left: '20px'
+    },
   }),
   sendIcon: ({ live }) => ({
     cursor: 'pointer',
+    marginLeft: '20px',
     color: colors.blue,
     '&:hover': {
       color: theme.palette.primary.active,

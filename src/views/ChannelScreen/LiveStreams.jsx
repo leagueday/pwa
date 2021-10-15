@@ -44,7 +44,6 @@ const LiveStreams = ({ channelTag }) => {
     getLiveData()
   }, [channelTag])
 
-
   const MuxComponent = ({ livestreamid, count, audio }) => {
     const [active, setActive] = useState(false)
 

@@ -208,7 +208,7 @@ const useStyles = makeStyles((theme, live) => ({
   },
   linkModalWrapper: {
     position: 'absolute',
-    width: '20%',
+    width: '250px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-evenly',
