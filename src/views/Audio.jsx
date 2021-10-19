@@ -321,15 +321,17 @@ const Audio = () => {
       }
     }
   }, [volume, scrubbedAudioUrl])
-  
+
+  console.log('audio url ', audioUrl)
   return audioUrl ? (
     <span>
-      {audioUrl.includes('stream.mux.com') ? (
+      {audioUrl.includes('stream.mux.com' || '.m3u8') ? (
         <ReactHlsPlayer
           src={audioUrl}
           autoPlay={true}
           width="20%"
           height="auto"
+          ref={setAudioRef}
         />
       ) : (
         <audio autoPlay={true} ref={setAudioRef} src={audioUrl} />

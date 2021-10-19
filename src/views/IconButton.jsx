@@ -1,7 +1,6 @@
 import React from 'react'
 import Color from 'color'
 import cx from 'classnames'
-
 import { makeStyles } from '@material-ui/core/styles'
 
 import { colors } from '../styling'
@@ -20,10 +19,10 @@ const useStyles = makeStyles({
     isTransparent,
   }) => ({
     alignItems: 'center',
-    backgroundColor,
+    backgroundColor: 'transparent',
     borderRadius: '50%',
     borderWidth: 0,
-    color: isTransparent ? Color(color).fade(0.2).string() : color,
+    color: 'white',
     cursor: 'pointer',
     display: 'flex',
     filter: shadowColor ? `drop-shadow(1px 1px 4px ${shadowColor})` : 'none',

@@ -3,22 +3,19 @@ import cx from 'classnames'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   content: {
     height: '100%',
-    position: 'absolute',
     width: '100%',
+    [theme.breakpoints.up('md')]: {
+      minHeight: '200px',
+    },
   },
   square: {
     position: 'relative',
     width: '50%',
-    '&:after': {
-      content: '""',
-      display: 'block',
-      paddingBottom: '100%',
-    },
   },
-})
+}))
 
 const Square = ({ children, className }) => {
   const classes = useStyles()

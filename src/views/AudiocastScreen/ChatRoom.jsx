@@ -511,7 +511,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                 >
                   {chat?.authorName}
                 </p>
-                <div style={{ height: '20px' }}></div>
+                <div style={{ height: '30px' }}></div>
                 <p
                   className={
                     chat?.authorId === currentUser?.fields?.userId
@@ -590,7 +590,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                     <p className={classes.authorName} style={{ right: '55px' }}>
                       {item?.user?.username}
                     </p>
-                      <div style={{ height: '20px' }}></div>
+                      <div style={{ height: '30px' }}></div>
                       <p className={classes.questionText}>{item?.question}</p>
                   </div>
                   {isHost && (
@@ -606,7 +606,6 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                 </div>
               )
             })}
-
           {!live &&
             comments?.map((comment, ind) => (
               <div

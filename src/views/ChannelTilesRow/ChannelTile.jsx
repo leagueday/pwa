@@ -20,27 +20,21 @@ const useStyles = makeStyles(theme => ({
     maxHeight: '100%',
     maxWidth: '100%',
     minHeight: 0,
+    height: '100%',
     minWidth: 0,
     userSelect: 'none',
     width: '100%',
+    margin: '10px 0',
+    marginRight: '20px'
   },
   image: ({ textColor }) => ({
-    border: `0.25em solid ${textColor ?? colors.white80}`,
-    borderRadius: '50%',
     height: '100%',
+    maxHeight: '100%',
     width: '100%',
-    [theme.breakpoints.only('xs')]: {
-      border: `0.5vw solid ${textColor ?? colors.white80}`,
-    },
   }),
   imageSquare: {
-    width: '80%',
-  },
-  plusMinusButton: {
-    bottom: '0.25em',
-    position: 'absolute',
-    right: '0.25em',
-    zIndex: 3,
+    width: '100%',
+    height: '240px',
   },
   '@keyframes blinker': {
     '0%': { filter: 'brightness(100%)' },
@@ -67,7 +61,7 @@ const useStyles = makeStyles(theme => ({
     animationIterationCount: 'infinite',
   },
   text: ({ textColor }) => ({
-    color: textColor ?? colors.white80,
+    color: 'white',
     fontSize: '75%',
     fontWeight: theme.typography.weight.bold,
     height: '100%',
@@ -75,13 +69,18 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     display: 'inline-flex',
   }),
+  plusMinusButton: {
+    color: 'white',
+    border: '1px solod red'
+  },
   textBox: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
     minHeight: '15%',
     overflow: 'hidden',
-    paddingLeft: '0.25em',
-    paddingRight: '0.25em',
+    marginTop: '10px',
+    color: 'white',
   },
 }))
 const baseId = 'appXoertP1WJjd4TQ'
@@ -144,15 +143,15 @@ const ChannelTile = ({ channel }) => {
             <b style={{ fontWeight: 900 }}>Live</b>
           </Button>
         )}
+      </Square>
+      <div className={classes.textBox} onClick={gotoThisChannel}>
         <PlusMinusButton
-          size="25%"
+          size="25px"
           className={classes.plusMinusButton}
           subjectId={channel.tag}
           subjectKind="channel"
           channel={channel}
         />
-      </Square>
-      <div className={classes.textBox} onClick={gotoThisChannel}>
         <div className={classes.text}>{channel.title}</div>
       </div>
     </div>

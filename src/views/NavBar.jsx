@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    boxShadow: '-5px 4px 10px -2px black',
   },
   logoContainer: {
     width: '180px',

@@ -9,9 +9,11 @@ const useStyles = makeStyles(theme => ({
   bottomBlock: {
     overflowY: 'hidden',
     width: '100%',
+    [theme.breakpoints.up('md')]: {
+      minHeight: '250px',
+    },
   },
   children: {
-    marginBottom: '0.5em',
     [theme.breakpoints.only('xs')]: {
       marginBottom: '2vw',
     },
@@ -33,12 +35,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     flexShrink: 1,
     height: '100%',
-  },
-  sliderDots: {
-    marginBottom: '1em',
-    [theme.breakpoints.only('xs')]: {
-      marginBottom: '2vw',
-    },
   },
   title: {
     position: 'relative',
@@ -65,7 +61,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
-    marginBottom: '1em',
     maxWidth: '100%',
     width: '100%',
     [theme.breakpoints.only('xs')]: {
@@ -91,11 +86,6 @@ const BottomBlock = props => {
               {titleRest}
             </div>
           )}
-          <div className={classes.rhsCol}>
-            <div className={cx(classes.rhsCell, classes.pinStripe)} />
-            <div className={classes.rhsCell} />
-          </div>
-        </div>
         {numPages > 1 && (
           <SliderDots
             className={classes.sliderDots}
@@ -103,6 +93,11 @@ const BottomBlock = props => {
             pageNum={pageNum}
           />
         )}
+          <div className={classes.rhsCol}>
+            <div className={cx(classes.rhsCell, classes.pinStripe)} />
+            <div className={classes.rhsCell} />
+          </div>
+        </div>
       </div>
       <div className={classes.children}>{props.children}</div>
     </div>

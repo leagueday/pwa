@@ -152,11 +152,10 @@ const UploadAudiocast = () => {
   const filteredListRecords = getMyList()
   const user = useSelector(selectors.getUser)
 
-  console.log('yo ',filteredListRecords)
-
   useEffect(() => {
     setUserId(user.id)
   }, [user])
+  console.log(mapTest)
 
   const currentUserId = userData?.id
 

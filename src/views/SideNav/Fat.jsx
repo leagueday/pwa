@@ -69,13 +69,13 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   sideNav: {
-    backgroundColor: colors.darkerGray,
+    backgroundColor: colors.lightGray,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     fontSize: 'max(min(1.6vw, 14px), 12px)',
     height: '100%',
-    width: 'min(19%, 15em)',
+    width: 'min(25%, 20em)',
   },
   userGuideBtn: {
     backgroundColor: colors.blue,
