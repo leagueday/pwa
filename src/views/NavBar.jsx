@@ -25,15 +25,17 @@ const useStyles = makeStyles(theme => ({
     boxShadow: '-5px 4px 10px -2px black',
   },
   logoContainer: {
-    width: '180px',
+    marginLeft: '20px',
+    width: '30%',
     cursor: 'pointer',
-    marginBottom: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   logo: {
     cursor: 'pointer',
-    width: '100%',
-    marginBottom: '0',
-    marginBottom: 0,
+    width: '215px',
+    height: '41px',
   },
   logoText: {
     position: 'absolute',
@@ -48,7 +50,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     width: '30%',
-    justifyContent: 'space-evenly',
+    justifyContent: 'flex-end',
+    marginRight: '20px',
   },
   link: {
     cursor: 'pointer',
@@ -109,10 +112,18 @@ const useStyles = makeStyles(theme => ({
     },
   },
   inBtn: {
-    background: colors.blue,
+    background: colors.lightGray,
     color: 'white',
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
+    },
+  },
+  upBtn: {
+    background: colors.magenta,
+    color: 'white',
+    marginLeft: '20px',
+    '&:hover': {
+      filter: 'brightness(200%)',
     },
   },
 }))
@@ -159,11 +170,8 @@ const NavBar = () => {
 
   return (
     <div className={classes.navbar}>
-      <div className={classes.logoContainer} onClick={goHome}>
-        <img className={classes.logo} src="/img/NEW_LDLogo.png" />
-        <p className={classes.logoText}>BETA</p>
-      </div>
-      <div className={classes.navLinks}>
+      <div className={classes.logoContainer} >
+        <img className={classes.logo} src="/img/LeagueDayBetaLogo.png" onClick={goHome}/>
         <h4
           className={homeActive ? classes.selectedLink : classes.link}
           onClick={() => {
@@ -182,6 +190,8 @@ const NavBar = () => {
         >
           Creators
         </h4>
+      </div>
+      <div className={classes.navLinks}>
         {user ? (
           <>
             <img
@@ -224,13 +234,22 @@ const NavBar = () => {
             </Menu>
           </>
         ) : (
-          <Button
-            className={classes.inBtn}
-            onClick={() => dispatch(actions.login())}
-            size="medium"
-          >
-            Sign In
-          </Button>
+          <>
+            <Button
+              className={classes.inBtn}
+              onClick={() => dispatch(actions.login())}
+              size="medium"
+            >
+              Log In
+            </Button>
+            <Button
+              className={classes.upBtn}
+              onClick={() => dispatch(actions.login())}
+              size="medium"
+            >
+              Sign Up
+            </Button>
+          </>
         )}
       </div>
     </div>

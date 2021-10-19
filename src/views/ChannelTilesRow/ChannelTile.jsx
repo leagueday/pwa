@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
     width: '100%',
     margin: '10px 0',
-    marginRight: '20px'
+    marginRight: '20px',
   },
   image: ({ textColor }) => ({
     height: '100%',
@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   }),
   imageSquare: {
     width: '100%',
-    height: '240px',
+    height: '250px',
   },
   '@keyframes blinker': {
     '0%': { filter: 'brightness(100%)' },
@@ -79,7 +79,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     minHeight: '15%',
     overflow: 'hidden',
-    marginTop: '10px',
+    marginTop: '12px',
     color: 'white',
   },
 }))
