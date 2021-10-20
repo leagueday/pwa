@@ -11,9 +11,6 @@ const SideNav = ({ className, home, visible }) => {
       <Hidden smDown>
         {visible && <FatSideNav className={className} home={home} />}
       </Hidden>
-      <Hidden mdUp>
-        {visible && <SkinnySideNav className={className} home={home} />}
-      </Hidden>
     </>
   ) : null
 }

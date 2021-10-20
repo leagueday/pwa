@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     zIndex: 0,
     background: `linear-gradient(90deg, ${colors.cyan} 0%, ${colors.magenta} 50%, ${colors.yellow} 100%)`,
-    height: '1vw',
+    height: '.5vw',
     width: '100%',
   },
 }));

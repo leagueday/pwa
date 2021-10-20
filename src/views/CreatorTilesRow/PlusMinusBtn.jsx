@@ -38,11 +38,10 @@ const PlusMinusBtn = ({ className, size, userId, creator }) => {
 
   return isAuthenticated ? (
     <Button
-      backgroundColor={colors.brandBlack}
+      backgroundColor={'transparent'}
       className={className}
-      color={colors.magenta}
+      color={'white'}
       onClick={handler}
-      shadowColor={Color(colors.magenta).darken(0.75).string()}
       size={size ?? '1em'}
       strokeWidth="3"
     />

@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useContext } from 'react'
 import { useDispatch } from 'react-redux'
+import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { actions } from '../../store'
 import { colors } from '../../styling'
 import { Button } from '@material-ui/core'
+import { useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import PlusMinusButton from '../PlusMinusButton'
 import Square from '../Square'
 
@@ -15,28 +18,43 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     maxHeight: '100%',
     maxWidth: '100%',
-    minHeight: 0,
-    minWidth: 0,
+    minHeight: '100%',
+    height: '100%',
+    minWidth: '100%',
     userSelect: 'none',
     width: '100%',
+    margin: '10px 0',
+    marginRight: '20px',
+    [theme.breakpoints.only('md')]: {
+      width: '140px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '114px',
+    },
   },
   image: ({ textColor }) => ({
-    border: `0.25em solid ${textColor ?? colors.white80}`,
-    borderRadius: '50%',
     height: '100%',
     width: '100%',
-    [theme.breakpoints.only('xs')]: {
-      border: `0.5vw solid ${textColor ?? colors.white80}`,
+    maxHeight: '100%',
+    [theme.breakpoints.up('md')]: {
+      minHeight: '115px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '98px',
+      width: '98px',
+      objectFit: 'cover',
+      borderRadius: '50%',
+      border: `0.25em solid ${textColor ?? colors.white80}`,
     },
   }),
   imageSquare: {
-    width: '80%',
-  },
-  plusMinusButton: {
-    bottom: '0.25em',
-    position: 'absolute',
-    right: '0.25em',
-    zIndex: 3,
+    [theme.breakpoints.up('md')]: {
+      width: '100%',
+      height: '250px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '80%',
+    },
   },
   '@keyframes blinker': {
     '0%': { filter: 'brightness(100%)' },
@@ -63,7 +81,7 @@ const useStyles = makeStyles(theme => ({
     animationIterationCount: 'infinite',
   },
   text: ({ textColor }) => ({
-    color: textColor ?? colors.white80,
+    color: 'white',
     fontSize: '75%',
     fontWeight: theme.typography.weight.bold,
     height: '100%',
@@ -71,90 +89,115 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     display: 'inline-flex',
   }),
+  plusMinusButton: {
+    color: 'white',
+    [theme.breakpoints.down('sm')]: {
+      height: '25px',
+      width: '25px',
+      bottom: '0.25em',
+      position: 'absolute',
+      background: colors.lightGray,
+      right: '0.25em',
+      zIndex: 3,
+    },
+  },
   textBox: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
     minHeight: '15%',
     overflow: 'hidden',
-    paddingLeft: '0.25em',
-    paddingRight: '0.25em',
+    marginTop: '12px',
+    color: 'white',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      paddingLeft: '0.25em',
+      paddingRight: '0.25em',
+      marginTop: '0px',
+    },
   },
 }))
 const baseId = 'appXoertP1WJjd4TQ'
 
 const ChannelTile = ({ channel }) => {
   const classes = useStyles({ textColor: channel.color })
-
+  const theme = useTheme()
+  const xs = useMediaQuery(theme.breakpoints.down('sm'))
+  const mdUp = useMediaQuery(theme.breakpoints.up('md'))
   const dispatch = useDispatch()
   const gotoThisChannel = () =>
     dispatch(actions.pushHistory(`/channel/${channel.tag}`))
-
   const [userAudio, setUserAudio] = useState([])
   const [active, setActive] = useState(false)
 
   useMemo(() => {
     let urladd = `filterByFormula={channelTag}='${channel?.tag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
-    fetch('/.netlify/functions/commingsoon-proxy', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
-    })
-      .then(response => response.json())
-      .then(function (response) {
+    axios
+      .post('https://leagueday-api.herokuapp.com/proxies/commingsoon', {
+        url: `${baseId}/ChannelLiveData?${urladd}`,
+      })
+      .then(response => {
         setUserAudio(
-          response.records.filter(item => !!item.fields.liveStreamId)
+          response.data.data.records.filter(item => !!item.fields.liveStreamId)
         )
       })
       .catch(error => {
-        console.log('error from LiveStream.jsx', error)
+        console.log('error in ChannelTile.jsx', error)
       })
   }, [baseId])
 
-  useEffect(() => {
-    userAudio?.map(item =>
-      fetch('/.netlify/functions/mux-proxy', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          url: `video/v1/live-streams/${item?.fields?.liveStreamId}?limit=200`,
-        }),
-      })
-        .then(response => response.json())
-        .then(function (response) {
-          if (response.data.status === 'active') {
+  useMemo(() => {
+    userAudio?.map(item => {
+      axios
+        .post('https://leagueday-api.herokuapp.com/proxies/mux', {
+          url: `video/v1/live-streams/${item?.fields?.liveStreamId}`,
+        })
+        .then(({ data }) => {
+          if (data.data.data.status === 'active') {
             setActive(true)
           }
         })
         .catch(error => {
-          console.log('error in LiveStream.jsx', error)
+          console.log('error in ChannelTile.jsx', error)
         })
-    )
+    })
   }, [userAudio])
-  
+
   return (
     <div className={classes.channelTile}>
       <Square className={classes.imageSquare}>
         <img
           className={classes.image}
-          src={channel.imageUrl}
+          src={xs ? channel.xsImageurl : channel.imageUrl}
           onClick={gotoThisChannel}
+          width={mdUp ?? '193px'}
+          height={mdUp ?? '240px'}
         />
-        {active && <Button onClick={gotoThisChannel} className={classes.liveSign}><b style={{ fontWeight: 900 }}>Live</b></Button>}
-        <PlusMinusButton
-          size="25%"
-          className={classes.plusMinusButton}
-          subjectId={channel.tag}
-          subjectKind="channel"
-          channel={channel}
-        />
+        {active && (
+          <Button onClick={gotoThisChannel} className={classes.liveSign}>
+            <b style={{ fontWeight: 900 }}>Live</b>
+          </Button>
+        )}
+        {xs && (
+          <PlusMinusButton
+            size="25px"
+            className={classes.plusMinusButton}
+            subjectId={channel.tag}
+            subjectKind="channel"
+            channel={channel}
+          />
+        )}
       </Square>
       <div className={classes.textBox} onClick={gotoThisChannel}>
+        {mdUp && (
+          <PlusMinusButton
+            size="25px"
+            className={classes.plusMinusButton}
+            subjectId={channel.tag}
+            subjectKind="channel"
+            channel={channel}
+          />
+        )}
         <div className={classes.text}>{channel.title}</div>
       </div>
     </div>

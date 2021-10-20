@@ -22,17 +22,20 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    boxShadow: '-5px 4px 10px -2px black',
   },
   logoContainer: {
-    width: '180px',
+    marginLeft: '20px',
+    width: '30%',
     cursor: 'pointer',
-    marginBottom: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   logo: {
     cursor: 'pointer',
-    width: '100%',
-    marginBottom: '0',
-    marginBottom: 0,
+    width: '215px',
+    height: '41px',
   },
   logoText: {
     position: 'absolute',
@@ -46,8 +49,9 @@ const useStyles = makeStyles(theme => ({
   navLinks: {
     display: 'flex',
     alignItems: 'center',
-    width: '30%',
-    justifyContent: 'space-evenly',
+    width: '60%',
+    justifyContent: 'flex-end',
+    marginRight: '20px',
   },
   link: {
     cursor: 'pointer',
@@ -108,10 +112,19 @@ const useStyles = makeStyles(theme => ({
     },
   },
   inBtn: {
-    background: colors.blue,
+    background: colors.lightGray,
     color: 'white',
     '&:hover': {
-      backgroundColor: theme.palette.primary.active,
+      background: colors.lightGray,
+      filter: 'brightness(200%)',
+    },
+  },
+  upBtn: {
+    background: colors.magenta,
+    color: 'white',
+    '&:hover': {
+      background: colors.magenta,
+      filter: 'brightness(150%)',
     },
   },
 }))
@@ -158,9 +171,12 @@ const NavBar = () => {
 
   return (
     <div className={classes.navbar}>
-      <div className={classes.logoContainer} onClick={goHome}>
-        <img className={classes.logo} src="/img/NEW_LDLogo.png" />
-        <p className={classes.logoText}>BETA</p>
+      <div className={classes.logoContainer}>
+        <img
+          className={classes.logo}
+          src="/img/LeagueDayBetaLogo.png"
+          onClick={goHome}
+        />
       </div>
       <div className={classes.navLinks}>
         <h4
@@ -174,6 +190,7 @@ const NavBar = () => {
         </h4>
         <h4
           className={creatorActive ? classes.selectedLink : classes.link}
+          style={{ marginLeft: '40px' }}
           onClick={() => {
             dispatch(actions.pushHistory('/creators'))
             creatorClick()
@@ -184,6 +201,7 @@ const NavBar = () => {
         {user ? (
           <>
             <img
+            style={{ marginLeft: '40px' }}
               className={classes.profile}
               onClick={handleClick}
               src={
@@ -223,13 +241,24 @@ const NavBar = () => {
             </Menu>
           </>
         ) : (
-          <Button
-            className={classes.inBtn}
-            onClick={() => dispatch(actions.login())}
-            size="medium"
-          >
-            Sign In
-          </Button>
+          <>
+            <Button
+              className={classes.inBtn}
+              style={{ marginLeft: '40px' }}
+              onClick={() => dispatch(actions.login())}
+              size="medium"
+            >
+              Log In
+            </Button>
+            <Button
+              className={classes.upBtn}
+              style={{ marginLeft: '40px' }}
+              onClick={() => dispatch(actions.login())}
+              size="medium"
+            >
+              Sign Up
+            </Button>
+          </>
         )}
       </div>
     </div>

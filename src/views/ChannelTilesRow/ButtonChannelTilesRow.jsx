@@ -19,15 +19,21 @@ const useStyles = makeStyles({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    maxHeight: '100%',
+    width: '90%',
   },
   slideContainer: {
     overflowY: 'hidden',
     position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    height: '100%',
   },
   tile: {
     flex: 1,
     height: '100%',
     marginRight: '1vw',
+    marginLeft: '1vw',
     ['&:last-child']: {
       marginRight: 0,
     },
@@ -71,7 +77,10 @@ const ButtonChannelTilesRow = ({ id, channels, title }) => {
               onLeftClick={maybeDebouncedPageLeft}
               onRightClick={maybeDebouncedPageRight}
             >
-              <div className={classes.slideContainer}>
+              <div
+                className={classes.slideContainer}
+                style={{ marginRight: '3%', marginLeft: pageNum > 0 && '3%' }}
+              >
                 <TransitionGroup component={null}>
                   <CSSTransition
                     key={`${prevPageNum} ${pageNum}`}

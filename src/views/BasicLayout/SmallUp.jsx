@@ -22,14 +22,14 @@ const useStyles = makeStyles(theme => ({
       marginLeft: '0.25em',
       overflowX: 'hidden',
       overflowY: 'scroll',
-      background: 'black',
-      // minHeight: '1920px',
+      background: colors.darkerGray,
     }),
   basicLayoutCol: {
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
+    background: colors.darkerGray,
     height: '100%',
   },
   basicLayoutRow: {
@@ -47,13 +47,10 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     justifyContent: 'flex-start',
     overflowY: 'scroll',
-    background: 'black',
+    background: colors.darkerGray,
     width: '100%',
   },
-  sideNav: {},
 }));
-
-
 
 const SmUpBasicLayout = props => {
   const classes = useStyles();
@@ -65,7 +62,6 @@ const SmUpBasicLayout = props => {
   const isNavVisible = navVisibility !== false
 
   return (
-    // <div className={classes.content}>
       <div className={classes.basicLayoutCol}>
         <BrandGradientHorizontalStripe />
         <NavBar />
@@ -84,7 +80,6 @@ const SmUpBasicLayout = props => {
           </>
         )}
       </div>
-    // </div>
   )
 }
 

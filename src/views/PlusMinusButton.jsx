@@ -43,12 +43,11 @@ const PlusMinusButton = ({
 
   return isAuthenticated ? (
     <Button
-      backgroundColor={colors.brandBlack}
+      backgroundColor={'transparent'}
       className={className}
-      color={colors.magenta}
+      color={'white'}
       onClick={handler}
-      shadowColor={Color(colors.magenta).darken(0.75).string()}
-      size={size ?? '1em'}
+      size={'25px'}
       strokeWidth="3"
     />
   ) : null

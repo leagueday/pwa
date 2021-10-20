@@ -1,31 +1,46 @@
 import React from 'react'
 import cx from 'classnames'
-
+import { useLocationPathname } from '../store'
 import { makeStyles } from '@material-ui/core/styles'
-
-const useStyles = makeStyles({
+import { useTheme } from '@material-ui/styles'
+import { useMediaQuery } from '@mui/material'
+const useStyles = makeStyles(theme => ({
   content: {
     height: '100%',
-    position: 'absolute',
     width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      position: 'absolute',
+    },
   },
   square: {
     position: 'relative',
     width: '50%',
-    '&:after': {
-      content: '""',
-      display: 'block',
-      paddingBottom: '100%',
+    [theme.breakpoints.down('sm')]: {
+      width: '80%',
+      '&:after': {
+        content: '""',
+        display: 'block',
+        paddingBottom: '80%',
+      },
     },
   },
-})
+}))
 
 const Square = ({ children, className }) => {
+  const theme = useTheme()
+  const mdUp = useMediaQuery(theme.breakpoints.up('lg'))
+  const location = useLocationPathname()
+  const creatorPage = location === '/creator'
   const classes = useStyles()
 
   return (
     <div className={cx(classes.square, className)}>
-      <div className={classes.content}>{children}</div>
+      <div
+        className={classes.content}
+        style={{ minHeight: mdUp && !creatorPage && '200px' }}
+      >
+        {children}
+      </div>
     </div>
   )
 }

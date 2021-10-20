@@ -1,7 +1,7 @@
 import React from 'react'
-
 import { makeStyles } from '@material-ui/core/styles'
-
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { colors } from '../styling'
 import { IcoLeftSolid, IcoRightSolid } from './icons'
 import { makeIconButton } from './IconButton'
@@ -10,6 +10,11 @@ const useStyles = makeStyles({
   button: {
     pointerEvents: 'initial',
     zIndex: 1000,
+    cursor: 'pointer',
+    padding: 0,
+    margin: 0,
+    background: colors.lightGray,
+    borderRadius: '50%',
   },
   overlay: {
     alignItems: 'center',
@@ -21,6 +26,8 @@ const useStyles = makeStyles({
     padding: '0.5em',
     pointerEvents: 'none',
     position: 'absolute',
+    maxHeight: '100%',
+    height: '100%',
     right: 0,
     top: 0,
     userSelect: 'none',
@@ -33,9 +40,6 @@ const useStyles = makeStyles({
   },
 })
 
-const LeftButton = makeIconButton(IcoLeftSolid)
-const RightButton = makeIconButton(IcoRightSolid)
-
 const SideButtons = ({ children, accentColor, onLeftClick, onRightClick }) => {
   const classes = useStyles()
 
@@ -44,28 +48,12 @@ const SideButtons = ({ children, accentColor, onLeftClick, onRightClick }) => {
       {children}
       <div className={classes.overlay}>
         {onLeftClick ? (
-          <LeftButton
-            className={classes.button}
-            color={accentColor}
-            onClick={onLeftClick}
-            backgroundColor={colors.darkerGray}
-            shadowColor={null}
-            strokeWidth="3"
-            isTransparent
-          />
+         <ChevronLeftIcon color={'white'} fontSize={'large'} onClick={onLeftClick} className={classes.button}/>
         ) : (
           <div />
         )}
         {onRightClick ? (
-          <RightButton
-            className={classes.button}
-            color={accentColor}
-            onClick={onRightClick}
-            backgroundColor={colors.darkerGray}
-            shadowColor={null}
-            strokeWidth="3"
-            isTransparent
-          />
+          <ChevronRightIcon color={'white'} fontSize={'large'} onClick={onRightClick} className={classes.button}/>
         ) : (
           <div />
         )}

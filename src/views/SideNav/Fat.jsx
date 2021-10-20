@@ -25,6 +25,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   expander: {
+    fontSize: '1rem',
     paddingLeft: '0.5em',
     paddingRight: '0.5em',
     paddingTop: '0.5em',
@@ -69,13 +70,13 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   sideNav: {
-    backgroundColor: colors.darkerGray,
+    backgroundColor: colors.lightGray,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     fontSize: 'max(min(1.6vw, 14px), 12px)',
     height: '100%',
-    width: 'min(19%, 15em)',
+    width: 'min(22%, 17em)',
   },
   userGuideBtn: {
     backgroundColor: colors.blue,

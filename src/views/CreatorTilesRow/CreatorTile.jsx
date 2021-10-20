@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     display: 'flex',
     flexDirection: 'column',
-    width: '16%',
+    width: '20%',
     minHeight: 0,
     minWidth: 0,
     userSelect: 'none',
@@ -27,13 +27,15 @@ const useStyles = makeStyles(theme => ({
     },
   },
   image: {
-    border: `0.25em solid ${colors.white80}`,
     borderRadius: '50%',
-    height: '100%',
+    maxHeight: '100%',
     width: '100%',
+    height: '100%',
     objectFit: 'cover',
-    [theme.breakpoints.only('xs')]: {
-      border: `0.5vw solid ${colors.white80}`,
+    border: `5px solid ${colors.white80}`,
+    [theme.breakpoints.up('md')]: {
+      height: '200px',
+      width: '200px',
     },
   },
   imageSquare: {
@@ -41,6 +43,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
   },
   plusMinusButton: {
+    background: colors.lightGray,
     bottom: '0.25em',
     position: 'absolute',
     right: '0.25em',
@@ -70,7 +73,7 @@ const useStyles = makeStyles(theme => ({
     width: '30%',
     objectFit: 'cover',
     top: 0,
-    right: 0,
+    right: '10px',
   },
   addFriend: {
     marginRight: '10%',
@@ -182,7 +185,7 @@ const CreatorTile = ({ user }) => {
           onClick={gotoThisCreator}
         />
         <PlusMinusBtn
-          size="25%"
+          size="20%"
           className={classes.plusMinusButton}
           userId={user.userId}
           creator={user}

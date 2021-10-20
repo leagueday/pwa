@@ -15,6 +15,7 @@ const useStyles = makeStyles({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
+    margin: '10px 0',
   },
   playPause: {
     position: 'absolute',

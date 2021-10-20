@@ -49,14 +49,17 @@ const useStyles = makeStyles(theme => ({
   },
   message: ({ live }) => ({
     width: '50%',
+    paddingBottom: '1%',
     [theme.breakpoints.down('sm')]: {
       width: '70%',
-      transform: live ? 'translateX(45%)' : '',
     },
-    paddingBottom: '1%',
+    [theme.breakpoints.down('xs')]: {
+      left: '20px'
+    },
   }),
   sendIcon: ({ live }) => ({
     cursor: 'pointer',
+    marginLeft: '20px',
     color: colors.blue,
     '&:hover': {
       color: theme.palette.primary.active,
@@ -508,7 +511,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                 >
                   {chat?.authorName}
                 </p>
-                <div style={{ height: '20px' }}></div>
+                <div style={{ height: '30px' }}></div>
                 <p
                   className={
                     chat?.authorId === currentUser?.fields?.userId
@@ -587,7 +590,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                     <p className={classes.authorName} style={{ right: '55px' }}>
                       {item?.user?.username}
                     </p>
-                      <div style={{ height: '20px' }}></div>
+                      <div style={{ height: '30px' }}></div>
                       <p className={classes.questionText}>{item?.question}</p>
                   </div>
                   {isHost && (
@@ -603,7 +606,6 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                 </div>
               )
             })}
-
           {!live &&
             comments?.map((comment, ind) => (
               <div
