@@ -27,14 +27,15 @@ const useStyles = makeStyles(theme => ({
     },
   },
   image: {
-    border: `0.25em solid ${colors.white80}`,
     borderRadius: '50%',
     maxHeight: '100%',
-    height: '200px',
-    width: '200px',
+    width: '100%',
+    height: '100%',
     objectFit: 'cover',
-    [theme.breakpoints.only('xs')]: {
-      border: `0.5vw solid ${colors.white80}`,
+    border: `5px solid ${colors.white80}`,
+    [theme.breakpoints.up('md')]: {
+      height: '200px',
+      width: '200px',
     },
   },
   imageSquare: {
@@ -42,6 +43,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
   },
   plusMinusButton: {
+    background: colors.lightGray,
     bottom: '0.25em',
     position: 'absolute',
     right: '0.25em',
@@ -183,7 +185,7 @@ const CreatorTile = ({ user }) => {
           onClick={gotoThisCreator}
         />
         <PlusMinusBtn
-          size="25%"
+          size="20%"
           className={classes.plusMinusButton}
           userId={user.userId}
           creator={user}

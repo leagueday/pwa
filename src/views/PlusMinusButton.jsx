@@ -47,7 +47,7 @@ const PlusMinusButton = ({
       className={className}
       color={'white'}
       onClick={handler}
-      size={size ?? '1em'}
+      size={'25px'}
       strokeWidth="3"
     />
   ) : null

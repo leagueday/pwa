@@ -25,6 +25,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   expander: {
+    fontSize: '1rem',
     paddingLeft: '0.5em',
     paddingRight: '0.5em',
     paddingTop: '0.5em',
@@ -75,7 +76,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     fontSize: 'max(min(1.6vw, 14px), 12px)',
     height: '100%',
-    width: 'min(25%, 20em)',
+    width: 'min(23%, 18em)',
   },
   userGuideBtn: {
     backgroundColor: colors.blue,

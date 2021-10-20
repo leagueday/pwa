@@ -7,7 +7,7 @@ import ExtraSmall from './ExtraSmall'
 
 const AppBar = props => {
   const theme = useTheme()
-  const smUp = useMediaQuery(theme.breakpoints.up('sm'))
+  const smUp = useMediaQuery(theme.breakpoints.up('md'))
 
   return smUp ? null : <ExtraSmall {...props} />
 }

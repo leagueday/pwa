@@ -27,6 +27,7 @@ const useStyles = makeStyles({
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
+    height: '100%',
   },
   tile: {
     flex: 1,

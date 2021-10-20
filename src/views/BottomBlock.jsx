@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   bottomBlock: {
     overflowY: 'hidden',
     width: '100%',
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('lg')]: {
       minHeight: '250px',
     },
   },

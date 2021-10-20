@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
   navLinks: {
     display: 'flex',
     alignItems: 'center',
-    width: '30%',
+    width: '60%',
     justifyContent: 'flex-end',
     marginRight: '20px',
   },
@@ -115,15 +115,16 @@ const useStyles = makeStyles(theme => ({
     background: colors.lightGray,
     color: 'white',
     '&:hover': {
-      backgroundColor: theme.palette.primary.active,
+      background: colors.lightGray,
+      filter: 'brightness(200%)',
     },
   },
   upBtn: {
     background: colors.magenta,
     color: 'white',
-    marginLeft: '20px',
     '&:hover': {
-      filter: 'brightness(200%)',
+      background: colors.magenta,
+      filter: 'brightness(150%)',
     },
   },
 }))
@@ -170,26 +171,12 @@ const NavBar = () => {
 
   return (
     <div className={classes.navbar}>
-      <div className={classes.logoContainer} >
-        <img className={classes.logo} src="/img/LeagueDayBetaLogo.png" onClick={goHome}/>
-        <h4
-          className={homeActive ? classes.selectedLink : classes.link}
-          onClick={() => {
-            goHome()
-            homeClick()
-          }}
-        >
-          Discover
-        </h4>
-        <h4
-          className={creatorActive ? classes.selectedLink : classes.link}
-          onClick={() => {
-            dispatch(actions.pushHistory('/creators'))
-            creatorClick()
-          }}
-        >
-          Creators
-        </h4>
+      <div className={classes.logoContainer}>
+        <img
+          className={classes.logo}
+          src="/img/LeagueDayBetaLogo.png"
+          onClick={goHome}
+        />
       </div>
       <div className={classes.navLinks}>
         {user ? (
@@ -235,8 +222,28 @@ const NavBar = () => {
           </>
         ) : (
           <>
+            <h4
+              className={homeActive ? classes.selectedLink : classes.link}
+              onClick={() => {
+                goHome()
+                homeClick()
+              }}
+            >
+              Discover
+            </h4>
+            <h4
+              className={creatorActive ? classes.selectedLink : classes.link}
+              style={{ marginLeft: '40px' }}
+              onClick={() => {
+                dispatch(actions.pushHistory('/creators'))
+                creatorClick()
+              }}
+            >
+              Creators
+            </h4>
             <Button
               className={classes.inBtn}
+              style={{ marginLeft: '40px' }}
               onClick={() => dispatch(actions.login())}
               size="medium"
             >
@@ -244,6 +251,7 @@ const NavBar = () => {
             </Button>
             <Button
               className={classes.upBtn}
+              style={{ marginLeft: '40px' }}
               onClick={() => dispatch(actions.login())}
               size="medium"
             >

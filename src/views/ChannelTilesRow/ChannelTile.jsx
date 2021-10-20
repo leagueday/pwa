@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
 import { useDispatch } from 'react-redux'
-import { UserStateContext } from '../../store/stateProviders/userState'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
 import { actions } from '../../store'
@@ -19,22 +18,43 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     maxHeight: '100%',
     maxWidth: '100%',
-    minHeight: 0,
+    minHeight: '100%',
     height: '100%',
-    minWidth: 0,
+    minWidth: '100%',
     userSelect: 'none',
     width: '100%',
     margin: '10px 0',
     marginRight: '20px',
+    [theme.breakpoints.only('md')]: {
+      width: '140px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '114px',
+    },
   },
   image: ({ textColor }) => ({
     height: '100%',
-    maxHeight: '100%',
     width: '100%',
+    maxHeight: '100%',
+    [theme.breakpoints.up('md')]: {
+      minHeight: '115px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '98px',
+      width: '98px',
+      objectFit: 'cover',
+      borderRadius: '50%',
+      border: `0.25em solid ${textColor ?? colors.white80}`,
+    },
   }),
   imageSquare: {
-    width: '100%',
-    height: '250px',
+    [theme.breakpoints.up('md')]: {
+      width: '100%',
+      height: '250px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '80%',
+    },
   },
   '@keyframes blinker': {
     '0%': { filter: 'brightness(100%)' },
@@ -71,7 +91,15 @@ const useStyles = makeStyles(theme => ({
   }),
   plusMinusButton: {
     color: 'white',
-    border: '1px solod red'
+    [theme.breakpoints.down('sm')]: {
+      height: '25px',
+      width: '25px',
+      bottom: '0.25em',
+      position: 'absolute',
+      background: colors.lightGray,
+      right: '0.25em',
+      zIndex: 3,
+    },
   },
   textBox: {
     display: 'flex',
@@ -81,6 +109,12 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     marginTop: '12px',
     color: 'white',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      paddingLeft: '0.25em',
+      paddingRight: '0.25em',
+      marginTop: '0px',
+    },
   },
 }))
 const baseId = 'appXoertP1WJjd4TQ'
@@ -88,7 +122,8 @@ const baseId = 'appXoertP1WJjd4TQ'
 const ChannelTile = ({ channel }) => {
   const classes = useStyles({ textColor: channel.color })
   const theme = useTheme()
-  const xs = useMediaQuery(theme.breakpoints.down('xs'))
+  const xs = useMediaQuery(theme.breakpoints.down('sm'))
+  const mdUp = useMediaQuery(theme.breakpoints.up('md'))
   const dispatch = useDispatch()
   const gotoThisChannel = () =>
     dispatch(actions.pushHistory(`/channel/${channel.tag}`))
@@ -96,38 +131,36 @@ const ChannelTile = ({ channel }) => {
   const [active, setActive] = useState(false)
 
   useMemo(() => {
-      let urladd = `filterByFormula={channelTag}='${channel?.tag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
+    let urladd = `filterByFormula={channelTag}='${channel?.tag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
+    axios
+      .post('https://leagueday-api.herokuapp.com/proxies/commingsoon', {
+        url: `${baseId}/ChannelLiveData?${urladd}`,
+      })
+      .then(response => {
+        setUserAudio(
+          response.data.data.records.filter(item => !!item.fields.liveStreamId)
+        )
+      })
+      .catch(error => {
+        console.log('error in ChannelTile.jsx', error)
+      })
+  }, [baseId])
+
+  useMemo(() => {
+    userAudio?.map(item => {
       axios
-        .post('https://leagueday-api.herokuapp.com/proxies/commingsoon', {
-          url: `${baseId}/ChannelLiveData?${urladd}`,
+        .post('https://leagueday-api.herokuapp.com/proxies/mux', {
+          url: `video/v1/live-streams/${item?.fields?.liveStreamId}`,
         })
-        .then(response => {
-          setUserAudio(
-            response.data.data.records.filter(
-              item => !!item.fields.liveStreamId
-            )
-          )
+        .then(({ data }) => {
+          if (data.data.data.status === 'active') {
+            setActive(true)
+          }
         })
         .catch(error => {
           console.log('error in ChannelTile.jsx', error)
         })
-  }, [baseId])
-
-  useMemo(() => {
-      userAudio?.map(item => {
-        axios
-          .post('https://leagueday-api.herokuapp.com/proxies/mux', {
-            url: `video/v1/live-streams/${item?.fields?.liveStreamId}`,
-          })
-          .then(({ data }) => {
-            if (data.data.data.status === 'active') {
-              setActive(true)
-            }
-          })
-          .catch(error => {
-            console.log('error in ChannelTile.jsx', error)
-          })
-      })
+    })
   }, [userAudio])
 
   return (
@@ -135,23 +168,36 @@ const ChannelTile = ({ channel }) => {
       <Square className={classes.imageSquare}>
         <img
           className={classes.image}
-          src={channel.imageUrl}
+          src={xs ? channel.xsImageurl : channel.imageUrl}
           onClick={gotoThisChannel}
+          width={mdUp ?? '193px'}
+          height={mdUp ?? '240px'}
         />
         {active && (
           <Button onClick={gotoThisChannel} className={classes.liveSign}>
             <b style={{ fontWeight: 900 }}>Live</b>
           </Button>
         )}
+        {xs && (
+          <PlusMinusButton
+            size="25px"
+            className={classes.plusMinusButton}
+            subjectId={channel.tag}
+            subjectKind="channel"
+            channel={channel}
+          />
+        )}
       </Square>
       <div className={classes.textBox} onClick={gotoThisChannel}>
-        <PlusMinusButton
-          size="25px"
-          className={classes.plusMinusButton}
-          subjectId={channel.tag}
-          subjectKind="channel"
-          channel={channel}
-        />
+        {mdUp && (
+          <PlusMinusButton
+            size="25px"
+            className={classes.plusMinusButton}
+            subjectId={channel.tag}
+            subjectKind="channel"
+            channel={channel}
+          />
+        )}
         <div className={classes.text}>{channel.title}</div>
       </div>
     </div>

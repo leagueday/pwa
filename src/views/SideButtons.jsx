@@ -13,6 +13,8 @@ const useStyles = makeStyles({
     cursor: 'pointer',
     padding: 0,
     margin: 0,
+    background: colors.lightGray,
+    borderRadius: '50%',
   },
   overlay: {
     alignItems: 'center',
@@ -25,6 +27,7 @@ const useStyles = makeStyles({
     pointerEvents: 'none',
     position: 'absolute',
     maxHeight: '100%',
+    height: '100%',
     right: 0,
     top: 0,
     userSelect: 'none',

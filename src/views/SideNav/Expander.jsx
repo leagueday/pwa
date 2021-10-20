@@ -38,7 +38,6 @@ const useStyles = makeStyles(theme => ({
   },
   text: ({ skinny }) => ({
     flex: 1,
-    fontSize: skinny ? '60%' : null,
     fontWeight: theme.typography.weight.bold,
     marginLeft: '0.25em',
     userSelect: 'none',
