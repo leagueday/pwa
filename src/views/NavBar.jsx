@@ -179,9 +179,29 @@ const NavBar = () => {
         />
       </div>
       <div className={classes.navLinks}>
+        <h4
+          className={homeActive ? classes.selectedLink : classes.link}
+          onClick={() => {
+            goHome()
+            homeClick()
+          }}
+        >
+          Discover
+        </h4>
+        <h4
+          className={creatorActive ? classes.selectedLink : classes.link}
+          style={{ marginLeft: '40px' }}
+          onClick={() => {
+            dispatch(actions.pushHistory('/creators'))
+            creatorClick()
+          }}
+        >
+          Creators
+        </h4>
         {user ? (
           <>
             <img
+            style={{ marginLeft: '40px' }}
               className={classes.profile}
               onClick={handleClick}
               src={
@@ -222,25 +242,6 @@ const NavBar = () => {
           </>
         ) : (
           <>
-            <h4
-              className={homeActive ? classes.selectedLink : classes.link}
-              onClick={() => {
-                goHome()
-                homeClick()
-              }}
-            >
-              Discover
-            </h4>
-            <h4
-              className={creatorActive ? classes.selectedLink : classes.link}
-              style={{ marginLeft: '40px' }}
-              onClick={() => {
-                dispatch(actions.pushHistory('/creators'))
-                creatorClick()
-              }}
-            >
-              Creators
-            </h4>
             <Button
               className={classes.inBtn}
               style={{ marginLeft: '40px' }}
