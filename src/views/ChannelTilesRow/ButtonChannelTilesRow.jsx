@@ -2,7 +2,8 @@ import React from 'react'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 import { makeStyles } from '@material-ui/core/styles'
-
+import { useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import debounce from '../../api/debounce'
 import usePrevious from '../../api/usePrevious'
 import BottomBlock from '../BottomBlock'
@@ -21,6 +22,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     maxHeight: '100%',
     width: '90%',
+    overflowX: 'hidden'
   },
   slideContainer: {
     overflowY: 'hidden',
@@ -49,11 +51,12 @@ const EmptyTile = () => {
 
 const ButtonChannelTilesRow = ({ id, channels, title }) => {
   const classes = useStyles()
-
+  const theme = useTheme()
+  const md = useMediaQuery(theme.breakpoints.only('md'))
   let baseIndex = 0
 
   return (
-    <Connector channels={channels} id={id} pageSize={PAGE_LENGTH}>
+    <Connector channels={channels} id={id} pageSize={md ? 4 : PAGE_LENGTH}>
       {({ displayChannels, goNextPage, goPrevPage, numPages, pageNum }) => {
         const prevPageNum = usePrevious(pageNum)
         const isSlidingLeft = pageNum > prevPageNum

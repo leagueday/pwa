@@ -24,9 +24,6 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
     width: '100%',
     margin: '10px 0',
-    [theme.breakpoints.only('md')]: {
-      width: '140px',
-    },
     [theme.breakpoints.down('sm')]: {
       width: '114px',
     },
@@ -35,9 +32,13 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     width: '100%',
     maxHeight: '100%',
+    objectFit: 'cover',
     [theme.breakpoints.up('md')]: {
       minHeight: '115px',
       width: '193px'
+    },
+    [theme.breakpoints.only('md')]: {
+      width: '170px',
     },
     [theme.breakpoints.down('sm')]: {
       height: '98px',
@@ -123,6 +124,7 @@ const ChannelTile = ({ channel }) => {
   const classes = useStyles({ textColor: channel.color })
   const theme = useTheme()
   const xs = useMediaQuery(theme.breakpoints.down('sm'))
+  console.log('breakpoint ',useMediaQuery(theme.breakpoints.only('md')))
   const mdUp = useMediaQuery(theme.breakpoints.up('md'))
   const dispatch = useDispatch()
   const gotoThisChannel = () =>
