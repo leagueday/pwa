@@ -24,9 +24,6 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
     width: '100%',
     margin: '10px 0',
-    // [theme.breakpoints.only('md')]: {
-    //   width: '140px',
-    // },
     [theme.breakpoints.down('sm')]: {
       width: '114px',
     },
