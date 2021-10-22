@@ -24,7 +24,6 @@ const useStyles = makeStyles(theme => ({
     userSelect: 'none',
     width: '100%',
     margin: '10px 0',
-    marginRight: '20px',
     [theme.breakpoints.only('md')]: {
       width: '140px',
     },
@@ -38,6 +37,7 @@ const useStyles = makeStyles(theme => ({
     maxHeight: '100%',
     [theme.breakpoints.up('md')]: {
       minHeight: '115px',
+      width: '193px'
     },
     [theme.breakpoints.down('sm')]: {
       height: '98px',
@@ -168,7 +168,7 @@ const ChannelTile = ({ channel }) => {
       <Square className={classes.imageSquare}>
         <img
           className={classes.image}
-          src={xs ? channel.xsImageurl : channel.imageUrl}
+          src={xs ? channel.xsImageurl : channel.largeImageUrl}
           onClick={gotoThisChannel}
           width={mdUp ?? '193px'}
           height={mdUp ?? '240px'}
