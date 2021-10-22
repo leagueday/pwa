@@ -168,7 +168,7 @@ const ChannelTile = ({ channel }) => {
       <Square className={classes.imageSquare}>
         <img
           className={classes.image}
-          src={xs ? channel.xsImageurl : channel.imageUrl}
+          src={xs ? channel.xsImageurl : channel.largeImageUrl}
           onClick={gotoThisChannel}
           width={mdUp ?? '193px'}
           height={mdUp ?? '240px'}
