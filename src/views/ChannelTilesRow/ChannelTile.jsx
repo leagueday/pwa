@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
+import { UserStateContext } from '../../store/stateProviders/userState'
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles'
@@ -9,7 +10,8 @@ import { useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import PlusMinusButton from '../PlusMinusButton'
 import Square from '../Square'
-
+import { base, baseId } from '../..'
+import { getMyList } from '../../api/getChannelList'
 const useStyles = makeStyles(theme => ({
   channelTile: {
     cursor: 'pointer',
@@ -35,7 +37,10 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
     [theme.breakpoints.up('md')]: {
       minHeight: '115px',
-      width: '193px'
+      width: '193px',
+    },
+    [theme.breakpoints.only('md')]: {
+      width: '170px',
     },
     [theme.breakpoints.only('md')]: {
       width: '170px',
@@ -118,10 +123,10 @@ const useStyles = makeStyles(theme => ({
     },
   },
 }))
-const baseId = 'appXoertP1WJjd4TQ'
 
 const ChannelTile = ({ channel }) => {
   const classes = useStyles({ textColor: channel.color })
+  const { liveChannels } = useContext(UserStateContext)
   const theme = useTheme()
   const xs = useMediaQuery(theme.breakpoints.down('sm'))
   console.log('breakpoint ',useMediaQuery(theme.breakpoints.only('md')))
@@ -131,25 +136,31 @@ const ChannelTile = ({ channel }) => {
     dispatch(actions.pushHistory(`/channel/${channel.tag}`))
   const [userAudio, setUserAudio] = useState([])
   const [active, setActive] = useState(false)
+  const channelTag = channel.tag
+  const audiocastLength = liveChannels[`${channel?.tag}`]?.length ?? 0
 
   useMemo(() => {
-    let urladd = `filterByFormula={channelTag}='${channel?.tag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
-    axios
-      .post('https://leagueday-api.herokuapp.com/proxies/commingsoon', {
-        url: `${baseId}/ChannelLiveData?${urladd}`,
-      })
-      .then(response => {
-        setUserAudio(
-          response.data.data.records.filter(item => !!item.fields.liveStreamId)
-        )
-      })
-      .catch(error => {
-        console.log('error in ChannelTile.jsx', error)
-      })
-  }, [baseId])
+    if (channel.tag) {
+      let urladd = `filterByFormula={channelTag}='${channelTag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
+      axios
+        .post('https://leagueday-api.herokuapp.com/proxies/commingsoon', {
+          url: `${baseId}/ChannelLiveData?${urladd}`,
+        })
+        .then(response => {
+          setUserAudio(
+            response.data.data.records.filter(
+              item => !!item.fields.liveStreamId
+            )
+          )
+        })
+        .catch(error => {
+          console.log('error in ChannelTile.jsx', error)
+        })
+    }
+  }, [channel])
 
   useMemo(() => {
-    userAudio?.map(item => {
+    userAudio?.forEach(item => {
       axios
         .post('https://leagueday-api.herokuapp.com/proxies/mux', {
           url: `video/v1/live-streams/${item?.fields?.liveStreamId}`,
@@ -202,6 +213,7 @@ const ChannelTile = ({ channel }) => {
         )}
         <div className={classes.text}>{channel.title}</div>
       </div>
+      <p className={classes.text}>Number of Audiocasts: {audiocastLength}</p>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { base } from '..';
 
 export const getMyList = () => {
@@ -41,8 +41,10 @@ export const getMyList = () => {
             )
     }
 
-    useEffect(() => {
+
+    useMemo(() => {
         getListData();
     }, [])
+
     return filteredListRecords;
 };

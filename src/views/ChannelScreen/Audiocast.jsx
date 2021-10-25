@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { selectors, actions } from '../../store'
+import React, { useState, useEffect, useContext } from 'react'
+import { UserStateContext } from '../../store/stateProviders/userState'
 import { makeStyles } from '@material-ui/styles'
-import Airtable from 'airtable'
 import ReplayBroadcastsMockup from './ReplayBroadcastsMockup'
 import AudioCard from './AudioCard'
 
@@ -19,40 +17,19 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Audiocast = ({ channelTag, channel, parClasses }) => {
-  const dispatch = useDispatch()
   const classes = useStyles()
-  const user = useSelector(selectors.getUser)
+  const { liveChannels } = useContext(UserStateContext)
   const [userAudio, setUserAudio] = useState([])
-  const baseId = 'appXoertP1WJjd4TQ'
-  const apiKey = 'keymd23kpZ12EriVi'
-  const base = new Airtable({ apiKey }).base(baseId)
-
-  const getUserAudio = () => {
-    base('UserAudiocasts')
-      .select({
-        filterByFormula: `{channelTag} = '${channelTag}'`,
-        view: 'Grid view',
-      })
-      .eachPage(
-        async function page(records, fetchNextPage) {
-          setUserAudio(
-            records.sort((a, b) => {
-              return b.fields.upvotes - a.fields.upvotes
-            })
-          )
-        },
-        function done(err) {
-          if (err) {
-            console.error(err)
-            return
-          }
-        }
-      )
-  }
 
   useEffect(() => {
-    getUserAudio()
-  }, [user, channelTag])
+    if (liveChannels[`${channelTag}`]) {
+      setUserAudio(
+        liveChannels[`${channelTag}`].sort((a, b) => {
+          return b.fields.upvotes - a.fields.upvotes
+        })
+      )
+    }
+  }, [liveChannels, channelTag])
 
   return (
     <div className={classes.wrapper}>
