@@ -155,7 +155,6 @@ const UploadAudiocast = () => {
   useEffect(() => {
     setUserId(user.id)
   }, [user])
-  console.log(mapTest)
 
   const currentUserId = userData?.id
 
