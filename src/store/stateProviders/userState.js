@@ -1,11 +1,9 @@
 import React, { createContext, useState, useEffect } from 'react';
-import Airtable from 'airtable'
 import { selectors } from '..'
 import { useSelector } from 'react-redux';
-import useAirtable from '../../api/useAirtable';
 export const UserStateContext = createContext();
 const UserStateProvider = UserStateContext.Provider
-import { base, baseId } from '../..';
+import { base } from '../..';
 
 function UserProfileProvider(props) {
     const activeUser = useSelector(selectors.getUser)
@@ -18,7 +16,32 @@ function UserProfileProvider(props) {
     const [loading, setLoading] = useState(false);
     const currentUser = useSelector(selectors.getUserData)
     // This is for live channels, isnt relevant to users but didn't want to make a whole new state provider or redux flow
-    const [liveChannels, setLiveChannels] = useState([])
+    const [liveChannels, setLiveChannels] = useState({})
+
+    const getChannelAudiocasts = async () => {
+        base('UserAudiocasts')
+            .select({
+                view: 'Grid view',
+            })
+            .eachPage(
+                async function page(records, fetchNextPage) {
+                    records.forEach((record) => {
+                        if (liveChannels[`${record.fields.channelTag}`]) {
+                            liveChannels[`${record.fields.channelTag}`].push(record)
+                        } else {
+                            liveChannels[`${record.fields.channelTag}`] = [record]
+                        }
+                    })
+                    console.log('audiocast object from context ', liveChannels)
+                },
+                function done(err) {
+                    if (err) {
+                        console.error(err)
+                        return
+                    }
+                }
+            )
+    }
 
     const currentUserId = currentUser?.id
 
@@ -152,6 +175,7 @@ function UserProfileProvider(props) {
     }
 
     useEffect(() => {
+        getChannelAudiocasts()
         getData();
         getUserRecordings();
         getCreatorData();
@@ -159,7 +183,7 @@ function UserProfileProvider(props) {
     }, [userId])
 
     return (
-        <UserStateProvider value={{ loading, userData, setUserData, refreshData, getData, channelList, setUserId, currentUserId, getUserRecordings, TitanTrophy, PentaTrophy, NoobTrophy, creatorList, userRecordings, audiocasts, liveChannels, setLiveChannels }}>
+        <UserStateProvider value={{ loading, userData, setUserData, refreshData, getData, channelList, setUserId, currentUserId, getUserRecordings, TitanTrophy, PentaTrophy, NoobTrophy, creatorList, userRecordings, audiocasts, liveChannels }}>
             {props?.children}
         </UserStateProvider>
     )
