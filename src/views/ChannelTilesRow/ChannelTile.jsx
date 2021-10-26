@@ -33,14 +33,12 @@ const useStyles = makeStyles(theme => ({
   image: ({ textColor }) => ({
     height: '100%',
     width: '100%',
+    minHeight: '98px',
     maxHeight: '100%',
     objectFit: 'cover',
     [theme.breakpoints.up('md')]: {
       minHeight: '115px',
       width: '193px',
-    },
-    [theme.breakpoints.only('md')]: {
-      width: '170px',
     },
     [theme.breakpoints.only('md')]: {
       width: '170px',
@@ -60,6 +58,7 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.down('sm')]: {
       width: '80%',
+      minHeight: '98px',
     },
   },
   '@keyframes blinker': {
@@ -93,7 +92,7 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     textOverflow: 'ellipsis',
     width: '100%',
-    display: 'inline-flex',
+    // display: 'inline-flex',
   }),
   plusMinusButton: {
     color: 'white',
@@ -122,6 +121,10 @@ const useStyles = makeStyles(theme => ({
       marginTop: '0px',
     },
   },
+  countSpan: {
+    marginLeft: 3, 
+    color: colors.yellow,
+  }
 }))
 
 const ChannelTile = ({ channel }) => {
@@ -213,7 +216,7 @@ const ChannelTile = ({ channel }) => {
         )}
         <div className={classes.text}>{channel.title}</div>
       </div>
-      <p className={classes.text}>Number of Audiocasts: {audiocastLength}</p>
+      <p className={classes.text}>Number of Audiocasts:<span className={classes.countSpan}>{audiocastLength}</span></p>
     </div>
   )
 }
