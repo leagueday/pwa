@@ -39,7 +39,7 @@ const Auth = () => {
     netlifyIdentity.on('error', onError)
 
     netlifyIdentity.init({
-      APIUrl: 'https://leaguedayapp.gg/'
+      APIUrl: 'https://leaguedayapp.gg/.netlify/identity'
     })
   }, [])
 
