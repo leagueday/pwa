@@ -520,28 +520,28 @@ console.log(audiocast)
               <div className={classes.linkModalWrapper}>
                 <a
                   target="_blank"
-                  href={`https://www.facebook.com/sharer.php?u=https%3A%2F%2Fapp.leagueday.gg/channel/${audiocast?.fields?.channelTag}`}
+                  href={`https://www.facebook.com/sharer.php?u=https%3A%2F%2Fleagueday.gg/channel/${audiocast?.fields?.channelTag}`}
                   style={{ color: colors.blue }}
                 >
                   <Facebook />
                 </a>{' '}
                 <a
                   target="_blank"
-                  href={`https://twitter.com/intent/tweet?url=https%3A%2F%2Fapp.leagueday.gg/channel/${audiocast?.fields?.channelTag}`}
+                  href={`https://twitter.com/intent/tweet?url=https%3A%2F%2Fleagueday.gg/channel/${audiocast?.fields?.channelTag}`}
                   style={{ color: colors.blue }}
                 >
                   <Twitter />{' '}
                 </a>{' '}
                 <a
                   target="_blank"
-                  href={`https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fapp.leagueday.gg/channel/${audiocast?.fields?.channelTag}`}
+                  href={`https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fleagueday.gg/channel/${audiocast?.fields?.channelTag}`}
                   style={{ color: colors.blue }}
                 >
                   <LinkedIn />
                 </a>
                 <a
                   style={{ color: colors.blue }}
-                  href={`mailto:?body= Check out this LeagueDay channel page! https://app.leagueday.gg/channel/${audiocast?.fields?.channelTag}`}
+                  href={`mailto:?body= Check out this LeagueDay channel page! https://leagueday.gg/channel/${audiocast?.fields?.channelTag}`}
                   target="_blank"
                 >
                   {' '}
