@@ -127,6 +127,26 @@ const useStyles = makeStyles(theme => ({
       filter: 'brightness(150%)',
     },
   },
+  userGuideBtn: {
+    backgroundColor: colors.blue,
+    fontSize: '95%',
+    whiteSpace: 'nowrap',
+    width: '45%',
+    color: 'white',
+    marginTop: '30%',
+    marginBottom: '2%',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.active,
+    },
+  },
+  patreonBtn: {
+    width: '100%',
+    objectFit: 'cover',
+    borderRadius: '5px',
+    height: '35px',
+    background: 'white',
+    marginTop: '5%',
+  },
 }))
 
 const NavBar = () => {
@@ -179,6 +199,28 @@ const NavBar = () => {
         />
       </div>
       <div className={classes.navLinks}>
+      {/* <Button className={classes.userGuideBtn} onClick={() => setOpen(true)}>
+          user guide
+        </Button>
+        <a
+          style={{ width: '45%' }}
+          href="https://www.patreon.com/leaguedaygg"
+          target="_blank"
+        >
+          <img className={classes.patreonBtn} src="/img/patreon.png" alt="" />
+        </a>
+        <a
+          style={{ width: '45%' }}
+          href="
+          https://www.kickstarter.com/projects/nickvantzos/leagueday"
+          target="_blank"
+        >
+          <img
+            className={classes.patreonBtn}
+            src="/img/kickstarterGreen.png"
+            alt="kickstarter"
+          />
+        </a> */}
         <h4
           className={homeActive ? classes.selectedLink : classes.link}
           onClick={() => {

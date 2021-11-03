@@ -90,6 +90,14 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.primary.active,
     },
   },
+  patreonBtn: {
+    width: '100%',
+    objectFit: 'cover',
+    borderRadius: '5px',
+    height: '35px',
+    background: 'white',
+    marginTop: '5%',
+  },
   modalWrapper: {
     position: 'absolute',
     width: 500,
@@ -124,14 +132,6 @@ const useStyles = makeStyles(theme => ({
       userSelect: 'none',
       whiteSpace: 'nowrap',
     }),
-  },
-  patreonBtn: {
-    width: '100%',
-    objectFit: 'cover',
-    borderRadius: '5px',
-    height: '35px',
-    background: 'white',
-    marginTop: '5%',
   },
 }))
 
