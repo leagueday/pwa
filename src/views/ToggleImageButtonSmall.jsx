@@ -70,7 +70,7 @@ const ToggleImageButtonSmall = ({
 }) => {
   const classes = useStyles({ backgroundColor, shadowColor, size })
   return (
-    <div className={cx(classes.imageButton, className)} onClick={onClick} >
+    <div className={cx(classes.imageButton, className)} onClick={onClick}>
       <img
         className={classes.image}
         src={on ? onImage : offImage}
@@ -87,4 +87,4 @@ ToggleImageButtonSmall.defaultProps = {
   size: '2em',
 }
 
-export default ToggleImageButtonSmall;
+export default ToggleImageButtonSmall
