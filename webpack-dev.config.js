@@ -9,12 +9,12 @@ const path = require('path')
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   devServer: {
-    contentBase: '/dist',
+    // contentBase: '/dist',
     historyApiFallback: true,
     hot: true,
     port: 3000,
-    publicPath: '/',
-    writeToDisk: true,
+    // publicPath: '/',
+    // writeToDisk: true,
   },
   devtool: 'inline-cheap-module-source-map',
   entry: [
