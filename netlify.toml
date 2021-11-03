@@ -19,3 +19,9 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[redirects]]
+from = "https://app.leaguedayapp.gg/"
+to = "https://leaguedayapp.gg/"
+status = 301
+force = false
