@@ -132,7 +132,6 @@ const ChannelTile = ({ channel }) => {
   const { liveChannels } = useContext(UserStateContext)
   const theme = useTheme()
   const xs = useMediaQuery(theme.breakpoints.down('sm'))
-  console.log('breakpoint ',useMediaQuery(theme.breakpoints.only('md')))
   const mdUp = useMediaQuery(theme.breakpoints.up('md'))
   const dispatch = useDispatch()
   const gotoThisChannel = () =>
