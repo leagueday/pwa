@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   playPause: {
     position: 'absolute',
     right: 8,
+    fontWeight: 'bold',
   },
 }));
 
@@ -80,11 +81,7 @@ const TopFive = () => {
               }
             />
             <div className={classes.playPause}>
-              <PlusMinusBtn
-                creator={fields}
-                userId={fields.userId}
-                size={'1.5em'}
-              />
+              {fields.UserAudiocasts.length}
             </div>
           </div>
         );

@@ -183,7 +183,7 @@ const FatSideNav = ({ className, home }) => {
           <div className={classes.scrollerChild}>
             <Expander
               className={classes.expander}
-              text="CREATOR LEADERBOARD"
+              text="LEADERBOARD  🏆"
               tag="poca"
             >
               <TopFive />

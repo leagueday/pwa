@@ -79,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
     '&:hover:before': {
       transform: 'scale(1)',
     },
+    marginLeft: '40px',
   },
   selectedLink: {
     marginLeft: '40px',
@@ -154,7 +155,6 @@ const useStyles = makeStyles((theme) => ({
     background: 'white',
     marginTop: '5%',
     minWidth: '85px',
-    marginLeft: '40px',
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
@@ -237,13 +237,18 @@ const NavBar = () => {
         <Button className={classes.userGuideBtn} onClick={() => setOpen(true)}>
           user guide
         </Button>
-        <a href="https://www.patreon.com/leaguedaygg" target="_blank">
+        <a
+          href="https://www.patreon.com/leaguedaygg"
+          target="_blank"
+          style={{ marginLeft: '40px' }}
+        >
           <img className={classes.patreonBtn} src="/img/patreon.png" alt="" />
         </a>
         <a
           href="
           https://www.kickstarter.com/projects/nickvantzos/leagueday"
           target="_blank"
+          style={{ marginLeft: '40px' }}
         >
           <img
             className={classes.patreonBtn}
