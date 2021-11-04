@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
-import MyCreators from './MyCreators'
-import cx from 'classnames'
-import Loading from '../Loading'
-import { Modal } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { Button } from '@material-ui/core'
-import { colors } from '../../styling'
-import { addScrollStyle } from '../util'
-import Expander from './Expander'
-import MyChannels from './MyChannels'
-import MyPodcasts from './MyPodcasts'
+import React, { useState } from 'react';
+import MyCreators from './MyCreators';
+import cx from 'classnames';
+import TopFive from './TopFive';
+import Loading from '../Loading';
+import { Modal } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core';
+import { colors } from '../../styling';
+import { addScrollStyle } from '../util';
+import Expander from './Expander';
+import MyChannels from './MyChannels';
+import MyPodcasts from './MyPodcasts';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   clickable: {
     cursor: 'pointer',
   },
@@ -62,6 +63,7 @@ const useStyles = makeStyles(theme => ({
   )({
     minHeight: 0,
     overflowY: 'auto',
+    overflowX: 'hidden',
     width: '100%',
     maxHeight: '35%',
   }),
@@ -76,7 +78,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     fontSize: 'max(min(1.6vw, 14px), 12px)',
     height: '100%',
-    width: 'min(22%, 17em)',
+    width: 'min(23%, 17.5em)',
   },
   userGuideBtn: {
     backgroundColor: colors.blue,
@@ -89,14 +91,6 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
-  },
-  patreonBtn: {
-    width: '100%',
-    objectFit: 'cover',
-    borderRadius: '5px',
-    height: '35px',
-    background: 'white',
-    marginTop: '5%',
   },
   modalWrapper: {
     position: 'absolute',
@@ -116,6 +110,14 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '5px',
     height: 250,
   },
+  patreonBtn: {
+    width: '100%',
+    objectFit: 'cover',
+    borderRadius: '5px',
+    height: '35px',
+    background: 'white',
+    marginTop: '5%',
+  },
   inNOutButton: {
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
@@ -133,15 +135,16 @@ const useStyles = makeStyles(theme => ({
       whiteSpace: 'nowrap',
     }),
   },
-}))
+  leaderboard: {},
+}));
 
 const FatSideNav = ({ className, home }) => {
-  const classes = useStyles({ home })
-  const [open, setOpen] = useState(false)
+  const classes = useStyles({ home });
+  const [open, setOpen] = useState(false);
 
   const handleModalClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   return (
     <div className={cx(classes.sideNav, className)}>
@@ -169,28 +172,18 @@ const FatSideNav = ({ className, home }) => {
             </Expander>
           </div>
         </div>
-        <Button className={classes.userGuideBtn} onClick={() => setOpen(true)}>
-          user guide
-        </Button>
-        <a
-          style={{ width: '45%' }}
-          href="https://www.patreon.com/leaguedaygg"
-          target="_blank"
-        >
-          <img className={classes.patreonBtn} src="/img/patreon.png" alt="" />
-        </a>
-        <a
-          style={{ width: '45%' }}
-          href="
-          https://www.kickstarter.com/projects/nickvantzos/leagueday"
-          target="_blank"
-        >
-          <img
-            className={classes.patreonBtn}
-            src="/img/kickstarterGreen.png"
-            alt="kickstarter"
-          />
-        </a>
+        <div className={classes.scroller}>
+          <div className={classes.scrollerChild}>
+            <Expander
+              className={classes.expander}
+              text="CREATOR LEADERBOARD"
+              tag="poca"
+            >
+              <TopFive />
+            </Expander>
+          </div>
+        </div>
+        <div className={classes.leaderboard}></div>
         <MyPodcasts />
       </React.Suspense>
       <Modal
@@ -204,7 +197,7 @@ const FatSideNav = ({ className, home }) => {
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default FatSideNav
+export default FatSideNav;

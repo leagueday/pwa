@@ -17,6 +17,7 @@ function UserProfileProvider(props) {
     const currentUser = useSelector(selectors.getUserData)
     // This is for live channels, isnt relevant to users but didn't want to make a whole new state provider or redux flow
     const [liveChannels, setLiveChannels] = useState({})
+    const [allAudiocasts, setAllAudiocasts] = useState([])
 
     const getChannelAudiocasts = async () => {
         base('UserAudiocasts')
@@ -25,6 +26,7 @@ function UserProfileProvider(props) {
             })
             .eachPage(
                 async function page(records, fetchNextPage) {
+                    setAllAudiocasts(records)
                     records.forEach((record) => {
                         if (liveChannels[`${record.fields.channelTag}`]) {
                             liveChannels[`${record.fields.channelTag}`].push(record)
@@ -32,7 +34,6 @@ function UserProfileProvider(props) {
                             liveChannels[`${record.fields.channelTag}`] = [record]
                         }
                     })
-                    console.log('audiocast object from context ', liveChannels)
                 },
                 function done(err) {
                     if (err) {
@@ -183,7 +184,7 @@ function UserProfileProvider(props) {
     }, [userId])
 
     return (
-        <UserStateProvider value={{ loading, userData, setUserData, refreshData, getData, channelList, setUserId, currentUserId, getUserRecordings, TitanTrophy, PentaTrophy, NoobTrophy, creatorList, userRecordings, audiocasts, liveChannels }}>
+        <UserStateProvider value={{ loading, userData, setUserData, refreshData, getData, channelList, allAudiocasts, setUserId, currentUserId, getUserRecordings, TitanTrophy, PentaTrophy, NoobTrophy, creatorList, userRecordings, audiocasts, liveChannels }}>
             {props?.children}
         </UserStateProvider>
     )
