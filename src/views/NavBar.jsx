@@ -1,16 +1,16 @@
-import { selectors, actions } from '../store'
-import React, { useState, useEffect } from 'react'
-import { makeStyles } from '@material-ui/styles'
-import SignInOutButton from './SideNav/SignInOutButton'
-import { useDispatch, useSelector } from 'react-redux'
-import { colors } from '../styling'
-import { Button } from '@material-ui/core'
-import Menu from '@material-ui/core/Menu'
-import { Modal } from '@material-ui/core'
-import MenuItem from '@material-ui/core/MenuItem'
-import { useLocationPathname } from '../store'
+import { selectors, actions } from '../store';
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/styles';
+import SignInOutButton from './SideNav/SignInOutButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { colors } from '../styling';
+import { Button } from '@material-ui/core';
+import Menu from '@material-ui/core/Menu';
+import { Modal } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
+import { useLocationPathname } from '../store';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   navbar: {
     padding: 0,
     margin: 0,
@@ -81,9 +81,11 @@ const useStyles = makeStyles(theme => ({
     },
   },
   selectedLink: {
+    marginLeft: '40px',
     borderBottom: `2px solid ${colors.magenta}`,
   },
   profile: {
+    marginLeft: '40px',
     borderRadius: '50%',
     height: '50px',
     width: '50px',
@@ -113,6 +115,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   inBtn: {
+    marginLeft: '40px',
     background: colors.lightGray,
     color: 'white',
     '&:hover': {
@@ -121,6 +124,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   upBtn: {
+    marginLeft: '40px',
     background: colors.magenta,
     color: 'white',
     '&:hover': {
@@ -139,8 +143,8 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.primary.active,
     },
     [theme.breakpoints.down('sm')]: {
-      display: 'none'
-    }
+      display: 'none',
+    },
   },
   patreonBtn: {
     width: '100%',
@@ -150,9 +154,10 @@ const useStyles = makeStyles(theme => ({
     background: 'white',
     marginTop: '5%',
     minWidth: '85px',
+    marginLeft: '40px',
     [theme.breakpoints.down('sm')]: {
-      display: 'none'
-    }
+      display: 'none',
+    },
   },
   modalWrapper: {
     position: 'absolute',
@@ -172,52 +177,52 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '5px',
     height: 250,
   },
-}))
+}));
 
 const NavBar = () => {
-  const pathname = useLocationPathname()
-  const [homeActive, setHomeActive] = useState(pathname === '/')
-  const [creatorActive, setCreatorActive] = useState(pathname === '/creators')
-  const classes = useStyles()
-  const dispatch = useDispatch()
-  const goHome = () => dispatch(actions.pushHistory('/'))
-  const [profileCreated, setProfileCreated] = useState(false)
-  const user = useSelector(selectors.getUser)
-  const userProfile = useSelector(selectors.getUserData)
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [open, setOpen] = useState(false)
+  const pathname = useLocationPathname();
+  const [homeActive, setHomeActive] = useState(pathname === '/');
+  const [creatorActive, setCreatorActive] = useState(pathname === '/creators');
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const goHome = () => dispatch(actions.pushHistory('/'));
+  const [profileCreated, setProfileCreated] = useState(false);
+  const user = useSelector(selectors.getUser);
+  const userProfile = useSelector(selectors.getUserData);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const handleModalClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget)
-  }
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const homeClick = () => {
-    setHomeActive(true)
-    setCreatorActive(false)
-  }
+    setHomeActive(true);
+    setCreatorActive(false);
+  };
 
   const creatorClick = () => {
-    setCreatorActive(true)
-    setHomeActive(false)
-  }
+    setCreatorActive(true);
+    setHomeActive(false);
+  };
 
   useEffect(() => {
-    if (userProfile) setProfileCreated(true)
-  }, [userProfile])
+    if (userProfile) setProfileCreated(true);
+  }, [userProfile]);
 
   const myprofile = () => {
-    dispatch(actions.pushHistory(`/profile/${user.id}`))
-  }
+    dispatch(actions.pushHistory(`/profile/${user.id}`));
+  };
 
-  const createProfile = () => dispatch(actions.pushHistory('/create'))
+  const createProfile = () => dispatch(actions.pushHistory('/create'));
 
   return (
     <div className={classes.navbar}>
@@ -229,18 +234,13 @@ const NavBar = () => {
         />
       </div>
       <div className={classes.navLinks}>
-      <Button className={classes.userGuideBtn} onClick={() => setOpen(true)}>
+        <Button className={classes.userGuideBtn} onClick={() => setOpen(true)}>
           user guide
         </Button>
-        <a
-          style={{ width: '85px', marginLeft: '40px' }}
-          href="https://www.patreon.com/leaguedaygg"
-          target="_blank"
-        >
+        <a href="https://www.patreon.com/leaguedaygg" target="_blank">
           <img className={classes.patreonBtn} src="/img/patreon.png" alt="" />
         </a>
         <a
-          style={{ width: '85px', marginLeft: '40px' }}
           href="
           https://www.kickstarter.com/projects/nickvantzos/leagueday"
           target="_blank"
@@ -253,20 +253,18 @@ const NavBar = () => {
         </a>
         <h4
           className={homeActive ? classes.selectedLink : classes.link}
-          style={{ marginLeft: '40px' }}
           onClick={() => {
-            goHome()
-            homeClick()
+            goHome();
+            homeClick();
           }}
         >
           Discover
         </h4>
         <h4
           className={creatorActive ? classes.selectedLink : classes.link}
-          style={{ marginLeft: '40px' }}
           onClick={() => {
-            dispatch(actions.pushHistory('/creators'))
-            creatorClick()
+            dispatch(actions.pushHistory('/creators'));
+            creatorClick();
           }}
         >
           Creators
@@ -274,7 +272,6 @@ const NavBar = () => {
         {user ? (
           <>
             <img
-            style={{ marginLeft: '40px' }}
               className={classes.profile}
               onClick={handleClick}
               src={
@@ -317,7 +314,6 @@ const NavBar = () => {
           <>
             <Button
               className={classes.inBtn}
-              style={{ marginLeft: '40px' }}
               onClick={() => dispatch(actions.login())}
               size="medium"
             >
@@ -325,7 +321,6 @@ const NavBar = () => {
             </Button>
             <Button
               className={classes.upBtn}
-              style={{ marginLeft: '40px' }}
               onClick={() => dispatch(actions.login())}
               size="medium"
             >
@@ -345,7 +340,7 @@ const NavBar = () => {
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;

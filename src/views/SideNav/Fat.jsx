@@ -92,6 +92,14 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.active,
     },
   },
+  patreonBtn: {
+    width: '100%',
+    objectFit: 'cover',
+    borderRadius: '5px',
+    height: '35px',
+    background: 'white',
+    marginTop: '5%',
+  },
   modalWrapper: {
     position: 'absolute',
     width: 500,
@@ -135,7 +143,6 @@ const useStyles = makeStyles((theme) => ({
       whiteSpace: 'nowrap',
     }),
   },
-  leaderboard: {},
 }));
 
 const FatSideNav = ({ className, home }) => {
@@ -183,7 +190,6 @@ const FatSideNav = ({ className, home }) => {
             </Expander>
           </div>
         </div>
-        <div className={classes.leaderboard}></div>
         <MyPodcasts />
       </React.Suspense>
       <Modal
