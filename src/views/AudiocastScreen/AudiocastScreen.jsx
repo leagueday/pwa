@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import Airtable from 'airtable';
 import ChatRoom from './ChatRoom';
+import SubscriptionModal from '../ChannelScreen/SubscriptionModal';
 import ToggleImageButton from '../ToggleImageButton';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import LikeButton from '../LikeButton';
@@ -12,7 +12,6 @@ import { useTheme } from '@mui/material';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { actions, constants, selectors } from '../../store';
 import { colors } from '../../styling';
-import { Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { LinkedIn, Twitter, Facebook, Email } from '@material-ui/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -244,7 +243,7 @@ const AudiocastScreen = ({ audiocastId }) => {
   const [linkOpen, setLinkOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [chatSelected, setChatSelected] = useState(false);
-
+  const [open, setOpen] = useState(false);
   const audioMode = useSelector(selectors.getAudioMode);
   const audioUrl = useSelector(selectors.getAudioUrl);
   const currentUser = useSelector(selectors.getUserData);
@@ -278,6 +277,54 @@ const AudiocastScreen = ({ audiocastId }) => {
 
   const closeLinkModal = () => {
     setLinkOpen(false);
+  };
+
+  const handleListen = async () => {
+    if (audiocast?.fields?.type === 'audiocast') {
+      base('UserAudiocasts').update(
+        [
+          {
+            id: audiocast.id,
+            fields: {
+              listeners: audiocast?.fields?.listeners
+                ? [...audiocast?.fields?.listeners, currentUserId]
+                : [currentUserId],
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          records.forEach(function (record) {
+            console.log('listen recorded  ', record);
+          });
+        }
+      );
+    } else if (audiocast.fields.type === 'livestream') {
+      base('ChannelLiveData').update(
+        [
+          {
+            id: audiocast.id,
+            fields: {
+              listeners: audiocast?.fields?.listeners
+                ? [...audiocast?.fields?.listeners, currentUserId]
+                : [currentUserId],
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          records.forEach(function (record) {
+            console.log('listen recorded  ', record);
+          });
+        }
+      );
+    }
   };
 
   useEffect(() => {
@@ -365,11 +412,46 @@ const AudiocastScreen = ({ audiocastId }) => {
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY;
 
   const onPopClick = isPlayings
-    ? (ev) => {
-        dispatch(actions.pauseAudio());
-        ev.stopPropagation();
+  ? (ev) => {
+      ev.stopPropagation();
+      dispatch(actions.pauseAudio());
+    }
+  : (ev) => {
+    if (live) {
+      if (currentUser) {
+        if (
+          currentUser.fields.subscriptions === 'true' &&
+          audiocast.fields.userId === 'cbfba6e1-54eb-43aa-80a9-cb1bd4c04948'
+          ) {
+            console.log('hello?? ')
+            handleListen();
+            if (isSelectedAudio) dispatch(actions.playAudio());
+            else {
+              dispatch(
+                actions.selectAudio(
+                  '',
+                  '',
+                  '',
+                  audiocast.fields.playbackUrl,
+                  '',
+                  '',
+                  ''
+                )
+              );
+              dispatch(actions.playAudio());
+            }
+            ev.stopPropagation();
+          } else if (
+            currentUser.fields.subscriptions !== 'true' &&
+            audiocast.fields.userId === 'cbfba6e1-54eb-43aa-80a9-cb1bd4c04948'
+          ) {
+            setOpen(true);
+          }
+      } else if (!currentUser) {
+        setOpen(true)
       }
-    : (ev) => {
+      } else {
+        handleListen();
         if (isSelectedAudio) dispatch(actions.playAudio());
         else {
           dispatch(
@@ -378,7 +460,7 @@ const AudiocastScreen = ({ audiocastId }) => {
               '',
               '',
               audiocast.fields.playbackUrl,
-              '',
+              indexData,
               '',
               ''
             )
@@ -386,11 +468,13 @@ const AudiocastScreen = ({ audiocastId }) => {
           dispatch(actions.playAudio());
         }
         ev.stopPropagation();
-      };
+      }
+    };
 
   return (
     <BasicLayout>
       <div className={smDown ? classes.contentt : classes.content}>
+        <SubscriptionModal open={open} setOpen={setOpen}/>
         <p
           onClick={() =>
             dispatch(
@@ -643,7 +727,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                 }
               >
                 <img
-                  src={audio.fields.thumbnail}
+                  src={audiocast.fields.thumbnail}
                   alt=""
                   className={classes.sideCastImg}
                 />
