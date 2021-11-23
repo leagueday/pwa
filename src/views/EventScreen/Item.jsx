@@ -1,23 +1,23 @@
-import React, { useContext } from 'react'
-import cx from 'classnames'
-import { useDispatch, useSelector } from 'react-redux'
-import { UserStateContext } from '../../store/stateProviders/userState'
-import { makeStyles } from '@material-ui/core/styles'
-import LikeButton from '../LikeButton'
-import Hidden from '@material-ui/core/Hidden'
-import { actions, constants as storeConstants, selectors } from '../../store'
-import { colors } from '../../styling'
-import { computeZebraBackgroundColor } from '../util'
-import { makeIconButton } from '../IconButton'
-import { IcoPlay, IcoPause } from '../icons'
-import Collapse from '@material-ui/core/Collapse'
-import { stripHtml } from '../util'
-import { useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import React, { useContext } from 'react';
+import cx from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
+import { UserStateContext } from '../../store/stateProviders/userState';
+import { makeStyles } from '@mui/styles';
+import LikeButton from '../LikeButton';
+import Hidden from '@material-ui/core/Hidden';
+import { actions, constants as storeConstants, selectors } from '../../store';
+import { colors } from '../../styling';
+import { computeZebraBackgroundColor } from '../util';
+import { makeIconButton } from '../IconButton';
+import { IcoPlay, IcoPause } from '../icons';
+import Collapse from '@material-ui/core/Collapse';
+import { stripHtml } from '../util';
+import { useTheme } from '@mui/material';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const PauseButton = makeIconButton(IcoPause)
-const PlayButton = makeIconButton(IcoPlay)
-const useStyles = makeStyles(theme => ({
+const PauseButton = makeIconButton(IcoPause);
+const PlayButton = makeIconButton(IcoPlay);
+const useStyles = makeStyles((theme) => ({
   attribute: {
     padding: '0em 1em',
     whiteSpace: 'nowrap',
@@ -99,7 +99,7 @@ const useStyles = makeStyles(theme => ({
       fontSize: '80%',
     },
   },
-}))
+}));
 
 const Item = ({
   accentColor,
@@ -114,42 +114,42 @@ const Item = ({
   description,
   audio,
 }) => {
-  const theme = useTheme()
-  const sm = useMediaQuery(theme.breakpoints.down('sm'))
+  const theme = useTheme();
+  const sm = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles({
     accentColor,
     backgroundColor: computeZebraBackgroundColor(itemIndex),
-  })
-  const dispatch = useDispatch()
-  const audioUrl = useSelector(selectors.getAudioUrl)
-  const audioMode = useSelector(selectors.getAudioMode)
-  const userProfile = useSelector(selectors.getUserData)
-  const currentUserId = userProfile?.id
-  const isSelectedAudio = audioUrl && audioUrl === itemAudioUrl
+  });
+  const dispatch = useDispatch();
+  const audioUrl = useSelector(selectors.getAudioUrl);
+  const audioMode = useSelector(selectors.getAudioMode);
+  const userProfile = useSelector(selectors.getUserData);
+  const currentUserId = userProfile?.id;
+  const isSelectedAudio = audioUrl && audioUrl === itemAudioUrl;
   const isPlaying =
-    isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
-  const PopButton = isPlaying ? PauseButton : PlayButton
+    isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY;
+  const PopButton = isPlaying ? PauseButton : PlayButton;
 
   const onPopClick = isPlaying
-    ? ev => {
+    ? (ev) => {
         //console.log('PAUSED AUDIO');
-        dispatch(actions.pauseAudio())
-        ev.stopPropagation()
+        dispatch(actions.pauseAudio());
+        ev.stopPropagation();
       }
-    : ev => {
+    : (ev) => {
         if (isSelectedAudio) {
           //console.log('PLAYED AUDIO');
-          dispatch(actions.playAudio())
+          dispatch(actions.playAudio());
         } else {
           //console.log('PLAY AUDIO');
           //console.log('itemIndex :: ', itemIndex);
           dispatch(
             actions.selectAudio('', '', '', itemAudioUrl, itemIndex, '', title)
-          )
-          dispatch(actions.playAudio())
+          );
+          dispatch(actions.playAudio());
         }
-        ev.stopPropagation()
-      }
+        ev.stopPropagation();
+      };
 
   // RENDER HTML COMPONENT
 
@@ -187,7 +187,7 @@ const Item = ({
         </Collapse>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Item
+export default Item;

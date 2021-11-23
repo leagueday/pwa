@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react'
-import AudioCard from './AudioCard'
-import { useSelector, useDispatch } from 'react-redux'
-import { UserStateContext } from '../../store/stateProviders/userState'
-import { selectors, actions } from '../../store'
+import React, { useState, useEffect, useContext } from 'react';
+import AudioCard from './AudioCard';
+import { useSelector, useDispatch } from 'react-redux';
+import { UserStateContext } from '../../store/stateProviders/userState';
+import { selectors, actions } from '../../store';
 import('buffer').then(({ Buffer }) => {
-  global.Buffer = Buffer
-})
-import { makeStyles } from '@material-ui/styles'
-import axios from 'axios'
+  global.Buffer = Buffer;
+});
+import { makeStyles } from '@mui/styles';
+import axios from 'axios';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -17,35 +17,37 @@ const useStyles = makeStyles(theme => ({
       justifyContent: 'space-evenly',
     },
   },
-}))
+}));
 
 const LiveStreams = ({ channelTag }) => {
-  const classes = useStyles()
-  const [userAudio, setUserAudio] = useState([])
-  const baseId = 'appXoertP1WJjd4TQ'
+  const classes = useStyles();
+  const [userAudio, setUserAudio] = useState([]);
+  const baseId = 'appXoertP1WJjd4TQ';
 
   const getLiveData = () => {
-    let urladd = `filterByFormula={channelTag}='${channelTag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
+    let urladd = `filterByFormula={channelTag}='${channelTag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`;
     axios
       .post('https://leagueday-api.herokuapp.com/proxies/commingsoon', {
         url: `${baseId}/ChannelLiveData?${urladd}`,
       })
-      .then(response => {
+      .then((response) => {
         setUserAudio(
-          response.data.data.records.filter(item => !!item.fields.liveStreamId)
-        )
+          response.data.data.records.filter(
+            (item) => !!item.fields.liveStreamId
+          )
+        );
       })
-      .catch(error => {
-        console.log('error from LiveStream.jsx getLiveData', error)
-      })
-  }
+      .catch((error) => {
+        console.log('error from LiveStream.jsx getLiveData', error);
+      });
+  };
 
   useEffect(() => {
-    getLiveData()
-  }, [channelTag])
+    getLiveData();
+  }, [channelTag]);
 
   const MuxComponent = ({ livestreamid, count, audio }) => {
-    const [active, setActive] = useState(false)
+    const [active, setActive] = useState(false);
 
     useEffect(() => {
       axios
@@ -54,13 +56,13 @@ const LiveStreams = ({ channelTag }) => {
         })
         .then(({ data }) => {
           if (data.data.data.status === 'active') {
-            setActive(true)
+            setActive(true);
           }
         })
-        .catch(error => {
-          console.log('error in LiveStream.jsx MuxComponent', error)
-        })
-    }, [])
+        .catch((error) => {
+          console.log('error in LiveStream.jsx MuxComponent', error);
+        });
+    }, []);
 
     return (
       active && (
@@ -71,8 +73,8 @@ const LiveStreams = ({ channelTag }) => {
           live={true}
         />
       )
-    )
-  }
+    );
+  };
 
   return (
     <div className={classes.wrapper}>
@@ -85,7 +87,7 @@ const LiveStreams = ({ channelTag }) => {
         />
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default LiveStreams
+export default LiveStreams;

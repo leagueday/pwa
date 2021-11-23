@@ -1,12 +1,12 @@
-import React from 'react'
-import cx from 'classnames'
+import React from 'react';
+import cx from 'classnames';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import { colors } from '../../styling'
-import { IcoMagnifier } from '../icons'
+import { colors } from '../../styling';
+import { IcoMagnifier } from '../icons';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   entryContainer: {
     backgroundColor: colors.lightGray,
     borderBottomLeftRadius: '1em',
@@ -30,10 +30,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
   },
-}))
+}));
 
 const SearchLozenge = ({ className }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <div className={cx(className, classes.searchLozenge)}>
@@ -46,7 +46,7 @@ const SearchLozenge = ({ className }) => {
       />
       <div className={classes.entryContainer} />
     </div>
-  )
-}
+  );
+};
 
 // export default SearchLozenge;

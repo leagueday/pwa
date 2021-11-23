@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useMemo, useContext } from 'react'
-import { UserStateContext } from '../../store/stateProviders/userState'
-import { useDispatch } from 'react-redux'
-import axios from 'axios'
-import { makeStyles } from '@material-ui/core/styles'
-import { actions } from '../../store'
-import { colors } from '../../styling'
-import { Button } from '@material-ui/core'
-import { useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import PlusMinusButton from '../PlusMinusButton'
-import Square from '../Square'
-import { base, baseId } from '../..'
-import { getMyList } from '../../api/getChannelList'
-const useStyles = makeStyles(theme => ({
+import React, { useState, useEffect, useMemo, useContext } from 'react';
+import { UserStateContext } from '../../store/stateProviders/userState';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { makeStyles } from '@mui/styles';
+import { actions } from '../../store';
+import { colors } from '../../styling';
+import { Button } from '@mui/material';
+import { useTheme } from '@mui/material';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import PlusMinusButton from '../PlusMinusButton';
+import Square from '../Square';
+import { baseId } from '../..';
+
+const useStyles = makeStyles((theme) => ({
   channelTile: {
     cursor: 'pointer',
     display: 'flex',
@@ -122,61 +122,61 @@ const useStyles = makeStyles(theme => ({
     },
   },
   countSpan: {
-    marginLeft: 3, 
+    marginLeft: 3,
     color: colors.yellow,
-  }
-}))
+  },
+}));
 
 const ChannelTile = ({ channel }) => {
-  const classes = useStyles({ textColor: channel.color })
-  const { liveChannels } = useContext(UserStateContext)
-  const theme = useTheme()
-  const xs = useMediaQuery(theme.breakpoints.down('sm'))
-  const mdUp = useMediaQuery(theme.breakpoints.up('md'))
-  const dispatch = useDispatch()
+  const classes = useStyles({ textColor: channel.color });
+  const { liveChannels } = useContext(UserStateContext);
+  const theme = useTheme();
+  const xs = useMediaQuery(theme.breakpoints.down('sm'));
+  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
+  const dispatch = useDispatch();
   const gotoThisChannel = () =>
-    dispatch(actions.pushHistory(`/channel/${channel.tag}`))
-  const [userAudio, setUserAudio] = useState([])
-  const [active, setActive] = useState(false)
-  const channelTag = channel.tag
-  const audiocastLength = liveChannels[`${channel?.tag}`]?.length ?? 0
+    dispatch(actions.pushHistory(`/channel/${channel.tag}`));
+  const [userAudio, setUserAudio] = useState([]);
+  const [active, setActive] = useState(false);
+  const channelTag = channel.tag;
+  const audiocastLength = liveChannels[`${channel?.tag}`]?.length ?? 0;
 
   useMemo(() => {
     if (channel.tag) {
-      let urladd = `filterByFormula={channelTag}='${channelTag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
+      let urladd = `filterByFormula={channelTag}='${channelTag}'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`;
       axios
         .post('https://leagueday-api.herokuapp.com/proxies/commingsoon', {
           url: `${baseId}/ChannelLiveData?${urladd}`,
         })
-        .then(response => {
+        .then((response) => {
           setUserAudio(
             response.data.data.records.filter(
-              item => !!item.fields.liveStreamId
+              (item) => !!item.fields.liveStreamId
             )
-          )
+          );
         })
-        .catch(error => {
-          console.log('error in ChannelTile.jsx', error)
-        })
+        .catch((error) => {
+          console.log('error in ChannelTile.jsx', error);
+        });
     }
-  }, [channel])
+  }, [channel]);
 
   useMemo(() => {
-    userAudio?.forEach(item => {
+    userAudio?.forEach((item) => {
       axios
         .post('https://leagueday-api.herokuapp.com/proxies/mux', {
           url: `video/v1/live-streams/${item?.fields?.liveStreamId}`,
         })
         .then(({ data }) => {
           if (data.data.data.status === 'active') {
-            setActive(true)
+            setActive(true);
           }
         })
-        .catch(error => {
-          console.log('error in ChannelTile.jsx', error)
-        })
-    })
-  }, [userAudio])
+        .catch((error) => {
+          console.log('error in ChannelTile.jsx', error);
+        });
+    });
+  }, [userAudio]);
 
   return (
     <div className={classes.channelTile}>
@@ -189,7 +189,7 @@ const ChannelTile = ({ channel }) => {
           height={mdUp ?? '240px'}
         />
         {active && (
-          <Button onClick={gotoThisChannel} className={classes.liveSign}>
+          <Button onClick={gotoThisChannel} className={classes.liveSign} variant="contained">
             <b style={{ fontWeight: 900 }}>Live</b>
           </Button>
         )}
@@ -215,9 +215,12 @@ const ChannelTile = ({ channel }) => {
         )}
         <div className={classes.text}>{channel.title}</div>
       </div>
-      <p className={classes.text}>Number of Audiocasts:<span className={classes.countSpan}>{audiocastLength}</span></p>
+      <p className={classes.text}>
+        Number of Audiocasts:
+        <span className={classes.countSpan}>{audiocastLength}</span>
+      </p>
     </div>
-  )
-}
+  );
+};
 
-export default ChannelTile
+export default ChannelTile;

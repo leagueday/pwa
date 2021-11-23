@@ -1,8 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import cx from 'classnames'
-
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import Slider from '@material-ui/core/Slider'
 
 import { actions, selectors } from '../../store'

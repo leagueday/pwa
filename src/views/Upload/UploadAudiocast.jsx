@@ -1,24 +1,24 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { selectors, actions } from '../../store'
-import { useSelector, useDispatch } from 'react-redux'
-import { TextField } from '@material-ui/core'
-import { getMyList } from '../../api/getChannelList'
-import { makeStyles } from '@material-ui/core'
-import BasicLayout from '../BasicLayout'
-import Select from 'react-select'
-import Airtable from 'airtable'
-import { colors } from '../../styling'
-import { addScrollStyle } from '../util'
-import { Button } from '@material-ui/core'
-import { UserStateContext } from '../../store/stateProviders/userState'
-const primaryColor = colors.magenta
+import React, { useState, useEffect, useContext } from 'react';
+import { selectors, actions } from '../../store';
+import { useSelector, useDispatch } from 'react-redux';
+import { TextField } from '@material-ui/core';
+import { getMyList } from '../../api/getChannelList';
+import { makeStyles } from '@mui/styles';
+import BasicLayout from '../BasicLayout';
+import Select from 'react-select';
+import Airtable from 'airtable';
+import { colors } from '../../styling';
+import { addScrollStyle } from '../util';
+import { Button } from '@mui/material';
+import { UserStateContext } from '../../store/stateProviders/userState';
+const primaryColor = colors.magenta;
 
-import { uploadFile } from 'react-s3'
+import { uploadFile } from 'react-s3';
 import('buffer').then(({ Buffer }) => {
-  global.Buffer = Buffer
-})
+  global.Buffer = Buffer;
+});
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   content: () =>
     addScrollStyle(
       primaryColor,
@@ -123,7 +123,7 @@ const useStyles = makeStyles(theme => ({
       width: '100%',
     },
   },
-}))
+}));
 
 const config = {
   bucketName: 'leagueday-prod-images',
@@ -131,65 +131,65 @@ const config = {
   region: 'us-east-1',
   accessKeyId: 'AKIA2NEES72FJV4VO343',
   secretAccessKey: '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',
-}
+};
 
-const baseId = 'appXoertP1WJjd4TQ'
-const apiKey = 'keymd23kpZ12EriVi'
-const base = new Airtable({ apiKey }).base(baseId)
+const baseId = 'appXoertP1WJjd4TQ';
+const apiKey = 'keymd23kpZ12EriVi';
+const base = new Airtable({ apiKey }).base(baseId);
 
 const UploadAudiocast = () => {
-  const dispatch = useDispatch()
-  const classes = useStyles()
-  const { userData, setUserId } = useContext(UserStateContext)
+  const dispatch = useDispatch();
+  const classes = useStyles();
+  const { userData, setUserId } = useContext(UserStateContext);
   const [formValues, setFormValues] = useState({
     title: '',
     description: '',
-  })
-  const [selectedChannel, setSelectedChannel] = useState()
-  const [audiocast, setAudiocast] = useState()
-  const [thumbnail, setThumbnail] = useState()
-  const [loading, setLoading] = useState(false)
-  const filteredListRecords = getMyList()
-  const user = useSelector(selectors.getUser)
+  });
+  const [selectedChannel, setSelectedChannel] = useState();
+  const [audiocast, setAudiocast] = useState();
+  const [thumbnail, setThumbnail] = useState();
+  const [loading, setLoading] = useState(false);
+  const filteredListRecords = getMyList();
+  const user = useSelector(selectors.getUser);
 
   useEffect(() => {
-    setUserId(user.id)
-  }, [user])
+    setUserId(user.id);
+  }, [user]);
 
-  const currentUserId = userData?.id
+  const currentUserId = userData?.id;
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setFormValues({
       ...formValues,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
-  const handleAudioUpload = e => {
-    const file = e.target.files[0]
-    console.log('file ', file)
-    setLoading(true)
+  const handleAudioUpload = (e) => {
+    const file = e.target.files[0];
+    console.log('file ', file);
+    setLoading(true);
     uploadFile(e.target.files[0], config)
-      .then(res => {
-        console.log(res.location)
-        setAudiocast(res.location)
-        setLoading(false)
+      .then((res) => {
+        console.log(res.location);
+        setAudiocast(res.location);
+        setLoading(false);
       })
-      .catch(err => console.log(err))
-    console.log(audiocast)
-  }
+      .catch((err) => console.log(err));
+    console.log(audiocast);
+  };
 
-  const handleImageUpload = e => {
-    const file = e.target.files[0]
-    setLoading(true)
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    setLoading(true);
     uploadFile(file, config)
-      .then(res => {
-        console.log(res.location)
-        setThumbnail(res.location)
-        setLoading(false)
+      .then((res) => {
+        console.log(res.location);
+        setThumbnail(res.location);
+        setLoading(false);
       })
-      .catch(err => console.log(err))
-  }
+      .catch((err) => console.log(err));
+  };
 
   const handleSubmit = () => {
     base('UserAudiocasts').create(
@@ -211,17 +211,17 @@ const UploadAudiocast = () => {
       ],
       function (err, records) {
         if (err) {
-          console.error(err)
-          return
+          console.error(err);
+          return;
         }
         records.forEach(function (record) {
-          console.log('created new myList entry  ', record)
-          getCreatorData()
-        })
+          console.log('created new myList entry  ', record);
+          getCreatorData();
+        });
       }
-    )
-    dispatch(actions.pushHistory(`/profile/${user?.id}`))
-  }
+    );
+    dispatch(actions.pushHistory(`/profile/${user?.id}`));
+  };
 
   const customStyles = {
     dropdownIndicator: () => ({
@@ -245,7 +245,7 @@ const UploadAudiocast = () => {
     input: () => ({
       color: 'white',
     }),
-  }
+  };
 
   return (
     <BasicLayout>
@@ -272,7 +272,7 @@ const UploadAudiocast = () => {
               options={filteredListRecords}
               className={classes.select}
               styles={customStyles}
-              onChange={val => setSelectedChannel(val.value)}
+              onChange={(val) => setSelectedChannel(val.value)}
             />
             <h4>Upload Audiocast Thumbnail</h4>
             <input
@@ -291,6 +291,7 @@ const UploadAudiocast = () => {
             {loading && <h2>Loading...</h2>}
 
             <Button
+              variant="contained"
               className={classes.submitBtn}
               onClick={handleSubmit}
               disabled={loading}
@@ -384,7 +385,7 @@ const UploadAudiocast = () => {
         </div>
       </div>
     </BasicLayout>
-  )
-}
+  );
+};
 
-export default UploadAudiocast
+export default UploadAudiocast;

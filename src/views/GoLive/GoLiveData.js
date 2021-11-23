@@ -4,7 +4,7 @@ import axios from 'axios'
 import { base } from '../..';
 import { Button, TextField } from "@material-ui/core";
 import Select from 'react-select';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import 'react-h5-audio-player/lib/styles.css';
 import { getMyList } from '../../api/getChannelList';
 import { selectors } from '../../store'

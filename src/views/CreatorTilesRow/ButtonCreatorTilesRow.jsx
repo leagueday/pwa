@@ -1,17 +1,17 @@
-import React from 'react'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import React from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import debounce from '../../api/debounce'
-import usePrevious from '../../api/usePrevious'
-import BottomBlock from '../BottomBlock'
-import { slideTransitionGroup } from '../util'
-import SideButtons from '../SideButtons'
-import ChannelTile from './ChannelTile'
-import Connector from './Connector'
+import debounce from '../../api/debounce';
+import usePrevious from '../../api/usePrevious';
+import BottomBlock from '../BottomBlock';
+import { slideTransitionGroup } from '../util';
+import SideButtons from '../SideButtons';
+import ChannelTile from './ChannelTile';
+import Connector from './Connector';
 
-const PAGE_LENGTH = 6
+const PAGE_LENGTH = 6;
 
 const useStyles = makeStyles({
   buttonChannelTilesRow: {
@@ -34,35 +34,35 @@ const useStyles = makeStyles({
   },
 });
 
-const useSlideTransitionGroup = makeStyles(slideTransitionGroup)
-const db500 = debounce(500)
+const useSlideTransitionGroup = makeStyles(slideTransitionGroup);
+const db500 = debounce(500);
 
 const EmptyTile = () => {
-  return <div />
-}
+  return <div />;
+};
 
 const ButtonCreatorTilesRow = ({ id, channels, title }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  let baseIndex = 0
+  let baseIndex = 0;
 
   return (
     <CreatorConnector channels={channels} id={id} pageSize={PAGE_LENGTH}>
       {({ displayChannels, goNextPage, goPrevPage, numPages, pageNum }) => {
-        const prevPageNum = usePrevious(pageNum)
-        const isSlidingLeft = pageNum > prevPageNum
-        const slideTransition = useSlideTransitionGroup({ isSlidingLeft })
+        const prevPageNum = usePrevious(pageNum);
+        const isSlidingLeft = pageNum > prevPageNum;
+        const slideTransition = useSlideTransitionGroup({ isSlidingLeft });
 
-        const debouncedPage = db500(direction =>
+        const debouncedPage = db500((direction) =>
           direction === 'L'
             ? goPrevPage && goPrevPage()
             : goNextPage && goNextPage()
-        )
+        );
 
         const maybeDebouncedPageLeft =
-          pageNum > 0 ? () => debouncedPage('L') : null
+          pageNum > 0 ? () => debouncedPage('L') : null;
         const maybeDebouncedPageRight =
-          pageNum < numPages - 1 ? () => debouncedPage('R') : null
+          pageNum < numPages - 1 ? () => debouncedPage('R') : null;
 
         return (
           <BottomBlock numPages={numPages} pageNum={pageNum} titleRest={title}>
@@ -80,13 +80,13 @@ const ButtonCreatorTilesRow = ({ id, channels, title }) => {
                   >
                     <div className={classes.buttonChannelTilesRow}>
                       {[
-                        ...displayChannels.map(channel => (
+                        ...displayChannels.map((channel) => (
                           <div key={baseIndex++} className={classes.tile}>
                             <ChannelTile channel={channel} />
                           </div>
                         )),
                         ...(() => {
-                          const result = []
+                          const result = [];
                           for (
                             let i = displayChannels.length;
                             i < PAGE_LENGTH;
@@ -96,9 +96,9 @@ const ButtonCreatorTilesRow = ({ id, channels, title }) => {
                               <div key={baseIndex++} className={classes.tile}>
                                 <EmptyTile />
                               </div>
-                            )
+                            );
                           }
-                          return result
+                          return result;
                         })(),
                       ]}
                     </div>
@@ -107,10 +107,10 @@ const ButtonCreatorTilesRow = ({ id, channels, title }) => {
               </div>
             </SideButtons>
           </BottomBlock>
-        )
+        );
       }}
     </CreatorConnector>
-  )
-}
+  );
+};
 
 export default ButtonCreatorTilesRow;

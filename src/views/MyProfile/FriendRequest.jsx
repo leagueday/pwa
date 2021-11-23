@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react'
-import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
-import { Button } from '@material-ui/core'
-import axios from 'axios'
-import { makeStyles } from '@material-ui/core'
-import { colors } from '../../styling'
+import React, { useState, useContext } from 'react';
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend';
+import { Button } from '@mui/material';
+import axios from 'axios';
+import { makeStyles } from '@mui/styles';
+import { colors } from '../../styling';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   friendReqImgCont: {
     width: '25%',
     display: 'flex',
@@ -70,13 +70,13 @@ const useStyles = makeStyles(theme => ({
       fontSize: '80%',
     },
   },
-}))
+}));
 
 const FriendRequest = ({ friend }) => {
-  const [accepted, setAccepted] = useState(false)
-  const [declined, setDeclined] = useState(false)
-  const classes = useStyles()
-  const { declineFriendReq, acceptFriendReq } = useContext(FriendsStateContext)
+  const [accepted, setAccepted] = useState(false);
+  const [declined, setDeclined] = useState(false);
+  const classes = useStyles();
+  const { declineFriendReq, acceptFriendReq } = useContext(FriendsStateContext);
 
   return (
     <div
@@ -105,25 +105,27 @@ const FriendRequest = ({ friend }) => {
         }}
       >
         {accepted ? (
-          <Button className={classes.accepted}>Accepted!</Button>
+          <Button variant="contained" className={classes.accepted}>Accepted!</Button>
         ) : declined ? (
-          <Button className={classes.declined}>declined</Button>
+          <Button variant="contained" className={classes.declined}>declined</Button>
         ) : (
           <>
             <Button
+            variant="contained"
               className={classes.editProfile}
               onClick={() => {
-                setAccepted(true)
-                acceptFriendReq(friend.id)
+                setAccepted(true);
+                acceptFriendReq(friend.id);
               }}
             >
               Accept
             </Button>
             <Button
+            variant="contained"
               className={classes.deleteBtn}
               onClick={() => {
-                setDeclined(true)
-                declineFriendReq(friend.id)
+                setDeclined(true);
+                declineFriendReq(friend.id);
               }}
             >
               Decline
@@ -132,7 +134,7 @@ const FriendRequest = ({ friend }) => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FriendRequest
+export default FriendRequest;

@@ -1,9 +1,9 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import React from 'react';
+import { makeStyles } from '@mui/styles';
 
-import { cycleColorSequence } from './util'
+import { cycleColorSequence } from './util';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   loading: {
     alignItems: 'center',
     display: 'flex',
@@ -15,75 +15,75 @@ const useStyles = makeStyles(theme => ({
   text: {
     fontFamily: theme.typography.family.primary,
   },
-}))
+}));
 
 // x cycles/second
 // 1/x s/cycle
 // 1000/x ms/cycle
 const makeCounter = (cycleRate, state, setState) => {
-  let stopped = false
-  let intervalId = null
+  let stopped = false;
+  let intervalId = null;
 
-  const max = cycleColorSequence.length - 1
+  const max = cycleColorSequence.length - 1;
 
   intervalId = setInterval(() => {
-    setState(state === max ? 0 : state + 1)
-  }, 1000 / cycleRate)
+    setState(state === max ? 0 : state + 1);
+  }, 1000 / cycleRate);
 
   return () => {
-    stopped = true
-    if (intervalId) clearInterval(intervalId)
-  }
-}
+    stopped = true;
+    if (intervalId) clearInterval(intervalId);
+  };
+};
 
-const makeColorize = s => {
-  const numColors = cycleColorSequence.length
-  const sa = Array.from(s)
+const makeColorize = (s) => {
+  const numColors = cycleColorSequence.length;
+  const sa = Array.from(s);
 
-  return iteration => (
+  return (iteration) => (
     <>
       {(() => {
-        const spans = []
+        const spans = [];
 
-        let i = iteration
+        let i = iteration;
 
         for (let j = 0; j < sa.length; j++) {
-          const color = cycleColorSequence[i]
+          const color = cycleColorSequence[i];
 
           spans.push(
             <span key={j} style={{ color }}>
               {sa[j]}
             </span>
-          )
+          );
 
-          i = i + 1
-          if (i === numColors) i = 0
+          i = i + 1;
+          if (i === numColors) i = 0;
         }
 
-        return spans
+        return spans;
       })()}
     </>
-  )
-}
+  );
+};
 
 const Loading = () => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const [cycle, setCycle] = React.useState(0)
+  const [cycle, setCycle] = React.useState(0);
 
   // tbd stop calling this fn on each render
   // note to self: grow a brain
-  const stopCounter = makeCounter(5, cycle, setCycle)
+  const stopCounter = makeCounter(5, cycle, setCycle);
 
-  const colorize = React.useCallback(makeColorize('Loading...'))
+  const colorize = React.useCallback(makeColorize('Loading...'));
 
-  React.useEffect(() => stopCounter)
+  React.useEffect(() => stopCounter);
 
   return (
     <div className={classes.loading}>
       <div className={classes.text}>{colorize(cycle)}</div>
     </div>
-  )
-}
+  );
+};
 
-export default Loading
+export default Loading;

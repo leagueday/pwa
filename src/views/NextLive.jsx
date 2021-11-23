@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import useAirTable from '../api/useAirtable'
-import { makeStyles } from '@material-ui/core/styles'
-import { colors } from '../styling'
+import React, { useState, useEffect } from 'react';
+import useAirTable from '../api/useAirtable';
+import { makeStyles } from '@mui/styles';
+import { colors } from '../styling';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   nextLive: {
     display: 'flex',
     width: '100%',
@@ -36,10 +36,10 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
-}))
+}));
 
 const NextLive = ({ titleStart, titleRest }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <div classes={classes.nextLive}>
@@ -59,7 +59,7 @@ const NextLive = ({ titleStart, titleRest }) => {
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default NextLive
+export default NextLive;

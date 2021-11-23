@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import cx from 'classnames'
-import { makeStyles } from '@material-ui/core/styles'
-import { colors } from '../styling'
-import SliderDots from './SliderDots'
-import NextLive from './NextLive'
+import React, { useState, useEffect } from 'react';
+import cx from 'classnames';
+import { makeStyles } from '@mui/styles';
+import { colors } from '../styling';
+import SliderDots from './SliderDots';
+import NextLive from './NextLive';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   bottomBlock: {
     overflowY: 'hidden',
     width: '100%',
@@ -70,14 +70,17 @@ const useStyles = makeStyles(theme => ({
   titleStart: ({ accentColor }) => ({
     color: accentColor,
   }),
-}))
+}));
 
-const BottomBlock = props => {
-  const classes = useStyles(props)
-  const { className, numPages, pageNum, titleRest, titleStart } = props
+const BottomBlock = (props) => {
+  const classes = useStyles(props);
+  const { className, numPages, pageNum, titleRest, titleStart } = props;
 
   return (
-    <div className={cx(classes.bottomBlock, className)} id={ titleRest === "Audiocasts" ? 'audiocasts' : '' }>
+    <div
+      className={cx(classes.bottomBlock, className)}
+      id={titleRest === 'Audiocasts' ? 'audiocasts' : ''}
+    >
       <div className={classes.titleAndDotsRow}>
         <div className={classes.titleRow}>
           {(titleStart || titleRest) && (
@@ -86,13 +89,13 @@ const BottomBlock = props => {
               {titleRest}
             </div>
           )}
-        {numPages > 1 && (
-          <SliderDots
-            className={classes.sliderDots}
-            numPages={numPages}
-            pageNum={pageNum}
-          />
-        )}
+          {numPages > 1 && (
+            <SliderDots
+              className={classes.sliderDots}
+              numPages={numPages}
+              pageNum={pageNum}
+            />
+          )}
           <div className={classes.rhsCol}>
             <div className={cx(classes.rhsCell, classes.pinStripe)} />
             <div className={classes.rhsCell} />
@@ -101,11 +104,11 @@ const BottomBlock = props => {
       </div>
       <div className={classes.children}>{props.children}</div>
     </div>
-  )
-}
+  );
+};
 
 BottomBlock.defaultProps = {
   accentColor: colors.white80,
-}
+};
 
-export default BottomBlock
+export default BottomBlock;

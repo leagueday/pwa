@@ -1,10 +1,10 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import React from 'react';
+import { makeStyles } from '@mui/styles';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { colors } from '../styling'
-import { IcoLeftSolid, IcoRightSolid } from './icons'
-import { makeIconButton } from './IconButton'
+import { colors } from '../styling';
+import { IcoLeftSolid, IcoRightSolid } from './icons';
+import { makeIconButton } from './IconButton';
 
 const useStyles = makeStyles({
   button: {
@@ -38,28 +38,38 @@ const useStyles = makeStyles({
     overflow: 'hidden',
     position: 'relative',
   },
-})
+});
 
 const SideButtons = ({ children, accentColor, onLeftClick, onRightClick }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <div className={classes.sideButtons}>
       {children}
       <div className={classes.overlay}>
         {onLeftClick ? (
-         <ChevronLeftIcon color={'white'} fontSize={'large'} onClick={onLeftClick} className={classes.button}/>
+          <ChevronLeftIcon
+            color={'white'}
+            fontSize={'large'}
+            onClick={onLeftClick}
+            className={classes.button}
+          />
         ) : (
           <div />
         )}
         {onRightClick ? (
-          <ChevronRightIcon color={'white'} fontSize={'large'} onClick={onRightClick} className={classes.button}/>
+          <ChevronRightIcon
+            color={'white'}
+            fontSize={'large'}
+            onClick={onRightClick}
+            className={classes.button}
+          />
         ) : (
           <div />
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SideButtons
+export default SideButtons;

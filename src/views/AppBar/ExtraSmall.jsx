@@ -1,18 +1,18 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import cx from 'classnames'
-import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe'
-import { makeStyles } from '@material-ui/core'
-import { actions, selectors } from '../../store'
-import { colors } from '../../styling'
-import MenuNav from '../SideNav/MenuNav'
-import { makeIconButton } from '../IconButton'
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import cx from 'classnames';
+import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe';
+import { makeStyles } from '@mui/styles';
+import { actions, selectors } from '../../store';
+import { colors } from '../../styling';
+import MenuNav from '../SideNav/MenuNav';
+import { makeIconButton } from '../IconButton';
 
-import { IcoMenu } from '../icons'
+import { IcoMenu } from '../icons';
 
-const MenuButton = makeIconButton(IcoMenu)
+const MenuButton = makeIconButton(IcoMenu);
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'relative',
     top: 0,
@@ -39,29 +39,29 @@ const useStyles = makeStyles(theme => ({
     padding: '0 2vw',
     cursor: 'pointer',
   },
-}))
+}));
 
 //
 const XsAppBar = ({ className, home }) => {
-  const dispatch = useDispatch()
-  const classes = useStyles()
-  
-  const [anchorRef, setAnchorRef] = React.useState()
-  const navButtonRef = React.useRef()
-  const isMenuNavVisible = true === useSelector(selectors.getNavVisibility)
-  const hideMenuNav = () => dispatch(actions.hideNav())
-  const showMenuNav = () => dispatch(actions.showNav())
+  const dispatch = useDispatch();
+  const classes = useStyles();
+
+  const [anchorRef, setAnchorRef] = React.useState();
+  const navButtonRef = React.useRef();
+  const isMenuNavVisible = true === useSelector(selectors.getNavVisibility);
+  const hideMenuNav = () => dispatch(actions.hideNav());
+  const showMenuNav = () => dispatch(actions.showNav());
 
   const toggleMenuNavVisibility = () => {
     if (isMenuNavVisible) {
-      hideMenuNav()
+      hideMenuNav();
     } else {
-      setAnchorRef(navButtonRef.current)
-      showMenuNav()
+      setAnchorRef(navButtonRef.current);
+      showMenuNav();
     }
-  }
+  };
 
-  const maybeGoHome = () => dispatch(actions.pushHistory('/'))
+  const maybeGoHome = () => dispatch(actions.pushHistory('/'));
 
   return (
     <>
@@ -92,7 +92,7 @@ const XsAppBar = ({ className, home }) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default XsAppBar
+export default XsAppBar;

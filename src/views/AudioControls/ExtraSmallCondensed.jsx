@@ -1,13 +1,13 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useSwipeable } from 'react-swipeable'
-import Color from 'color'
-import cx from 'classnames'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSwipeable } from 'react-swipeable';
+import Color from 'color';
+import cx from 'classnames';
 
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles';
 
-import { actions, selectors } from '../../store'
-import { colors } from '../../styling'
+import { actions, selectors } from '../../store';
+import { colors } from '../../styling';
 import {
   IcoDown,
   IcoFastFwdStop,
@@ -15,23 +15,23 @@ import {
   IcoMinus,
   IcoPlus,
   IcoRewindStop,
-} from '../icons'
-import { makeIconButton } from '../IconButton'
-import Connector from './Connector'
-import ExtraSmallHidden from './ExtraSmallHidden'
-import ProgressBox from './ProgressBox'
-import VolumeBox from './VolumeBox'
-import ToggleImageButtonSmall from '../ToggleImageButtonSmall'
-import XsTitle from './XsTitle'
+} from '../icons';
+import { makeIconButton } from '../IconButton';
+import Connector from './Connector';
+import ExtraSmallHidden from './ExtraSmallHidden';
+import ProgressBox from './ProgressBox';
+import VolumeBox from './VolumeBox';
+import ToggleImageButtonSmall from '../ToggleImageButtonSmall';
+import XsTitle from './XsTitle';
 
-const DownButton = makeIconButton(IcoDown)
-const FastFwdStopButton = makeIconButton(IcoFastFwdStop)
-const ForwardStopButton = makeIconButton(IcoForwardStop)
-const MinusButton = makeIconButton(IcoMinus)
-const PlusButton = makeIconButton(IcoPlus)
-const RewindStopButton = makeIconButton(IcoRewindStop)
+const DownButton = makeIconButton(IcoDown);
+const FastFwdStopButton = makeIconButton(IcoFastFwdStop);
+const ForwardStopButton = makeIconButton(IcoForwardStop);
+const MinusButton = makeIconButton(IcoMinus);
+const PlusButton = makeIconButton(IcoPlus);
+const RewindStopButton = makeIconButton(IcoRewindStop);
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
     position: 'relative',
     maxHeight: '8em',
@@ -93,30 +93,30 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
+const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string();
 
 const XsCondensedAudioControls = ({ className, primaryColor }) => {
-  const classes = useStyles({ primaryColor })
+  const classes = useStyles({ primaryColor });
 
-  const dispatch = useDispatch()
-  const hidden = useSelector(selectors.getAudioControlsHidden)
-  const itemTitle = useSelector(selectors.getAudioTitle)
-  const podcastName = useSelector(selectors.getAudioPodcastName)
+  const dispatch = useDispatch();
+  const hidden = useSelector(selectors.getAudioControlsHidden);
+  const itemTitle = useSelector(selectors.getAudioTitle);
+  const podcastName = useSelector(selectors.getAudioPodcastName);
 
   const swipeHandlers = useSwipeable({
-    onSwiped: eventData => {
-      const dir = eventData?.dir
+    onSwiped: (eventData) => {
+      const dir = eventData?.dir;
 
       if (dir === 'Up') {
-        dispatch(actions.expandAudioControls())
+        dispatch(actions.expandAudioControls());
       } else if (dir === 'Down') {
-        dispatch(actions.hideAudioControls())
+        dispatch(actions.hideAudioControls());
       }
     },
     preventDefaultTouchmoveEvent: true,
-  })
+  });
 
-  const onHide = () => dispatch(actions.hideAudioControls())
+  const onHide = () => dispatch(actions.hideAudioControls());
 
   return hidden ? (
     <ExtraSmallHidden />
@@ -218,7 +218,7 @@ const XsCondensedAudioControls = ({ className, primaryColor }) => {
         )
       }
     </Connector>
-  )
-}
+  );
+};
 
-export default XsCondensedAudioControls
+export default XsCondensedAudioControls;

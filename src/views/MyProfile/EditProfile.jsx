@@ -1,24 +1,24 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Button, TextField, Paper, Typography } from '@material-ui/core'
-import { base } from '../..'
-import { UserStateContext } from '../../store/stateProviders/userState'
-import { makeStyles } from '@material-ui/core/styles'
-import 'react-h5-audio-player/lib/styles.css'
-import { selectors, actions } from '../../store'
-import { colors } from '../../styling'
-import BasicLayout from '../BasicLayout'
-import { addScrollStyle } from '../util'
-import { uploadFile } from 'react-s3'
-import CameraAltIcon from '@material-ui/icons/CameraAlt'
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Button, TextField, Paper, Typography } from '@material-ui/core';
+import { base } from '../..';
+import { UserStateContext } from '../../store/stateProviders/userState';
+import { makeStyles } from '@mui/styles';
+import 'react-h5-audio-player/lib/styles.css';
+import { selectors, actions } from '../../store';
+import { colors } from '../../styling';
+import BasicLayout from '../BasicLayout';
+import { addScrollStyle } from '../util';
+import { uploadFile } from 'react-s3';
+import CameraAltIcon from '@material-ui/icons/CameraAlt';
 
 import('buffer').then(({ Buffer }) => {
-  global.Buffer = Buffer
-})
+  global.Buffer = Buffer;
+});
 
-const primaryColor = colors.magenta
-;('use strict')
-const useStyles = makeStyles(theme => ({
+const primaryColor = colors.magenta;
+('use strict');
+const useStyles = makeStyles((theme) => ({
   channelCategories: {
     marginTop: '0.5em',
   },
@@ -220,15 +220,15 @@ const useStyles = makeStyles(theme => ({
   form: {
     margin: 0,
   },
-}))
+}));
 
-const EditProfile = props => {
-  const dispatch = useDispatch()
-  const [image, setimage] = useState()
-  const [heroImg, setHeroImg] = useState()
-  const { getData } = useContext(UserStateContext)
-  const profileInfo = useSelector(selectors.getUserData)
-  const [loading, setLoading] = useState(false)
+const EditProfile = (props) => {
+  const dispatch = useDispatch();
+  const [image, setimage] = useState();
+  const [heroImg, setHeroImg] = useState();
+  const { getData } = useContext(UserStateContext);
+  const profileInfo = useSelector(selectors.getUserData);
+  const [loading, setLoading] = useState(false);
 
   const [state, setFile] = useState({
     mainState: 'initial',
@@ -240,11 +240,11 @@ const EditProfile = props => {
     selectedFileError: '',
     photoError: '',
     image: image,
-  })
+  });
 
   useEffect(() => {
-    setimage(profileInfo?.fields?.image)
-    setHeroImg(profileInfo?.fields?.heroImg)
+    setimage(profileInfo?.fields?.image);
+    setHeroImg(profileInfo?.fields?.heroImg);
     setFile({
       mainState: 'initial',
       imageUploaded: 0,
@@ -255,8 +255,8 @@ const EditProfile = props => {
       selectedFileError: '',
       photoError: '',
       image: image,
-    })
-  }, [profileInfo])
+    });
+  }, [profileInfo]);
 
   const [formInput, setFormInput] = useState({
     name: profileInfo.fields.username ? profileInfo.fields.username : '',
@@ -270,10 +270,10 @@ const EditProfile = props => {
       ? profileInfo.fields.TwitterUrl
       : '',
     TwitchUrl: profileInfo.fields.TwitchUrl ? profileInfo.fields.TwitchUrl : '',
-  })
+  });
 
-  const [formChanged, setFormChanged] = useState(false)
-  const user = useSelector(selectors.getUser)
+  const [formChanged, setFormChanged] = useState(false);
+  const user = useSelector(selectors.getUser);
 
   const config = {
     bucketName: 'leagueday-prod-images',
@@ -281,17 +281,17 @@ const EditProfile = props => {
     region: 'us-east-1',
     accessKeyId: 'AKIA2NEES72FJV4VO343',
     secretAccessKey: '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',
-  }
+  };
 
-  const handleUploadClick = event => {
-    setFormChanged(true)
-    const file = event.target.files[0]
+  const handleUploadClick = (event) => {
+    setFormChanged(true);
+    const file = event.target.files[0];
     uploadFile(file, config)
-      .then(data => {
-        setimage(data['location'])
-        console.log('datafile', JSON.stringify(data))
+      .then((data) => {
+        setimage(data['location']);
+        console.log('datafile', JSON.stringify(data));
       })
-      .catch(err => console.error(err))
+      .catch((err) => console.error(err));
 
     setFile({
       ...state,
@@ -299,56 +299,56 @@ const EditProfile = props => {
       image: URL.createObjectURL(file),
       imageUploaded: 1,
       photoError: '',
-    })
+    });
 
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onloadend = function (e) {
       setFile({
         ...state,
         selectedFile: [reader.result],
         fileupload: [reader.result],
         photoError: '',
-      })
-    }
-    reader.readAsDataURL(file)
-    setimage(file)
-  }
+      });
+    };
+    reader.readAsDataURL(file);
+    setimage(file);
+  };
 
-  const handleHeroImg = e => {
-    setFormChanged(true)
-    const file = e.target.files[0]
+  const handleHeroImg = (e) => {
+    setFormChanged(true);
+    const file = e.target.files[0];
     uploadFile(file, config)
-      .then(data => {
-        setHeroImg(data['location'])
-        console.log('datafile', JSON.stringify(data))
+      .then((data) => {
+        setHeroImg(data['location']);
+        console.log('datafile', JSON.stringify(data));
       })
-      .catch(err => console.error(err))
+      .catch((err) => console.error(err));
     setFile({
       ...state,
       mainState: 'uploaded',
       selectedHero: URL.createObjectURL(file),
       imageUploaded: 1,
       photoError: '',
-    })
+    });
 
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onloadend = function (e) {
       setFile({
         ...state,
         selectedHero: [reader.result],
         heroUpload: [reader.result],
         photoError: '',
-      })
-    }
-    reader.readAsDataURL(file)
-    setHeroImg(file)
-    console.log('hero ', image)
-  }
-  const classes = useStyles({ primaryColor })
+      });
+    };
+    reader.readAsDataURL(file);
+    setHeroImg(file);
+    console.log('hero ', image);
+  };
+  const classes = useStyles({ primaryColor });
 
-  const submit = evt => {
-    evt.preventDefault()
-    setLoading(true)
+  const submit = (evt) => {
+    evt.preventDefault();
+    setLoading(true);
     base('UserProfile').update(
       [
         {
@@ -382,28 +382,28 @@ const EditProfile = props => {
         },
       ],
       function (err, records) {
-        console.log('edit profile ', records)
+        console.log('edit profile ', records);
         if (err) {
-          console.error(err)
-          return
+          console.error(err);
+          return;
         }
-        setLoading(false)
-        dispatch(actions.pushHistory(`/profile/${user.id}`))
-        getData()
+        setLoading(false);
+        dispatch(actions.pushHistory(`/profile/${user.id}`));
+        getData();
       }
-    )
-  }
+    );
+  };
 
-  const hiddenHeroInput = useRef(null)
-  const hiddenProfileInput = useRef(null)
+  const hiddenHeroInput = useRef(null);
+  const hiddenProfileInput = useRef(null);
 
-  const handleHeroClick = e => {
-    hiddenHeroInput.current.click()
-  }
+  const handleHeroClick = (e) => {
+    hiddenHeroInput.current.click();
+  };
 
-  const handleProfileClick = e => {
-    hiddenProfileInput.current.click()
-  }
+  const handleProfileClick = (e) => {
+    hiddenProfileInput.current.click();
+  };
 
   return (
     <BasicLayout home>
@@ -505,13 +505,13 @@ const EditProfile = props => {
                 defaultValue={formInput.name}
                 className={classes.textField}
                 helperText="Enter your Name"
-                onChange={e => {
-                  setFormChanged(true)
+                onChange={(e) => {
+                  setFormChanged(true);
                   setFormInput({
                     ...formInput,
                     name: e.target.value,
                     nameError: '',
-                  })
+                  });
                 }}
               />
               <br />
@@ -527,13 +527,13 @@ const EditProfile = props => {
                 defaultValue={formInput.description}
                 className={classes.textField}
                 helperText="Enter Your Description"
-                onChange={e => {
-                  setFormChanged(true)
+                onChange={(e) => {
+                  setFormChanged(true);
                   setFormInput({
                     ...formInput,
                     description: e.target.value,
                     descriptionError: '',
-                  })
+                  });
                 }}
               />
               <br></br>
@@ -553,12 +553,12 @@ const EditProfile = props => {
                 defaultValue={formInput.TwitterUrl}
                 className={classes.textField}
                 helperText="Enter Your Twitter Handle"
-                onChange={e => {
-                  setFormChanged(true)
+                onChange={(e) => {
+                  setFormChanged(true);
                   setFormInput({
                     ...formInput,
                     TwitterUrl: e.target.value,
-                  })
+                  });
                 }}
               />
               <br></br>
@@ -571,12 +571,12 @@ const EditProfile = props => {
                 defaultValue={formInput.TwitchUrl}
                 className={classes.textField}
                 helperText="Enter Your Twitch Handle"
-                onChange={e => {
-                  setFormChanged(true)
+                onChange={(e) => {
+                  setFormChanged(true);
                   setFormInput({
                     ...formInput,
                     TwitchUrl: e.target.value,
-                  })
+                  });
                 }}
               />
               <br></br>
@@ -596,7 +596,7 @@ const EditProfile = props => {
         </div>
       </div>
     </BasicLayout>
-  )
-}
+  );
+};
 
-export default EditProfile
+export default EditProfile;

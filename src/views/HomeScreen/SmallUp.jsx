@@ -1,23 +1,23 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react';
+import { useSelector } from 'react-redux';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import useFacets from '../../api/useFacets'
-import { selectors } from '../../store'
-import { colors } from '../../styling'
-import BasicLayout from '../BasicLayout'
-import FacetedPodcastTiles from '../FacetedPodcastTiles'
-import Loading from '../Loading'
-import { addScrollStyle } from '../util'
-import SmUpBanner from './SmUpBanner'
-import TitleBar from './TitleBar'
+import useFacets from '../../api/useFacets';
+import { selectors } from '../../store';
+import { colors } from '../../styling';
+import BasicLayout from '../BasicLayout';
+import FacetedPodcastTiles from '../FacetedPodcastTiles';
+import Loading from '../Loading';
+import { addScrollStyle } from '../util';
+import SmUpBanner from './SmUpBanner';
+import TitleBar from './TitleBar';
 
-const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
+const ChannelCategories = React.lazy(() => import('../ChannelCategories'));
 
-const primaryColor = colors.magenta
+const primaryColor = colors.magenta;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   channelCategories: {
     marginTop: '0.5em',
   },
@@ -47,15 +47,15 @@ const useStyles = makeStyles(theme => ({
   titleBar: {
     marginBottom: '0.25em',
   },
-}))
+}));
 
 const SmUpHomeScreen = () => {
-  const facetedPodcasts = useFacets('Home')
+  const facetedPodcasts = useFacets('Home');
 
-  const classes = useStyles({ primaryColor })
+  const classes = useStyles({ primaryColor });
 
-  const user = useSelector(selectors.getUser)
-  const userName = user?.user_metadata?.full_name
+  const user = useSelector(selectors.getUser);
+  const userName = user?.user_metadata?.full_name;
 
   return (
     <BasicLayout home>
@@ -75,7 +75,7 @@ const SmUpHomeScreen = () => {
         </div>
       </div>
     </BasicLayout>
-  )
-}
+  );
+};
 
-export default SmUpHomeScreen
+export default SmUpHomeScreen;

@@ -1,20 +1,20 @@
-import React, { useState } from 'react'
-import { useLocationPathname } from '../../store'
-import { makeStyles } from '@material-ui/core/styles'
-import { colors } from '../../styling'
-import { useTheme } from '@material-ui/core/styles'
-import { isPlatform } from '@ionic/react'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
-import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined'
-import HomeIcon from '@mui/icons-material/Home'
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
-import PersonIcon from '@mui/icons-material/Person'
-import GroupAddIcon from '@mui/icons-material/GroupAdd'
-import { actions, selectors } from '../../store'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react';
+import { useLocationPathname } from '../../store';
+import { makeStyles } from '@mui/styles';
+import { colors } from '../../styling';
+import { useTheme } from '@mui/material';
+import { isPlatform } from '@ionic/react';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
+import HomeIcon from '@mui/icons-material/Home';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import PersonIcon from '@mui/icons-material/Person';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import { actions, selectors } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
     display: 'flex',
     justifyContent: 'space-around',
@@ -30,29 +30,29 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     fontSize: '1.5rem',
   },
-}))
+}));
 
 const MobileNav = () => {
-  const pathname = useLocationPathname()
-  const dispatch = useDispatch()
-  const classes = useStyles()
-  const theme = useTheme()
-  const smUp = useMediaQuery(theme.breakpoints.down('xs'))
-  const user = useSelector(selectors.getUser)
-  const profile = useSelector(selectors.getUserData)
-  const homeActive = pathname === '/'
-  const creatorActive = pathname === '/creators'
-  const profileActive = pathname === `/profile/${user?.id}`
+  const pathname = useLocationPathname();
+  const dispatch = useDispatch();
+  const classes = useStyles();
+  const theme = useTheme();
+  const smUp = useMediaQuery(theme.breakpoints.down('xs'));
+  const user = useSelector(selectors.getUser);
+  const profile = useSelector(selectors.getUserData);
+  const homeActive = pathname === '/';
+  const creatorActive = pathname === '/creators';
+  const profileActive = pathname === `/profile/${user?.id}`;
 
-  const handleProfileClick = e => {
+  const handleProfileClick = (e) => {
     if (!user) {
-      dispatch(actions.login())
+      dispatch(actions.login());
     } else if (user && !profile) {
-      dispatch(actions.pushHistory('/create'))
+      dispatch(actions.pushHistory('/create'));
     } else if (profile) {
-      dispatch(actions.pushHistory(`/profile/${user?.id}`))
+      dispatch(actions.pushHistory(`/profile/${user?.id}`));
     }
-  }
+  };
 
   return (
     smUp && (
@@ -89,7 +89,7 @@ const MobileNav = () => {
         </p>
       </div>
     )
-  )
-}
+  );
+};
 
-export default MobileNav
+export default MobileNav;

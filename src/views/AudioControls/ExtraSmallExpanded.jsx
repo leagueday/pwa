@@ -1,14 +1,14 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useSwipeable } from 'react-swipeable'
-import Color from 'color'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSwipeable } from 'react-swipeable';
+import Color from 'color';
 
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles';
 
-import usePodcast from '../../api/usePodcast'
-import { channelSelectors } from '../../model/rss'
-import { actions, selectors } from '../../store'
-import { colors } from '../../styling'
+import usePodcast from '../../api/usePodcast';
+import { channelSelectors } from '../../model/rss';
+import { actions, selectors } from '../../store';
+import { colors } from '../../styling';
 import {
   IcoDown,
   IcoFastFwdStop,
@@ -16,20 +16,20 @@ import {
   IcoMinus,
   IcoPlus,
   IcoRewindStop,
-} from '../icons'
-import { makeIconButton } from '../IconButton'
-import ToggleImageButtonSmall from '../ToggleImageButtonSmall'
-import Connector from './Connector'
-import ProgressBox from './ProgressBox'
+} from '../icons';
+import { makeIconButton } from '../IconButton';
+import ToggleImageButtonSmall from '../ToggleImageButtonSmall';
+import Connector from './Connector';
+import ProgressBox from './ProgressBox';
 
-const DownButton = makeIconButton(IcoDown)
-const FastFwdStopButton = makeIconButton(IcoFastFwdStop)
-const ForwardStopButton = makeIconButton(IcoForwardStop)
-const MinusButton = makeIconButton(IcoMinus)
-const PlusButton = makeIconButton(IcoPlus)
-const RewindStopButton = makeIconButton(IcoRewindStop)
+const DownButton = makeIconButton(IcoDown);
+const FastFwdStopButton = makeIconButton(IcoFastFwdStop);
+const ForwardStopButton = makeIconButton(IcoForwardStop);
+const MinusButton = makeIconButton(IcoMinus);
+const PlusButton = makeIconButton(IcoPlus);
+const RewindStopButton = makeIconButton(IcoRewindStop);
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   bottomSection: {},
   bottomSectionText: {},
   button: {},
@@ -127,34 +127,34 @@ const useStyles = makeStyles(theme => ({
     padding: '3vw',
     position: 'relative',
   },
-}))
+}));
 
-const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
+const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string();
 
 const ExtraSmallExpanded = () => {
-  const dispatch = useDispatch()
-  const classes = useStyles()
+  const dispatch = useDispatch();
+  const classes = useStyles();
 
-  const podcastUrl = useSelector(selectors.getAudioPodcastUrl)
-  const itemTitle = useSelector(selectors.getAudioTitle)
-  const podcastName = useSelector(selectors.getAudioPodcastName)
+  const podcastUrl = useSelector(selectors.getAudioPodcastUrl);
+  const itemTitle = useSelector(selectors.getAudioTitle);
+  const podcastName = useSelector(selectors.getAudioPodcastName);
 
-  const { rss } = usePodcast({ url: podcastUrl })
+  const { rss } = usePodcast({ url: podcastUrl });
 
-  const imageUrl = channelSelectors.v2.imageUrl(rss)
+  const imageUrl = channelSelectors.v2.imageUrl(rss);
 
-  const onDownClick = () => dispatch(actions.condenseAudioControls())
+  const onDownClick = () => dispatch(actions.condenseAudioControls());
 
   const swipeHandlers = useSwipeable({
-    onSwiped: eventData => {
-      const dir = eventData?.dir
+    onSwiped: (eventData) => {
+      const dir = eventData?.dir;
 
       if (dir === 'Down') {
-        dispatch(actions.condenseAudioControls())
+        dispatch(actions.condenseAudioControls());
       }
     },
     preventDefaultTouchmoveEvent: true,
-  })
+  });
 
   return (
     <Connector>
@@ -169,7 +169,7 @@ const ExtraSmallExpanded = () => {
         replayButtonOnclick,
         titleOnclick,
       }) =>
-        (PlusOrMinusButton => (
+        ((PlusOrMinusButton) => (
           <div
             className={classes.xsSmallExpandedAudioControls}
             {...swipeHandlers}
@@ -256,7 +256,7 @@ const ExtraSmallExpanded = () => {
         ))(isOnMyList ? MinusButton : PlusButton)
       }
     </Connector>
-  )
-}
+  );
+};
 
-export default ExtraSmallExpanded
+export default ExtraSmallExpanded;

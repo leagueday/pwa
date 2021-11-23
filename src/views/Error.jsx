@@ -1,17 +1,17 @@
-import React from 'react'
+import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   error: {
     color: theme.palette.warning.main,
   },
-}))
+}));
 
 const Error = ({ e }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  return <div className={classes.error}>{String(e)}</div>
-}
+  return <div className={classes.error}>{String(e)}</div>;
+};
 
-export default Error
+export default Error;

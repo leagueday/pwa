@@ -1,15 +1,15 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import MobileNav from '../MobileNav'
-import { makeStyles } from '@material-ui/core/styles'
-import { isPlatform, getPlatforms } from '@ionic/react'
-import { actions, selectors } from '../../store'
-import { colors } from '../../styling'
-import AppBar from '../AppBar'
-import AudioControls from '../AudioControls'
-import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import MobileNav from '../MobileNav';
+import { makeStyles } from '@mui/styles';
+import { isPlatform, getPlatforms } from '@ionic/react';
+import { actions, selectors } from '../../store';
+import { colors } from '../../styling';
+import AppBar from '../AppBar';
+import AudioControls from '../AudioControls';
+import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     flex: 2,
   },
@@ -45,16 +45,16 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   sideNav: {},
-}))
+}));
 
-const XsBasicLayout = props => {
-  const platform = isPlatform('hybrid')
-  const classes = useStyles()
+const XsBasicLayout = (props) => {
+  const platform = isPlatform('hybrid');
+  const classes = useStyles();
 
-  const audioItemUrl = useSelector(selectors.getAudioUrl)
-  const isAudioDisplayed = !!audioItemUrl
+  const audioItemUrl = useSelector(selectors.getAudioUrl);
+  const isAudioDisplayed = !!audioItemUrl;
 
-  const navVisibility = useSelector(selectors.getNavVisibility)
+  const navVisibility = useSelector(selectors.getNavVisibility);
 
   return (
     <div className={classes.basicLayoutCol}>
@@ -78,7 +78,7 @@ const XsBasicLayout = props => {
       )}
       {platform && <MobileNav />}
     </div>
-  )
-}
+  );
+};
 
-export default XsBasicLayout
+export default XsBasicLayout;

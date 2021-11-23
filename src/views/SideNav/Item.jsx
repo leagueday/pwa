@@ -1,7 +1,7 @@
-import React from 'react'
-import cx from 'classnames'
-import { makeStyles } from '@material-ui/core/styles'
-import { colors } from '../../styling'
+import React from 'react';
+import cx from 'classnames';
+import { makeStyles } from '@mui/styles';
+import { colors } from '../../styling';
 
 const useStyles = makeStyles({
   image: ({ skinny }) => ({
@@ -46,12 +46,12 @@ const useStyles = makeStyles({
     paddingRight: '0.5em',
     width: '100%',
   },
-})
+});
 
 const Item = ({ title, imageClass, imageUrl, isSelected, onClick, skinny }) => {
-  const classes = useStyles({ skinny })
+  const classes = useStyles({ skinny });
 
-  const fat = !skinny
+  const fat = !skinny;
 
   return (
     <div className={classes.item} onClick={onClick}>
@@ -68,7 +68,7 @@ const Item = ({ title, imageClass, imageUrl, isSelected, onClick, skinny }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Item
+export default Item;

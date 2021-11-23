@@ -1,19 +1,19 @@
-import React from 'react'
-import cx from 'classnames'
-import NextLive from '../NextLive'
-import { makeStyles } from '@material-ui/core/styles'
-import Audiocast from './Audiocast'
-import BottomBlock from '../BottomBlock'
-import ContentLayout from '../ContentLayout'
-import PlusMinusButton from '../PlusMinusButton'
+import React from 'react';
+import cx from 'classnames';
+import NextLive from '../NextLive';
+import { makeStyles } from '@mui/styles';
+import Audiocast from './Audiocast';
+import BottomBlock from '../BottomBlock';
+import ContentLayout from '../ContentLayout';
+import PlusMinusButton from '../PlusMinusButton';
 import LiveBroadcastsMockup, {
   mockupGetHasBroadcasts as hasLiveMockupData,
-} from './LiveBroadcastsMockup'
+} from './LiveBroadcastsMockup';
 import ReplayBroadcastsMockup, {
   mockupGetHasBroadcasts as hasReplayMockupData,
-} from './ReplayBroadcastsMockup'
+} from './ReplayBroadcastsMockup';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   channelColor: ({ channelColor }) => ({
     color: channelColor,
   }),
@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
       right: '2vw',
     },
   },
-}))
+}));
 
 const Logo = ({ channel, classes }) => (
   <div className={classes.logoImageContainer}>
@@ -79,7 +79,7 @@ const Logo = ({ channel, classes }) => (
       />
     </div>
   </div>
-)
+);
 
 const Headline = ({ channel, classes, hasBroadcasts }) => (
   <div className={classes.headline}>
@@ -92,21 +92,16 @@ const Headline = ({ channel, classes, hasBroadcasts }) => (
       {channel.title === 'League of Legends' && 'Live AudioCasts and Replays'}
     </div>
   </div>
-)
+);
 
 const AggregatorContent = ({ channel }) => {
-  const classes = useStyles({ channelColor: channel.color })
+  const classes = useStyles({ channelColor: channel.color });
 
   return (
     <ContentLayout
       accentColor={channel.color}
       renderTopLeft={() => <Logo channel={channel} classes={classes} />}
-      renderTopRight={() => (
-        <Headline
-          channel={channel}
-          classes={classes}
-        />
-      )}
+      renderTopRight={() => <Headline channel={channel} classes={classes} />}
     >
       <BottomBlock
         accentColor={channel.color}
@@ -124,7 +119,11 @@ const AggregatorContent = ({ channel }) => {
         titleStart={channel.title}
         titleRest="Recorded Audiocasts"
       >
-        <Audiocast channelTag={channel.tag} channel={channel} parClasses={classes} />
+        <Audiocast
+          channelTag={channel.tag}
+          channel={channel}
+          parClasses={classes}
+        />
         <ReplayBroadcastsMockup
           className={classes.replayBroadcasts}
           channel={channel}
@@ -133,7 +132,7 @@ const AggregatorContent = ({ channel }) => {
         />
       </BottomBlock>
     </ContentLayout>
-  )
-}
+  );
+};
 
-export default AggregatorContent
+export default AggregatorContent;

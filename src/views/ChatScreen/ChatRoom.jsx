@@ -1,18 +1,18 @@
-import React, { useEffect, useRef, useContext, useState } from 'react'
-import { makeStyles } from '@material-ui/styles'
-import { TextField } from '@material-ui/core'
-import { selectors } from '../../store'
-import { ChatStateContext } from '../../store/stateProviders/useChat'
-import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
-import { useSelector } from 'react-redux'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import axios from 'axios'
-import { addScrollStyle } from '../util'
-import { colors } from '../../styling'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
+import React, { useEffect, useRef, useContext, useState } from 'react';
+import { makeStyles } from '@mui/styles';
+import { TextField } from '@material-ui/core';
+import { selectors } from '../../store';
+import { ChatStateContext } from '../../store/stateProviders/useChat';
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend';
+import { useSelector } from 'react-redux';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import axios from 'axios';
+import { addScrollStyle } from '../util';
+import { colors } from '../../styling';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   chatBox: {
     position: 'relative',
     background: colors.darkerGray,
@@ -119,43 +119,42 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     height: '100%',
   },
-}))
+}));
 
 const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
-  const user = useSelector(selectors.getUser)
-  const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext)
-  const { message, setMessage, allChatsByRoom, getMessagesByRoom } = useContext(
-    ChatStateContext
-  )
-  const roomIdRef = useRef(roomId)
-  const userData = useSelector(selectors.getUserData)
-  const [loading, setLoading] = useState(false)
+  const user = useSelector(selectors.getUser);
+  const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext);
+  const { message, setMessage, allChatsByRoom, getMessagesByRoom } =
+    useContext(ChatStateContext);
+  const roomIdRef = useRef(roomId);
+  const userData = useSelector(selectors.getUserData);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     socket?.on('new_chat', () => {
-      console.log('triggered new chat ')
-      getMessagesByRoom(roomIdRef.current)
-    })
+      console.log('triggered new chat ');
+      getMessagesByRoom(roomIdRef.current);
+    });
 
     return () => {
       socket?.off('new_chat', () => {
-        getMessagesByRoom(roomIdRef.current)
-      })
-    }
-  }, [socket])
+        getMessagesByRoom(roomIdRef.current);
+      });
+    };
+  }, [socket]);
 
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const messageEl = useRef(null)
+  const messageEl = useRef(null);
 
   const scrollToBottom = () => {
-    messageEl?.current?.scrollIntoView({ behavior: 'auto' })
-  }
+    messageEl?.current?.scrollIntoView({ behavior: 'auto' });
+  };
 
-  useEffect(scrollToBottom, [allChatsByRoom])
+  useEffect(scrollToBottom, [allChatsByRoom]);
 
-  const sendChat = e => {
-    e.preventDefault()
+  const sendChat = (e) => {
+    e.preventDefault();
     axios
       .post('https://leagueday-api.herokuapp.com/chats/create', {
         userId: user.id,
@@ -165,35 +164,35 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
           ? userData?.fields?.image
           : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues=',
       })
-      .then(res => {
-        socket.emit('new_chat', { message })
-        setMessage('')
-        console.log('sent message ', res)
+      .then((res) => {
+        socket.emit('new_chat', { message });
+        setMessage('');
+        console.log('sent message ', res);
       })
-      .catch(err => {
-        console.log('message send error ', err)
-      })
-  }
+      .catch((err) => {
+        console.log('message send error ', err);
+      });
+  };
 
-  const listener = event => {
+  const listener = (event) => {
     if (event.code === 'Enter' || event.code === 'NumpadEnter') {
-      sendChat()
+      sendChat();
     }
-  }
+  };
 
   useEffect(() => {
-    document.addEventListener('keydown', listener)
+    document.addEventListener('keydown', listener);
     return () => {
-      document.removeEventListener('keydown', listener)
-    }
-  }, [])
+      document.removeEventListener('keydown', listener);
+    };
+  }, []);
 
   useEffect(async () => {
-    setLoading(true)
-    await getMessagesByRoom(roomId)
-    setLoading(false)
-    roomIdRef.current = roomId
-  }, [user, selectedFriend])
+    setLoading(true);
+    await getMessagesByRoom(roomId);
+    setLoading(false);
+    roomIdRef.current = roomId;
+  }, [user, selectedFriend]);
 
   return (
     <div className={classes.chatBox}>
@@ -203,8 +202,8 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
             {xs && (
               <p
                 onClick={() => {
-                  setSelectedFriend()
-                  setChatExpanded(false)
+                  setSelectedFriend();
+                  setChatExpanded(false);
                 }}
                 style={{
                   position: 'absolute',
@@ -215,7 +214,7 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
                   fontSize: '.85rem',
                 }}
               >
-                <ArrowBackIosIcon color={colors.blue} fontSize="medium" /> 
+                <ArrowBackIosIcon color={colors.blue} fontSize="medium" />
               </p>
             )}
             <div
@@ -237,7 +236,15 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
                   className={classes.friendImg}
                 />
               )}
-              <h3 style={{ marginLeft: 10, fontSize: '1.1rem', whiteSpace: 'nowrap' }}>{selectedFriend.username}</h3>
+              <h3
+                style={{
+                  marginLeft: 10,
+                  fontSize: '1.1rem',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {selectedFriend.username}
+              </h3>
             </div>
           </div>
           <div className={classes.chatRoom}>
@@ -275,7 +282,7 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
                 type="text"
                 className={classes.message}
                 value={message}
-                onChange={e => setMessage(e.target.value)}
+                onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={listener}
                 onSubmit={listener}
               />
@@ -310,7 +317,7 @@ const ChatRoom = ({ socket, roomId, setChatExpanded, xs }) => {
         </h1>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ChatRoom
+export default ChatRoom;

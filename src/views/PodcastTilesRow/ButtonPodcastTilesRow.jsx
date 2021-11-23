@@ -1,19 +1,19 @@
-import React from 'react'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import React from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import debounce from '../../api/debounce'
-import usePrevious from '../../api/usePrevious'
-import SliderDots from '../SliderDots'
-import SideButtons from '../SideButtons'
-import { makeNextColor, slideTransitionGroup } from '../util'
-import Connector from './Connector'
-import PodcastTile from './PodcastTile'
+import debounce from '../../api/debounce';
+import usePrevious from '../../api/usePrevious';
+import SliderDots from '../SliderDots';
+import SideButtons from '../SideButtons';
+import { makeNextColor, slideTransitionGroup } from '../util';
+import Connector from './Connector';
+import PodcastTile from './PodcastTile';
 
-const PAGE_LENGTH = 6
+const PAGE_LENGTH = 6;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   buttonPodcastTilesRow: {
     display: 'flex',
     flex: 1,
@@ -54,40 +54,40 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     width: '100%',
   },
-}))
+}));
 
-const useSlideTransitionGroup = makeStyles(slideTransitionGroup)
+const useSlideTransitionGroup = makeStyles(slideTransitionGroup);
 
-const db500 = debounce(500)
+const db500 = debounce(500);
 
 const EmptyTile = () => {
-  return <div />
-}
+  return <div />;
+};
 
 const ButtonPodcastTilesRow = ({ id, podcasts, title }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const nextColor = makeNextColor()
+  const nextColor = makeNextColor();
 
-  let baseIndex = 0
+  let baseIndex = 0;
 
   return (
     <Connector id={id} pageSize={PAGE_LENGTH} podcasts={podcasts}>
       {({ displayPodcasts, goNextPage, goPrevPage, numPages, pageNum }) => {
-        const prevPageNum = usePrevious(pageNum)
-        const isSlidingLeft = pageNum > prevPageNum
-        const slideTransition = useSlideTransitionGroup({ isSlidingLeft })
+        const prevPageNum = usePrevious(pageNum);
+        const isSlidingLeft = pageNum > prevPageNum;
+        const slideTransition = useSlideTransitionGroup({ isSlidingLeft });
 
-        const debouncedPage = db500(direction =>
+        const debouncedPage = db500((direction) =>
           direction === 'L'
             ? goPrevPage && goPrevPage()
             : goNextPage && goNextPage()
-        )
+        );
 
         const maybeDebouncedPageLeft =
-          pageNum > 0 ? () => debouncedPage('L') : null
+          pageNum > 0 ? () => debouncedPage('L') : null;
         const maybeDebouncedPageRight =
-          pageNum < numPages - 1 ? () => debouncedPage('R') : null
+          pageNum < numPages - 1 ? () => debouncedPage('R') : null;
 
         return (
           <div className={classes.tilesRowContainer}>
@@ -114,7 +114,7 @@ const ButtonPodcastTilesRow = ({ id, podcasts, title }) => {
                 >
                   <div className={classes.buttonPodcastTilesRow}>
                     {[
-                      ...displayPodcasts.map(podcast =>
+                      ...displayPodcasts.map((podcast) =>
                         podcast ? (
                           <div key={baseIndex++} className={classes.tile}>
                             <PodcastTile
@@ -125,7 +125,7 @@ const ButtonPodcastTilesRow = ({ id, podcasts, title }) => {
                         ) : null
                       ),
                       ...(() => {
-                        const result = []
+                        const result = [];
                         for (
                           let i = displayPodcasts.length;
                           i < PAGE_LENGTH;
@@ -135,9 +135,9 @@ const ButtonPodcastTilesRow = ({ id, podcasts, title }) => {
                             <div key={baseIndex++} className={classes.tile}>
                               <EmptyTile />
                             </div>
-                          )
+                          );
                         }
-                        return result
+                        return result;
                       })(),
                     ]}
                   </div>
@@ -145,10 +145,10 @@ const ButtonPodcastTilesRow = ({ id, podcasts, title }) => {
               </TransitionGroup>
             </SideButtons>
           </div>
-        )
+        );
       }}
     </Connector>
-  )
-}
+  );
+};
 
-export default ButtonPodcastTilesRow
+export default ButtonPodcastTilesRow;

@@ -1,16 +1,16 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import cx from 'classnames'
-import Color from 'color'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import cx from 'classnames';
+import Color from 'color';
 
-import { makeStyles } from '@material-ui/core/styles'
-import Slider from '@material-ui/core/Slider'
-import Tooltip from '@material-ui/core/Tooltip'
+import { makeStyles } from '@mui/styles';
+import Slider from '@material-ui/core/Slider';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import { actions, selectors } from '../../store'
-import { colors } from '../../styling'
+import { actions, selectors } from '../../store';
+import { colors } from '../../styling';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   VolumeBox: {
     minWidth: '8vw',
     paddingLeft: '0.33em',
@@ -42,15 +42,15 @@ const useStyles = makeStyles(theme => ({
     fontSize: '90%',
     height: '2em',
     [theme.breakpoints.down('xs')]: {
-      display: 'none'
+      display: 'none',
     },
   },
-}))
+}));
 
 const TooltipVolume = ({ children, open, value }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const volume = useSelector(selectors.getAudioVolume)
+  const volume = useSelector(selectors.getAudioVolume);
 
   return (
     <Tooltip
@@ -62,18 +62,18 @@ const TooltipVolume = ({ children, open, value }) => {
     >
       {children}
     </Tooltip>
-  )
-}
+  );
+};
 
 const VolumeBox = ({ className, isExpanded }) => {
-  const classes = useStyles({ isExpanded })
+  const classes = useStyles({ isExpanded });
 
-  const volume = useSelector(selectors.getAudioVolume)
-  const dispatch = useDispatch()
+  const volume = useSelector(selectors.getAudioVolume);
+  const dispatch = useDispatch();
 
   const onChange = (event, value) => {
-    dispatch(actions.setAudioVolume(value))
-  }
+    dispatch(actions.setAudioVolume(value));
+  };
 
   return (
     <div className={cx(classes.VolumeBox, className)}>
@@ -93,11 +93,11 @@ const VolumeBox = ({ className, isExpanded }) => {
         ValueLabelComponent={TooltipVolume}
       />
     </div>
-  )
-}
+  );
+};
 
 VolumeBox.defaultProps = {
   isExpanded: false,
-}
+};
 
-export default VolumeBox
+export default VolumeBox;

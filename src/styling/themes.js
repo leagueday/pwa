@@ -1,11 +1,11 @@
 import Color from 'color'
 
-import { createMuiTheme } from '@material-ui/core/styles'
+import { createTheme } from '@material-ui/core/styles'
 
 import * as colors from './colors'
 import * as typography from './typography'
 
-export const spec = createMuiTheme({
+export const spec = createTheme({
   palette: {
     background: {
       paper: colors.black, // card background, sidebar background

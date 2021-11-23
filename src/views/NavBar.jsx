@@ -1,13 +1,10 @@
 import { selectors, actions } from '../store';
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import SignInOutButton from './SideNav/SignInOutButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { colors } from '../styling';
-import { Button } from '@material-ui/core';
-import Menu from '@material-ui/core/Menu';
-import { Modal } from '@material-ui/core';
-import MenuItem from '@material-ui/core/MenuItem';
+import { Button, Modal, Menu, MenuItem} from '@mui/material';
 import { useLocationPathname } from '../store';
 
 const useStyles = makeStyles((theme) => ({

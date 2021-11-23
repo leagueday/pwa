@@ -1,10 +1,10 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/styles'
-import useAirtable from '../../api/useAirtable'
-import CreatorTile from '../CreatorTilesRow/CreatorTile'
-import BasicLayout from '../BasicLayout'
-import { colors } from '../../styling'
-const useStyles = makeStyles(theme => ({
+import React from 'react';
+import { makeStyles } from '@mui/styles';
+import useAirtable from '../../api/useAirtable';
+import CreatorTile from '../CreatorTilesRow/CreatorTile';
+import BasicLayout from '../BasicLayout';
+import { colors } from '../../styling';
+const useStyles = makeStyles((theme) => ({
   creatorWrapper: {
     position: 'relative',
     minHeight: '25vh',
@@ -37,8 +37,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SmallUp = () => {
-  const classes = useStyles()
-  const { data } = useAirtable('appXoertP1WJjd4TQ', 'UserProfile')
+  const classes = useStyles();
+  const { data } = useAirtable('appXoertP1WJjd4TQ', 'UserProfile');
 
   return (
     <BasicLayout home>
@@ -50,13 +50,13 @@ const SmallUp = () => {
         </div>
         <div className={classes.creatorContainer}>
           {data?.map((user, key) => {
-            const { fields } = user
-            return <CreatorTile user={fields} />
+            const { fields } = user;
+            return <CreatorTile user={fields} />;
           })}
         </div>
       </div>
     </BasicLayout>
-  )
-}
+  );
+};
 
-export default SmallUp
+export default SmallUp;

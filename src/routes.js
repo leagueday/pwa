@@ -1,6 +1,8 @@
 import React from 'react';
 
 const ChannelScreen = React.lazy(() => import('./views/ChannelScreen'));
+const Success = React.lazy(() => import('./views/Checkout/Success')); 
+const Fail = React.lazy(() => import('./views/Checkout/Fail')); 
 const EventScreen = React.lazy(() => import('./views/EventScreen'));
 const IconDump = React.lazy(() => import('./views/IconDump'));
 const HomeScreen = React.lazy(() => import('./views/HomeScreen'));
@@ -77,5 +79,7 @@ export const routesConfig = [
   [matchFirstToken('gotolive'), () => true, GoToLiveData, () => ({})],
   [matchFirstToken('create'), () => true, CreateProfile, () => ({})],
   [matchFirstToken('editprofile'), () => true, EditProfile, () => ({})],
+  [matchFirstToken('success'), () => true, Success, () => ({})],
+  [matchFirstToken('fail'), () => true, Fail, () => ({})],
   [() => true, () => true, HomeScreen, () => ({})],
 ];

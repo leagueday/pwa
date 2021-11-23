@@ -1,15 +1,15 @@
-import React, { useState, useContext } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import AudioCard from './AudioCard'
-import cx from 'classnames'
-import LikeButton from '../LikeButton'
-import { makeStyles } from '@material-ui/core/styles'
-import { colors } from '../../styling'
-import { actions, selectors, constants as storeConstants } from '../../store'
-import { IcoPause, IcoPlay, IcoPlus } from '../icons'
-import { UserStateContext } from '../../store/stateProviders/userState'
+import React, { useState, useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import AudioCard from './AudioCard';
+import cx from 'classnames';
+import LikeButton from '../LikeButton';
+import { makeStyles } from '@mui/styles';
+import { colors } from '../../styling';
+import { actions, selectors, constants as storeConstants } from '../../store';
+import { IcoPause, IcoPlay, IcoPlus } from '../icons';
+import { UserStateContext } from '../../store/stateProviders/userState';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   clickable: {
     cursor: 'pointer',
   },
@@ -269,7 +269,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
   },
-}))
+}));
 
 const mockupData = [
   {
@@ -286,13 +286,18 @@ const mockupData = [
     tags: ['riot', 'lol', 'lolnight'],
     variety: 'with Kelsey Moser',
   },
-]
+];
 
-const filterMockupData = tag =>
-  mockupData.filter(({ tags }) => tags.find(thisTag => thisTag === tag))
+const filterMockupData = (tag) =>
+  mockupData.filter(({ tags }) => tags.find((thisTag) => thisTag === tag));
 
-const transparent = 'rgba(0,0,0,1)'
-const episodeBackgroundColors = ['#070709', transparent, '#0E0E11', transparent]
+const transparent = 'rgba(0,0,0,1)';
+const episodeBackgroundColors = [
+  '#070709',
+  transparent,
+  '#0E0E11',
+  transparent,
+];
 
 const EventImage = ({ classes, imageUrl, onClick }) => (
   <img
@@ -300,12 +305,12 @@ const EventImage = ({ classes, imageUrl, onClick }) => (
     onClick={onClick}
     src={imageUrl}
   />
-)
+);
 
 const EventTextplate = ({ channelColor, onClick, sectionData }) => {
-  const { name, variety } = sectionData
+  const { name, variety } = sectionData;
 
-  const classes = useStyles({ channelColor })
+  const classes = useStyles({ channelColor });
 
   return (
     <div className={classes.eventTextplate}>
@@ -321,8 +326,8 @@ const EventTextplate = ({ channelColor, onClick, sectionData }) => {
         View All Replays
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const Tracks = ({
   sectionData,
@@ -332,8 +337,8 @@ export const Tracks = ({
   channel,
   chanelEvent,
 }) => {
-  const [liveUrl, setLiveUrl] = useState([])
-  const classes = useStyles({ channelColor })
+  const [liveUrl, setLiveUrl] = useState([]);
+  const classes = useStyles({ channelColor });
 
   return (
     <div className={classes.tracks}>
@@ -346,11 +351,11 @@ export const Tracks = ({
             Replay Preview
           </div>
         )}
-        {(counter =>
+        {((counter) =>
           sectionData.map((episode, key) => {
             const bgC =
-              episodeBackgroundColors[counter % episodeBackgroundColors.length]
-            counter = counter + 1
+              episodeBackgroundColors[counter % episodeBackgroundColors.length];
+            counter = counter + 1;
             return (
               <Tracks1
                 key={counter}
@@ -363,12 +368,12 @@ export const Tracks = ({
                 leaugeNightData={leaugeNightData}
                 channel={channel}
               />
-            )
+            );
           }))(0)}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const Tracks1 = ({
   episodeData,
@@ -377,28 +382,28 @@ export const Tracks1 = ({
   indexdata,
   channelColor,
 }) => {
-  const classes = useStyles({ backgroundColor, channelColor })
-  const dispatch = useDispatch()
-  const audioUrl = useSelector(selectors.getAudioUrl)
-  const { currentUserId } = useContext(UserStateContext)
+  const classes = useStyles({ backgroundColor, channelColor });
+  const dispatch = useDispatch();
+  const audioUrl = useSelector(selectors.getAudioUrl);
+  const { currentUserId } = useContext(UserStateContext);
 
   const isSelectedAudio =
-    audioUrl && audioUrl === episodeData?.fields?.playbackUrl
+    audioUrl && audioUrl === episodeData?.fields?.playbackUrl;
 
-  const audioMode = useSelector(selectors.getAudioMode)
+  const audioMode = useSelector(selectors.getAudioMode);
 
   const isPlayings =
-    isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
+    isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY;
 
-  const PlayOrPauseIcon = isPlayings ? IcoPause : IcoPlay
+  const PlayOrPauseIcon = isPlayings ? IcoPause : IcoPlay;
 
   const onPopClick = isPlayings
-    ? ev => {
-        dispatch(actions.pauseAudio())
-        ev.stopPropagation()
+    ? (ev) => {
+        dispatch(actions.pauseAudio());
+        ev.stopPropagation();
       }
-    : ev => {
-        if (isSelectedAudio) dispatch(actions.playAudio())
+    : (ev) => {
+        if (isSelectedAudio) dispatch(actions.playAudio());
         else {
           dispatch(
             actions.selectAudio(
@@ -410,11 +415,11 @@ export const Tracks1 = ({
               '',
               episodeData?.fields?.title
             )
-          )
-          dispatch(actions.playAudio())
+          );
+          dispatch(actions.playAudio());
         }
-        ev.stopPropagation()
-      }
+        ev.stopPropagation();
+      };
 
   return (
     <div className={classes.trackContainer}>
@@ -454,23 +459,23 @@ export const Tracks1 = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const ReplayBroadcastsMockup = ({ className, channel, leagueNight }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const makeGotoEvent = event => () => {
-    dispatch(actions.pushHistory(`/event/${event}`))
-  }
+  const makeGotoEvent = (event) => () => {
+    dispatch(actions.pushHistory(`/event/${event}`));
+  };
 
   return (
     <div className={cx(classes.replayBroadcasts, className)}>
       <div id="shadow-container"></div>
       {!leagueNight &&
-        filterMockupData(channel.tag).map(sectionData => {
+        filterMockupData(channel.tag).map((sectionData) => {
           return (
             <>
               {sectionData.event == 'lcs' && (
@@ -508,10 +513,10 @@ const ReplayBroadcastsMockup = ({ className, channel, leagueNight }) => {
                 </div>
               )}
             </>
-          )
+          );
         })}
       {leagueNight &&
-        filterMockupData(channel.tag).map(sectionData => (
+        filterMockupData(channel.tag).map((sectionData) => (
           <>
             {sectionData.event == 'leaguenight' && (
               <div
@@ -535,12 +540,12 @@ const ReplayBroadcastsMockup = ({ className, channel, leagueNight }) => {
           </>
         ))}
     </div>
-  )
-}
+  );
+};
 
-export const mockupGetHasBroadcasts = channel => {
-  const data = filterMockupData(channel.tag)
-  return data.length > 0
-}
+export const mockupGetHasBroadcasts = (channel) => {
+  const data = filterMockupData(channel.tag);
+  return data.length > 0;
+};
 
-export default ReplayBroadcastsMockup
+export default ReplayBroadcastsMockup;

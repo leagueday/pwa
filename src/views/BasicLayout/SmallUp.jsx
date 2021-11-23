@@ -1,15 +1,15 @@
-import React, { useContext } from 'react'
-import { useSelector } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
-import NavBar from '../NavBar'
-import { addScrollStyle } from '../util'
-import { selectors } from '../../store'
-import AudioControls from '../AudioControls'
-import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe'
-import SideNav from '../SideNav'
-import { colors } from '../../styling'
+import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
+import { makeStyles } from '@mui/styles';
+import NavBar from '../NavBar';
+import { addScrollStyle } from '../util';
+import { selectors } from '../../store';
+import AudioControls from '../AudioControls';
+import BrandGradientHorizontalStripe from '../BrandGradientHorizontalStripe';
+import SideNav from '../SideNav';
+import { colors } from '../../styling';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   content: () =>
     addScrollStyle(
       colors.orange,
@@ -52,35 +52,35 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SmUpBasicLayout = props => {
+const SmUpBasicLayout = (props) => {
   const classes = useStyles();
   const audioItemUrl = useSelector(selectors.getAudioUrl);
-  const isAudioDisplayed = !!audioItemUrl
+  const isAudioDisplayed = !!audioItemUrl;
 
   const navVisibility = useSelector(selectors.getNavVisibility);
   // smUp nav is by default open
-  const isNavVisible = navVisibility !== false
+  const isNavVisible = navVisibility !== false;
 
   return (
-      <div className={classes.basicLayoutCol}>
-        <BrandGradientHorizontalStripe />
-        <NavBar />
-        <div className={classes.basicLayoutRow}>
-          <SideNav
-            className={classes.sideNav}
-            home={props.home}
-            visible={isNavVisible}
-          />
-          <div className={classes.contentFrame}>{props.children}</div>
-        </div>
-        {isAudioDisplayed && (
-          <>
-            {/* <BrandGradientHorizontalStripe /> */}
-            <AudioControls />
-          </>
-        )}
+    <div className={classes.basicLayoutCol}>
+      <BrandGradientHorizontalStripe />
+      <NavBar />
+      <div className={classes.basicLayoutRow}>
+        <SideNav
+          className={classes.sideNav}
+          home={props.home}
+          visible={isNavVisible}
+        />
+        <div className={classes.contentFrame}>{props.children}</div>
       </div>
-  )
-}
+      {isAudioDisplayed && (
+        <>
+          {/* <BrandGradientHorizontalStripe /> */}
+          <AudioControls />
+        </>
+      )}
+    </div>
+  );
+};
 
-export default SmUpBasicLayout
+export default SmUpBasicLayout;

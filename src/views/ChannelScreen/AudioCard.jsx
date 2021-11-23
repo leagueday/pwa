@@ -1,18 +1,18 @@
-import React, { useState, useMemo } from 'react'
-import ToggleImageButton from '../ToggleImageButton'
-import LikeButton from '../LikeButton'
-import { useDispatch, useSelector } from 'react-redux'
-import { useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { actions, constants, selectors } from '../../store'
-import { colors } from '../../styling'
-import { Button } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
-import Airtable from 'airtable'
-import { Person } from '@material-ui/icons'
-import { maybeHmsToSecondsOnly, formatSecondsDuration } from '../dateutil'
+import React, { useState, useMemo } from 'react';
+import ToggleImageButton from '../ToggleImageButton';
+import SubscriptionModal from './SubscriptionModal';
+import LikeButton from '../LikeButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from '@mui/material';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { actions, constants, selectors } from '../../store';
+import { colors } from '../../styling';
+import { Button } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import Airtable from 'airtable';
+import { Person } from '@material-ui/icons';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   audioCard: () => ({
     width: '15rem',
     height: '18rem',
@@ -253,23 +253,24 @@ const useStyles = makeStyles(theme => ({
       marginTop: 'auto',
     },
   },
-}))
+}));
 
-const baseId = 'appXoertP1WJjd4TQ'
-const apiKey = 'keymd23kpZ12EriVi'
-const base = new Airtable({ apiKey }).base(baseId)
+const baseId = 'appXoertP1WJjd4TQ';
+const apiKey = 'keymd23kpZ12EriVi';
+const base = new Airtable({ apiKey }).base(baseId);
 
 const AudioCard = ({ audio, indexData, channelTag, live }) => {
-  const dispatch = useDispatch()
-  const currentUser = useSelector(selectors.getUserData)
-  const theme = useTheme()
-  const sm = useMediaQuery(theme.breakpoints.down('sm'))
-  const currentUserId = currentUser?.id
-  const audioUrl = useSelector(selectors.getAudioUrl)
-  const isSelectedAudio = audioUrl && audioUrl === audio.fields.playbackUrl
-  const audioMode = useSelector(selectors.getAudioMode)
-  const [seeMore, setSeeMore] = useState(false)
-  const classes = useStyles()
+  const dispatch = useDispatch();
+  const currentUser = useSelector(selectors.getUserData);
+  const theme = useTheme();
+  const sm = useMediaQuery(theme.breakpoints.down('sm'));
+  const currentUserId = currentUser?.id;
+  const audioUrl = useSelector(selectors.getAudioUrl);
+  const isSelectedAudio = audioUrl && audioUrl === audio.fields.playbackUrl;
+  const audioMode = useSelector(selectors.getAudioMode);
+  const [seeMore, setSeeMore] = useState(false);
+  const [open, setOpen] = useState(false);
+  const classes = useStyles();
 
   const handleListen = async () => {
     if (audio?.fields?.type === 'audiocast') {
@@ -286,14 +287,14 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
         ],
         function (err, records) {
           if (err) {
-            console.error(err)
-            return
+            console.error(err);
+            return;
           }
           records.forEach(function (record) {
-            console.log('listen recorded  ', record)
-          })
+            console.log('listen recorded  ', record);
+          });
         }
-      )
+      );
     } else if (audio.fields.type === 'livestream') {
       base('ChannelLiveData').update(
         [
@@ -308,43 +309,79 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
         ],
         function (err, records) {
           if (err) {
-            console.error(err)
-            return
+            console.error(err);
+            return;
           }
           records.forEach(function (record) {
-            console.log('listen recorded  ', record)
-          })
+            console.log('listen recorded  ', record);
+          });
         }
-      )
+      );
     }
-  }
+  };
 
-  const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY
+  const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY;
 
   const onPopClick = isPlayings
-    ? ev => {
-        ev.stopPropagation()
-        dispatch(actions.pauseAudio())
+    ? (ev) => {
+        ev.stopPropagation();
+        dispatch(actions.pauseAudio());
       }
-    : ev => {
-        handleListen()
-        if (isSelectedAudio) dispatch(actions.playAudio())
-        else {
-          dispatch(
-            actions.selectAudio(
-              '',
-              '',
-              '',
-              audio.fields.playbackUrl,
-              indexData,
-              '',
-              ''
-            )
-          )
-          dispatch(actions.playAudio())
+    : (ev) => {
+      setOpen(true)
+      if (live) {
+        if (currentUser) {
+          if (
+            currentUser.fields.subscriptions === 'true' &&
+            audio.fields.userId === 'cbfba6e1-54eb-43aa-80a9-cb1bd4c04948'
+            ) {
+              console.log('hello?? ')
+              handleListen();
+              if (isSelectedAudio) dispatch(actions.playAudio());
+              else {
+                dispatch(
+                  actions.selectAudio(
+                    '',
+                    '',
+                    '',
+                    audio.fields.playbackUrl,
+                    indexData,
+                    '',
+                    ''
+                  )
+                );
+                dispatch(actions.playAudio());
+              }
+              ev.stopPropagation();
+            } else if (
+              currentUser.fields.subscriptions !== 'true' &&
+              audio.fields.userId === 'cbfba6e1-54eb-43aa-80a9-cb1bd4c04948'
+            ) {
+              setOpen(true);
+            }
+        } else if (!currentUser) {
+          setOpen(true)
         }
-        ev.stopPropagation()
-      }
+        } else {
+          handleListen();
+          if (isSelectedAudio) dispatch(actions.playAudio());
+          else {
+            dispatch(
+              actions.selectAudio(
+                '',
+                '',
+                '',
+                audio.fields.playbackUrl,
+                indexData,
+                '',
+                ''
+              )
+            );
+            dispatch(actions.playAudio());
+          }
+          ev.stopPropagation();
+        }
+      };
 
   const onClick = () => {
     live
@@ -353,8 +390,8 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
         )
       : dispatch(
           actions.pushHistory(`/audiocast/${audio?.fields?.audiocastId}`)
-        )
-  }
+        );
+  };
 
   return (
     <div
@@ -362,9 +399,11 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
       onMouseLeave={!sm ? () => setSeeMore(false) : null}
       onMouseEnter={!sm ? () => setSeeMore(true) : null}
     >
+      <SubscriptionModal open={open} setOpen={setOpen} />
       <div className={classes.images}>
         {seeMore && (
           <Button
+            variant="contained"
             onMouseOpen={() => setSeeMore(true)}
             className={classes.expandModal}
             onClick={onClick}
@@ -372,7 +411,11 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
             More
           </Button>
         )}
-        {live && <Button className={classes.liveSign}>Live</Button>}
+        {live && (
+          <Button className={classes.liveSign} variant="contained">
+            Live
+          </Button>
+        )}
         <img
           className={classes.creatorImg}
           src={live ? audio?.fields?.creatorImg : audio?.fields?.image}
@@ -433,7 +476,7 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AudioCard
+export default AudioCard;

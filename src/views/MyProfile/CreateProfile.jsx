@@ -1,22 +1,22 @@
-import React, { Fragment, useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Button, TextField, Paper, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { base } from '../..'
-import 'react-h5-audio-player/lib/styles.css'
-import { ToastContainer, toast } from 'react-toastify'
-import { selectors, actions } from '../../store'
-import { colors } from '../../styling'
-import BasicLayout from '../BasicLayout'
-import { addScrollStyle } from '../util'
-import TitleBar from './TitleBar'
-import { uploadFile } from 'react-s3'
-import Select from 'react-select'
+import React, { Fragment, useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Button, TextField, Paper, Typography } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
+import { base } from '../..';
+import 'react-h5-audio-player/lib/styles.css';
+import { ToastContainer, toast } from 'react-toastify';
+import { selectors, actions } from '../../store';
+import { colors } from '../../styling';
+import BasicLayout from '../BasicLayout';
+import { addScrollStyle } from '../util';
+import TitleBar from './TitleBar';
+import { uploadFile } from 'react-s3';
+import Select from 'react-select';
 import('buffer').then(({ Buffer }) => {
-  global.Buffer = Buffer
-})
+  global.Buffer = Buffer;
+});
 
-const primaryColor = colors.magenta
+const primaryColor = colors.magenta;
 
 const options = [
   {
@@ -43,7 +43,7 @@ const options = [
     value: 'Amateur Podcaster ',
     label: ' Amateur Podcaster',
   },
-]
+];
 
 const customStyles = {
   dropdownIndicator: () => ({
@@ -64,9 +64,9 @@ const customStyles = {
   singleValue: () => ({
     color: 'white',
   }),
-}
+};
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   channelCategories: {
     marginTop: '0.5em',
   },
@@ -152,11 +152,11 @@ const useStyles = makeStyles(theme => ({
   radiotext: {
     margin: '10px 10px 0px 0px',
   },
-}))
+}));
 
-const CreateProfile = props => {
-  const dispatch = useDispatch()
-  const user = useSelector(selectors.getUser)
+const CreateProfile = (props) => {
+  const dispatch = useDispatch();
+  const user = useSelector(selectors.getUser);
   const [state, setFile] = React.useState({
     mainState: 'initial',
     imageUploaded: 0,
@@ -165,8 +165,8 @@ const CreateProfile = props => {
     selectedFileError: '',
     photoError: '',
     image: '',
-  })
-  const [image, setimage] = React.useState('')
+  });
+  const [image, setimage] = React.useState('');
   const [formInput, setFormInput] = React.useState({
     name: '',
     nameError: '',
@@ -176,10 +176,10 @@ const CreateProfile = props => {
     TwitterUrl: '',
     InstagramUrl: '',
     TwitchUrl: '',
-  })
-  const [loading, setLoading] = useState(false)
-  const [experienceOptions, setExperienceOptions] = useState(options)
-  const [selectedCredentials, setSelectedCredentials] = useState([])
+  });
+  const [loading, setLoading] = useState(false);
+  const [experienceOptions, setExperienceOptions] = useState(options);
+  const [selectedCredentials, setSelectedCredentials] = useState([]);
 
   const config = {
     bucketName: 'leagueday-prod-images',
@@ -187,15 +187,15 @@ const CreateProfile = props => {
     region: 'us-east-1',
     accessKeyId: 'AKIA2NEES72FJV4VO343',
     secretAccessKey: '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',
-  }
+  };
 
-  const handleUploadClick = async event => {
-    var filesSaved = event.target.files[0]
+  const handleUploadClick = async (event) => {
+    var filesSaved = event.target.files[0];
     uploadFile(filesSaved, config)
-      .then(data => {
-        setimage(data['location'])
+      .then((data) => {
+        setimage(data['location']);
       })
-      .catch(err => console.error(err))
+      .catch((err) => console.error(err));
 
     setFile({
       ...state,
@@ -203,26 +203,26 @@ const CreateProfile = props => {
       selectedFile: URL.createObjectURL(event.target.files[0]),
       imageUploaded: 1,
       photoError: '',
-    })
+    });
 
-    const reader = new FileReader()
+    const reader = new FileReader();
     reader.onloadend = function (e) {
       setFile({
         ...state,
         selectedFile: [reader.result],
         fileupload: [reader.result],
         photoError: '',
-      })
-    }
-    reader.readAsDataURL(event.target.files[0])
-  }
+      });
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  };
 
-  const classes = useStyles({ primaryColor })
-  const userName = user?.user_metadata?.full_name
+  const classes = useStyles({ primaryColor });
+  const userName = user?.user_metadata?.full_name;
 
-  const submit = evt => {
-    evt.preventDefault()
-    setLoading(true)
+  const submit = (evt) => {
+    evt.preventDefault();
+    setLoading(true);
 
     base('UserProfile').create(
       [
@@ -249,34 +249,34 @@ const CreateProfile = props => {
           description: '',
           descriptionError: '',
           nameError: '',
-        })
+        });
         setFile({
           ...state,
           selectedFile: '',
           fileupload: '',
           photoError: '',
-        })
-        setCreated(true)
-        setLoading(false)
+        });
+        setCreated(true);
+        setLoading(false);
         if (err) {
-          console.error(err)
-          return
+          console.error(err);
+          return;
         }
-        dispatch(actions.setUserData(records[0]))
+        dispatch(actions.setUserData(records[0]));
       }
-    )
-    dispatch(actions.pushHistory(`/profile/${user.id}`))
-  }
+    );
+    dispatch(actions.pushHistory(`/profile/${user.id}`));
+  };
 
-  const handleSelect = e => {
+  const handleSelect = (e) => {
     setSelectedCredentials(
-      Array.isArray(e) ? e.map(topping => topping.label) : []
-    )
-  }
+      Array.isArray(e) ? e.map((topping) => topping.label) : []
+    );
+  };
 
   useEffect(() => {
     if (selectedCredentials?.length === 0) {
-      setExperienceOptions(options)
+      setExperienceOptions(options);
     }
     if (
       selectedCredentials[selectedCredentials.length - 1]?.includes(
@@ -284,8 +284,10 @@ const CreateProfile = props => {
       )
     ) {
       setExperienceOptions(
-        experienceOptions?.filter(opt => !opt.label.includes('Amateur Caster'))
-      )
+        experienceOptions?.filter(
+          (opt) => !opt.label.includes('Amateur Caster')
+        )
+      );
     }
     if (
       selectedCredentials[selectedCredentials.length - 1]?.includes(
@@ -293,8 +295,8 @@ const CreateProfile = props => {
       )
     ) {
       setExperienceOptions(
-        experienceOptions?.filter(opt => !opt.label.includes('Pro Caster'))
-      )
+        experienceOptions?.filter((opt) => !opt.label.includes('Pro Caster'))
+      );
     }
     if (
       selectedCredentials[selectedCredentials.length - 1]?.includes(
@@ -303,9 +305,9 @@ const CreateProfile = props => {
     ) {
       setExperienceOptions(
         experienceOptions?.filter(
-          opt => !opt.label.includes('Amateur Streamer')
+          (opt) => !opt.label.includes('Amateur Streamer')
         )
-      )
+      );
     }
     if (
       selectedCredentials[selectedCredentials.length - 1]?.includes(
@@ -313,8 +315,8 @@ const CreateProfile = props => {
       )
     ) {
       setExperienceOptions(
-        experienceOptions?.filter(opt => !opt.label.includes('Pro Streamer'))
-      )
+        experienceOptions?.filter((opt) => !opt.label.includes('Pro Streamer'))
+      );
     }
     if (
       selectedCredentials[selectedCredentials.length - 1]?.includes(
@@ -323,9 +325,9 @@ const CreateProfile = props => {
     ) {
       setExperienceOptions(
         experienceOptions?.filter(
-          opt => !opt.label.includes('Amateur Podcaster')
+          (opt) => !opt.label.includes('Amateur Podcaster')
         )
-      )
+      );
     }
     if (
       selectedCredentials[selectedCredentials.length - 1]?.includes(
@@ -333,10 +335,10 @@ const CreateProfile = props => {
       )
     ) {
       setExperienceOptions(
-        experienceOptions?.filter(opt => !opt.label.includes('Pro Podcaster'))
-      )
+        experienceOptions?.filter((opt) => !opt.label.includes('Pro Podcaster'))
+      );
     }
-  }, [selectedCredentials])
+  }, [selectedCredentials]);
 
   return (
     <BasicLayout home>
@@ -358,7 +360,7 @@ const CreateProfile = props => {
               defaultValue={formInput.name}
               className={classes.textField}
               helperText="Enter your Name"
-              onChange={e =>
+              onChange={(e) =>
                 setFormInput({
                   ...formInput,
                   name: e.target.value,
@@ -379,7 +381,7 @@ const CreateProfile = props => {
               defaultValue={formInput.description}
               className={classes.textField}
               helperText="Enter Your Description"
-              onChange={e =>
+              onChange={(e) =>
                 setFormInput({
                   ...formInput,
                   description: e.target.value,
@@ -434,7 +436,7 @@ const CreateProfile = props => {
                 defaultValue={formInput.TwitterUrl}
                 className={classes.textField}
                 helperText="Enter Your Twitter url"
-                onChange={e =>
+                onChange={(e) =>
                   setFormInput({
                     ...formInput,
                     TwitterUrl: e.target.value,
@@ -451,7 +453,7 @@ const CreateProfile = props => {
                 defaultValue={formInput.TwitchUrl}
                 className={classes.textField}
                 helperText="Enter Your Twitch url"
-                onChange={e =>
+                onChange={(e) =>
                   setFormInput({
                     ...formInput,
                     TwitchUrl: e.target.value,
@@ -477,7 +479,7 @@ const CreateProfile = props => {
         (window.location.href = '/')
       )}
     </BasicLayout>
-  )
-}
+  );
+};
 
-export default CreateProfile
+export default CreateProfile;

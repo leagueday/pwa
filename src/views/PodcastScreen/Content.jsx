@@ -1,18 +1,18 @@
-import React from 'react'
-import cx from 'classnames'
+import React from 'react';
+import cx from 'classnames';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import usePodcast from '../../api/usePodcast'
-import * as rssSelectors from '../../model/rss'
-import { colors } from '../../styling'
-import BottomBlock from '../BottomBlock'
-import ContentLayout from '../ContentLayout'
-import PlusMinusButton from '../PlusMinusButton'
-import { cycleColorSequence, stripHtml } from '../util'
-import Item from './Item'
+import usePodcast from '../../api/usePodcast';
+import * as rssSelectors from '../../model/rss';
+import { colors } from '../../styling';
+import BottomBlock from '../BottomBlock';
+import ContentLayout from '../ContentLayout';
+import PlusMinusButton from '../PlusMinusButton';
+import { cycleColorSequence, stripHtml } from '../util';
+import Item from './Item';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   accentColor: ({ accentColor }) => ({
     color: accentColor,
   }),
@@ -91,25 +91,25 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'uppercase',
     userSelect: 'none',
   },
-}))
+}));
 
 const maybeMakeUpColor = (idString, maybeColor) => {
-  if (maybeColor) return maybeColor
+  if (maybeColor) return maybeColor;
 
   const hash = (() => {
-    if (!idString) return 0
+    if (!idString) return 0;
 
-    let result = 0
+    let result = 0;
     for (let i = 0; i < idString.length; i++) {
-      const c = idString.charCodeAt(i)
-      result = (result << 5) - result + c
-      result = result & result // Convert to 32bit integer
+      const c = idString.charCodeAt(i);
+      result = (result << 5) - result + c;
+      result = result & result; // Convert to 32bit integer
     }
-    return Math.abs(result)
-  })()
+    return Math.abs(result);
+  })();
 
-  return cycleColorSequence[hash % cycleColorSequence.length]
-}
+  return cycleColorSequence[hash % cycleColorSequence.length];
+};
 
 const PodcastChannelImage = ({ classes, imageUrl, podcastId }) => (
   <div className={classes.logoImageContainer}>
@@ -122,7 +122,7 @@ const PodcastChannelImage = ({ classes, imageUrl, podcastId }) => (
       />
     </div>
   </div>
-)
+);
 
 const TextPlate = ({ classes, title, description }) => (
   <div className={classes.textplate}>
@@ -132,37 +132,38 @@ const TextPlate = ({ classes, title, description }) => (
     </div>
     <div className={classes.textplateDescription}>{description}</div>
   </div>
-)
+);
 
 const Content = ({ podcast }) => {
-  const [expandedIndex, setExpandedIndex] = React.useState()
+  const [expandedIndex, setExpandedIndex] = React.useState();
 
   const podcastColor = React.useMemo(
     () => maybeMakeUpColor(podcast?.url, podcast?.color),
     [podcast?.url, podcast?.color]
-  )
+  );
 
-  const classes = useStyles({ accentColor: podcastColor ?? colors.white80 })
+  const classes = useStyles({ accentColor: podcastColor ?? colors.white80 });
 
-  const { rss } = usePodcast(podcast, { forceRevalidate: true })
+  const { rss } = usePodcast(podcast, { forceRevalidate: true });
 
-  const imageUrl = rssSelectors.channelSelectors.v2.imageUrl(rss)
-  const title = rssSelectors.channelSelectors.v2.title(rss)
-  const description = rssSelectors.channelSelectors.v2.description(rss)
-  const items = rssSelectors.channelSelectors.v2.items(rss)
+  const imageUrl = rssSelectors.channelSelectors.v2.imageUrl(rss);
+  const title = rssSelectors.channelSelectors.v2.title(rss);
+  const description = rssSelectors.channelSelectors.v2.description(rss);
+  const items = rssSelectors.channelSelectors.v2.items(rss);
 
-  const strippedDescription = React.useMemo(() => stripHtml(description), [
-    description,
-  ])
+  const strippedDescription = React.useMemo(
+    () => stripHtml(description),
+    [description]
+  );
 
-  const makeToggleIsExpanded = itemIndex =>
+  const makeToggleIsExpanded = (itemIndex) =>
     expandedIndex === itemIndex
       ? () => {
-          setExpandedIndex(null)
+          setExpandedIndex(null);
         }
       : () => {
-          setExpandedIndex(itemIndex)
-        }
+          setExpandedIndex(itemIndex);
+        };
 
   return (
     <ContentLayout
@@ -185,16 +186,16 @@ const Content = ({ podcast }) => {
       <BottomBlock accentColor={podcastColor}>
         <div className={classes.items}>
           {(() => {
-            if (!items) return null
+            if (!items) return null;
 
-            const iterableItems = items.map ? items : [items]
+            const iterableItems = items.map ? items : [items];
 
             // Here the React key is inadvisably the track offset
             // in the list, it's not great and is strictly as good
             // as the Next-Track feature...
-            let itemIndex = 0
+            let itemIndex = 0;
 
-            return iterableItems.map(item => {
+            return iterableItems.map((item) => {
               const result = (
                 <Item
                   key={itemIndex}
@@ -207,17 +208,17 @@ const Content = ({ podcast }) => {
                   isExpanded={expandedIndex === itemIndex}
                   toggleIsExpanded={makeToggleIsExpanded(itemIndex)}
                 />
-              )
+              );
 
-              itemIndex++
+              itemIndex++;
 
-              return result
-            })
+              return result;
+            });
           })()}
         </div>
       </BottomBlock>
     </ContentLayout>
-  )
-}
+  );
+};
 
-export default Content
+export default Content;

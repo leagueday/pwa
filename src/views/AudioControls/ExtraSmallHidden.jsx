@@ -1,19 +1,19 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
-import Color from 'color'
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import Color from 'color';
 
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles';
 
-import { actions } from '../../store'
-import { colors } from '../../styling'
-import { IcoUp } from '../icons'
-import { makeIconButton } from '../IconButton'
+import { actions } from '../../store';
+import { colors } from '../../styling';
+import { IcoUp } from '../icons';
+import { makeIconButton } from '../IconButton';
 
-const UpButton = makeIconButton(IcoUp)
+const UpButton = makeIconButton(IcoUp);
 
-const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string()
+const buttonShadowColor = Color(colors.brandBlack).darken(0.5).string();
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   extraSmallHidden: {
     height: 0,
     position: 'relative',
@@ -23,13 +23,13 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: '-8vw',
   },
-}))
+}));
 
 const ExtraSmallHidden = () => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const dispatch = useDispatch()
-  const onShow = () => dispatch(actions.showAudioControls())
+  const dispatch = useDispatch();
+  const onShow = () => dispatch(actions.showAudioControls());
 
   return (
     <div className={classes.extraSmallHidden}>
@@ -43,7 +43,7 @@ const ExtraSmallHidden = () => {
         strokeWidth="3"
       />
     </div>
-  )
-}
+  );
+};
 
-export default ExtraSmallHidden
+export default ExtraSmallHidden;

@@ -1,17 +1,16 @@
-import React, { useState, useRef, useEffect, useContext } from 'react'
-import { ChatStateContext } from '../../store/stateProviders/useChat'
-import { addScrollStyle } from '../util'
-import { useSelector, useDispatch } from 'react-redux'
-import { actions, selectors } from '../../store'
-import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
-import { Button } from '@material-ui/core'
-import { TextField } from '@material-ui/core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import SocketIOClient from 'socket.io-client'
-import axios from 'axios'
-import { makeStyles } from '@material-ui/styles'
-import { colors } from '../../styling'
-const useStyles = makeStyles(theme => ({
+import React, { useState, useRef, useEffect, useContext } from 'react';
+import { ChatStateContext } from '../../store/stateProviders/useChat';
+import { addScrollStyle } from '../util';
+import { useSelector, useDispatch } from 'react-redux';
+import { actions, selectors } from '../../store';
+import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
+import { Button, TextField } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import SocketIOClient from 'socket.io-client';
+import axios from 'axios';
+import { makeStyles } from '@mui/styles';
+import { colors } from '../../styling';
+const useStyles = makeStyles((theme) => ({
   chatBox: {
     height: '60%',
     position: 'relative',
@@ -54,7 +53,7 @@ const useStyles = makeStyles(theme => ({
       width: '70%',
     },
     [theme.breakpoints.down('xs')]: {
-      left: '20px'
+      left: '20px',
     },
   }),
   sendIcon: ({ live }) => ({
@@ -237,109 +236,115 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     fontSize: '1.2rem',
   },
-}))
+}));
 
 const ChatRoom = ({ audiocastId, live, audiocast }) => {
-  const classes = useStyles({ live })
-  const { allChatsByRoom, getMessagesByRoom, message, setMessage } = useContext(
-    ChatStateContext
-  )
-  const dispatch = useDispatch()
-  const [partyChat, setPartyChat] = useState(true)
-  const [qA, setQA] = useState(false)
-  const [comments, setComments] = useState([])
-  const [questions, setQuestions] = useState([])
-  const [selectedQuestion, setSelectedQuestion] = useState()
-  const [isHost, setIsHost] = useState(false)
-  const currentUser = useSelector(selectors.getUserData)
+  const classes = useStyles({ live });
+  const { allChatsByRoom, getMessagesByRoom, message, setMessage } =
+    useContext(ChatStateContext);
+  const dispatch = useDispatch();
+  const [partyChat, setPartyChat] = useState(true);
+  const [qA, setQA] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [questions, setQuestions] = useState([]);
+  const [selectedQuestion, setSelectedQuestion] = useState();
+  const [isHost, setIsHost] = useState(false);
+  const currentUser = useSelector(selectors.getUserData);
 
-  const [socket, setSocket] = useState(null)
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const newSocket = SocketIOClient('https://leagueday-api.herokuapp.com', {
       query: audiocastId,
-    })
-    setSocket(newSocket)
-    return () => newSocket.close()
-  }, [setSocket])
+    });
+    setSocket(newSocket);
+    return () => newSocket.close();
+  }, [setSocket]);
 
   useEffect(() => {
     socket?.on('new_chat', () => {
-      console.log('triggered new chat ')
-      getMessagesByRoom(audiocastId)
-    })
+      console.log('triggered new chat ');
+      getMessagesByRoom(audiocastId);
+    });
 
     socket?.on('accepted_question', () => {
-      console.log('socket accepted question')
-      getQuestions(audiocastId)
-    })
+      console.log('socket accepted question');
+      getQuestions(audiocastId);
+    });
 
     socket?.on('new_question', () => {
-      console.log('new question')
-      getQuestions(audiocastId)
-    })
+      console.log('new question');
+      getQuestions(audiocastId);
+    });
 
     return () => {
       socket?.off('new_chat', () => {
-        getMessagesByRoom(audiocastId)
-      })
+        getMessagesByRoom(audiocastId);
+      });
       socket?.off('accepted_question', () => {
-        getQuestions(audiocastId)
-      })
+        getQuestions(audiocastId);
+      });
       socket?.off('new_question', () => {
-        console.log('new question')
-        getQuestions(audiocastId)
-      })
-    }
-  }, [socket])
+        console.log('new question');
+        getQuestions(audiocastId);
+      });
+    };
+  }, [socket]);
 
-  const messageEl = useRef(null)
+  const messageEl = useRef(null);
 
   const scrollToBottom = () => {
-    messageEl?.current?.scrollIntoView({ behavior: 'auto' })
-  }
+    messageEl?.current?.scrollIntoView({ behavior: 'auto' });
+  };
 
-  useEffect(scrollToBottom, [allChatsByRoom, comments, questions, selectedQuestion, partyChat, qA])
+  useEffect(scrollToBottom, [
+    allChatsByRoom,
+    comments,
+    questions,
+    selectedQuestion,
+    partyChat,
+    qA,
+  ]);
 
   const getQuestions = async () => {
     await axios
       .get(`https://leagueday-api.herokuapp.com/questions/${audiocastId}`)
-      .then(res => {
+      .then((res) => {
         setQuestions(
           res.data.data
             .sort((a, b) => {
-              return new Date(a.date) - new Date(b.date)
+              return new Date(a.date) - new Date(b.date);
             })
-            .filter(question => question.status !== 'accepted')
-        )
+            .filter((question) => question.status !== 'accepted')
+        );
         setSelectedQuestion(
-          res.data.data.filter(question => question.status === 'accepted')[0]
-        )
+          res.data.data.filter((question) => question.status === 'accepted')[0]
+        );
       })
-      .catch(err => console.log(err))
-  }
+      .catch((err) => console.log(err));
+  };
 
-  const askQuestion = e => {
-    e.preventDefault()
+  const askQuestion = (e) => {
+    e.preventDefault();
     axios
       .post('https://leagueday-api.herokuapp.com/questions/create', {
         audiocastId: audiocastId,
         question: message,
         authorId: currentUser.fields.userId,
       })
-      .then(res => {
-        console.log('asked question ', res)
+      .then((res) => {
+        console.log('asked question ', res);
         socket.emit('new_question', {
           audiocastId: audiocastId,
           question: message,
           authorId: currentUser.fields.userId,
-        })
-        setMessage('')
+        });
+        setMessage('');
       })
-      .catch(err => {
-        console.log('couldnt ask question ', err)
-      })
-  }
+      .catch((err) => {
+        console.log('couldnt ask question ', err);
+      });
+  };
 
   const acceptQuestion = async (id, question) => {
     if (selectedQuestion) {
@@ -347,43 +352,43 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
         .delete(
           `https://leagueday-api.herokuapp.com/questions/delete/${selectedQuestion.id}`
         )
-        .then(res => {
-          socket.emit('new_question', question)
-          console.log('deleted question ', res)
+        .then((res) => {
+          socket.emit('new_question', question);
+          console.log('deleted question ', res);
         })
-        .catch(err => {
-          console.log('declined question ', err)
-        })
+        .catch((err) => {
+          console.log('declined question ', err);
+        });
     }
 
     await axios
       .post('https://leagueday-api.herokuapp.com/questions/accept', {
         id: id,
       })
-      .then(res => {
-        socket.emit('new_question', question)
-        console.log('accepted question ', res)
+      .then((res) => {
+        socket.emit('new_question', question);
+        console.log('accepted question ', res);
       })
-      .catch(err => {
-        console.log('declined question ', err)
-      })
-  }
+      .catch((err) => {
+        console.log('declined question ', err);
+      });
+  };
 
   const getComments = () => {
     axios
       .get(`https://leagueday-api.herokuapp.com/comments/get/${audiocastId}`)
-      .then(res => {
+      .then((res) => {
         setComments(
           res.data.data.comments.sort((a, b) => {
-            return new Date(b.date) - new Date(a.date)
+            return new Date(b.date) - new Date(a.date);
           })
-        )
+        );
       })
-      .catch(err => console.log('error in AudiocastScreen ', err))
-  }
+      .catch((err) => console.log('error in AudiocastScreen ', err));
+  };
 
-  const sendChat = e => {
-    e.preventDefault()
+  const sendChat = (e) => {
+    e.preventDefault();
     if (message) {
       axios
         .post('https://leagueday-api.herokuapp.com/chats/create', {
@@ -395,62 +400,62 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
             ? currentUser.fields.image
             : 'https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?k=6&m=1214428300&s=170667a&w=0&h=hMQs-822xLWFz66z3Xfd8vPog333rNFHU6Q_kc9Sues=',
         })
-        .then(res => {
-          socket.emit('new_chat', { message })
-          setMessage('')
-          console.log('sent message ', res)
+        .then((res) => {
+          socket.emit('new_chat', { message });
+          setMessage('');
+          console.log('sent message ', res);
         })
-        .catch(err => {
-          console.log('message send error ', err)
-        })
+        .catch((err) => {
+          console.log('message send error ', err);
+        });
     }
-  }
+  };
 
-  const postComment = e => {
-    e.preventDefault()
+  const postComment = (e) => {
+    e.preventDefault();
     axios
       .post('https://leagueday-api.herokuapp.com/comments/create', {
         referenceId: audiocastId,
         commentorId: currentUser.fields.userId,
         comment: message,
       })
-      .then(res => {
-        setMessage('')
-        console.log('posted comment ', res)
-        getComments()
+      .then((res) => {
+        setMessage('');
+        console.log('posted comment ', res);
+        getComments();
       })
-      .catch(err => {
-        console.log('comment post error ', err)
-      })
-  }
+      .catch((err) => {
+        console.log('comment post error ', err);
+      });
+  };
 
   useEffect(() => {
-    getMessagesByRoom(audiocastId)
-    getComments()
-    getQuestions()
+    getMessagesByRoom(audiocastId);
+    getComments();
+    getQuestions();
     if (audiocast?.fields?.userId === currentUser?.fields?.userId) {
-      setIsHost(true)
+      setIsHost(true);
     } else {
-      setIsHost(false)
+      setIsHost(false);
     }
-  }, [audiocastId, audiocast])
+  }, [audiocastId, audiocast]);
 
-  const listener = event => {
+  const listener = (event) => {
     if (event.code === 'Enter' || event.code === 'NumpadEnter') {
       live && partyChat
         ? sendChat(event)
         : live && qA
         ? askQuestion(event)
-        : postComment(event)
+        : postComment(event);
     }
-  }
+  };
 
   useEffect(() => {
-    document.addEventListener('keydown', listener)
+    document.addEventListener('keydown', listener);
     return () => {
-      document.removeEventListener('keydown', listener)
-    }
-  }, [])
+      document.removeEventListener('keydown', listener);
+    };
+  }, []);
 
   return (
     <>
@@ -462,8 +467,8 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                 partyChat ? classes.chatOptionSelected : classes.chatOption
               }
               onClick={() => {
-                setPartyChat(true)
-                setQA(false)
+                setPartyChat(true);
+                setQA(false);
               }}
             >
               Party Chat
@@ -471,8 +476,8 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
             <b
               className={qA ? classes.chatOptionSelected : classes.chatOption}
               onClick={() => {
-                setPartyChat(false)
-                setQA(true)
+                setPartyChat(false);
+                setQA(true);
               }}
             >
               Q&A
@@ -590,8 +595,8 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                     <p className={classes.authorName} style={{ right: '55px' }}>
                       {item?.user?.username}
                     </p>
-                      <div style={{ height: '30px' }}></div>
-                      <p className={classes.questionText}>{item?.question}</p>
+                    <div style={{ height: '30px' }}></div>
+                    <p className={classes.questionText}>{item?.question}</p>
                   </div>
                   {isHost && (
                     <div className={classes.questionBtns}>
@@ -604,13 +609,13 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                     </div>
                   )}
                 </div>
-              )
+              );
             })}
           {!live &&
             comments?.map((comment, ind) => (
               <div
                 className={classes.commentCont}
-                style={{ marginTop: ind === 0 ? '70px': '1%' }}
+                style={{ marginTop: ind === 0 ? '70px' : '1%' }}
                 key={ind}
               >
                 <img
@@ -657,8 +662,8 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
               name="Comment"
               className={classes.message}
               value={message}
-              onChange={e => setMessage(e.target.value)}
-              onKeyDown={e => listener(e)}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => listener(e)}
               disabled={!currentUser}
             />
             <button
@@ -668,13 +673,13 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                 outline: 'none',
                 background: 'transparent',
               }}
-              onClick={e => {
-                e.preventDefault()
+              onClick={(e) => {
+                e.preventDefault();
                 live && partyChat
                   ? sendChat(e)
                   : live && qA
                   ? askQuestion(e)
-                  : postComment(e)
+                  : postComment(e);
               }}
             >
               <FontAwesomeIcon
@@ -687,7 +692,7 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ChatRoom
+export default ChatRoom;

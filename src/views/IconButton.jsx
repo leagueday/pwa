@@ -1,9 +1,9 @@
-import React from 'react'
-import Color from 'color'
-import cx from 'classnames'
-import { makeStyles } from '@material-ui/core/styles'
+import React from 'react';
+import Color from 'color';
+import cx from 'classnames';
+import { makeStyles } from '@mui/styles';
 
-import { colors } from '../styling'
+import { colors } from '../styling';
 
 const useStyles = makeStyles({
   icon: ({ isTransparent }) => ({
@@ -70,7 +70,7 @@ const useStyles = makeStyles({
       transition: '0s',
     },
   },
-})
+});
 
 export const makeIconButton = (Icon, disabled) => {
   const Component = ({
@@ -90,10 +90,14 @@ export const makeIconButton = (Icon, disabled) => {
       isTransparent,
       shadowColor,
       size,
-    })
+    });
 
     return (
-      <button style={{ background: 'transparent', outline: 'none', border: 'none' }} onClick={onClick} disabled={disabled}>
+      <button
+        style={{ background: 'transparent', outline: 'none', border: 'none' }}
+        onClick={onClick}
+        disabled={disabled}
+      >
         <Icon
           classes={{
             outer: cx(classes.iconButton, classes.ripple, className),
@@ -102,8 +106,8 @@ export const makeIconButton = (Icon, disabled) => {
           strokeWidth={strokeWidth}
         />
       </button>
-    )
-  }
+    );
+  };
 
   Component.defaultProps = {
     color: colors.magenta,
@@ -112,7 +116,7 @@ export const makeIconButton = (Icon, disabled) => {
     shadowColor: 'black',
     size: '2em',
     strokeWidth: null,
-  }
+  };
 
-  return Component
-}
+  return Component;
+};

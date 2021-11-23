@@ -1,14 +1,14 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import cx from 'classnames'
+import React from 'react';
+import { useSelector } from 'react-redux';
+import cx from 'classnames';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import { selectors } from '../../store'
-import { colors } from '../../styling'
-import { formatSecondsDuration, maybeHmsToSecondsOnly } from '../dateutil'
+import { selectors } from '../../store';
+import { colors } from '../../styling';
+import { formatSecondsDuration, maybeHmsToSecondsOnly } from '../dateutil';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   childrenContainer: {
     maxWidth: '100%',
   },
@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
     minWidth: 0,
     overflow: 'visible',
   }),
-}))
+}));
 
 const XsTitle = ({
   children,
@@ -65,24 +65,24 @@ const XsTitle = ({
   primaryColor,
   title,
 }) => {
-  const classes = useStyles({ halfHeight, height, primaryColor })
+  const classes = useStyles({ halfHeight, height, primaryColor });
 
-  const itemIndex = useSelector(selectors.getAudioItemIndex)
+  const itemIndex = useSelector(selectors.getAudioItemIndex);
   const duration = maybeHmsToSecondsOnly(
     useSelector(selectors.getAudioDuration)
-  )
+  );
 
   const durationLabel = React.useMemo(() => {
-    let formattedDuration = formatSecondsDuration(duration)
+    let formattedDuration = formatSecondsDuration(duration);
 
     if (formattedDuration.startsWith('0:'))
-      formattedDuration = formattedDuration.substr(2)
+      formattedDuration = formattedDuration.substr(2);
 
     if (formattedDuration.startsWith('0'))
-      formattedDuration = formattedDuration.substr(1)
+      formattedDuration = formattedDuration.substr(1);
 
-    return formattedDuration
-  }, [duration])
+    return formattedDuration;
+  }, [duration]);
 
   return (
     <div className={cx(classes.titleFlex, className)}>
@@ -95,7 +95,7 @@ const XsTitle = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default XsTitle
+export default XsTitle;

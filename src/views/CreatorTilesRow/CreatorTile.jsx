@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
-import { useDispatch, useSelector } from 'react-redux'
-import { Modal } from '@material-ui/core'
-import axios from 'axios'
-import { Button } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { actions, selectors } from '../../store'
-import { colors } from '../../styling'
-import PlusMinusBtn from './PlusMinusBtn'
-import Square from '../Square'
-import PersonAddIcon from '@material-ui/icons/PersonAdd'
-import CheckIcon from '@material-ui/icons/Check'
+import React, { useState, useEffect, useContext } from 'react';
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend';
+import { useDispatch, useSelector } from 'react-redux';
+import { Modal } from '@material-ui/core';
+import axios from 'axios';
+import { Button } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { actions, selectors } from '../../store';
+import { colors } from '../../styling';
+import PlusMinusBtn from './PlusMinusBtn';
+import Square from '../Square';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import CheckIcon from '@material-ui/icons/Check';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   channelTile: {
     cursor: 'pointer',
     display: 'flex',
@@ -108,66 +108,66 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.primary.active,
     },
   },
-}))
+}));
 
 const CreatorTile = ({ user }) => {
-  const classes = useStyles()
-  const dispatch = useDispatch()
+  const classes = useStyles();
+  const dispatch = useDispatch();
   const gotoThisCreator = () =>
-    dispatch(actions.pushHistory(`/profile/${user.userId}`))
-  const currentUser = useSelector(selectors.getUser)
-  const [open, setOpen] = useState(false)
-  const friendsList = useSelector(selectors.getFriendsList)
-  const [profileCreated, setProfileCreated] = useState(false)
-  const [alreadyFriends, setAlreadyFriends] = useState(false)
-  const [requestPending, setRequestPending] = useState(false)
-  const [sentRequest, setSentRequest] = useState(false)
-  const userProfile = useSelector(selectors.getUserData)
-  const [sent, setSent] = useState(false)
-  const { sendRequest } = useContext(FriendsStateContext)
+    dispatch(actions.pushHistory(`/profile/${user.userId}`));
+  const currentUser = useSelector(selectors.getUser);
+  const [open, setOpen] = useState(false);
+  const friendsList = useSelector(selectors.getFriendsList);
+  const [profileCreated, setProfileCreated] = useState(false);
+  const [alreadyFriends, setAlreadyFriends] = useState(false);
+  const [requestPending, setRequestPending] = useState(false);
+  const [sentRequest, setSentRequest] = useState(false);
+  const userProfile = useSelector(selectors.getUserData);
+  const [sent, setSent] = useState(false);
+  const { sendRequest } = useContext(FriendsStateContext);
 
   const sendReq = () => {
     if (!currentUser) {
-      dispatch(actions.login())
+      dispatch(actions.login());
     } else if (currentUser && profileCreated === false) {
-      setOpen(true)
+      setOpen(true);
     } else {
-      sendRequest(user.userId)
-      setSent(true)
+      sendRequest(user.userId);
+      setSent(true);
     }
-  }
+  };
 
   useEffect(() => {
     if (userProfile) {
-      setProfileCreated(true)
+      setProfileCreated(true);
     }
-  }, [userProfile])
+  }, [userProfile]);
 
   useEffect(() => {
-    friendsList?.sent?.map(friend => {
+    friendsList?.sent?.map((friend) => {
       if (friend.friend.id === user.userId) {
-        setSentRequest(true)
+        setSentRequest(true);
       } else {
-        return
+        return;
       }
-    })
+    });
 
-    friendsList?.recieved?.map(friend => {
+    friendsList?.recieved?.map((friend) => {
       if (friend.friend.id === user.userId) {
-        setRequestPending(true)
+        setRequestPending(true);
       } else {
-        return
+        return;
       }
-    })
+    });
 
-    friendsList?.accepted?.map(friend => {
+    friendsList?.accepted?.map((friend) => {
       if (friend.friend.id === user.userId) {
-        setAlreadyFriends(true)
+        setAlreadyFriends(true);
       } else {
-        return
+        return;
       }
-    })
-  }, [friendsList])
+    });
+  }, [friendsList]);
 
   return (
     <div className={classes.channelTile}>
@@ -196,6 +196,7 @@ const CreatorTile = ({ user }) => {
           <h4>Create a LeagueDay profile to send friend requests!</h4>
 
           <Button
+          variant="contained"
             className={classes.createBtn}
             onClick={() => dispatch(actions.pushHistory('/create'))}
           >
@@ -207,6 +208,7 @@ const CreatorTile = ({ user }) => {
         <div className={classes.text}>{user.username}</div>
         {currentUser && (
           <Button
+          variant="contained"
             className={classes.addFriend}
             onClick={sendReq}
             disabled={alreadyFriends || requestPending || sentRequest}
@@ -216,7 +218,7 @@ const CreatorTile = ({ user }) => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CreatorTile
+export default CreatorTile;

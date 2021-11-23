@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import usePodcasts from '../../api/usePodcasts'
-import BasicLayout from '../BasicLayout'
-import Loading from '../Loading'
+import usePodcasts from '../../api/usePodcasts';
+import BasicLayout from '../BasicLayout';
+import Loading from '../Loading';
 
-const Content = React.lazy(() => import('./Content'))
+const Content = React.lazy(() => import('./Content'));
 
 // test with slow import
 // const Content = React.lazy(
@@ -25,18 +25,18 @@ const useStyles = makeStyles({
     maxHeight: '100%',
     width: '100%',
   },
-})
+});
 
 const PodcastScreen = ({ podcastId }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const { data } = usePodcasts()
+  const { data } = usePodcasts();
 
   const podcast = React.useMemo(() => {
-    if (!data || !podcastId) return null
+    if (!data || !podcastId) return null;
 
-    return data.find(({ id }) => id === podcastId)
-  }, [data, podcastId])
+    return data.find(({ id }) => id === podcastId);
+  }, [data, podcastId]);
 
   return (
     <BasicLayout>
@@ -46,7 +46,7 @@ const PodcastScreen = ({ podcastId }) => {
         </React.Suspense>
       )}
     </BasicLayout>
-  )
-}
+  );
+};
 
-export default PodcastScreen
+export default PodcastScreen;
