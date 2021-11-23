@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import './App.css'
 import { hot } from 'react-hot-loader/root';
 import GetMyList from './views/GetUserList';
 import { isPlatform } from '@ionic/react';

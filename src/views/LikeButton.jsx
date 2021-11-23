@@ -214,12 +214,12 @@ const LikeButton = ({ audio, channelTag, userId, size }) => {
         <div className={classes.modalWrapper}>
           <h4>Create a LeagueDay profile to like audiocasts!</h4>
 
-          <Button
+          <button
             className={classes.createBtn}
             onClick={() => dispatch(actions.pushHistory('/create'))}
           >
             Create Profile
-          </Button>
+          </button>
         </div>
       </Modal>
       <p className={classes.count}>{count}</p>

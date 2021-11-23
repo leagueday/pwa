@@ -290,14 +290,14 @@ const UploadAudiocast = () => {
             />
             {loading && <h2>Loading...</h2>}
 
-            <Button
+            <button
               variant="contained"
               className={classes.submitBtn}
               onClick={handleSubmit}
               disabled={loading}
             >
               Submit Audiocast
-            </Button>
+            </button>
           </div>
           <div className={classes.recs}>
             <div className={classes.recordRecs}>

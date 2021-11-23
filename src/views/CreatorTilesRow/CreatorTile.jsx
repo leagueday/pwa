@@ -195,26 +195,26 @@ const CreatorTile = ({ user }) => {
         <div className={classes.modalWrapper}>
           <h4>Create a LeagueDay profile to send friend requests!</h4>
 
-          <Button
+          <button
           variant="contained"
             className={classes.createBtn}
             onClick={() => dispatch(actions.pushHistory('/create'))}
           >
             Create Profile
-          </Button>
+          </button>
         </div>
       </Modal>
       <div className={classes.textBox}>
         <div className={classes.text}>{user.username}</div>
         {currentUser && (
-          <Button
+          <button
           variant="contained"
             className={classes.addFriend}
             onClick={sendReq}
             disabled={alreadyFriends || requestPending || sentRequest}
           >
             {sent ? <CheckIcon /> : <PersonAddIcon />}
-          </Button>
+          </button>
         )}
       </div>
     </div>

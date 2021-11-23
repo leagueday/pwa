@@ -73,7 +73,8 @@ const useStyles = makeStyles((theme) => ({
     left: '0.25em',
     zIndex: 3,
     padding: '10 20',
-    width: '15%',
+    minWidth: '15%',
+    width: 'auto',
     background: 'red',
     borderRadius: '5px',
     '&:hover': {
@@ -84,6 +85,7 @@ const useStyles = makeStyles((theme) => ({
     animationTimingFunction: 'linear',
     animationDuration: '1.5s',
     animationIterationCount: 'infinite',
+    color: 'white'
   },
   text: ({ textColor }) => ({
     color: 'white',
@@ -190,9 +192,9 @@ const ChannelTile = ({ channel }) => {
           height={mdUp ?? '240px'}
         />
         {active && (
-          <Button onClick={gotoThisChannel} className={classes.liveSign} variant="contained">
+          <button onClick={gotoThisChannel} className={classes.liveSign} variant="contained">
             <b style={{ fontWeight: 900 }}>Live</b>
-          </Button>
+          </button>
         )}
         {xs && (
           <PlusMinusButton

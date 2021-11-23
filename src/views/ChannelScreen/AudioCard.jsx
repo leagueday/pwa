@@ -194,6 +194,7 @@ const useStyles = makeStyles((theme) => ({
     '100%': { filter: 'brightness(200%)' },
   },
   liveSign: {
+    width: 'auto',
     zIndex: 100,
     border: 'none',
     outline: 'none',
@@ -201,7 +202,8 @@ const useStyles = makeStyles((theme) => ({
     top: -10,
     left: -10,
     padding: '10 20',
-    width: '25%',
+    minWidth: '25%',
+    color: 'white',
     background: 'red',
     borderRadius: '5px',
     '&:hover': {
@@ -218,6 +220,7 @@ const useStyles = makeStyles((theme) => ({
     border: 'none',
     outline: 'none',
     position: 'absolute',
+    color: 'white',
     top: '30%',
     transform: 'translateX(-50%)',
     left: '50%',
@@ -402,19 +405,19 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
       <SubscriptionModal open={open} setOpen={setOpen} />
       <div className={classes.images}>
         {seeMore && (
-          <Button
+          <button
             variant="contained"
             onMouseOpen={() => setSeeMore(true)}
             className={classes.expandModal}
             onClick={onClick}
           >
             More
-          </Button>
+          </button>
         )}
         {live && (
-          <Button className={classes.liveSign} variant="contained">
+          <button className={classes.liveSign} variant="contained">
             Live
-          </Button>
+          </button>
         )}
         <img
           className={classes.creatorImg}

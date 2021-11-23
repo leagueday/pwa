@@ -236,7 +236,7 @@ const GoLiveData = () => {
             </div>
             {
               !created &&
-              <Button type="submit" className={classes.submitBtn} disabled={loading}>Create Stream Key</Button>
+              <button type="submit" className={classes.submitBtn} disabled={loading}>Create Stream Key</button>
             }
           </form>
         </div>

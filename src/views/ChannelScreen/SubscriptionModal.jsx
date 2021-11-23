@@ -1,11 +1,11 @@
-import React from 'react';
-import { Button, Alert, AlertTitle, Modal } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Button, Modal } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions, selectors } from '../../store';
 import axios from 'axios';
 import { colors } from '../../styling';
-
+import { base } from '../..';
 const useStyles = makeStyles((theme) => ({
   modalWrapper: {
     position: 'absolute',
@@ -24,11 +24,28 @@ const useStyles = makeStyles((theme) => ({
     outline: 'none',
     borderRadius: '5px',
     height: 500,
+    [theme.breakpoints.down('sm')]: {
+      width: 320
+    },
   },
   options: {
     display: 'flex',
     justifyContent: 'space-evenly',
     alignItems: 'center',
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column'
+    },
+  },
+  optionBtn: {
+    background: 'green',
+    color: 'white',
+    '&:hover': {
+      filter: 'brightness(150%)',
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: '10px'
+    },
   },
 }));
 
@@ -71,37 +88,39 @@ const SubscriptionModal = ({ open, setOpen }) => {
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
       <div className={classes.modalWrapper}>
-        <h3>
+        <h4>
           To stream RIOT games casting coverage, please choose one of the
           following options:
-        </h3>
+        </h4>
         {user && !profile && (
           <>
-            <p>
+            <p style={{ fontSize: '.9rem' }}>
               You'll need to create a LeagueDay profile to subscribe to RIOT
               games <a href="https://leaguedayapp.gg/create">Take me there</a>
             </p>
           </>
         )}
         <div className={classes.options}>
-          <Button
+          <button
             onClick={validateUser}
             name="single"
             disabled={user && !profile}
+            className={classes.optionBtn}
           >
             Single Stream
             <br />
             $2.00
-          </Button>
-          <Button
+          </button>
+          <button
             onClick={validateUser}
             name="subscription"
             disabled={user && !profile}
+            className={classes.optionBtn}
           >
             3 month subscription
             <br />
             $5.00
-          </Button>
+          </button>
         </div>
       </div>
     </Modal>

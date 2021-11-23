@@ -581,7 +581,7 @@ const EditProfile = (props) => {
               />
               <br></br>
               <br></br>
-              <Button
+              <button
                 type="submit"
                 variant="contained"
                 color="primary"
@@ -590,7 +590,7 @@ const EditProfile = (props) => {
                 disabled={!formChanged}
               >
                 {loading ? 'Loading...' : 'Update Profile'}
-              </Button>
+              </button>
             </form>
           </Paper>
         </div>

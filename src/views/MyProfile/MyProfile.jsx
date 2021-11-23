@@ -889,7 +889,7 @@ const MyProfile = ({ userId }) => {
       </div>
       <div className={classes.profileWrapper}>
         <div>
-          <Button
+          <button
             variant="contained"
             onClick={() => setFriendsModal(true)}
             className={classes.friendRequests}
@@ -901,7 +901,7 @@ const MyProfile = ({ userId }) => {
                 {friendList?.received?.length}
               </span>
             )}
-          </Button>
+          </button>
         </div>
         <div className={classes.credInfo}>
           <div className={classes.userImgContainer}>
@@ -928,13 +928,13 @@ const MyProfile = ({ userId }) => {
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
               <p className={classes.userName}>{userData?.fields?.username}</p>
-              <Button
+              <button
                 variant="contained"
                 onClick={editProfile}
                 className={classes.editProfile}
               >
                 Edit profile
-              </Button>
+              </button>
             </div>
             <div className={classes.description}>
               <p style={{ fontSize: '1rem' }}>
@@ -1003,20 +1003,20 @@ const MyProfile = ({ userId }) => {
               <p>Are you sure you want to delete this audiocast?</p>
             </div>
             <div className={classes.buttons}>
-              <Button
+              <button
                 variant="contained"
                 onClick={handleModalClose}
                 className={classes.editProfile}
               >
                 No, cancel
-              </Button>
-              <Button
+              </button>
+              <button
                 variant="contained"
                 onClick={deleteRecord}
                 className={classes.deleteBtn}
               >
                 Yes, delete
-              </Button>
+              </button>
             </div>
           </div>
         </Modal>
@@ -1081,7 +1081,7 @@ const MyProfile = ({ userId }) => {
               />
 
               {editLoading && <p style={{ marginTop: '10%' }}>Loading ... </p>}
-              <Button
+              <button
                 variant="contained"
                 disabled={editLoading}
                 className={classes.submitEditBtn}
@@ -1089,13 +1089,13 @@ const MyProfile = ({ userId }) => {
                 style={{ marginTop: editLoading ? '' : '10%' }}
               >
                 Save
-              </Button>
+              </button>
             </form>
           ) : (
             <>
-              <Button variant="contained" className={classes.submitEditBtn}>
+              <button variant="contained" className={classes.submitEditBtn}>
                 saved
-              </Button>
+              </button>
               <p>(Refresh to see changes)</p>
             </>
           )}
@@ -1235,21 +1235,21 @@ const MyProfile = ({ userId }) => {
               <>
                 <div className={classes.audioButtons}>
                   {userData?.fields?.admin === 'true' && (
-                    <Button
+                    <button
                       variant="contained"
                       onClick={golive}
                       className={classes.goLiveButton}
                     >
                       Go Live
-                    </Button>
+                    </button>
                   )}
-                  <Button
+                  <button
                     variant="contained"
                     onClick={() => dispatch(actions.pushHistory('/upload'))}
                     className={classes.uploadButton}
                   >
                     Upload Audiocast
-                  </Button>
+                  </button>
                 </div>
                 <div className={classes.recordings}>
                   {audiocasts.concat(userRecordings)?.length < 1 ? (

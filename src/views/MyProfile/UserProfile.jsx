@@ -517,13 +517,13 @@ const UserProfile = ({ userId }) => {
           <Modal open={open} onClose={() => setOpen(false)}>
             <div className={classes.modalWrapper}>
               <h4>Create a LeagueDay profile to send friend requests!</h4>
-              <Button
+              <button
                 variant="contained"
                 className={classes.createBtn}
                 onClick={() => dispatch(actions.pushHistory('/create'))}
               >
                 Create Profile
-              </Button>
+              </button>
             </div>
           </Modal>
           {requestPending ? (
@@ -535,16 +535,16 @@ const UserProfile = ({ userId }) => {
               }}
             >
               {!declined && (
-                <Button
+                <button
                   variant="contained"
                   className={classes.accepted}
                   onClick={handleAccept}
                 >
                   {accepted ? 'Accepted!' : 'Accept Friend Request'}
-                </Button>
+                </button>
               )}
               {!accepted && (
-                <Button
+                <button
                   variant="contained"
                   className={classes.declined}
                   onClick={() => {
@@ -553,11 +553,11 @@ const UserProfile = ({ userId }) => {
                   }}
                 >
                   {declined ? 'Declined!' : 'Decline Friend Request'}
-                </Button>
+                </button>
               )}
             </div>
           ) : (
-            <Button
+            <button
               variant="contained"
               className={classes.editProfile}
               onClick={handleSend}
@@ -569,7 +569,7 @@ const UserProfile = ({ userId }) => {
                 : alreadyFriends
                 ? 'Already Friends!'
                 : 'Send Friend Request'}{' '}
-            </Button>
+            </button>
           )}
           <div className={classes.userBio}>
             <div className={classes.userEditName}>

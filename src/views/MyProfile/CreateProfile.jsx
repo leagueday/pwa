@@ -464,7 +464,7 @@ const CreateProfile = (props) => {
               <br></br>
             </Fragment>
             {loading && <h4>Loading...</h4>}
-            <Button
+            <button
               type="submit"
               variant="contained"
               color="primary"
@@ -472,7 +472,7 @@ const CreateProfile = (props) => {
               disabled={loading}
             >
               Submit
-            </Button>
+            </button>
           </form>
         </div>
       ) : (

@@ -19,6 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from '@material-ui/core/Modal';
 import { maybeHmsToSecondsOnly, formatSecondsDuration } from '../dateutil';
 import { faShareSquare } from '@fortawesome/free-solid-svg-icons';
+import { base } from '../..';
 
 const useStyles = makeStyles((theme, live) => ({
   contentt: ({ primaryColor = colors.blue }) =>
@@ -230,10 +231,6 @@ const useStyles = makeStyles((theme, live) => ({
   },
 }));
 
-const baseId = 'appXoertP1WJjd4TQ';
-const apiKey = 'keymd23kpZ12EriVi';
-const base = new Airtable({ apiKey }).base(baseId);
-
 const AudiocastScreen = ({ audiocastId }) => {
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
@@ -344,6 +341,26 @@ const AudiocastScreen = ({ audiocastId }) => {
         }
       );
   }, [audiocastId]);
+
+  useEffect(() => {
+    base('UserProfile').update(
+      [
+        {
+          id: currentUserId,
+          fields: {
+            subscriptions: 'true',
+          },
+        },
+      ],
+      function (err, records) {
+        console.log('edit profile ', records);
+        if (err) {
+          console.error(err);
+          return;
+        }
+      }
+    );
+  }, []);
 
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY;
 
@@ -588,7 +605,7 @@ const AudiocastScreen = ({ audiocastId }) => {
           )}
         </div>
         {smDown && (
-          <Button
+          <button
             variant="contained"
             onClick={() => setChatSelected(!chatSelected)}
             className={classes.toggleChatBtn}
@@ -598,7 +615,7 @@ const AudiocastScreen = ({ audiocastId }) => {
               : live && !chatSelected
               ? 'See Party Chat'
               : 'See Comments'}
-          </Button>
+          </button>
         )}
         {chatSelected && (
           <ChatRoom

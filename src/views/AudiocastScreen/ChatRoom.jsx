@@ -600,12 +600,12 @@ const ChatRoom = ({ audiocastId, live, audiocast }) => {
                   </div>
                   {isHost && (
                     <div className={classes.questionBtns}>
-                      <Button
+                      <button
                         className={classes.acceptBtn}
                         onClick={() => acceptQuestion(item?.id, item)}
                       >
                         Accept
-                      </Button>
+                      </button>
                     </div>
                   )}
                 </div>

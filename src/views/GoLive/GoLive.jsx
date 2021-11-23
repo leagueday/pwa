@@ -87,7 +87,7 @@ const GoLive = () => {
               <br />
             </div>
 
-            <Button
+            <button
               type="submit"
               variant="contained"
               color="primary"
@@ -95,7 +95,7 @@ const GoLive = () => {
               className={classes.button}
             >
               Next
-            </Button>
+            </button>
           </div>
         </div>
       ) : (

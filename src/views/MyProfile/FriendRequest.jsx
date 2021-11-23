@@ -105,12 +105,12 @@ const FriendRequest = ({ friend }) => {
         }}
       >
         {accepted ? (
-          <Button variant="contained" className={classes.accepted}>Accepted!</Button>
+          <button variant="contained" className={classes.accepted}>Accepted!</button>
         ) : declined ? (
-          <Button variant="contained" className={classes.declined}>declined</Button>
+          <button variant="contained" className={classes.declined}>declined</button>
         ) : (
           <>
-            <Button
+            <button
             variant="contained"
               className={classes.editProfile}
               onClick={() => {
@@ -119,8 +119,8 @@ const FriendRequest = ({ friend }) => {
               }}
             >
               Accept
-            </Button>
-            <Button
+            </button>
+            <button
             variant="contained"
               className={classes.deleteBtn}
               onClick={() => {
@@ -129,7 +129,7 @@ const FriendRequest = ({ friend }) => {
               }}
             >
               Decline
-            </Button>
+            </button>
           </>
         )}
       </div>

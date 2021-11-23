@@ -137,6 +137,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '.8rem',
     color: 'white',
     minWidth: '85px',
+    width: 'auto',
     '&:hover': {
       backgroundColor: theme.palette.primary.active,
     },
@@ -231,9 +232,9 @@ const NavBar = () => {
         />
       </div>
       <div className={classes.navLinks}>
-        <Button className={classes.userGuideBtn} onClick={() => setOpen(true)}>
+        <button className={classes.userGuideBtn} onClick={() => setOpen(true)}>
           user guide
-        </Button>
+        </button>
         <a
           href="https://www.patreon.com/leaguedaygg"
           target="_blank"
@@ -314,20 +315,20 @@ const NavBar = () => {
           </>
         ) : (
           <>
-            <Button
+            <button
               className={classes.inBtn}
               onClick={() => dispatch(actions.login())}
               size="medium"
             >
               Log In
-            </Button>
-            <Button
+            </button>
+            <button
               className={classes.upBtn}
               onClick={() => dispatch(actions.login())}
               size="medium"
             >
               Sign Up
-            </Button>
+            </button>
           </>
         )}
       </div>
