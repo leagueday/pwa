@@ -45,15 +45,29 @@ const SubscriptionModal = ({ open, setOpen }) => {
         : 'price_1Jxc73K8kLgNdK0k36MGMUk2';
     if (profile) {
       axios
-        .post('https://leagueday-api.herokuapp.com/proxies/checkout', { priceId })
-        .then((res) => console.log('sub res ', res))
+        .post(
+          'https://leagueday-api.herokuapp.com/proxies/checkout',
+          { priceId },
+          {
+            headers: {
+              'Access-Control-Allow-Headers': 'Content-Type',
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'POST, GET, HEAD, OPTIONS',
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          window.location.href = res.data;
+        })
         .catch((err) => console.log('sub error ', err));
     } else if (!user) {
       setOpen(false);
       dispatch(actions.login());
     }
   };
-  
+
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
       <div className={classes.modalWrapper}>

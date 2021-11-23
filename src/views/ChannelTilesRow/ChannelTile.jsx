@@ -147,6 +147,7 @@ const ChannelTile = ({ channel }) => {
       axios
         .post('https://leagueday-api.herokuapp.com/proxies/commingsoon', {
           url: `${baseId}/ChannelLiveData?${urladd}`,
+          
         })
         .then((response) => {
           setUserAudio(
