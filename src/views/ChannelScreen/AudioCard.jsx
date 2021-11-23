@@ -331,7 +331,6 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
         dispatch(actions.pauseAudio());
       }
     : (ev) => {
-      setOpen(true)
       if (live) {
         if (currentUser) {
           if (
