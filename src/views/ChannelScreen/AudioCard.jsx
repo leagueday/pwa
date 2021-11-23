@@ -11,7 +11,7 @@ import { Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Airtable from 'airtable';
 import { Person } from '@material-ui/icons';
-
+import { base } from '../..';
 const useStyles = makeStyles((theme) => ({
   audioCard: () => ({
     width: '15rem',
@@ -257,10 +257,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-const baseId = 'appXoertP1WJjd4TQ';
-const apiKey = 'keymd23kpZ12EriVi';
-const base = new Airtable({ apiKey }).base(baseId);
 
 const AudioCard = ({ audio, indexData, channelTag, live }) => {
   const dispatch = useDispatch();
