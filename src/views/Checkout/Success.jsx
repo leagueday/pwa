@@ -34,7 +34,7 @@ const Success = () => {
       <div>
         <h1>Thanks for your order!</h1>
         <p>Enjoy the stream!</p>
-        <p><a href="https://leaguedayapp.gg/channel/lol">League of Legends channel page</a></p>
+        <p><a href="https://leaguedayapp.gg/channel/lol" style={{ color: 'blue' }}>League of Legends channel page</a></p>
       </div>
     </BasicLayout>
   );
