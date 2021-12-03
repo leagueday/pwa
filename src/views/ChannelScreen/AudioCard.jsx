@@ -323,19 +323,16 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
 
   const onPopClick = isPlayings
     ? (ev) => {
-        console.log('bro wtf ', live);
         ev.stopPropagation();
         dispatch(actions.pauseAudio());
       }
     : (ev) => {
-        console.log('live ', live);
         if (live) {
           if (currentUser) {
             if (
               currentUser.fields.subscriptions === 'true' &&
               audio.fields.userId === 'cbfba6e1-54eb-43aa-80a9-cb1bd4c04948'
             ) {
-              console.log('hello?? ');
               handleListen();
               if (isSelectedAudio) dispatch(actions.playAudio());
               else {
@@ -364,7 +361,6 @@ const AudioCard = ({ audio, indexData, channelTag, live }) => {
             setOpen(true);
           }
         } else {
-          console.log('bro wtf ', live);
           handleListen();
           if (isSelectedAudio) dispatch(actions.playAudio());
           else {
