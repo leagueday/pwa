@@ -1,16 +1,16 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
-import { actions } from '../../store'
-import { makeStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import { colors } from '../../styling'
-import { addScrollStyle } from '../util'
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { actions } from '../../store';
+import { makeStyles } from '@mui/styles';
+import Grid from '@material-ui/core/Grid';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { colors } from '../../styling';
+import { addScrollStyle } from '../util';
 
 // Top-Left/Right and Bottom-Section
 //   altogether in scroller
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   bottomSection: {
     flexGrow: 1,
     flexShrink: 1,
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
   },
-}))
+}));
 
 const ContentLayout = ({
   accentColor,
@@ -49,15 +49,20 @@ const ContentLayout = ({
   renderTopLeft,
   renderTopRight,
 }) => {
-  const classes = useStyles({ accentColor })
-  const dispatch = useDispatch()
+  const classes = useStyles({ accentColor });
+  const dispatch = useDispatch();
 
   return (
     <div className={classes.content}>
       <div className={classes.topSection}>
         <p
           onClick={() => dispatch(actions.pushHistory('/'))}
-          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', fontSize: '.85rem' }}
+          style={{
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            fontSize: '.85rem',
+          }}
         >
           <ArrowBackIosIcon style={{ fontSize: 'inherit' }} />
           Go back
@@ -83,11 +88,11 @@ const ContentLayout = ({
       </div>
       <div className={classes.bottomSection}>{children}</div>
     </div>
-  )
-}
+  );
+};
 
 ContentLayout.defaultProps = {
   accentColor: colors.white80,
-}
+};
 
-export default ContentLayout
+export default ContentLayout;

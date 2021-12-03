@@ -4,7 +4,7 @@ import axios from 'axios'
 import { base } from '../..';
 import { Button, TextField } from "@material-ui/core";
 import Select from 'react-select';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import 'react-h5-audio-player/lib/styles.css';
 import { getMyList } from '../../api/getChannelList';
 import { selectors } from '../../store'
@@ -236,7 +236,7 @@ const GoLiveData = () => {
             </div>
             {
               !created &&
-              <Button type="submit" className={classes.submitBtn} disabled={loading}>Create Stream Key</Button>
+              <button type="submit" className={classes.submitBtn} disabled={loading}>Create Stream Key</button>
             }
           </form>
         </div>

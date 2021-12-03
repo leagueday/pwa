@@ -2,11 +2,11 @@ import React from 'react'
 
 import { useSelector } from 'react-redux'
 
-import { ThemeProvider as MaterialThemeProvider } from '@material-ui/core/styles'
+import { ThemeProvider as MaterialThemeProvider } from '@mui/material'
 
-import { selectors } from '../store'
+import { selectors } from './store'
 
-import * as themes from './themes'
+import * as themes from './styling/themes'
 
 const ThemeProvider = props => {
   const themeName = useSelector(selectors.getTheme)

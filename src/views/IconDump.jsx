@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import Tooltip from '@material-ui/core/Tooltip'
+import { makeStyles } from '@mui/styles';
+import Grid from '@material-ui/core/Grid';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import { colors } from '../styling'
+import { colors } from '../styling';
 
 import {
   IcoDot,
@@ -21,7 +21,7 @@ import {
   IcoRight,
   IcoSolidArrowDown,
   IcoSolidArrowUp,
-} from './icons'
+} from './icons';
 
 const useStyles = makeStyles({
   iconDump: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles({
     textAlign: 'center',
     width: '100%',
   },
-})
+});
 
 const iconsList = [
   ['IcoHome', IcoHome],
@@ -61,15 +61,15 @@ const iconsList = [
   ['IcoRight', IcoRight],
   ['IcoSolidArrowDown', IcoSolidArrowDown],
   ['IcoSolidArrowUp', IcoSolidArrowUp],
-]
+];
 
 const IconDump = () => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const nextCounter = (counter => () => {
-    counter = counter + 1
-    return counter
-  })(0)
+  const nextCounter = ((counter) => () => {
+    counter = counter + 1;
+    return counter;
+  })(0);
 
   return (
     <div className={classes.iconDump}>
@@ -91,7 +91,7 @@ const IconDump = () => {
         ))}
       </Grid>
     </div>
-  )
-}
+  );
+};
 
-export default IconDump
+export default IconDump;

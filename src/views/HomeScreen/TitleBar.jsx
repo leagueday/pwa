@@ -1,12 +1,12 @@
-import React from 'react'
-import Color from 'color'
-import cx from 'classnames'
+import React from 'react';
+import Color from 'color';
+import cx from 'classnames';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import { formatDate } from '../dateutil'
+import { formatDate } from '../dateutil';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   datetime: ({ primaryColor }) => ({
     color: Color(primaryColor).fade(0.25).toString(),
     fontSize: '95%',
@@ -32,17 +32,17 @@ const useStyles = makeStyles(theme => ({
       fontSize: '65%',
     },
   },
-}))
+}));
 
 const TitleBar = ({ className, primaryColor, text }) => {
-  const classes = useStyles({ primaryColor })
+  const classes = useStyles({ primaryColor });
 
   return (
     <div className={cx(classes.titleBar, className)}>
       <div className={classes.text}>{text}</div>
       <div className={classes.datetime}>{formatDate()}</div>
     </div>
-  )
-}
+  );
+};
 
-export default TitleBar
+export default TitleBar;

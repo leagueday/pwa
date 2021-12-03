@@ -1,22 +1,22 @@
-import React, { useState, useEffect, useContext } from 'react'
-import axios from 'axios'
-import { Modal } from '@material-ui/core'
-import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
-import { selectors } from '../../store'
-import { useDispatch, useSelector } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
-import { Button } from '@material-ui/core'
-import Airtable from 'airtable'
-import { UserStateContext } from '../../store/stateProviders/userState'
-import { colors } from '../../styling'
-import { addScrollStyle } from '../util'
-import { actions } from '../../store'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
-import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
-const primaryColor = colors.magenta
+import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
+import { Modal } from '@material-ui/core';
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend';
+import { selectors } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { makeStyles } from '@mui/styles';
+import { Button } from '@mui/material';
+import Airtable from 'airtable';
+import { UserStateContext } from '../../store/stateProviders/userState';
+import { colors } from '../../styling';
+import { addScrollStyle } from '../util';
+import { actions } from '../../store';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup';
+const primaryColor = colors.magenta;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   content: () =>
     addScrollStyle(
       primaryColor,
@@ -193,7 +193,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     [theme.breakpoints.down('sm')]: {
       paddingLeft: '5%',
-      background: 'black'
+      background: 'black',
     },
   },
   placeHolder: {
@@ -264,7 +264,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: '2%',
     zIndex: '-1',
     [theme.breakpoints.down('sm')]: {
-      background: 'black'
+      background: 'black',
     },
   },
   trophy: {
@@ -354,11 +354,11 @@ const useStyles = makeStyles(theme => ({
       opacity: 0.8,
     },
   },
-}))
+}));
 
-const apiKey = 'keymd23kpZ12EriVi'
-const baseId = 'appXoertP1WJjd4TQ'
-const base = new Airtable({ apiKey }).base(baseId)
+const apiKey = 'keymd23kpZ12EriVi';
+const baseId = 'appXoertP1WJjd4TQ';
+const base = new Airtable({ apiKey }).base(baseId);
 
 const UserProfile = ({ userId }) => {
   const {
@@ -372,112 +372,111 @@ const UserProfile = ({ userId }) => {
     userRecordings,
     audiocasts,
     channelList,
-  } = useContext(UserStateContext)
-  const { sendRequest, declineFriendReq, acceptFriendReq } = useContext(
-    FriendsStateContext
-  )
+  } = useContext(UserStateContext);
+  const { sendRequest, declineFriendReq, acceptFriendReq } =
+    useContext(FriendsStateContext);
 
-  const dispatch = useDispatch()
-  const friendsList = useSelector(selectors.getFriendsList)
-  const user = useSelector(selectors.getUser)
-  const [liveRecordings, setLiveRecordings] = useState(true)
-  const [trophieSelected, setTrophieSelected] = useState(false)
-  const [creatorsSelected, setCreatorsSelected] = useState(false)
-  const [channelSelected, setChannelSelected] = useState(false)
-  const [accepted, setAccepted] = useState(false)
-  const [declined, setDeclined] = useState(false)
-  const [open, setOpen] = useState(false)
-  const [alreadyFriends, setAlreadyFriends] = useState(false)
-  const [requestPending, setRequestPending] = useState(false)
-  const [sentRequest, setSentRequest] = useState(false)
-  const [declineId, setDeclineId] = useState('')
-  const [profileCreated, setProfileCreated] = useState(false)
-  const userProfile = useSelector(selectors.getUserData)
+  const dispatch = useDispatch();
+  const friendsList = useSelector(selectors.getFriendsList);
+  const user = useSelector(selectors.getUser);
+  const [liveRecordings, setLiveRecordings] = useState(true);
+  const [trophieSelected, setTrophieSelected] = useState(false);
+  const [creatorsSelected, setCreatorsSelected] = useState(false);
+  const [channelSelected, setChannelSelected] = useState(false);
+  const [accepted, setAccepted] = useState(false);
+  const [declined, setDeclined] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [alreadyFriends, setAlreadyFriends] = useState(false);
+  const [requestPending, setRequestPending] = useState(false);
+  const [sentRequest, setSentRequest] = useState(false);
+  const [declineId, setDeclineId] = useState('');
+  const [profileCreated, setProfileCreated] = useState(false);
+  const userProfile = useSelector(selectors.getUserData);
 
   const handleCreatorClick = () => {
-    setCreatorsSelected(true)
-    setLiveRecordings(false)
-    setChannelSelected(false)
-    setTrophieSelected(false)
-  }
+    setCreatorsSelected(true);
+    setLiveRecordings(false);
+    setChannelSelected(false);
+    setTrophieSelected(false);
+  };
 
   const handleChannelClick = () => {
-    setCreatorsSelected(false)
-    setLiveRecordings(false)
-    setChannelSelected(true)
-    setTrophieSelected(false)
-  }
+    setCreatorsSelected(false);
+    setLiveRecordings(false);
+    setChannelSelected(true);
+    setTrophieSelected(false);
+  };
 
   const handleTrophyClick = () => {
-    setCreatorsSelected(false)
-    setLiveRecordings(false)
-    setChannelSelected(false)
-    setTrophieSelected(true)
-  }
+    setCreatorsSelected(false);
+    setLiveRecordings(false);
+    setChannelSelected(false);
+    setTrophieSelected(true);
+  };
 
   const handleLiveClick = () => {
-    setCreatorsSelected(false)
-    setLiveRecordings(true)
-    setChannelSelected(false)
-    setTrophieSelected(false)
-  }
+    setCreatorsSelected(false);
+    setLiveRecordings(true);
+    setChannelSelected(false);
+    setTrophieSelected(false);
+  };
 
-  const classes = useStyles({ primaryColor })
-  let count = 1
+  const classes = useStyles({ primaryColor });
+  let count = 1;
 
   if (loading) {
-    return <h1>Loading...</h1>
+    return <h1>Loading...</h1>;
   }
 
   const handleSend = () => {
     if (!user) {
-      dispatch(actions.login())
+      dispatch(actions.login());
     } else if (user && profileCreated === false) {
-      setOpen(true)
+      setOpen(true);
     } else {
-      sendRequest(userId)
-      setSentRequest(true)
+      sendRequest(userId);
+      setSentRequest(true);
     }
-  }
+  };
 
   const handleAccept = () => {
-    acceptFriendReq(declineId)
-    setAccepted(true)
-  }
+    acceptFriendReq(declineId);
+    setAccepted(true);
+  };
 
   useEffect(() => {
-    friendsList?.sent?.map(friend => {
+    friendsList?.sent?.map((friend) => {
       if (friend.friend.id === userId) {
-        setSentRequest(true)
+        setSentRequest(true);
       } else {
-        return
+        return;
       }
-    })
+    });
 
-    friendsList?.received?.map(friend => {
-      console.log('from map ', friend)
+    friendsList?.received?.map((friend) => {
+      console.log('from map ', friend);
       if (friend.friend.id === userId) {
-        setRequestPending(true)
-        setDeclineId(friend.id)
+        setRequestPending(true);
+        setDeclineId(friend.id);
       } else {
-        return
+        return;
       }
-    })
+    });
 
-    friendsList?.accepted?.map(friend => {
+    friendsList?.accepted?.map((friend) => {
       if (friend.friend.id === userId) {
-        setAlreadyFriends(true)
+        setAlreadyFriends(true);
       } else {
-        return
+        return;
       }
-    })
-  }, [friendsList, userId])
+    });
+  }, [friendsList, userId]);
 
   useEffect(() => {
     if (userProfile) {
-      setProfileCreated(true)
+      setProfileCreated(true);
     }
-  }, [userProfile])
+  }, [userProfile]);
 
   return (
     <div className={classes.content}>
@@ -518,12 +517,13 @@ const UserProfile = ({ userId }) => {
           <Modal open={open} onClose={() => setOpen(false)}>
             <div className={classes.modalWrapper}>
               <h4>Create a LeagueDay profile to send friend requests!</h4>
-              <Button
+              <button
+                variant="contained"
                 className={classes.createBtn}
                 onClick={() => dispatch(actions.pushHistory('/create'))}
               >
                 Create Profile
-              </Button>
+              </button>
             </div>
           </Modal>
           {requestPending ? (
@@ -535,24 +535,30 @@ const UserProfile = ({ userId }) => {
               }}
             >
               {!declined && (
-                <Button className={classes.accepted} onClick={handleAccept}>
+                <button
+                  variant="contained"
+                  className={classes.accepted}
+                  onClick={handleAccept}
+                >
                   {accepted ? 'Accepted!' : 'Accept Friend Request'}
-                </Button>
+                </button>
               )}
               {!accepted && (
-                <Button
+                <button
+                  variant="contained"
                   className={classes.declined}
                   onClick={() => {
-                    declineFriendReq(declineId)
-                    setDeclined(true)
+                    declineFriendReq(declineId);
+                    setDeclined(true);
                   }}
                 >
                   {declined ? 'Declined!' : 'Decline Friend Request'}
-                </Button>
+                </button>
               )}
             </div>
           ) : (
-            <Button
+            <button
+              variant="contained"
               className={classes.editProfile}
               onClick={handleSend}
               disabled={alreadyFriends ? alreadyFriends : sentRequest}
@@ -563,7 +569,7 @@ const UserProfile = ({ userId }) => {
                 : alreadyFriends
                 ? 'Already Friends!'
                 : 'Send Friend Request'}{' '}
-            </Button>
+            </button>
           )}
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
@@ -657,7 +663,7 @@ const UserProfile = ({ userId }) => {
                   <p className={classes.placeHolder}>No Audiocasts yet</p>
                 ) : (
                   audiocasts?.concat(userRecordings)?.map((rec, index) => {
-                    count += 1
+                    count += 1;
                     return (
                       <div className={classes.track}>
                         <Tracks1
@@ -668,7 +674,7 @@ const UserProfile = ({ userId }) => {
                           indexdata={index}
                         />
                       </div>
-                    )
+                    );
                   })
                 )}
               </div>
@@ -693,7 +699,7 @@ const UserProfile = ({ userId }) => {
                       />
                       <p className={classes.channelName}>{item.fields.title}</p>
                     </div>
-                  )
+                  );
                 })}
               </div>
             )}
@@ -717,9 +723,11 @@ const UserProfile = ({ userId }) => {
                         src={item.fields.image}
                         alt="creator image"
                       />
-                      <p className={classes.channelName}>{item.fields.username}</p>
+                      <p className={classes.channelName}>
+                        {item.fields.username}
+                      </p>
                     </div>
-                  )
+                  );
                 })}
               </div>
             )}
@@ -748,7 +756,7 @@ const UserProfile = ({ userId }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UserProfile
+export default UserProfile;

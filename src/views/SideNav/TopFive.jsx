@@ -3,7 +3,7 @@ import { actions } from '../../store';
 import { useDispatch } from 'react-redux';
 import { base } from '../..';
 import Item from './Item';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@mui/styles';
 import PlusMinusBtn from '../CreatorTilesRow/PlusMinusBtn';
 import { useLocationPathname } from '../../store';
 
@@ -21,19 +21,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const isChannelSelected = (locationPathname, channelTag) => {
-    const path = locationPathname ?? ''
-  
-    if (path.substr(0, 9) !== '/profile/') {
-      return false
-    } else {
-      return path.substr(9) === channelTag
-    }
+  const path = locationPathname ?? '';
+
+  if (path.substr(0, 9) !== '/profile/') {
+    return false;
+  } else {
+    return path.substr(9) === channelTag;
   }
+};
 
 const TopFive = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const locationPathname = useLocationPathname()
+  const locationPathname = useLocationPathname();
   const [leaderboard, setleaderboard] = useState([]);
 
   useEffect(() => {

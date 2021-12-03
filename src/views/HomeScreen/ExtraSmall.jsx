@@ -1,23 +1,23 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react';
+import { useSelector } from 'react-redux';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import useFacets from '../../api/useFacets'
-import { selectors } from '../../store'
-import { colors } from '../../styling'
-import { addScrollStyle } from '../util'
-import BasicLayout from '../BasicLayout'
-import FacetedPodcastTiles from '../FacetedPodcastTiles'
-import Loading from '../Loading'
-import TitleBar from './TitleBar'
-import XsBanner from './XsBanner'
+import useFacets from '../../api/useFacets';
+import { selectors } from '../../store';
+import { colors } from '../../styling';
+import { addScrollStyle } from '../util';
+import BasicLayout from '../BasicLayout';
+import FacetedPodcastTiles from '../FacetedPodcastTiles';
+import Loading from '../Loading';
+import TitleBar from './TitleBar';
+import XsBanner from './XsBanner';
 
-const ChannelCategories = React.lazy(() => import('../ChannelCategories'))
+const ChannelCategories = React.lazy(() => import('../ChannelCategories'));
 
-const primaryColor = colors.magenta
+const primaryColor = colors.magenta;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   banner: {
     flex: 35,
   },
@@ -51,15 +51,15 @@ const useStyles = makeStyles(theme => ({
   titleBar: {
     margin: '1vw',
   },
-}))
+}));
 
 const XsHomeScreen = () => {
-  const facetedPodcasts = useFacets('Home')
+  const facetedPodcasts = useFacets('Home');
 
-  const classes = useStyles({ primaryColor })
+  const classes = useStyles({ primaryColor });
 
-  const user = useSelector(selectors.getUser)
-  const userName = user?.user_metadata?.full_name
+  const user = useSelector(selectors.getUser);
+  const userName = user?.user_metadata?.full_name;
 
   return (
     <BasicLayout home>
@@ -81,7 +81,7 @@ const XsHomeScreen = () => {
         </div>
       </div>
     </BasicLayout>
-  )
-}
+  );
+};
 
-export default XsHomeScreen
+export default XsHomeScreen;

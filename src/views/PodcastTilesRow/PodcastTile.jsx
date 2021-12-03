@@ -1,23 +1,23 @@
-import React from 'react'
-import Color from 'color'
-import { useDispatch } from 'react-redux'
+import React from 'react';
+import Color from 'color';
+import { useDispatch } from 'react-redux';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import usePodcast from '../../api/usePodcast'
-import { channelSelectors } from '../../model/rss'
-import { actions } from '../../store'
-import { colors } from '../../styling'
-import PlusMinusButton from '../PlusMinusButton'
-import Square from '../Square'
+import usePodcast from '../../api/usePodcast';
+import { channelSelectors } from '../../model/rss';
+import { actions } from '../../store';
+import { colors } from '../../styling';
+import PlusMinusButton from '../PlusMinusButton';
+import Square from '../Square';
 
-const BACKGROUND_COLOR = colors.black
+const BACKGROUND_COLOR = colors.black;
 
-const transparent = Color(BACKGROUND_COLOR).fade(1).string()
-const opaque = BACKGROUND_COLOR
-const opacityRamp = `linear-gradient(${transparent}, ${transparent} 90%, ${opaque})`
+const transparent = Color(BACKGROUND_COLOR).fade(1).string();
+const opaque = BACKGROUND_COLOR;
+const opacityRamp = `linear-gradient(${transparent}, ${transparent} 90%, ${opaque})`;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   podcastTile: {
     cursor: 'pointer',
     display: 'flex',
@@ -74,19 +74,19 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: '0.25em',
     paddingRight: '0.25em',
   },
-}))
+}));
 
 const PodcastTile = ({ podcast, textColor }) => {
-  const { rss } = usePodcast(podcast)
+  const { rss } = usePodcast(podcast);
 
-  const title = rss ? channelSelectors.v2.title(rss) : podcast.title
-  const imageUrl = channelSelectors.v2.imageUrl(rss)
+  const title = rss ? channelSelectors.v2.title(rss) : podcast.title;
+  const imageUrl = channelSelectors.v2.imageUrl(rss);
 
-  const classes = useStyles({ textColor })
+  const classes = useStyles({ textColor });
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const gotoThisPodcast = () =>
-    dispatch(actions.pushHistory(`/podcast/${podcast.id}`))
+    dispatch(actions.pushHistory(`/podcast/${podcast.id}`));
 
   return (
     <div className={classes.podcastTile} onClick={gotoThisPodcast}>
@@ -103,7 +103,7 @@ const PodcastTile = ({ podcast, textColor }) => {
         <div className={classes.text}>{title}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PodcastTile
+export default PodcastTile;

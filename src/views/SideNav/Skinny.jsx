@@ -1,22 +1,22 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import cx from 'classnames'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import cx from 'classnames';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import { actions, selectors } from '../../store'
-import { colors } from '../../styling'
-import { addScrollStyle } from '../util'
-import { makeIconButton } from '../IconButton'
-import Expander from './Expander'
-import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge'
-import MyChannels from './MyChannels'
-import MyPodcasts from './MyPodcasts'
-import SignInOutButton from './SignInOutButton'
+import { actions, selectors } from '../../store';
+import { colors } from '../../styling';
+import { addScrollStyle } from '../util';
+import { makeIconButton } from '../IconButton';
+import Expander from './Expander';
+import LiveAndUpcomingLozenge from './LiveAndUpcomingLozenge';
+import MyChannels from './MyChannels';
+import MyPodcasts from './MyPodcasts';
+import SignInOutButton from './SignInOutButton';
 
-import { IcoMagnifier } from '../icons'
+import { IcoMagnifier } from '../icons';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   clickable: {
     cursor: 'pointer',
   },
@@ -76,17 +76,17 @@ const useStyles = makeStyles(theme => ({
   signInOutButtonContainer: {
     paddingBottom: '0.25vw',
   },
-}))
+}));
 
-const SearchButton = makeIconButton(IcoMagnifier)
+const SearchButton = makeIconButton(IcoMagnifier);
 
 const SkinnySideNav = ({ className, home }) => {
-  const classes = useStyles({ home })
+  const classes = useStyles({ home });
 
-  const dispatch = useDispatch()
-  const goHome = home ? null : () => dispatch(actions.pushHistory('/'))
+  const dispatch = useDispatch();
+  const goHome = home ? null : () => dispatch(actions.pushHistory('/'));
 
-  const user = useSelector(selectors.getUser)
+  const user = useSelector(selectors.getUser);
 
   return (
     <div className={cx(classes.sideNav, className)}>
@@ -129,7 +129,7 @@ const SkinnySideNav = ({ className, home }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SkinnySideNav
+export default SkinnySideNav;

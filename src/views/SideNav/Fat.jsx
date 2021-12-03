@@ -4,8 +4,7 @@ import cx from 'classnames';
 import TopFive from './TopFive';
 import Loading from '../Loading';
 import { Modal } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
 import { colors } from '../../styling';
 import { addScrollStyle } from '../util';
 import Expander from './Expander';
@@ -184,7 +183,7 @@ const FatSideNav = ({ className, home }) => {
             <Expander
               className={classes.expander}
               text="LEADERBOARD  🏆"
-              tag="poca"
+              tag="leader"
             >
               <TopFive />
             </Expander>

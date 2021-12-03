@@ -1,9 +1,9 @@
-import React from 'react'
-import Color from 'color'
-import cx from 'classnames'
-import { makeStyles } from '@material-ui/core/styles'
+import React from 'react';
+import Color from 'color';
+import cx from 'classnames';
+import { makeStyles } from '@mui/styles';
 
-import { colors } from '../styling'
+import { colors } from '../styling';
 
 const useStyles = makeStyles({
   image: {
@@ -56,7 +56,7 @@ const useStyles = makeStyles({
       transition: '0s',
     },
   },
-})
+});
 
 const ToggleImageButtonSmall = ({
   className,
@@ -68,7 +68,7 @@ const ToggleImageButtonSmall = ({
   offImage,
   shadowColor,
 }) => {
-  const classes = useStyles({ backgroundColor, shadowColor, size })
+  const classes = useStyles({ backgroundColor, shadowColor, size });
   return (
     <div className={cx(classes.imageButton, className)} onClick={onClick}>
       <img
@@ -77,14 +77,14 @@ const ToggleImageButtonSmall = ({
         draggable="false"
       />
     </div>
-  )
-}
+  );
+};
 
 ToggleImageButtonSmall.defaultProps = {
   backgroundColor: colors.brandBlack,
   on: false,
   shadowColor: colors.black,
   size: '2em',
-}
+};
 
-export default ToggleImageButtonSmall
+export default ToggleImageButtonSmall;

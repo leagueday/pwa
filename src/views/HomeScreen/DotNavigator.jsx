@@ -1,12 +1,12 @@
-import React from 'react'
-import cx from 'classnames'
+import React from 'react';
+import cx from 'classnames';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import { colors } from '../../styling'
-import IcoDot from '../icons/IcoDot'
+import { colors } from '../../styling';
+import IcoDot from '../icons/IcoDot';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dotInner: {
     color: colors.white80,
   },
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   dotOuterSelected: {
     cursor: 'default',
   },
-}))
+}));
 
 const DotNavigator = ({
   currentIndex,
@@ -39,15 +39,15 @@ const DotNavigator = ({
   primaryColor,
   setCurrentIndex,
 }) => {
-  const classes = useStyles({ primaryColor })
+  const classes = useStyles({ primaryColor });
 
   return (
     <div className={classes.dotNav}>
       {(() => {
-        const dots = []
+        const dots = [];
 
         for (let i = 0; i < numElements; i++) {
-          const isSelected = i === currentIndex
+          const isSelected = i === currentIndex;
 
           dots.push(
             <IcoDot
@@ -62,13 +62,13 @@ const DotNavigator = ({
               }}
               onClick={isSelected ? null : () => setCurrentIndex(i)}
             />
-          )
+          );
         }
 
-        return dots
+        return dots;
       })()}
     </div>
-  )
-}
+  );
+};
 
 export default DotNavigator;

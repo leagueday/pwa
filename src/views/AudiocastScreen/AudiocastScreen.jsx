@@ -1,24 +1,24 @@
-import React, { useState, useMemo, useEffect } from 'react'
-import Airtable from 'airtable'
-import ChatRoom from './ChatRoom'
-import ToggleImageButton from '../ToggleImageButton'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import LikeButton from '../LikeButton'
-import { useDispatch, useSelector } from 'react-redux'
-import PlusMinusBtn from '../CreatorTilesRow/PlusMinusBtn'
-import BasicLayout from '../BasicLayout'
-import { addScrollStyle } from '../util'
-import { useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { actions, constants, selectors } from '../../store'
-import { colors } from '../../styling'
-import { Button } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
-import { LinkedIn, Twitter, Facebook, Email } from '@material-ui/icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Modal from '@material-ui/core/Modal'
-import { maybeHmsToSecondsOnly, formatSecondsDuration } from '../dateutil'
-import { faShareSquare } from '@fortawesome/free-solid-svg-icons'
+import React, { useState, useMemo, useEffect } from 'react';
+import ChatRoom from './ChatRoom';
+import SubscriptionModal from '../ChannelScreen/SubscriptionModal';
+import ToggleImageButton from '../ToggleImageButton';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import LikeButton from '../LikeButton';
+import { useDispatch, useSelector } from 'react-redux';
+import PlusMinusBtn from '../CreatorTilesRow/PlusMinusBtn';
+import BasicLayout from '../BasicLayout';
+import { addScrollStyle } from '../util';
+import { useTheme } from '@mui/material';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { actions, constants, selectors } from '../../store';
+import { colors } from '../../styling';
+import { makeStyles } from '@mui/styles';
+import { LinkedIn, Twitter, Facebook, Email } from '@material-ui/icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Modal from '@material-ui/core/Modal';
+import { maybeHmsToSecondsOnly, formatSecondsDuration } from '../dateutil';
+import { faShareSquare } from '@fortawesome/free-solid-svg-icons';
+import { base } from '../..';
 
 const useStyles = makeStyles((theme, live) => ({
   contentt: ({ primaryColor = colors.blue }) =>
@@ -228,62 +228,108 @@ const useStyles = makeStyles((theme, live) => ({
     },
     marginBottom: 10,
   },
-}))
-
-const baseId = 'appXoertP1WJjd4TQ'
-const apiKey = 'keymd23kpZ12EriVi'
-const base = new Airtable({ apiKey }).base(baseId)
+}));
 
 const AudiocastScreen = ({ audiocastId }) => {
-  const theme = useTheme()
-  const smDown = useMediaQuery(theme.breakpoints.down('sm'))
-  const lgUp = useMediaQuery(theme.breakpoints.up('lg'))
-  const dispatch = useDispatch()
-  const [audiocast, setAudiocast] = useState()
-  const [sideColumn, setSideColumn] = useState([])
-  const [selectedDuration, setSelectedDuration] = useState()
-  const [live, setLive] = useState(false)
-  const classes = useStyles({ live })
-  const [linkOpen, setLinkOpen] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const [chatSelected, setChatSelected] = useState(false)
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+  const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
+  const dispatch = useDispatch();
+  const [audiocast, setAudiocast] = useState();
+  const [sideColumn, setSideColumn] = useState([]);
+  const [selectedDuration, setSelectedDuration] = useState();
+  const [live, setLive] = useState(false);
+  const classes = useStyles({ live });
+  const [linkOpen, setLinkOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [chatSelected, setChatSelected] = useState(false);
+  const [open, setOpen] = useState(false);
+  const audioMode = useSelector(selectors.getAudioMode);
+  const audioUrl = useSelector(selectors.getAudioUrl);
+  const currentUser = useSelector(selectors.getUserData);
+  const currentUserId = currentUser?.id;
 
-  const audioMode = useSelector(selectors.getAudioMode)
-  const audioUrl = useSelector(selectors.getAudioUrl)
-  const currentUser = useSelector(selectors.getUserData)
-  const currentUserId = currentUser?.id
+  const isSelectedAudio =
+    audioUrl && audioUrl === audiocast?.fields?.playbackUrl;
+  const duration = maybeHmsToSecondsOnly(selectedDuration);
+  const durationLabel = useMemo(
+    () => formatSecondsDuration(duration),
+    [duration]
+  );
 
-  const isSelectedAudio = audioUrl && audioUrl === audiocast?.fields?.playbackUrl
-  const duration = maybeHmsToSecondsOnly(selectedDuration)
-  const durationLabel = useMemo(() => formatSecondsDuration(duration), [
-    duration,
-  ])
+  const au = document.createElement('audio');
 
-  const au = document.createElement('audio')
-
-  au.src = audiocast?.fields?.playbackUrl
+  au.src = audiocast?.fields?.playbackUrl;
 
   au.addEventListener(
     'loadedmetadata',
     function () {
-      const duration = au.duration
+      const duration = au.duration;
 
-      setSelectedDuration(duration)
+      setSelectedDuration(duration);
     },
     false
-  )
+  );
 
   const openLinkModal = () => {
-    setLinkOpen(true)
-  }
+    setLinkOpen(true);
+  };
 
   const closeLinkModal = () => {
-    setLinkOpen(false)
-  }
+    setLinkOpen(false);
+  };
+
+  const handleListen = async () => {
+    if (audiocast?.fields?.type === 'audiocast') {
+      base('UserAudiocasts').update(
+        [
+          {
+            id: audiocast.id,
+            fields: {
+              listeners: audiocast?.fields?.listeners
+                ? [...audiocast?.fields?.listeners, currentUserId]
+                : [currentUserId],
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          records.forEach(function (record) {
+            console.log('listen recorded  ', record);
+          });
+        }
+      );
+    } else if (audiocast.fields.type === 'livestream') {
+      base('ChannelLiveData').update(
+        [
+          {
+            id: audiocast.id,
+            fields: {
+              listeners: audiocast?.fields?.listeners
+                ? [...audiocast?.fields?.listeners, currentUserId]
+                : [currentUserId],
+            },
+          },
+        ],
+        function (err, records) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          records.forEach(function (record) {
+            console.log('listen recorded  ', record);
+          });
+        }
+      );
+    }
+  };
 
   useEffect(() => {
     if (!isNaN(audiocastId)) {
-      setLive(false)
+      setLive(false);
       base('UserAudiocasts')
         .select({
           view: 'Grid view',
@@ -292,19 +338,19 @@ const AudiocastScreen = ({ audiocastId }) => {
           function page(records, fetchNextPage) {
             setAudiocast(
               records.filter(
-                item => item.fields.audiocastId === audiocastId * 1
+                (item) => item.fields.audiocastId === audiocastId * 1
               )[0]
-            )
+            );
           },
           function done(err) {
             if (err) {
-              console.log( 'error from AudioScreen.jsx', err)
-              return
+              console.log('error from AudioScreen.jsx', err);
+              return;
             }
           }
-        )
+        );
     } else {
-      setLive(true)
+      setLive(true);
       base('ChannelLiveData')
         .select({
           filterByFormula: `{liveStreamId} = '${audiocastId}'`,
@@ -312,15 +358,15 @@ const AudiocastScreen = ({ audiocastId }) => {
         })
         .eachPage(
           function page(records, fetchNextPage) {
-            setAudiocast(records[0])
+            setAudiocast(records[0]);
           },
           function done(err) {
             if (err) {
-              console.log( 'error from AudioScreen.jsx', err)
-              return
+              console.log('error from AudioScreen.jsx', err);
+              return;
             }
           }
-        )
+        );
     }
     base('UserAudiocasts')
       .select({
@@ -329,27 +375,64 @@ const AudiocastScreen = ({ audiocastId }) => {
       .eachPage(
         function page(records, fetchNextPage) {
           setSideColumn(
-            records.filter(item => item.fields.audiocastId !== audiocastId * 1)
-          )
+            records.filter(
+              (item) => item.fields.audiocastId !== audiocastId * 1
+            )
+          );
         },
         function done(err) {
           if (err) {
-            console.log( 'error from AudioScreen.jsx', err)
-            return
+            console.log('error from AudioScreen.jsx', err);
+            return;
           }
         }
-      )
-  }, [audiocastId])
+      );
+  }, [audiocastId]);
 
-  const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY
+  const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY;
 
   const onPopClick = isPlayings
-    ? ev => {
-        dispatch(actions.pauseAudio())
-        ev.stopPropagation()
+  ? (ev) => {
+      ev.stopPropagation();
+      dispatch(actions.pauseAudio());
+    }
+  : (ev) => {
+    if (live) {
+      if (currentUser) {
+        if (
+          currentUser.fields.subscriptions === 'true' &&
+          audiocast.fields.userId === 'cbfba6e1-54eb-43aa-80a9-cb1bd4c04948'
+          ) {
+            console.log('hello?? ')
+            handleListen();
+            if (isSelectedAudio) dispatch(actions.playAudio());
+            else {
+              dispatch(
+                actions.selectAudio(
+                  '',
+                  '',
+                  '',
+                  audiocast.fields.playbackUrl,
+                  '',
+                  '',
+                  ''
+                )
+              );
+              dispatch(actions.playAudio());
+            }
+            ev.stopPropagation();
+          } else if (
+            currentUser.fields.subscriptions !== 'true' &&
+            audiocast.fields.userId === 'cbfba6e1-54eb-43aa-80a9-cb1bd4c04948'
+          ) {
+            setOpen(true);
+          }
+      } else if (!currentUser) {
+        setOpen(true)
       }
-    : ev => {
-        if (isSelectedAudio) dispatch(actions.playAudio())
+      } else {
+        handleListen();
+        if (isSelectedAudio) dispatch(actions.playAudio());
         else {
           dispatch(
             actions.selectAudio(
@@ -357,19 +440,21 @@ const AudiocastScreen = ({ audiocastId }) => {
               '',
               '',
               audiocast.fields.playbackUrl,
-              '',
+              indexData,
               '',
               ''
             )
-          )
-          dispatch(actions.playAudio())
+          );
+          dispatch(actions.playAudio());
         }
-        ev.stopPropagation()
+        ev.stopPropagation();
       }
-console.log(audiocast)
+    };
+
   return (
     <BasicLayout>
       <div className={smDown ? classes.contentt : classes.content}>
+        <SubscriptionModal open={open} setOpen={setOpen}/>
         <p
           onClick={() =>
             dispatch(
@@ -550,8 +635,8 @@ console.log(audiocast)
                 <p
                   style={{ color: 'black', fontSize: '90%', cursor: 'pointer' }}
                   onClick={() => {
-                    navigator.clipboard.writeText(window.location.href)
-                    setCopied(true)
+                    navigator.clipboard.writeText(window.location.href);
+                    setCopied(true);
                   }}
                 >
                   {!copied ? 'Copy link' : 'Copied!'}
@@ -584,7 +669,8 @@ console.log(audiocast)
           )}
         </div>
         {smDown && (
-          <Button
+          <button
+            variant="contained"
             onClick={() => setChatSelected(!chatSelected)}
             className={classes.toggleChatBtn}
           >
@@ -593,7 +679,7 @@ console.log(audiocast)
               : live && !chatSelected
               ? 'See Party Chat'
               : 'See Comments'}
-          </Button>
+          </button>
         )}
         {chatSelected && (
           <ChatRoom
@@ -621,7 +707,7 @@ console.log(audiocast)
                 }
               >
                 <img
-                  src={audio.fields.thumbnail}
+                  src={audiocast?.fields?.thumbnail}
                   alt=""
                   className={classes.sideCastImg}
                 />
@@ -632,7 +718,7 @@ console.log(audiocast)
         )}
       </div>
     </BasicLayout>
-  )
-}
+  );
+};
 
-export default AudiocastScreen
+export default AudiocastScreen;

@@ -37,7 +37,7 @@ const Friend = ({ friend, classes, newChats }) => {
       <div className={classes.friendBtnCont}>
         {!declined ? (
           <>
-            <Button
+            <button
               className={classes.chatBtn}
               onClick={() => {
                 setSelectedFriend(friend.friend)
@@ -66,8 +66,8 @@ const Friend = ({ friend, classes, newChats }) => {
                   {newMessageCount}
                 </span>
               )}
-            </Button>
-            <Button
+            </button>
+            <button
               className={classes.deleteBtn}
               onClick={() => {
                 setDeclined(true)
@@ -75,11 +75,11 @@ const Friend = ({ friend, classes, newChats }) => {
               }}
             >
               Remove friend
-            </Button>
+            </button>
           </>
         ) : (
           <div>
-            <Button className={classes.declined}>Removed!</Button>
+            <button className={classes.declined}>Removed!</button>
           </div>
         )}
       </div>

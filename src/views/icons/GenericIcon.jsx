@@ -1,7 +1,7 @@
-import React from 'react'
-import cx from 'classnames'
+import React from 'react';
+import cx from 'classnames';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
   centerFill: {
@@ -9,13 +9,13 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    color: 'white'
+    color: 'white',
   },
-})
+});
 
-const makeGenericIcon = Svg => {
+const makeGenericIcon = (Svg) => {
   const Icon = ({ classes, onClick, size, strokeWidth }) => {
-    const classes2 = useStyles()
+    const classes2 = useStyles();
 
     return (
       <div
@@ -24,15 +24,15 @@ const makeGenericIcon = Svg => {
       >
         <Svg className={classes?.inner} size={size} strokeWidth={strokeWidth} />
       </div>
-    )
-  }
+    );
+  };
 
   Icon.defaultProps = {
     size: 24,
     strokeWidth: null,
-  }
+  };
 
-  return Icon
-}
+  return Icon;
+};
 
-export default makeGenericIcon
+export default makeGenericIcon;

@@ -1,31 +1,31 @@
-import React, { useState, useEffect, useContext } from 'react'
-import Airtable from 'airtable'
-import { useSelector, useDispatch } from 'react-redux'
-import { TextField } from '@material-ui/core'
-import Friend from './Friend'
-import FriendRequest from './FriendRequest'
-import EditIcon from '@mui/icons-material/Edit'
-import { makeStyles } from '@material-ui/core/styles'
-import { Button } from '@material-ui/core'
-import { selectors } from '../../store'
-import Modal from '@material-ui/core/Modal'
-import { MyListContext } from '../../store/stateProviders/listState'
-import { UserStateContext } from '../../store/stateProviders/userState'
-import { ChatStateContext } from '../../store/stateProviders/useChat'
-import { colors } from '../../styling'
-import { addScrollStyle } from '../util'
-import { actions } from '../../store'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons'
-import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup'
-import { uploadFile } from 'react-s3'
+import React, { useState, useEffect, useContext } from 'react';
+import Airtable from 'airtable';
+import { useSelector, useDispatch } from 'react-redux';
+import { TextField } from '@material-ui/core';
+import Friend from './Friend';
+import FriendRequest from './FriendRequest';
+import EditIcon from '@mui/icons-material/Edit';
+import { makeStyles } from '@mui/styles';
+import { Button } from '@mui/material';
+import { selectors } from '../../store';
+import Modal from '@material-ui/core/Modal';
+import { MyListContext } from '../../store/stateProviders/listState';
+import { UserStateContext } from '../../store/stateProviders/userState';
+import { ChatStateContext } from '../../store/stateProviders/useChat';
+import { colors } from '../../styling';
+import { addScrollStyle } from '../util';
+import { actions } from '../../store';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { Tracks1 } from '../ChannelScreen/ReplayBroadcastsMockup';
+import { uploadFile } from 'react-s3';
 import('buffer').then(({ Buffer }) => {
-  global.Buffer = Buffer
-})
+  global.Buffer = Buffer;
+});
 
-const primaryColor = colors.magenta
+const primaryColor = colors.magenta;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   content: () =>
     addScrollStyle(
       primaryColor,
@@ -356,7 +356,6 @@ const useStyles = makeStyles(theme => ({
   socialLinks: {
     display: 'flex',
     fontSize: '90%',
-    // alignItems: 'center',
     textDecoration: 'underline',
     justifyContent: 'space-evenly',
     color: 'white',
@@ -365,9 +364,6 @@ const useStyles = makeStyles(theme => ({
       alignItems: 'center',
       marginLeft: '1%',
     },
-    // [theme.breakpoints.down('xs')]: {
-    //   marginLeft: '3%',
-    // },
   },
   socialLinksWrapper: {
     [theme.breakpoints.down('xs')]: {
@@ -616,10 +612,10 @@ const useStyles = makeStyles(theme => ({
     left: -5,
     top: -5,
   },
-}))
-const apiKey = 'keymd23kpZ12EriVi'
-const baseId = 'appXoertP1WJjd4TQ'
-const base = new Airtable({ apiKey }).base(baseId)
+}));
+const apiKey = 'keymd23kpZ12EriVi';
+const baseId = 'appXoertP1WJjd4TQ';
+const base = new Airtable({ apiKey }).base(baseId);
 
 const config = {
   bucketName: 'leagueday-prod-images',
@@ -627,10 +623,32 @@ const config = {
   region: 'us-east-1',
   accessKeyId: 'AKIA2NEES72FJV4VO343',
   secretAccessKey: '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',
+};
+
+const stx = {
+  position: 'absolute',
+  zIndex: 10,
+  right: 20,
+  top: 20,
+  width: '200px',
+  background: colors.blue,
+  // '&:hover': {
+  //   backgroundColor: theme.palette.primary.active,
+  // },
+  // [theme.breakpoints.down('md')]: {
+  //   width: '25%',
+  //   fontSize: '80%',
+  // },
+  // [theme.breakpoints.down('xs')]: {
+  //   width: '100%',
+  //   position: 'relative',
+  //   top: 100,
+  //   left: 0,
+  // },
 }
 
 const MyProfile = ({ userId }) => {
-  const { globalList, creatorList } = useContext(MyListContext)
+  const { globalList, creatorList } = useContext(MyListContext);
   const {
     userData,
     loading,
@@ -640,95 +658,95 @@ const MyProfile = ({ userId }) => {
     TitanTrophy,
     PentaTrophy,
     NoobTrophy,
-  } = useContext(UserStateContext)
-  const { newChats } = useContext(ChatStateContext)
-  const [liveRecordings, setLiveRecordings] = useState(true)
-  const [channelSelected, setChannelSelected] = useState(false)
-  const [friendSelected, setFriendSelected] = useState(false)
-  const [trophieSelected, setTrophieSelected] = useState(false)
-  const [creatorsSelected, setCreatorsSelected] = useState(false)
-  const [recordToDelete, setRecordToDelete] = useState({})
-  const [friendsModal, setFriendsModal] = useState(false)
-  const [editOpen, setEditOpen] = useState(false)
-  const [open, setOpen] = useState(false)
-  const [editCast, setEditCast] = useState()
-  const friendList = useSelector(selectors.getFriendsList)
+  } = useContext(UserStateContext);
+  const { newChats } = useContext(ChatStateContext);
+  const [liveRecordings, setLiveRecordings] = useState(true);
+  const [channelSelected, setChannelSelected] = useState(false);
+  const [friendSelected, setFriendSelected] = useState(false);
+  const [trophieSelected, setTrophieSelected] = useState(false);
+  const [creatorsSelected, setCreatorsSelected] = useState(false);
+  const [recordToDelete, setRecordToDelete] = useState({});
+  const [friendsModal, setFriendsModal] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [editCast, setEditCast] = useState();
+  const friendList = useSelector(selectors.getFriendsList);
   const [formValues, setFormvalues] = useState({
     title: '',
     description: '',
-  })
-  const [formFile, setFormFile] = useState()
-  const [saved, setSaved] = useState(false)
-  const [thumbnail, setThumbnail] = useState()
-  const [editLoading, setEditLoading] = useState()
+  });
+  const [formFile, setFormFile] = useState();
+  const [saved, setSaved] = useState(false);
+  const [thumbnail, setThumbnail] = useState();
+  const [editLoading, setEditLoading] = useState();
 
   const handleCreatorClick = () => {
-    setCreatorsSelected(true)
-    setLiveRecordings(false)
-    setChannelSelected(false)
-    setTrophieSelected(false)
-    setFriendSelected(false)
-  }
+    setCreatorsSelected(true);
+    setLiveRecordings(false);
+    setChannelSelected(false);
+    setTrophieSelected(false);
+    setFriendSelected(false);
+  };
 
   const handleChannelClick = () => {
-    setCreatorsSelected(false)
-    setLiveRecordings(false)
-    setChannelSelected(true)
-    setTrophieSelected(false)
-    setFriendSelected(false)
-  }
+    setCreatorsSelected(false);
+    setLiveRecordings(false);
+    setChannelSelected(true);
+    setTrophieSelected(false);
+    setFriendSelected(false);
+  };
 
   const handleTrophyClick = () => {
-    setCreatorsSelected(false)
-    setLiveRecordings(false)
-    setChannelSelected(false)
-    setTrophieSelected(true)
-    setFriendSelected(false)
-  }
+    setCreatorsSelected(false);
+    setLiveRecordings(false);
+    setChannelSelected(false);
+    setTrophieSelected(true);
+    setFriendSelected(false);
+  };
 
   const handleLiveClick = () => {
-    setCreatorsSelected(false)
-    setLiveRecordings(true)
-    setChannelSelected(false)
-    setTrophieSelected(false)
-    setFriendSelected(false)
-  }
+    setCreatorsSelected(false);
+    setLiveRecordings(true);
+    setChannelSelected(false);
+    setTrophieSelected(false);
+    setFriendSelected(false);
+  };
 
   const handleFriendClick = () => {
-    setCreatorsSelected(false)
-    setLiveRecordings(false)
-    setChannelSelected(false)
-    setTrophieSelected(false)
-    setFriendSelected(true)
-  }
+    setCreatorsSelected(false);
+    setLiveRecordings(false);
+    setChannelSelected(false);
+    setTrophieSelected(false);
+    setFriendSelected(true);
+  };
 
   const handleModalClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
-  const deleteAudiocast = audio => {
-    setOpen(true)
-    setRecordToDelete(audio)
-  }
+  const deleteAudiocast = (audio) => {
+    setOpen(true);
+    setRecordToDelete(audio);
+  };
 
-  const editAudiocast = audio => {
-    setEditOpen(true)
-    setEditCast(audio)
-  }
+  const editAudiocast = (audio) => {
+    setEditOpen(true);
+    setEditCast(audio);
+  };
 
-  const handleAudioUpload = e => {
-    const file = e.target.files[0]
-    console.log('file ', file)
-    setEditLoading(true)
+  const handleAudioUpload = (e) => {
+    const file = e.target.files[0];
+    console.log('file ', file);
+    setEditLoading(true);
     uploadFile(e.target.files[0], config)
-      .then(res => {
-        console.log(res.location)
-        setFormFile(res.location)
-        setEditLoading(false)
+      .then((res) => {
+        console.log(res.location);
+        setFormFile(res.location);
+        setEditLoading(false);
       })
-      .catch(err => console.log(err))
-    console.log(formFile)
-  }
+      .catch((err) => console.log(err));
+    console.log(formFile);
+  };
 
   const deleteRecord = () => {
     if (recordToDelete.fields.type === 'audiocast') {
@@ -736,63 +754,63 @@ const MyProfile = ({ userId }) => {
         [recordToDelete.id],
         function (err, deletedRecords) {
           if (err) {
-            console.error(err)
-            return
+            console.error(err);
+            return;
           }
-          console.log('Deleted', deletedRecords.length, 'records')
+          console.log('Deleted', deletedRecords.length, 'records');
         }
-      )
+      );
     } else if (recordToDelete.fields.type === 'livestream') {
       base('ChannelLiveData').destroy(
         [recordToDelete.id],
         function (err, deletedRecords) {
           if (err) {
-            console.error(err)
-            return
+            console.error(err);
+            return;
           }
-          console.log('Deleted', deletedRecords.length, 'records')
+          console.log('Deleted', deletedRecords.length, 'records');
         }
-      )
+      );
     }
-    setOpen(false)
-    getUserRecordings()
-  }
+    setOpen(false);
+    getUserRecordings();
+  };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setFormvalues({
       ...formValues,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
-  const handleImageUpload = e => {
-    const file = e.target.files[0]
-    setEditLoading(true)
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    setEditLoading(true);
     uploadFile(file, config)
-      .then(res => {
-        console.log(res.location)
-        setThumbnail(res.location)
-        setEditLoading(false)
+      .then((res) => {
+        console.log(res.location);
+        setThumbnail(res.location);
+        setEditLoading(false);
       })
-      .catch(err => console.log(err))
-  }
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
-    getUserRecordings()
-  }, [open, userId])
+    getUserRecordings();
+  }, [open, userId]);
 
-  const classes = useStyles()
-  const dispatch = useDispatch()
-  const golive = () => dispatch(actions.pushHistory('/live'))
-  const editProfile = () => dispatch(actions.pushHistory('/editprofile'))
-  let countt = 1
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const golive = () => dispatch(actions.pushHistory('/live'));
+  const editProfile = () => dispatch(actions.pushHistory('/editprofile'));
+  let countt = 1;
 
   if (loading) {
-    return <h1>Loading...</h1>
+    return <h1>Loading...</h1>;
   }
 
-  const submitEdit = e => {
-    e.preventDefault()
+  const submitEdit = (e) => {
+    e.preventDefault();
     if (editCast?.fields?.type === 'livestream') {
       base('ChannelLiveData').update(
         [
@@ -809,15 +827,15 @@ const MyProfile = ({ userId }) => {
         ],
         function (err, records) {
           if (err) {
-            console.error(err)
-            return
+            console.error(err);
+            return;
           }
           records.forEach(function (record) {
-            if (record) setSaved(true)
-            console.log('edited livestream ', record)
-          })
+            if (record) setSaved(true);
+            console.log('edited livestream ', record);
+          });
         }
-      )
+      );
     } else {
       base('UserAudiocasts').update(
         [
@@ -834,17 +852,17 @@ const MyProfile = ({ userId }) => {
         ],
         function (err, records) {
           if (err) {
-            console.error(err)
-            return
+            console.error(err);
+            return;
           }
           records.forEach(function (record) {
-            if (record) setSaved(true)
-            console.log('edited audiocast ', record)
-          })
+            if (record) setSaved(true);
+            console.log('edited audiocast ', record);
+          });
         }
-      )
+      );
     }
-  }
+  };
 
   return (
     <div className={classes.content}>
@@ -871,9 +889,11 @@ const MyProfile = ({ userId }) => {
       </div>
       <div className={classes.profileWrapper}>
         <div>
-          <Button
+          <button
+            variant="contained"
             onClick={() => setFriendsModal(true)}
             className={classes.friendRequests}
+            sx={classes.friendRequests}
           >
             Friend Requests
             {friendList?.received?.length > 0 && (
@@ -881,7 +901,7 @@ const MyProfile = ({ userId }) => {
                 {friendList?.received?.length}
               </span>
             )}
-          </Button>
+          </button>
         </div>
         <div className={classes.credInfo}>
           <div className={classes.userImgContainer}>
@@ -908,9 +928,13 @@ const MyProfile = ({ userId }) => {
           <div className={classes.userBio}>
             <div className={classes.userEditName}>
               <p className={classes.userName}>{userData?.fields?.username}</p>
-              <Button onClick={editProfile} className={classes.editProfile}>
+              <button
+                variant="contained"
+                onClick={editProfile}
+                className={classes.editProfile}
+              >
                 Edit profile
-              </Button>
+              </button>
             </div>
             <div className={classes.description}>
               <p style={{ fontSize: '1rem' }}>
@@ -979,15 +1003,20 @@ const MyProfile = ({ userId }) => {
               <p>Are you sure you want to delete this audiocast?</p>
             </div>
             <div className={classes.buttons}>
-              <Button
+              <button
+                variant="contained"
                 onClick={handleModalClose}
                 className={classes.editProfile}
               >
                 No, cancel
-              </Button>
-              <Button onClick={deleteRecord} className={classes.deleteBtn}>
+              </button>
+              <button
+                variant="contained"
+                onClick={deleteRecord}
+                className={classes.deleteBtn}
+              >
                 Yes, delete
-              </Button>
+              </button>
             </div>
           </div>
         </Modal>
@@ -1052,18 +1081,21 @@ const MyProfile = ({ userId }) => {
               />
 
               {editLoading && <p style={{ marginTop: '10%' }}>Loading ... </p>}
-              <Button
+              <button
+                variant="contained"
                 disabled={editLoading}
                 className={classes.submitEditBtn}
                 onClick={submitEdit}
                 style={{ marginTop: editLoading ? '' : '10%' }}
               >
                 Save
-              </Button>
+              </button>
             </form>
           ) : (
             <>
-              <Button className={classes.submitEditBtn}>saved</Button>
+              <button variant="contained" className={classes.submitEditBtn}>
+                saved
+              </button>
               <p>(Refresh to see changes)</p>
             </>
           )}
@@ -1155,7 +1187,7 @@ const MyProfile = ({ userId }) => {
                       />
                       <p className={classes.channelName}>{item.fields.title}</p>
                     </div>
-                  )
+                  );
                 })}
               </div>
             )}
@@ -1183,7 +1215,7 @@ const MyProfile = ({ userId }) => {
                         {item.fields.username}
                       </p>
                     </div>
-                  )
+                  );
                 })}
               </div>
             )}
@@ -1203,25 +1235,28 @@ const MyProfile = ({ userId }) => {
               <>
                 <div className={classes.audioButtons}>
                   {userData?.fields?.admin === 'true' && (
-                    <Button onClick={golive} className={classes.goLiveButton}>
+                    <button
+                      variant="contained"
+                      onClick={golive}
+                      className={classes.goLiveButton}
+                    >
                       Go Live
-                    </Button>
+                    </button>
                   )}
-                  <Button
+                  <button
+                    variant="contained"
                     onClick={() => dispatch(actions.pushHistory('/upload'))}
                     className={classes.uploadButton}
                   >
                     Upload Audiocast
-                  </Button>
+                  </button>
                 </div>
                 <div className={classes.recordings}>
                   {audiocasts.concat(userRecordings)?.length < 1 ? (
-                    <p className={classes.placeHolder}>
-                      No Audiocasts yet
-                    </p>
+                    <p className={classes.placeHolder}>No Audiocasts yet</p>
                   ) : (
                     audiocasts?.concat(userRecordings)?.map((rec, index) => {
-                      countt += 1
+                      countt += 1;
                       return (
                         <div className={classes.track} key={index}>
                           <Tracks1
@@ -1244,7 +1279,7 @@ const MyProfile = ({ userId }) => {
                             <EditIcon />
                           </p>
                         </div>
-                      )
+                      );
                     })
                   )}
                 </div>
@@ -1277,7 +1312,7 @@ const MyProfile = ({ userId }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MyProfile
+export default MyProfile;

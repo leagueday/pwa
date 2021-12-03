@@ -1,22 +1,22 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { makeStyles } from '@material-ui/core/styles'
-import Collapse from '@material-ui/core/Collapse'
-import Hidden from '@material-ui/core/Hidden'
+import { makeStyles } from '@mui/styles';
+import Collapse from '@material-ui/core/Collapse';
+import Hidden from '@material-ui/core/Hidden';
 
-import { itemSelectors } from '../../model/rss'
-import { actions, constants as storeConstants, selectors } from '../../store'
-import { colors } from '../../styling'
-import { formatDatetime, secondsToHms } from '../dateutil'
-import { makeIconButton } from '../IconButton'
-import { IcoPause, IcoPlay } from '../icons'
-import { stripHtml, computeZebraBackgroundColor } from '../util'
+import { itemSelectors } from '../../model/rss';
+import { actions, constants as storeConstants, selectors } from '../../store';
+import { colors } from '../../styling';
+import { formatDatetime, secondsToHms } from '../dateutil';
+import { makeIconButton } from '../IconButton';
+import { IcoPause, IcoPlay } from '../icons';
+import { stripHtml, computeZebraBackgroundColor } from '../util';
 
-const PauseButton = makeIconButton(IcoPause)
-const PlayButton = makeIconButton(IcoPlay)
+const PauseButton = makeIconButton(IcoPause);
+const PlayButton = makeIconButton(IcoPlay);
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   attribute: {
     padding: '0 1em',
     whiteSpace: 'nowrap',
@@ -98,7 +98,7 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     width: '100%',
   },
-}))
+}));
 
 const Item = ({
   accentColor,
@@ -113,42 +113,44 @@ const Item = ({
   const classes = useStyles({
     accentColor,
     backgroundColor: computeZebraBackgroundColor(itemIndex),
-  })
+  });
 
-  const itemAudioUrl = itemSelectors.v2.audioUrl(item)
-  const description = itemSelectors.v2.description(item)
-  const duration = itemSelectors.v2.duration(item)
-  const pubDate = itemSelectors.v2.pubDate(item)
-  const title = itemSelectors.v2.title(item)
+  const itemAudioUrl = itemSelectors.v2.audioUrl(item);
+  const description = itemSelectors.v2.description(item);
+  const duration = itemSelectors.v2.duration(item);
+  const pubDate = itemSelectors.v2.pubDate(item);
+  const title = itemSelectors.v2.title(item);
 
-  const audioUrl = useSelector(selectors.getAudioUrl)
-  const audioMode = useSelector(selectors.getAudioMode)
-  const isSelectedAudio = audioUrl && audioUrl === itemAudioUrl
+  const audioUrl = useSelector(selectors.getAudioUrl);
+  const audioMode = useSelector(selectors.getAudioMode);
+  const isSelectedAudio = audioUrl && audioUrl === itemAudioUrl;
   const isPlaying =
-    isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY
+    isSelectedAudio && audioMode === storeConstants.AUDIO_MODE_PLAY;
 
-  const PopButton = isPlaying ? PauseButton : PlayButton
+  const PopButton = isPlaying ? PauseButton : PlayButton;
 
-  const strippedTitle = React.useMemo(() => stripHtml(title), [title])
+  const strippedTitle = React.useMemo(() => stripHtml(title), [title]);
 
-  const strippedDescription = React.useMemo(() => stripHtml(description), [
-    description,
-  ])
+  const strippedDescription = React.useMemo(
+    () => stripHtml(description),
+    [description]
+  );
 
-  const formattedPubDate = React.useMemo(() => formatDatetime(pubDate), [
-    pubDate,
-  ])
+  const formattedPubDate = React.useMemo(
+    () => formatDatetime(pubDate),
+    [pubDate]
+  );
 
-  const durationHms = React.useMemo(() => secondsToHms(duration), [duration])
+  const durationHms = React.useMemo(() => secondsToHms(duration), [duration]);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const onPopClick = isPlaying
-    ? ev => {
-        dispatch(actions.pauseAudio())
-        ev.stopPropagation()
+    ? (ev) => {
+        dispatch(actions.pauseAudio());
+        ev.stopPropagation();
       }
-    : ev => {
-        if (isSelectedAudio) dispatch(actions.playAudio())
+    : (ev) => {
+        if (isSelectedAudio) dispatch(actions.playAudio());
         else {
           dispatch(
             actions.selectAudio(
@@ -160,11 +162,11 @@ const Item = ({
               duration,
               title
             )
-          )
-          dispatch(actions.playAudio())
+          );
+          dispatch(actions.playAudio());
         }
-        ev.stopPropagation()
-      }
+        ev.stopPropagation();
+      };
 
   return (
     <div className={classes.item} onClick={toggleIsExpanded}>
@@ -191,7 +193,7 @@ const Item = ({
         <div className={classes.itemDescription}>{strippedDescription}</div>
       </Collapse>
     </div>
-  )
-}
+  );
+};
 
-export default Item
+export default Item;

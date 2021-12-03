@@ -1,12 +1,12 @@
-import React from 'react'
-import cx from 'classnames'
+import React from 'react';
+import cx from 'classnames';
 
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@mui/styles';
 
-import { colors } from '../styling'
-import { IcoDot } from './icons'
+import { colors } from '../styling';
+import { IcoDot } from './icons';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dotInner: {
     color: colors.white80,
     height: '0.75em',
@@ -25,25 +25,25 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     padding: '0.25em',
   },
-}))
+}));
 
-const makeRange = length => {
-  const result = new Array(length)
+const makeRange = (length) => {
+  const result = new Array(length);
 
-  for (let i = 0; i < length; i++) result.push(i)
+  for (let i = 0; i < length; i++) result.push(i);
 
-  return result
-}
+  return result;
+};
 
 const SliderDots = ({ className, numPages, pageNum }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const indexes = React.useMemo(() => makeRange(numPages), [numPages])
+  const indexes = React.useMemo(() => makeRange(numPages), [numPages]);
 
   return (
     <div className={cx(classes.sliderDots, className)}>
       {indexes.map((i, k) =>
-        (isCurrentPage => (
+        ((isCurrentPage) => (
           <IcoDot
             key={k}
             classes={{
@@ -56,7 +56,7 @@ const SliderDots = ({ className, numPages, pageNum }) => {
         ))(i === pageNum)
       )}
     </div>
-  )
-}
+  );
+};
 
-export default SliderDots
+export default SliderDots;

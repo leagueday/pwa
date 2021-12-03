@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react'
-import BasicLayout from '../BasicLayout'
-import { FriendsStateContext } from '../../store/stateProviders/toggleFriend'
-import { useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { ChatStateContext } from '../../store/stateProviders/useChat'
-import Friend from './Friend'
-import { useSelector } from 'react-redux'
-import { selectors, actions } from '../../store'
-import SocketIOClient from 'socket.io-client'
-import axios from 'axios'
-import { makeStyles } from '@material-ui/styles'
-import { colors } from '../../styling'
-import ChatRoom from './ChatRoom'
+import React, { useState, useEffect, useContext } from 'react';
+import BasicLayout from '../BasicLayout';
+import { FriendsStateContext } from '../../store/stateProviders/toggleFriend';
+import { useTheme } from '@mui/material';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { ChatStateContext } from '../../store/stateProviders/useChat';
+import Friend from './Friend';
+import { useSelector } from 'react-redux';
+import { selectors, actions } from '../../store';
+import SocketIOClient from 'socket.io-client';
+import axios from 'axios';
+import { makeStyles } from '@mui/styles';
+import { colors } from '../../styling';
+import ChatRoom from './ChatRoom';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
     display: 'flex',
     marginTop: '2px',
@@ -100,39 +100,39 @@ const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
-}))
+}));
 
 const ChatScreen = () => {
-  const theme = useTheme()
-  const xs = useMediaQuery(theme.breakpoints.down('xs'))
-  const [chatExpanded, setChatExpanded] = useState(false)
-  const classes = useStyles({ chatExpanded })
-  const friendList = useSelector(selectors.getFriendsList)
-  const user = useSelector(selectors.getUser)
-  const { newChats, getAllMessages } = useContext(ChatStateContext)
-  const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext)
+  const theme = useTheme();
+  const xs = useMediaQuery(theme.breakpoints.down('xs'));
+  const [chatExpanded, setChatExpanded] = useState(false);
+  const classes = useStyles({ chatExpanded });
+  const friendList = useSelector(selectors.getFriendsList);
+  const user = useSelector(selectors.getUser);
+  const { newChats, getAllMessages } = useContext(ChatStateContext);
+  const { selectedFriend, setSelectedFriend } = useContext(FriendsStateContext);
 
   const roomId = [selectedFriend?.id, user?.id]
     .sort((a, b) => (a > b ? 1 : -1))
-    .join('-')
+    .join('-');
 
-  const [socket, setSocket] = useState(null)
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const newSocket = SocketIOClient('https://leagueday-api.herokuapp.com', {
       query: roomId,
-    })
-    setSocket(newSocket)
-    return () => newSocket.close()
-  }, [setSocket])
+    });
+    setSocket(newSocket);
+    return () => newSocket.close();
+  }, [setSocket]);
 
   useEffect(() => {
     if (selectedFriend) {
-      setChatExpanded(true)
+      setChatExpanded(true);
     } else {
-      setChatExpanded(false)
+      setChatExpanded(false);
     }
-  }, [selectedFriend])
+  }, [selectedFriend]);
 
   return (
     <BasicLayout>
@@ -186,7 +186,7 @@ const ChatScreen = () => {
         )}
       </div>
     </BasicLayout>
-  )
-}
+  );
+};
 
-export default ChatScreen
+export default ChatScreen;

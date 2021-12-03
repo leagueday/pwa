@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
-import cx from 'classnames'
-import LiveStreams from './LiveStreams'
-import { makeStyles } from '@material-ui/core/styles'
-import { colors } from '../../styling'
+import React, { useEffect } from 'react';
+import cx from 'classnames';
+import LiveStreams from './LiveStreams';
+import { makeStyles } from '@mui/styles';
+import { colors } from '../../styling';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   comingSoon: {
     margin: '0 2vw 2vw 2vw',
   },
@@ -87,7 +87,7 @@ const useStyles = makeStyles(theme => ({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
-}))
+}));
 
 const mockupData = [
   {
@@ -97,25 +97,25 @@ const mockupData = [
     tags: ['riot', 'lol'],
     variety: 'LCS Summer Split',
   },
-]
+];
 
-const filterMockupData = tag =>
-  mockupData.filter(({ tags }) => tags.find(thisTag => thisTag === tag))
+const filterMockupData = (tag) =>
+  mockupData.filter(({ tags }) => tags.find((thisTag) => thisTag === tag));
 
 const LiveBroadcastsMockup = ({ className, channel }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <div className={cx(classes.liveBroadcasts, className)}>
       <LiveStreams channelTag={channel?.tag} />
       <div id="sdwContainer"></div>
     </div>
-  )
-}
+  );
+};
 
-export const mockupGetHasBroadcasts = channel => {
-  const data = filterMockupData(channel.tag)
-  return data.length > 0
-}
+export const mockupGetHasBroadcasts = (channel) => {
+  const data = filterMockupData(channel.tag);
+  return data.length > 0;
+};
 
-export default LiveBroadcastsMockup
+export default LiveBroadcastsMockup;

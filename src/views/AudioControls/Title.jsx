@@ -1,16 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import { colors } from '../../styling'
+import { colors } from '../../styling';
 
-const TITLE_HEIGHT = '2em'
-const HALF_HEIGHT = '1em'
+const TITLE_HEIGHT = '2em';
+const HALF_HEIGHT = '1em';
 
-const TITLE_HEIGHT_MD = '1.4em'
-const HALF_HEIGHT_MD = '0.7em'
+const TITLE_HEIGHT_MD = '1.4em';
+const HALF_HEIGHT_MD = '0.7em';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   title: {
     backgroundColor: colors.darkGray,
     borderRadius: HALF_HEIGHT,
@@ -46,10 +46,10 @@ const useStyles = makeStyles(theme => ({
       height: TITLE_HEIGHT_MD,
     },
   },
-}))
+}));
 
 const Title = ({ onClick, title }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <div className={classes.titleFlex}>
@@ -57,7 +57,7 @@ const Title = ({ onClick, title }) => {
         {title}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Title
+export default Title;

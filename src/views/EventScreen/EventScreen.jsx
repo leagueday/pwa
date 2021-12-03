@@ -1,19 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import { useDispatch } from 'react-redux'
-import cx from 'classnames'
-import Airtable from 'airtable'
-import { colors } from '../../styling'
-import { Button } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import useChannels from '../../api/useChannels'
-import { actions } from '../../store'
-import BasicLayout from '../BasicLayout'
-import ContentLayout from '../ContentLayout'
-import Square from '../Square'
-import Item from './Item'
+import React, { useState, useEffect } from 'react';
+import cx from 'classnames';
+import Airtable from 'airtable';
+import { colors } from '../../styling';
+import { makeStyles } from '@mui/styles';
+import BasicLayout from '../BasicLayout';
+import ContentLayout from '../ContentLayout';
+import Square from '../Square';
+import Item from './Item';
 
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   accentColor: ({ color }) => ({
     color,
   }),
@@ -80,7 +75,7 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.primary.active,
     },
   },
-}))
+}));
 
 const Logo = ({ imageUrl, classes }) => (
   <div className={classes.logoImageContainer}>
@@ -88,7 +83,7 @@ const Logo = ({ imageUrl, classes }) => (
       <img className={classes.logoImage} src={imageUrl} />
     </Square>
   </div>
-)
+);
 
 const Headline = ({ classes, subTitle, title }) => (
   <div className={classes.headline}>
@@ -98,31 +93,31 @@ const Headline = ({ classes, subTitle, title }) => (
     </div>
     <div className={classes.headlineTitleRow}>{subTitle}</div>
   </div>
-)
+);
 
 const EventScreen = ({ tag }) => {
-  const [eventDataFetch, seteventDataFetch] = useState([])
-  const [eventDataFetchlCS, seteventDataFetchlCS] = useState([])
-  const [loading, setisloading] = useState(0)
-  const [criteria, setCriteria] = useState('')
-  const classes = useStyles()
-  const [expandedIndex, setExpandedIndex] = useState()
+  const [eventDataFetch, seteventDataFetch] = useState([]);
+  const [eventDataFetchlCS, seteventDataFetchlCS] = useState([]);
+  const [loading, setisloading] = useState(0);
+  const [criteria, setCriteria] = useState('');
+  const classes = useStyles();
+  const [expandedIndex, setExpandedIndex] = useState();
 
   useEffect(() => {
     if (tag == 'leaguenight') {
-      EvenScreeDatalCS()
+      EvenScreeDatalCS();
     }
 
     if (tag == 'lcs') {
-      EvenScreeDatalOL()
+      EvenScreeDatalOL();
     }
-  }, [tag])
+  }, [tag]);
 
-  let allRecords = []
+  let allRecords = [];
   const EvenScreeDatalOL = async () => {
-    const apiKey = 'keymd23kpZ12EriVi'
-    const baseId = 'appXoertP1WJjd4TQ'
-    const base = new Airtable({ apiKey }).base(baseId)
+    const apiKey = 'keymd23kpZ12EriVi';
+    const baseId = 'appXoertP1WJjd4TQ';
+    const base = new Airtable({ apiKey }).base(baseId);
 
     base('ChannelLiveData')
       .select({
@@ -131,22 +126,22 @@ const EventScreen = ({ tag }) => {
       })
       .eachPage(
         async function page(records, fetchNextPage) {
-          allRecords = [...allRecords.reverse(), ...records]
-          seteventDataFetch(allRecords.reverse())
-          fetchNextPage()
+          allRecords = [...allRecords.reverse(), ...records];
+          seteventDataFetch(allRecords.reverse());
+          fetchNextPage();
         },
         function done(err) {
           if (err) {
-            console.error(err)
-            return
+            console.error(err);
+            return;
           }
         }
-      )
-  }
+      );
+  };
 
   const EvenScreeDatalCS = () => {
-    const baseId = 'appXoertP1WJjd4TQ'
-    let urladd = `filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`
+    const baseId = 'appXoertP1WJjd4TQ';
+    let urladd = `filterByFormula={channelTag}='lolnight'&sort%5B0%5D%5Bfield%5D=uploadDate&sort%5B0%5D%5Bdirection%5D=desc`;
     fetch('/.netlify/functions/commingsoon-proxy', {
       method: 'POST',
       headers: {
@@ -155,37 +150,37 @@ const EventScreen = ({ tag }) => {
       },
       body: JSON.stringify({ url: `${baseId}/ChannelLiveData?${urladd}` }),
     })
-      .then(response => response.json())
+      .then((response) => response.json())
       .then(function (response) {
         if (response.records.length) {
-          seteventDataFetchlCS(response.records)
-          setisloading(2)
+          seteventDataFetchlCS(response.records);
+          setisloading(2);
         } else {
-          setisloading(3)
+          setisloading(3);
         }
       })
-      .catch(error => {
-        setisloading(8)
-        console.log('error while data fetching', error.type)
-      })
-  }
+      .catch((error) => {
+        setisloading(8);
+        console.log('error while data fetching', error.type);
+      });
+  };
 
-  const color = colors.yellow
+  const color = colors.yellow;
   const imageUrl =
     tag === 'lcs'
       ? '/img/restyle_demo/lcs.png'
-      : '/img/restyle_demo/LeagueNight2.png'
-  const subTitle = tag === 'lcs' ? 'LCS Spring Replays 2021' : ''
-  const title = tag === 'lcs' ? 'LCS Replays' : 'LeagueNight'
+      : '/img/restyle_demo/LeagueNight2.png';
+  const subTitle = tag === 'lcs' ? 'LCS Spring Replays 2021' : '';
+  const title = tag === 'lcs' ? 'LCS Replays' : 'LeagueNight';
 
-  const makeToggleIsExpanded = itemIndex =>
+  const makeToggleIsExpanded = (itemIndex) =>
     expandedIndex === itemIndex
       ? () => {
-          setExpandedIndex(null)
+          setExpandedIndex(null);
         }
       : () => {
-          setExpandedIndex(itemIndex)
-        }
+          setExpandedIndex(itemIndex);
+        };
 
   return (
     <BasicLayout>
@@ -206,12 +201,12 @@ const EventScreen = ({ tag }) => {
           type="text"
           placeholder="Search for Recordings..."
           value={criteria}
-          onChange={e => setCriteria(e.target.value)}
+          onChange={(e) => setCriteria(e.target.value)}
         />
         <>
           {eventDataFetch?.length > 0 &&
             eventDataFetch
-              ?.filter(rec =>
+              ?.filter((rec) =>
                 rec.fields.title
                   ?.toLowerCase()
                   .includes(criteria?.toLowerCase())
@@ -238,7 +233,7 @@ const EventScreen = ({ tag }) => {
                     toggleIsExpanded={makeToggleIsExpanded(index)}
                     dataFetch={eventDataFetch}
                   />
-                )
+                );
               })}
         </>
         <>
@@ -269,7 +264,7 @@ const EventScreen = ({ tag }) => {
         </>
       </ContentLayout>
     </BasicLayout>
-  )
-}
+  );
+};
 
-export default EventScreen
+export default EventScreen;

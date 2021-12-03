@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import cx from 'classnames'
-import { makeStyles } from '@material-ui/core/styles'
-import useAirtable from '../api/useAirtable'
-import useChannels from '../api/useChannels'
-import { colors } from '../styling'
-import useChannelCategories from '../api/useChannelCategories'
-import ChannelTilesRow from './ChannelTilesRow'
+import React, { useState, useEffect } from 'react';
+import cx from 'classnames';
+import { makeStyles } from '@mui/styles';
+import useAirtable from '../api/useAirtable';
+import useChannels from '../api/useChannels';
+import { colors } from '../styling';
+import useChannelCategories from '../api/useChannelCategories';
+import ChannelTilesRow from './ChannelTilesRow';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   channelCategories: {},
   creatorWrapper: {
     position: 'relative',
@@ -55,33 +55,33 @@ const useStyles = makeStyles(theme => ({
       width: '80%',
     },
   },
-}))
+}));
 
 const ChannelCategories = ({ className }) => {
-  const classes = useStyles()
-  const { data } = useAirtable('appXoertP1WJjd4TQ', 'UserProfile')
-  const [creators, setCreators] = useState([])
-  const channels = useChannels().list
-  const channelCategories = useChannelCategories()
+  const classes = useStyles();
+  const { data } = useAirtable('appXoertP1WJjd4TQ', 'UserProfile');
+  const [creators, setCreators] = useState([]);
+  const channels = useChannels().list;
+  const channelCategories = useChannelCategories();
 
   useEffect(() => {
-    setCreators(data)
-  }, [data])
+    setCreators(data);
+  }, [data]);
 
   const channelsByCat = React.useMemo(() => {
-    if (channelCategories.size === 0 || channels.length === 0) return []
-    const channelMap = new Map(channels.map(record => [record.tag, record]))
+    if (channelCategories.size === 0 || channels.length === 0) return [];
+    const channelMap = new Map(channels.map((record) => [record.tag, record]));
 
-    const result = []
+    const result = [];
     for (let [title, tagSet] of channelCategories.entries()) {
-      const channels = []
+      const channels = [];
       for (let tag of tagSet.values()) {
-        channels.push(channelMap.get(tag))
+        channels.push(channelMap.get(tag));
       }
-      result.push([title, channels])
+      result.push([title, channels]);
     }
-    return result
-  }, [channels, channelCategories])
+    return result;
+  }, [channels, channelCategories]);
 
   return (
     <div className={cx(className, classes.channelCategories)}>
@@ -94,7 +94,7 @@ const ChannelCategories = ({ className }) => {
         />
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default ChannelCategories
+export default ChannelCategories;

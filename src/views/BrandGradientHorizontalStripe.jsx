@@ -1,11 +1,11 @@
-import React from 'react'
-import cx from 'classnames'
+import React from 'react';
+import cx from 'classnames';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import { colors } from '../styling'
+import { colors } from '../styling';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   brandGradientHorizontalStripe: {
     position: 'relative',
     zIndex: 0,
@@ -16,11 +16,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const BrandGradientHorizontalStripe = ({ className }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <div className={cx(classes.brandGradientHorizontalStripe, className)} />
-  )
-}
+  );
+};
 
 export default BrandGradientHorizontalStripe;

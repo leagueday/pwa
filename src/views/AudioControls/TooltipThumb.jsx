@@ -1,15 +1,15 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import Color from 'color'
+import React from 'react';
+import { useSelector } from 'react-redux';
+import Color from 'color';
 
-import { makeStyles } from '@material-ui/core/styles'
-import Tooltip from '@material-ui/core/Tooltip'
+import { makeStyles } from '@mui/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import { selectors } from '../../store'
-import { colors } from '../../styling'
-import { secondsToHms } from '../dateutil'
+import { selectors } from '../../store';
+import { colors } from '../../styling';
+import { secondsToHms } from '../dateutil';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   sliderThumbTooltip: {
     background: Color(colors.brandBlack).fade(0.4).toString(),
     border: `1px solid ${colors.cyan}`,
@@ -26,18 +26,18 @@ const useStyles = makeStyles(theme => ({
       margin: '0 0.5em',
     },
   },
-}))
+}));
 
 const TooltipThumb = ({ children, open, value }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const position = useSelector(selectors.getAudioPosition)
+  const position = useSelector(selectors.getAudioPosition);
 
   // Kind of quick-and-dirty test the type of `value` to
   // know if it's preformatted (ephemeral value during
   // drag), it would be a string, else it's a number 1-100
   // representing the Slider position
-  const hms = typeof value === 'string' ? value : secondsToHms(position)
+  const hms = typeof value === 'string' ? value : secondsToHms(position);
 
   return (
     <Tooltip
@@ -49,7 +49,7 @@ const TooltipThumb = ({ children, open, value }) => {
     >
       {children}
     </Tooltip>
-  )
-}
+  );
+};
 
-export default TooltipThumb
+export default TooltipThumb;

@@ -1,13 +1,13 @@
-import React, { useContext, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { MyListContext } from '../../store/stateProviders/listState'
-import { getMyList } from '../GetUserList'
-import { actions, selectors, useLocationPathname } from '../../store'
-import Item from './Item'
-import PlusMinusBtn from '../CreatorTilesRow/PlusMinusBtn'
-import { makeStyles } from '@material-ui/styles'
+import React, { useContext, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { MyListContext } from '../../store/stateProviders/listState';
+import { getMyList } from '../GetUserList';
+import { actions, selectors, useLocationPathname } from '../../store';
+import Item from './Item';
+import PlusMinusBtn from '../CreatorTilesRow/PlusMinusBtn';
+import { makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   likeItem: {
     position: 'relative',
     display: 'flex',
@@ -17,29 +17,29 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     right: 8,
   },
-}))
+}));
 
 const isChannelSelected = (locationPathname, channelTag) => {
-  const path = locationPathname ?? ''
+  const path = locationPathname ?? '';
 
   if (path.substr(0, 9) !== '/profile/') {
-    return false
+    return false;
   } else {
-    return path.substr(9) === channelTag
+    return path.substr(9) === channelTag;
   }
-}
+};
 
 const MyCreators = ({ skinny }) => {
-  const dispatch = useDispatch()
-  const locationPathname = useLocationPathname()
-  const user = useSelector(selectors.getUser)
-  const { creatorList } = useContext(MyListContext)
-  const classes = useStyles()
+  const dispatch = useDispatch();
+  const locationPathname = useLocationPathname();
+  const user = useSelector(selectors.getUser);
+  const { creatorList } = useContext(MyListContext);
+  const classes = useStyles();
 
   return (
     <div>
       {creatorList?.map((user, ind) => {
-        const { fields } = user
+        const { fields } = user;
         return (
           <div className={classes.likeItem} key={ind}>
             <Item
@@ -65,10 +65,10 @@ const MyCreators = ({ skinny }) => {
               />
             </div>
           </div>
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default MyCreators
+export default MyCreators;

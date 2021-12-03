@@ -1,37 +1,36 @@
-import React, { useEffect } from 'react'
-import { hot } from 'react-hot-loader/root'
-import GetMyList from './views/GetUserList'
-import { isPlatform } from '@ionic/react'
-import { makeStyles } from '@material-ui/core/styles'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import FriendsListProvider from './store/stateProviders/toggleFriend'
-import Paper from '@material-ui/core/Paper'
-import ListStateProvider from './store/stateProviders/listState'
-import ChatStateProvider from './store/stateProviders/useChat'
-import UserProfileProvider from './store/stateProviders/userState'
-import * as Sentry from '@sentry/react'
-import { Integrations } from '@sentry/tracing'
-import { Provider as StoreProvider } from './store'
-import ThemeProvider from './styling/ThemeProvider'
-import Audio from './views/Audio'
-import Auth from './views/Auth'
-import Mushipan from './views/MushipanRouter'
-import UserData from './views/UserData'
-import FriendsList from './views/FriendsList'
-import { routesConfig } from './routes'
-import { StatusBar } from '@capacitor/status-bar'
+import React, { useEffect } from 'react';
+import './App.css'
+import { hot } from 'react-hot-loader/root';
+import GetMyList from './views/GetUserList';
+import { isPlatform } from '@ionic/react';
+import { makeStyles } from '@mui/styles';
+import FriendsListProvider from './store/stateProviders/toggleFriend';
+import { Paper, CssBaseline  } from '@mui/material';
+import ListStateProvider from './store/stateProviders/listState';
+import ChatStateProvider from './store/stateProviders/useChat';
+import UserProfileProvider from './store/stateProviders/userState';
+import * as Sentry from '@sentry/react';
+import { Integrations } from '@sentry/tracing';
+import { Provider as StoreProvider } from './store';
+import ThemeProvider from './ThemeProvider';
+import Audio from './views/Audio';
+import Auth from './views/Auth';
+import Mushipan from './views/MushipanRouter';
+import UserData from './views/UserData';
+import FriendsList from './views/FriendsList';
+import { routesConfig } from './routes';
+import { StatusBar } from '@capacitor/status-bar';
 
-StatusBar.setOverlaysWebView({ overlay: true })
+StatusBar.setOverlaysWebView({ overlay: true });
 
 Sentry.init({
-  dsn:
-    'https://bca25f07acf44fe1bad1be0fbb836f75@o718294.ingest.sentry.io/5780709',
+  dsn: 'https://bca25f07acf44fe1bad1be0fbb836f75@o718294.ingest.sentry.io/5780709',
   integrations: [new Integrations.BrowserTracing()],
   release: '0.0.1',
   tracesSampleRate: 0.7,
-})
+});
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   app: ({ platform }) => ({
     backgroundColor: theme.palette.background.default,
     bottom: 0,
@@ -62,11 +61,11 @@ const useStyles = makeStyles(theme => ({
     minHeight: '100%',
     width: '100%',
   },
-}))
+}));
 
 const StyledAppContent = () => {
-  const platform = isPlatform('hybrid')
-  const classes = useStyles({ platform })
+  const platform = isPlatform('hybrid');
+  const classes = useStyles({ platform });
 
   return (
     <div className={classes.app}>
@@ -76,16 +75,16 @@ const StyledAppContent = () => {
         </Paper>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
   useEffect(() => {
     const hideStatusBar = async () => {
-      await StatusBar.hide()
-    }
-    hideStatusBar()
-  }, [])
+      await StatusBar.hide();
+    };
+    hideStatusBar();
+  }, []);
 
   return (
     <Sentry.ErrorBoundary fallback={'An error has occurred'}>
@@ -94,22 +93,22 @@ const App = () => {
           <UserProfileProvider>
             <FriendsListProvider>
               <ChatStateProvider>
-                <Audio />
-                <Auth />
-                <CssBaseline />
                 <ThemeProvider>
+                  <Audio />
+                  <Auth />
+                  <CssBaseline />
                   <StyledAppContent />
+                  <UserData />
+                  <FriendsList />
+                  <GetMyList />
                 </ThemeProvider>
-                <UserData />
-                <FriendsList />
-                <GetMyList />
               </ChatStateProvider>
             </FriendsListProvider>
           </UserProfileProvider>
         </ListStateProvider>
       </StoreProvider>
     </Sentry.ErrorBoundary>
-  )
-}
+  );
+};
 
-export default hot(App)
+export default hot(App);

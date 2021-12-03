@@ -1,13 +1,13 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
-import cx from 'classnames'
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import cx from 'classnames';
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles';
 
-import { actions } from '../../store'
-import { colors } from '../../styling'
+import { actions } from '../../store';
+import { colors } from '../../styling';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   contentMockImage: {
     display: 'block',
     height: '3vw',
@@ -42,14 +42,14 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     paddingTop: '0.5vw',
   },
-}))
+}));
 
 const LiveAndUpcomingLozenge = ({ className, skinny }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const yourBasicOnclick = () => dispatch(actions.pushHistory('/'))
+  const yourBasicOnclick = () => dispatch(actions.pushHistory('/'));
 
   return (
     <div className={cx(classes.liveAndUpcomingLozenge, className)}>
@@ -71,7 +71,7 @@ const LiveAndUpcomingLozenge = ({ className, skinny }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LiveAndUpcomingLozenge
+export default LiveAndUpcomingLozenge;

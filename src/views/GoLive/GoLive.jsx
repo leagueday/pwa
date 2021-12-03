@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Button, } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { actions, selectors } from '../../store'
-import { useDispatch } from 'react-redux'
-import { colors } from '../../styling'
-import BasicLayout from '../BasicLayout'
-import { addScrollStyle } from '../util'
-import TitleBar from './TitleBar'
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Button } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { actions, selectors } from '../../store';
+import { useDispatch } from 'react-redux';
+import { colors } from '../../styling';
+import BasicLayout from '../BasicLayout';
+import { addScrollStyle } from '../util';
+import TitleBar from './TitleBar';
 
-const primaryColor = colors.magenta
+const primaryColor = colors.magenta;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   channelCategories: {
     marginTop: '0.5em',
   },
@@ -51,17 +51,17 @@ const useStyles = makeStyles(theme => ({
   titleBar: {
     marginBottom: '0.25em',
   },
-}))
+}));
 
 const GoLive = () => {
-  const classes = useStyles({ primaryColor })
-  const user = useSelector(selectors.getUser)
+  const classes = useStyles({ primaryColor });
+  const user = useSelector(selectors.getUser);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const gotoliveScreen = () => {
-    dispatch(actions.pushHistory('/gotolive'))
-  }
+    dispatch(actions.pushHistory('/gotolive'));
+  };
 
   return (
     <BasicLayout home>
@@ -87,7 +87,7 @@ const GoLive = () => {
               <br />
             </div>
 
-            <Button
+            <button
               type="submit"
               variant="contained"
               color="primary"
@@ -95,14 +95,14 @@ const GoLive = () => {
               className={classes.button}
             >
               Next
-            </Button>
+            </button>
           </div>
         </div>
       ) : (
         (window.location.href = '/')
       )}
     </BasicLayout>
-  )
-}
+  );
+};
 
-export default GoLive
+export default GoLive;
