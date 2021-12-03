@@ -6,6 +6,7 @@ import { actions, selectors } from '../../store';
 import axios from 'axios';
 import { colors } from '../../styling';
 import { base } from '../..';
+
 const useStyles = makeStyles((theme) => ({
   modalWrapper: {
     position: 'absolute',
@@ -58,8 +59,8 @@ const SubscriptionModal = ({ open, setOpen }) => {
   const validateUser = (e) => {
     const priceId =
       e.target.name === 'single'
-        ? 'price_1JxbxTK8kLgNdK0kExpOHqwS'
-        : 'price_1Jxc73K8kLgNdK0k36MGMUk2';
+        ? 'price_1Jz8s2HjwVXYvJOT2wjN3iFT'
+        : 'price_1Jz8sZHjwVXYvJOToTmJ8epc';
     if (profile) {
       axios
         .post(
