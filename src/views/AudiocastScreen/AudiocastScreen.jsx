@@ -389,26 +389,6 @@ const AudiocastScreen = ({ audiocastId }) => {
       );
   }, [audiocastId]);
 
-  useEffect(() => {
-    base('UserProfile').update(
-      [
-        {
-          id: currentUserId,
-          fields: {
-            subscriptions: 'true',
-          },
-        },
-      ],
-      function (err, records) {
-        console.log('edit profile ', records);
-        if (err) {
-          console.error(err);
-          return;
-        }
-      }
-    );
-  }, []);
-
   const isPlayings = isSelectedAudio && audioMode === constants.AUDIO_MODE_PLAY;
 
   const onPopClick = isPlayings
