@@ -707,7 +707,7 @@ const AudiocastScreen = ({ audiocastId }) => {
                 }
               >
                 <img
-                  src={audiocast.fields.thumbnail}
+                  src={audiocast?.fields?.thumbnail}
                   alt=""
                   className={classes.sideCastImg}
                 />
